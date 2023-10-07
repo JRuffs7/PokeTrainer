@@ -1,0 +1,33 @@
+from typing import Dict, List
+
+from models.Pokemon import SpawnPokemon
+
+
+class Server:
+  ServerId: int
+  ChannelIds: List[int]
+  ServerName: str
+  SpawnChance: int
+  LastSpawned: SpawnPokemon | None
+  LastSpawnMessage: int
+  CaughtBy: int
+  FoughtBy: List[int]
+
+  def __init__(self, dict: Dict | None):
+    self.ServerId = dict.get('ServerId') or 0 if dict else 0
+    channels = dict.get('ChannelIds') if dict else None
+    self.ChannelIds = channels or [] if isinstance(
+        channels, List) else channels.value if channels else []
+    self.ServerName = dict.get('ServerName') or '' if dict else ''
+    self.SpawnChance = dict.get('SpawnChance') or 0 if dict else 0
+    spawned = dict.get('LastSpawned') if dict else None
+    self.LastSpawned = SpawnPokemon(spawned) or None if isinstance(
+        spawned, Dict) else SpawnPokemon(spawned.value) if spawned else None
+    self.LastSpawnMessage = dict.get('LastSpawnMessage') or 0 if dict else 0
+    self.CaughtBy = dict.get('CaughtBy') or 0 if dict else 0
+    fought = dict.get('FoughtBy') if dict else None
+    self.FoughtBy = fought or [] if isinstance(
+        fought, List) else fought.value if fought else []
+
+  def __str__(self):
+    return f"Server Name: {self.ServerName}\nSpawn Channels: {', '.join(f'<#{id}>' for id in self.ChannelIds)}\nSpawn Interval Chance: {self.SpawnChance}%"

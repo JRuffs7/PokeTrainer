@@ -1,0 +1,70 @@
+{
+  "Pokeball": [
+    {
+      "Id": 1,
+      "Name": "Pokeball",
+      "Description": "A basic device for capturing pokemon",
+      "BuyAmount": 100,
+      "SellAmount": 50,
+      "CatchRateModifier": 1
+    },
+    {
+      "Id":2,
+      "Name": "Greatball",
+      "Description": "A good, high-performance Poke Ball that provides a higher success rate for catching Pokémon than a standard Poke Ball.",
+      "BuyAmount": 300,
+      "SellAmount": 150,
+      "CatchRateModifier": 1.5
+    },
+    {
+      "Id": 3,
+      "Name": "Ultraball",
+      "Description": "An ultra-high-performance Poke Ball that provides a higher success rate for catching Pokémon than a Great Ball.",
+      "BuyAmount": 600,
+      "SellAmount": 300,
+      "CatchRateModifier": 2
+    },
+    {
+      "Id": 4,
+      "Name": "Masterball",
+      "Description": "The best Poke Ball with the ultimate level of performance. With it, you will catch any wild Pokemon without fail.",
+      "BuyAmount": null,
+      "SellAmount": null,
+      "CatchRateModifier": 2
+    }
+  ],
+  "Potion": [
+    {
+      "Id": 1,
+      "Name": "Potion",
+      "Description": "Heals pokemon for 10 HP",
+      "BuyAmount": 100,
+      "SellAmount": 50,
+      "HealingAmount": 10
+    },
+    {
+      "Id": 2,
+      "Name" : "Super Potion",
+      "Description" : "Heals pokemon for 40 HP",
+      "BuyAmount": 350,
+      "SellAmount": 150,
+      "HealingAmount": 40
+    },
+    {
+      "Id": 3,
+      "Name" : "Hyper Potion",
+      "Description" : "Heals pokemon for 80 HP",
+      "BuyAmount": 600,
+      "SellAmount": 300,
+      "HealingAmount" : 80
+    },
+    {
+      "Id": 4,
+      "Name" : "Max Potion",
+      "Description" : "Heals pokemon for its maximum HP",
+      "BuyAmount": 750,
+      "SellAmount": 350,
+      "HealingAmount" : 100
+    }
+  ]
+}

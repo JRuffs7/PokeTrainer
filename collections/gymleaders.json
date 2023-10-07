@@ -1,0 +1,58 @@
+[
+  {
+  	"Name": "Brock",
+  	"Gen": 1,
+  	"Rank": 1,
+  	"Type": "rock",
+  	"Location": "Pewter City",
+  	"Badge": {
+      "Name": "Boulder",
+      "Description": "",
+      "ImageUrl": "https://archives.bulbagarden.net/media/upload/thumb/d/dd/Boulder_Badge.png/60px-Boulder_Badge.png"
+    },
+  	"Description": "",
+    "ImageUrl": ""
+  },
+  {
+  	"Name": "Misty",
+  	"Gen": 1,
+  	"Rank": 2,
+  	"Type": "water",
+  	"Location": "Cerulean City",
+  	"Badge": {
+      "Name": "Cascade",
+      "Description": "",
+      "ImageUrl": "https://archives.bulbagarden.net/media/upload/thumb/9/9c/Cascade_Badge.png/60px-Cascade_Badge.png"
+    },
+  	"Description": "",
+    "ImageUrl": ""
+  },
+  {
+  	"Name": "Lt. Surge",
+  	"Gen": 1,
+  	"Rank": 3,
+  	"Type": "electric",
+  	"Location": "Vermillion City",
+  	"Badge": {
+      "Name": "Thunder",
+      "Description": "",
+      "ImageUrl": "https://archives.bulbagarden.net/media/upload/thumb/a/a6/Thunder_Badge.png/60px-Thunder_Badge.png"
+    },
+  	"Description": "",
+    "ImageUrl": ""
+  },
+  {
+  	"Name": "Erika",
+  	"Gen": 1,
+  	"Rank": 4,
+  	"Type": "grass",
+  	"Location": "Celadon City",
+  	"Badge": {
+      "Name": "Rainbow",
+      "Description": "",
+      "ImageUrl": "https://archives.bulbagarden.net/media/upload/thumb/b/b5/Rainbow_Badge.png/60px-Rainbow_Badge.png"
+    }
+  	"Description": "",
+    "ImageUrl": ""
+  }
+]

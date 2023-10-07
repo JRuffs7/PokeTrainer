@@ -1,0 +1,95 @@
+import discord
+from discord import Embed
+
+import discordbot
+from globals import (
+    ErrorColor,
+    FightReaction,
+    GreatBallReaction,
+    PokeballReaction,
+    PokemonSpawnColor,
+    UltraBallReaction,
+)
+from models.Pokemon import SpawnPokemon
+from services import helpservice, pokemonservice
+
+
+async def SendErrorMessage(interaction, command):
+  valid, helpString = helpservice.BuildCommandHelp(
+      command, interaction.user.guild_permissions.administrator)
+  await interaction.response.send_message(embed=CreateEmbed(
+      f'{command} Command Usage', helpString, ErrorColor),
+                                          ephemeral=True)
+
+
+async def SendMessage(interaction, title, desc, color, eph=False):
+  await interaction.response.send_message(embed=CreateEmbed(
+      title, desc, color),
+                                          ephemeral=eph)
+
+
+async def SendEmbed(interaction, embed, eph=False):
+  await interaction.response.send_message(embed=embed, ephemeral=eph)
+
+
+async def EditMessage(message, newEmbed, color):
+  newEmbed.color = color
+  await message.edit(embed=newEmbed)
+
+
+async def SendDM(inter, title, desc, color):
+  await inter.user.send(embed=CreateEmbed(title, desc, color))
+
+
+async def SendDMs(inter, embedList):
+  await inter.user.send(embeds=embedList)
+
+
+async def SendPokemon(guildid,
+                      channelid,
+                      pokemon: SpawnPokemon,
+                      test: bool = False):
+  pkmn = pokemonservice.GetPokemonById(pokemon.Pokemon_Id)
+  if not pkmn:
+    print(f'Error spawning Pokemon with ID: {pokemon.Pokemon_Id}')
+    return
+
+  embed = CreateEmbed(
+      f"{pkmn.Name}{' :female_sign:' if pokemon.IsFemale == True else ' :male_sign:' if pokemon.IsFemale == False else ''}{' :sparkles:' if pokemon.IsShiny else ''}",
+      f"Height: {pokemon.Height}\nWeight: {pokemon.Weight}", PokemonSpawnColor)
+  embed.set_image(url=pkmn.GetImage(pokemon.IsShiny, pokemon.IsFemale))
+  bot = discordbot.GetBot()
+  guild = bot.get_guild(guildid)
+  if guild:
+    channel = guild.get_channel(channelid)
+    if channel and not isinstance(channel,
+                                  discord.ForumChannel) and not isinstance(
+                                      channel, discord.CategoryChannel):
+      message = await channel.send(embed=embed)
+      if not test:
+        await message.add_reaction(PokeballReaction)
+        await message.add_reaction(GreatBallReaction)
+        await message.add_reaction(UltraBallReaction)
+        await message.add_reaction(FightReaction)
+      return message
+  return None
+
+
+async def SendTrainerError(interaction):
+  await interaction.response.send_message(embed=CreateEmbed(
+      "Trainer Missing!",
+      "You have not started your PokeTrainer journey yet! To do so, use one of the **/starter*region*** commands. Please use **/help** for more explanation on how PokeTrainer is used.",
+      ErrorColor),
+                                          ephemeral=True)
+
+
+async def SendServerError(interaction):
+  await interaction.response.send_message(embed=CreateEmbed(
+      "Server Not Registered",
+      "This server has not been registered with PokeTrainer! To do so, have an administrator run the **/start *percent*** command. Please use **/help** for more explanation on how PokeTrainer is used.",
+      ErrorColor),
+                                          ephemeral=True)
+
+
+def CreateEmbed(title, desc, color):
+  return Embed(title=title, description=desc, color=color)

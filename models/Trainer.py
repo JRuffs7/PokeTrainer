@@ -1,0 +1,46 @@
+from typing import Dict, List
+
+from models.Pokemon import SpawnPokemon
+from services import pokemonservice
+
+
+class Trainer:
+  UserId: int
+  ServerId: int
+  OwnedPokemon: List[SpawnPokemon]
+  Health: int
+  Money: int
+  Fights: int
+  TotalCaught: int
+  PokeballList: List[int]
+  PotionList: List[int]
+
+  def __init__(self, dict: Dict | None):
+    self.UserId = dict.get('UserId') or 0 if dict else 0
+    self.ServerId = dict.get('ServerId') or 0 if dict else 0
+    owned = dict.get('OwnedPokemon') if dict else []
+    self.OwnedPokemon = [SpawnPokemon(s) for s in owned] if isinstance(
+        owned, List) else ([SpawnPokemon(s)
+                            for s in owned.value] if owned else [])
+    self.Health = dict.get('Health') or 0 if dict else 0
+    self.Money = dict.get('Money') or 0 if dict else 0
+    self.Fights = dict.get('Fights') or 0 if dict else 0
+    self.TotalCaught = dict.get('TotalCaught') or 0 if dict else 0
+    pkbl = dict.get('PokeballList') if dict else []
+    self.PokeballList = [int(p) for p in pkbl] if isinstance(
+        pkbl, List) else ([int(p) for p in pkbl.value] if pkbl else [])
+    ptn = dict.get('PotionList') if dict else []
+    self.PotionList = [int(p) for p in ptn] if isinstance(
+        ptn, List) else ([int(p) for p in ptn.value] if ptn else [])
+
+  def __str__(self):
+    uniquePkmn = {
+        x.PokedexId: x
+        for x in pokemonservice.ConvertSpawnPokemonToPokemon(self.OwnedPokemon)
+    }.values()
+    totalPkmn = pokemonservice.GetPokemonCount()
+
+    return f"__Stats__\nHP: {self.Health}\nFights: {self.Fights}\n${self.Money}\n\n__Pokemon__\nPokedex: {len(uniquePkmn)}/{totalPkmn} ({round((len(uniquePkmn)*100)/totalPkmn)}%)\nOwned Count: {len(self.OwnedPokemon)}\nTotal Caught: {self.TotalCaught}"
+
+  def FilterOwnedPokemon(self, function):
+    return list(filter(function, self.OwnedPokemon))

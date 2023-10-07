@@ -1,0 +1,66 @@
+{
+  "start": {
+    "helpstring":"Proper command usage: **/start *percent***\nWhen this command is run, Pokemon will only spawn in the channel the command is executed. If you wish to include more channels in the random spawn cycle, look into the **/togglechannel** command. This command also voids any spawn currently available.\n\nEx. **/start 60** will have a 60% chance to spawn a Pokemon every 5 minutes after the previous spawn.",
+    "requireadmin": true
+  },
+  "stop":{
+    "helpstring":"Proper command usage: **/stop**\n\nThis command will remove your server and all settings associated from the PokeTrainer bot. If you wish to use the PokeTrainer bot again, look into the **/start *percent*** command.\n\nTrainer data will NOT be deleted in case the server decides to start using PokeTrainer again at a later date.",
+    "requireadmin": true
+  },
+  "togglechannel":{
+    "helpstring":"Proper command usage: **/togglechannel**\n\nThis command will toggle the spawning of Pokemon in a specific channel. If the channel is already in the spawn list, it will be removed. The full list of channels can be seen through the **/getserver** command.\n\nYour server must be registered with the bot by using the **/start *percent*** command first, and the toggled channel must not be the only channel in the spawn list.\nIf you wish to turn the bot off, please use the **/stop** command.",
+    "requireadmin": true
+  },
+  "getserver":{
+    "helpstring":"Proper command usage: **/getserver**\n\nThis command will return the details of the server settings for the bot. This includes the server name, channels toggled for spawning, and the percent chance for a spawn.",
+    "requireadmin": true
+  },
+  "testspawn":{
+    "helpstring":"Proper command usage: **/testspawn *integer***\n\nThis command will spawn a test Pokemon in the current channel. If an ID is given, it will spawn that specific Pokemon. The ID is based off of the Pokemon-Form ID from PokeApi.\n\n**THIS SPAWN WILL NOT BE ABLE TO BE CAUGHT!**",
+    "requireadmin": true
+  },
+  "starter":{
+    "helpstring":"Proper command usage: **/start*region* *pokemon***\n\nThis command will start the trainers journey, giving them the starter Pokemon of their choosing as well as $500. Trainers will begin with 50 Health used for fights, but no Pokeballs or Potions. Use the **/shop** to buy items!",
+    "requireadmin": false
+  },
+  "trainerinfo":{
+    "helpstring":"Proper command usage: **/trainerinfo *[@user]***\n\nThis command will give specific information regarding a trainer in the current server. If a user is mentioned within the command, it will show that users information. Information will include stats such as health, money, and number of fights, as well as Pokedex statistics such as Pokedex completion, total Pokemon caught, and shiny count",
+    "requireadmin": false
+  },
+  "inventory":{
+    "helpstring":"Proper command usage: **/inventory**\n\nThis command will send a DM providing the user with their inventory for the current server. You cannot view the inventory of other trainers. Inventory will include Pokeball count and Potion count",
+    "requireadmin": false
+  },
+  "pokedex":{
+    "helpstring":"__Regular Pokedex__\nProper command usage: **/pokedex *[image]* *[order]* *[@user]***\n\nThis command will display the current (or given) users Pokedex in a text list form by default.\n\n\n__Shiny Pokedex__\nProper command usage: **/shinydex *[image]* *[order]* *[@user]***\n\nThis command will display the current (or given) users Shiny Pokedex in a text list form by default.\n\n\n__Wish List__\nProper command usage: **/wishlist *[image]* *[order]* *[@user]***\n\nThis command will display the current (or given) users Pokemon wish list in a text list form by default. It will display a ✅ if the user has obtained the Pokemon.\n\n\n__Additions__\nFor all commands above there are additional arguments that could be tacked on. Using **/pokedex** as an example, here are the additional options:\n**/pokedex image**: Display the current (or given) users Pokedex in a carousel image format.\n**/pokedex text name**: Display the Pokedex in a text list and sort the Pokedex by name.\n**~pokedex image dexnumber**: Displays the Pokedex in an image carousel and sorts the Pokedex by National Dex number (then by name).",
+    "requireadmin": false
+  },
+  "badges":{
+    "helpstring":"__Regular Badge List__\nProper command usage: **/badges *[region]* *[@user]***\n\nThis command will display the current (or given) users badge list in a text form, along with their completion count. It will be displayed in region order (Kanto, Johto, Hoenn, etc.) and then gym order (Boulder, Cascade, Thunder, etc.) by default.\n\n\n__Additions__\nThe **/badges** command allows for search of regions. Examples:\n**/badges kanto**: Only displays the users Kanto badge list.\n**/badges johto**: Only displays the users Johto badge list.\n\nYou may also provide an argument for if you want the badges in image format. Examples:\n**/badges hoenn image**: Displays the users Hoenn badge list in a carousel image format.\n**/badges all image @TestUser**: Displays @TestUser's full badge list in image format.",
+    "requireadmin": false
+  },
+  "shop":{
+    "helpstring":"Proper command usage: **/shop**\n\nDisplays the current available items in the shop. The categories for now include *Pokeballs* and *Potions*.\n\nPokeballs are used for capturing Pokemon that spawn. You must have at least one of the Pokeball correllating to the emoji clicked in order to capture.\n\nPotions are used to restore Trainer Health. Every battle, you gain money but lose 5 Health, so make sure these are handy!",
+    "requireadmin": false
+  },
+  "buypokeball":{
+    "helpstring":"Proper command usage: **/buypokeball *pokeball* *[amount]***\n\nThis command is used to purchase the Pokeball of your choice. The prices for each kind of ball can be found using the **/shop** command. You may specify the amount to purchase if desired, but if left out then it will default to 1.",
+    "requireadmin": false
+  },
+  "buypotion":{
+    "helpstring":"Proper command usage: **/buypotion *potion* *[amount]***\n\nThis command is used to purchase the Potion of your choice. The prices for each kind of Potion can be found using the **/shop** command. You may specify the amount to purchase if desired, but if left out then it will default to 1.",
+    "requireadmin": false
+  },
+  "sellpokeball":{
+    "helpstring":"Proper command usage: **/sellpokeball *pokeball* *[amount]***\n\nThis command is used to sell the Pokeball of your choice. The selling price for each kind of Pokeball is one half the price to buy the item from the **/shop**. You may specify the amount to sell if desired, but if left out then it will default to 1.",
+    "requireadmin": false
+  },
+  "sellpotion":{
+    "helpstring":"Proper command usage: **/sellpotion *potion* *[amount]***\n\nThis command is used to sell the Potion of your choice. The selling price for each kind of Potion is one half the price to buy the item from the **/shop**. You may specify the amount to sell if desired, but if left out then it will default to 1.",
+    "requireadmin": false
+  },
+  "pokemoninfo":{
+    "helpstring":"Proper command usage: **/pokemoninfo *pokemon***\n\nDisplays average spawn information about the given Pokemon. Information includes:\nName, National Dex ID, Average Height/Weight, Female Spawn Chance, and the Default Image",
+    "requireadmin": false
+  }
+}
