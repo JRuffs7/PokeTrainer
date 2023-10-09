@@ -4,7 +4,6 @@ import discord
 import asyncio
 from discord.ext import commands, tasks
 import random
-import threading
 
 from globals import PokemonCaughtColor
 from services import trainerservice, serverservice, pokemonservice

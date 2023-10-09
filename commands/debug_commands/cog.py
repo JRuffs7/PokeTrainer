@@ -1,11 +1,5 @@
-from discord import Member, app_commands
 from discord.ext import commands
-from discord.user import discord
-
-from globals import ErrorColor, HelpColor
-from middleware.permissionchecks import is_admin
-from services import helpservice, pokemonservice, trainerservice
-from services.utility import discordservice
+from services import pokemonservice, trainerservice
 
 
 class DebugCommands(commands.Cog, name="DebugCommands"):

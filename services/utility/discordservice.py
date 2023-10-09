@@ -17,32 +17,36 @@ from services import helpservice, pokemonservice
 async def SendErrorMessage(interaction, command):
   valid, helpString = helpservice.BuildCommandHelp(
       command, interaction.user.guild_permissions.administrator)
-  await interaction.response.send_message(embed=CreateEmbed(
-      f'{command} Command Usage', helpString, ErrorColor),
-                                          ephemeral=True)
+  if valid:
+    return await interaction.response.send_message(embed=CreateEmbed(
+        f'{command} Command Usage', helpString, ErrorColor),
+                                            ephemeral=True)
+  return await interaction.response.send_message(embed=CreateEmbed(
+        f'{command} Command Usage', "You do not have permission to use this command. Inquire a server administrator for further details.", ErrorColor),
+                                            ephemeral=True)
 
 
 async def SendMessage(interaction, title, desc, color, eph=False):
-  await interaction.response.send_message(embed=CreateEmbed(
+  return await interaction.response.send_message(embed=CreateEmbed(
       title, desc, color),
                                           ephemeral=eph)
 
 
 async def SendEmbed(interaction, embed, eph=False):
-  await interaction.response.send_message(embed=embed, ephemeral=eph)
+  return await interaction.response.send_message(embed=embed, ephemeral=eph)
 
 
 async def EditMessage(message, newEmbed, color):
   newEmbed.color = color
-  await message.edit(embed=newEmbed)
+  return await message.edit(embed=newEmbed)
 
 
 async def SendDM(inter, title, desc, color):
-  await inter.user.send(embed=CreateEmbed(title, desc, color))
+  return await inter.user.send(embed=CreateEmbed(title, desc, color))
 
 
 async def SendDMs(inter, embedList):
-  await inter.user.send(embeds=embedList)
+  return await inter.user.send(embeds=embedList)
 
 
 async def SendPokemon(guildid,
@@ -76,7 +80,7 @@ async def SendPokemon(guildid,
 
 
 async def SendTrainerError(interaction):
-  await interaction.response.send_message(embed=CreateEmbed(
+  return await interaction.response.send_message(embed=CreateEmbed(
       "Trainer Missing!",
       "You have not started your PokeTrainer journey yet! To do so, use one of the **/starter*region*** commands. Please use **/help** for more explanation on how PokeTrainer is used.",
       ErrorColor),
@@ -84,7 +88,7 @@ async def SendTrainerError(interaction):
 
 
 async def SendServerError(interaction):
-  await interaction.response.send_message(embed=CreateEmbed(
+  return await interaction.response.send_message(embed=CreateEmbed(
       "Server Not Registered",
       "This server has not been registered with PokeTrainer! To do so, have an administrator run the **/start *percent*** command. Please use **/help** for more explanation on how PokeTrainer is used.",
       ErrorColor),

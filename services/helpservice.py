@@ -4,14 +4,14 @@ botHelp = "files/helpfiles/bothelp.json"
 commandHelp = "files/helpfiles/commandhelp.json"
 
 
-def BuildCommandHelp(command: str, isAdmin: bool):
+def BuildCommandHelp(command: str, interaction):
   helpObj = GetJson(commandHelp)
 
   if not helpObj or command.lower() not in helpObj:
     return (False, "")
 
   commandHelpObj = helpObj[command.lower()]
-  if commandHelpObj["requireadmin"] and not isAdmin:
+  if commandHelpObj["requireadmin"] and not interaction.user.guild_permissions.administrator:
     return (False, "")
 
   return (True, commandHelpObj["helpstring"])

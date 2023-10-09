@@ -31,8 +31,7 @@ class HelpCommands(commands.Cog, name="HelpCommands"):
           HelpColor, True)
     else:
       (valid, description) = helpservice.BuildCommandHelp(
-          command.lower(), inter.user.guild_permissions.administrator
-          if isinstance(inter.user, Member) else False)
+          command.lower(), inter)
       if valid:
         return await discordservice.SendMessage(inter,
                                                 f"{command.lower()} Command",
