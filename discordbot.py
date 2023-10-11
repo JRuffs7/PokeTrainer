@@ -29,6 +29,10 @@ async def StartBot():
     if user.id == discordBot.user.id:
       return
 
+    #Reaction on a non-bot message
+    if reaction.message.author.id != discordBot.user.id:
+      return
+    
     await reaction.remove(user)
     result = await trainerservice.ReationReceived(discordBot, user, reaction)
     if result:
@@ -50,7 +54,10 @@ async def StartBot():
   async def spawn_thread(server):
       print(f"SPAWN: {server.ServerId}")
       channel = random.choice(server.ChannelIds)
-      if (random.randint(1, 100) < server.SpawnChance):
+      if random.randint(1, 100) < server.SpawnChance:
+        if server.DeletePrevious:
+          await discordservice.DeleteMessage(server.ServerId, server.LastSpawnChannel, server.LastSpawnMessage)
+
         pkmn = pokemonservice.GetRandomSpawnPokemon()
         if pkmn:
           message = await discordservice.SendPokemon(server.ServerId, channel,
@@ -58,6 +65,7 @@ async def StartBot():
           if message:
             server.LastSpawned = pkmn
             server.LastSpawnMessage = message.id
+            server.LastSpawnChannel = channel
             server.CaughtBy = 0
             server.FoughtBy = []
             serverservice.UpsertServer(server)

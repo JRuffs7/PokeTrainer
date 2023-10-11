@@ -36,17 +36,25 @@ async def SendEmbed(interaction, embed, eph=False):
   return await interaction.response.send_message(embed=embed, ephemeral=eph)
 
 
-async def EditMessage(message, newEmbed, color):
-  newEmbed.color = color
-  return await message.edit(embed=newEmbed)
-
-
 async def SendDM(inter, title, desc, color):
   return await inter.user.send(embed=CreateEmbed(title, desc, color))
 
 
 async def SendDMs(inter, embedList):
   return await inter.user.send(embeds=embedList)
+
+
+async def EditMessage(message, newEmbed, color):
+  newEmbed.color = color
+  return await message.edit(embed=newEmbed)
+
+async def DeleteMessage(serverId, channelId, messageId):
+  bot = discordbot.GetBot()
+  guild = bot.get_guild(serverId)
+  if guild:
+    channel = guild.get_channel(channelId)
+    if channel:
+      return await (await channel.fetch_message(messageId)).delete()
 
 
 async def SendPokemon(guildid,

@@ -17,12 +17,12 @@ class ServerCommands(commands.Cog, name="ServerCommands"):
   @app_commands.command(name="start",
                         description="Start PokeTrainer in your server")
   @is_admin()
-  async def start(self, inter: discord.Interaction, percent: int):
+  async def start(self, inter: discord.Interaction, percent: int, delete: bool | None):
 
     print("START called")
-    if inter.guild:
+    if inter.guild and 0 < percent < 101:
       serv = serverservice.StartServer(inter.guild_id, inter.channel_id,
-                                       inter.guild.name, percent)
+                                       inter.guild.name, percent, delete or True)
       if serv:
         return await discordservice.SendMessage(inter, 'Server Details', serv,
                                                 ServerDetailColor, True)
@@ -60,6 +60,41 @@ class ServerCommands(commands.Cog, name="ServerCommands"):
             'Channel removed from server spawn list.', ServerDetailColor, True)
     except ServerInvalidException:
       return await discordservice.SendServerError(inter)
+
+  @app_commands.command(
+      name="editspawnchance",
+      description=
+      "(Admin only) Edit the spawn percentage for the server")
+  @is_admin()
+  async def editspawnchance(self, inter: discord.Interaction, percent: int):
+    print("CHANGE PERCENT called")
+    try:
+      if 0 < percent < 101:
+        serverservice.ChangePercent(inter.guild_id, percent)
+        return await discordservice.SendMessage(inter, 'Spawn Chance Changed', 
+                                         f'Spawn chance for the server changed to {percent}%', 
+                                         ServerDetailColor, True)
+      return await discordservice.SendErrorMessage(inter, 'editspawnchance')
+    except ServerInvalidException:
+      return await discordservice.SendServerError(inter)
+    
+  @app_commands.command(
+      name="toggledeletespawn",
+      description=
+      "(Admin only) Toggles the deletion of previously spawned Pokemon messages")
+  @is_admin()
+  async def toggledeletespawn(self, inter: discord.Interaction):
+    print("TOGGLE DELETE called")
+    try:
+      deleteSpawn = serverservice.ToggleDeleteSpawn(inter.guild_id)
+      return await discordservice.SendMessage(inter, 'Delete Spawn Toggled', 
+                                        'Previously spawned Pokemon will now be deleted' if deleteSpawn else 'Previously spawned Pokemon will remain in the chat channels', 
+                                        ServerDetailColor, True)
+    except ServerInvalidException:
+      return await discordservice.SendServerError(inter)
+    except Exception as e:
+      print(f"{e}")
+
 
   @app_commands.command(
       name="stop",

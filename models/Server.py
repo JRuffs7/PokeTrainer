@@ -10,6 +10,8 @@ class Server:
   SpawnChance: int
   LastSpawned: SpawnPokemon | None
   LastSpawnMessage: int
+  LastSpawnChannel: int
+  DeletePrevious: int
   CaughtBy: int
   FoughtBy: List[int]
 
@@ -24,10 +26,12 @@ class Server:
     self.LastSpawned = SpawnPokemon(spawned) or None if isinstance(
         spawned, Dict) else SpawnPokemon(spawned.value) if spawned else None
     self.LastSpawnMessage = dict.get('LastSpawnMessage') or 0 if dict else 0
+    self.LastSpawnChannel = dict.get('LastSpawnChannel') or 0 if dict else 0
+    self.DeletePrevious = dict.get('DeletePrevious') or 1 if dict else 1
     self.CaughtBy = dict.get('CaughtBy') or 0 if dict else 0
     fought = dict.get('FoughtBy') if dict else None
     self.FoughtBy = fought or [] if isinstance(
         fought, List) else fought.value if fought else []
 
   def __str__(self):
-    return f"Server Name: {self.ServerName}\nSpawn Channels: {', '.join(f'<#{id}>' for id in self.ChannelIds)}\nSpawn Interval Chance: {self.SpawnChance}%"
+    return f"Server Name: {self.ServerName}\nSpawn Channels: {', '.join(f'<#{id}>' for id in self.ChannelIds)}\nSpawn Interval Chance: {self.SpawnChance}%\nDelete Prev. Spawn: {'Yes' if self.DeletePrevious else 'No'}"
