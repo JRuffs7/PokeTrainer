@@ -27,7 +27,7 @@ class Server:
         spawned, Dict) else SpawnPokemon(spawned.value) if spawned else None
     self.LastSpawnMessage = dict.get('LastSpawnMessage') or 0 if dict else 0
     self.LastSpawnChannel = dict.get('LastSpawnChannel') or 0 if dict else 0
-    self.DeletePrevious = dict.get('DeletePrevious') or 1 if dict else 1
+    self.DeletePrevious = dict.get('DeletePrevious') if (dict and dict.get('DeletePrevious') is not None) else 1
     self.CaughtBy = dict.get('CaughtBy') or 0 if dict else 0
     fought = dict.get('FoughtBy') if dict else None
     self.FoughtBy = fought or [] if isinstance(

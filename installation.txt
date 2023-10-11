@@ -1,0 +1,30 @@
+Step 1: Get python environment
+ - Install python 3.11.6 to your machine
+ - Make sure the PATH is set so you can access it from any directory
+ - Restart VSCode to be able to use it as an interpreter
+    - Open a .py file and check bottom right to make sure it installed correctly
+    - Open a terminal in VSCode and type 'python'. Hit enter and it should tell you version info and such
+    - Ctrl+Z and enter to quit the python terminal
+ - You may need to restart PC to get it fully working, that's just how python and variables are
+
+Step 2: Get pip packages
+ - In order ot run and do development you need to install three python packages
+ - Open a terminal in VSCode and run the following
+   - pip install flask
+   - pip install discord
+   - pip install python-dotenv
+   - pip install pymongo
+ - Once they are successful, everything should be set
+
+Step 3: Running the bot
+ - The .env file should have all tokens needed to hook up to the test bot
+ - Production variables are not available and will only be held on the device running the pod bot
+ - To run and start testing within discord, open a terminal in VSCode and run the following
+   - python main.py
+ - There will be some logs and eventually one that says "PokeTrainer up and running"
+
+ NOTES:
+   - If someone is already running the bot locally, you may receive an error
+     - To avoid this, make sure you communicate within the testing server
+       https://discord.gg/SntWsXcX5
+

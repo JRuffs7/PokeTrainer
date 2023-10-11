@@ -1,5 +1,6 @@
 from discord.ext import commands
 from services import pokemonservice, trainerservice
+from services.utility import discordservice
 
 
 class DebugCommands(commands.Cog, name="DebugCommands"):
@@ -73,6 +74,19 @@ class DebugCommands(commands.Cog, name="DebugCommands"):
           trainer.PotionList, 1, amount)
       trainerservice.UpsertTrainer(trainer)
       await ctx.message.channel.send("You modified your potions list!!!!!")
+    except Exception as e:
+      print(f"{e}")
+
+  
+  @commands.command(name="cheatSpawnPokemon")
+  @commands.has_permissions(administrator=True)
+  async def cheatSpawnPokemon(self, ctx: commands.Context, id: int):
+    try:
+      pkmn = pokemonservice.GetPokemonById(id)
+      if not pkmn:
+        return
+      spawn = pokemonservice.GenerateSpawnPokemon(pkmn)
+      await discordservice.SendPokemon(ctx.guild.id, ctx.channel.id, spawn, True)
     except Exception as e:
       print(f"{e}")
 
