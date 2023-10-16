@@ -6,10 +6,11 @@ from services.utility import discordservice
 
 class PokedexView(discord.ui.View):
 
-  def __init__(self, interaction: discord.Interaction, pageLength, user):
+  def __init__(self, interaction: discord.Interaction, pageLength, user, title):
     self.interaction = interaction
     self.pageLength = pageLength
     self.user = user
+    self.title = title
     self.currentPage = 1
     self.addition = 1 if self.pageLength > 1 else 0
     super().__init__(timeout=300)
@@ -59,15 +60,14 @@ class PokedexView(discord.ui.View):
     self.update_buttons()
     if self.pageLength == 1:
       data = data[0]
-    newline = '\n'
     embed = discordservice.CreateEmbed(
-        f"{self.user.display_name}'s Pokedex",
-        f"**__{data['Name']}__**{' :female_sign:' if data['Pokemon'].IsFemale == True else ' :male_sign:' if data['Pokemon'].IsFemale == False else ''}{' :sparkles:' if data['Pokemon'].IsShiny else ''}\nHeight: {data['Pokemon'].Height}\nWeight: {data['Pokemon'].Weight}\nTypes: {','.join(data['Types'])}"
-        if self.pageLength == 1 else f"{newline.join(data)}", TrainerColor)
+        self.title,
+        self.CreateEmbedDesc(data), TrainerColor)
     if self.pageLength == 1:
-      embed.set_image(url=data['Image'])
-    else:
+      embed.set_image(url=data['Sprite'])
+    elif self.pageLength > 1 and self.user:
       embed.set_thumbnail(url=self.user.display_avatar.url)
+    embed.set_footer(text=f"{self.currentPage}/{int(len(self.data)/self.pageLength)+self.addition}")
     await self.message.edit(embed=embed, view=self)
 
   @discord.ui.button(label="|<", style=discord.ButtonStyle.green)
@@ -98,3 +98,10 @@ class PokedexView(discord.ui.View):
     await interaction.response.defer()
     self.currentPage = int(len(self.data) / self.pageLength) + self.addition
     await self.update_message(self.get_currentPage_data())
+
+
+  def CreateEmbedDesc(self, data):
+    newline = '\n'
+    if self.user:
+      return f"**__{data['Name']}__**{' :female_sign:' if data['Pokemon'].IsFemale == True else ' :male_sign:' if data['Pokemon'].IsFemale == False else ''}{' :sparkles:' if data['Pokemon'].IsShiny else ''}\nHeight: {data['Pokemon'].Height}\nWeight: {data['Pokemon'].Weight}\nTypes: {','.join(data['Types'])}" if self.pageLength == 1 else f"{newline.join(data)}"
+    return f"**__{data['Name']}__**\nAvg. Height: {data['Height']}\nAvg. Weight: {data['Weight']}\nTypes: {','.join(data['Types'])}" if self.pageLength == 1 else f"{newline.join(data)}"

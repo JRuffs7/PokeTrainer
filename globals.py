@@ -6,6 +6,7 @@ ShinyOdds: int = 3000
 ServerDetailColor: discord.Colour = discord.Colour.blue()
 ErrorColor: discord.Colour = discord.Colour.red()
 TrainerColor: discord.Colour = discord.Colour.purple()
+PokemonColor: discord.Colour = discord.Colour.pink()
 PokemonSpawnColor: discord.Colour = discord.Colour.light_embed()
 PokemonCaughtColor: discord.Colour = discord.Colour.green()
 ShopSuccessColor: discord.Colour = discord.Colour.dark_green()

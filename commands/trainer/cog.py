@@ -1,3 +1,4 @@
+from typing import List
 from discord import Member, app_commands
 from discord.ext import commands
 from discord.user import discord
@@ -114,10 +115,10 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
           inter.guild_id, user.id if user else inter.user.id,
           order.value if order else None, shiny.value if shiny else None)
       if images and images.value:
-        dexViewer = PokedexView(inter, 1, user if user else inter.user)
+        dexViewer = PokedexView(inter, 1, user if user else inter.user, f"{user.display_name if user else inter.user.display_name}'s Pokedex")
         dexViewer.data = pokedex
       else:
-        dexViewer = PokedexView(inter, 10, user if user else inter.user)
+        dexViewer = PokedexView(inter, 10, user if user else inter.user, f"{user.display_name if user else inter.user.display_name}'s Pokedex")
         dexViewer.data = [
             f"{x['Name']}:sparkles:" if x['Pokemon'].IsShiny else x['Name']
             for x in pokedex
@@ -131,115 +132,67 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
 
   #region STARTER
 
-  @app_commands.command(name="starterkanto", description="Start your trainer!")
-  @app_commands.choices(pokemon=[
-      discord.app_commands.Choice(name="Bulbasaur", value=1),
-      discord.app_commands.Choice(name="Charmander", value=4),
-      discord.app_commands.Choice(name="Squirtle", value=7)
-  ])
-  async def starterkanto(self, inter: discord.Interaction,
-                         pokemon: discord.app_commands.Choice[int]):
-    print("STARTER called")
-    return await self.start_trainer(inter, pokemon.value)
+  async def region_autocomplete(self, inter: discord.Interaction, current: str) -> List[app_commands.Choice[str]]:
+    regions = ['Kanto','Johto','Hoenn','Sinnoh','Unova','Kalos','Alola','Galar','Paldea']
+    choices = []
+    for i in range(len(regions)):
+      if current.lower() in regions[i].lower():
+        choices.append(app_commands.Choice(name=regions[i],value=i+1))
+    return choices
+  
+  async def starter_autocomplete(self, inter: discord.Interaction, current: str) -> List[app_commands.Choice[int]]:
+    starters = [ 
+      {'Region':1,'Name':'Bulbasaur','Value':1},
+      {'Region':1,'Name':'Charmander','Value':4},
+      {'Region':1,'Name':'Squirtle','Value':7},
+      {'Region':2,'Name':'Chikorita','Value':152},
+      {'Region':2,'Name':'Cyndaquil','Value':155},
+      {'Region':2,'Name':'Totodile','Value':158},
+      {'Region':3,'Name':'Treecko','Value':252},
+      {'Region':3,'Name':'Torchic','Value':255},
+      {'Region':3,'Name':'Mudkip','Value':258},
+      {'Region':4,'Name':'Turtwig','Value':387},
+      {'Region':4,'Name':'Chimchar','Value':390},
+      {'Region':4,'Name':'Piplup','Value':393},
+      {'Region':5,'Name':'Snivy','Value':495},
+      {'Region':5,'Name':'Tepig','Value':498},
+      {'Region':5,'Name':'Oshawott','Value':501},
+      {'Region':6,'Name':'Chespin','Value':650},
+      {'Region':6,'Name':'Fenniken','Value':653},
+      {'Region':6,'Name':'Froakie','Value':656},
+      {'Region':7,'Name':'Rowlet','Value':722},
+      {'Region':7,'Name':'Litten','Value':725},
+      {'Region':7,'Name':'Popplio','Value':728},
+      {'Region':8,'Name':'Grookey','Value':810},
+      {'Region':8,'Name':'Scorbunny','Value':813},
+      {'Region':8,'Name':'Sobble','Value':816},
+      {'Region':9,'Name':'Sprigatito','Value':906},
+      {'Region':9,'Name':'Fuecoco','Value':909},
+      {'Region':9,'Name':'Quaxly','Value':912}
+    ]
+    print(f"{current}: {inter.namespace['region']}")
+    region = int(inter.namespace['region'])
+    choices = []
+    if not region:
+      choices.append(app_commands.Choice(name='Choose a region',value=0))
+    else:
+      for st in starters:
+        if current.lower() in st['Name'].lower() and st['Region'] == region:
+          choices.append(app_commands.Choice(name=st['Name'],value=st['Value']))
+    return choices
 
-  @app_commands.command(name="starterjohto", description="Start your trainer!")
-  @app_commands.choices(pokemon=[
-      discord.app_commands.Choice(name="Chikorita", value=152),
-      discord.app_commands.Choice(name="Cyndaquil", value=155),
-      discord.app_commands.Choice(name="Totodile", value=158)
-  ])
-  async def starterjohto(self, inter: discord.Interaction,
-                         pokemon: discord.app_commands.Choice[int]):
+  @app_commands.command(name="starter",
+                        description="Choose a region and Pokemon to start your trainer!")
+  @app_commands.autocomplete(region=region_autocomplete,pokemon=starter_autocomplete)
+  async def starter(self, inter: discord.Interaction, region: int, pokemon: int):
     print("STARTER called")
-    return await self.start_trainer(inter, pokemon.value)
-
-  @app_commands.command(name="starterhoenn", description="Start your trainer!")
-  @app_commands.choices(pokemon=[
-      discord.app_commands.Choice(name="Treecko", value=252),
-      discord.app_commands.Choice(name="Torchic", value=255),
-      discord.app_commands.Choice(name="Mudkip", value=258)
-  ])
-  async def starterhoenn(self, inter: discord.Interaction,
-                         pokemon: discord.app_commands.Choice[int]):
-    print("STARTER called")
-    return await self.start_trainer(inter, pokemon.value)
-
-  @app_commands.command(name="startersinnoh",
-                        description="Start your trainer!")
-  @app_commands.choices(pokemon=[
-      discord.app_commands.Choice(name="Turtwig", value=387),
-      discord.app_commands.Choice(name="Chimchar", value=390),
-      discord.app_commands.Choice(name="Piplup", value=393)
-  ])
-  async def startersinnoh(self, inter: discord.Interaction,
-                          pokemon: discord.app_commands.Choice[int]):
-    print("STARTER called")
-    return await self.start_trainer(inter, pokemon.value)
-
-  @app_commands.command(name="starterunova", description="Start your trainer!")
-  @app_commands.choices(pokemon=[
-      discord.app_commands.Choice(name="Snivy", value=495),
-      discord.app_commands.Choice(name="Tepig", value=498),
-      discord.app_commands.Choice(name="Oshawott", value=501)
-  ])
-  async def starterunova(self, inter: discord.Interaction,
-                         pokemon: discord.app_commands.Choice[int]):
-    print("STARTER called")
-    return await self.start_trainer(inter, pokemon.value)
-
-  @app_commands.command(name="starterkalos", description="Start your trainer!")
-  @app_commands.choices(pokemon=[
-      discord.app_commands.Choice(name="Chespin", value=650),
-      discord.app_commands.Choice(name="Fennekin", value=653),
-      discord.app_commands.Choice(name="Froakie", value=656)
-  ])
-  async def starterkalos(self, inter: discord.Interaction,
-                         pokemon: discord.app_commands.Choice[int]):
-    print("STARTER called")
-    return await self.start_trainer(inter, pokemon.value)
-
-  @app_commands.command(name="starteralola", description="Start your trainer!")
-  @app_commands.choices(pokemon=[
-      discord.app_commands.Choice(name="Rowlet", value=722),
-      discord.app_commands.Choice(name="Litten", value=725),
-      discord.app_commands.Choice(name="Popplio", value=728)
-  ])
-  async def starteralola(self, inter: discord.Interaction,
-                         pokemon: discord.app_commands.Choice[int]):
-    print("STARTER called")
-    return await self.start_trainer(inter, pokemon.value)
-
-  @app_commands.command(name="startergalar", description="Start your trainer!")
-  @app_commands.choices(pokemon=[
-      discord.app_commands.Choice(name="Grookey", value=810),
-      discord.app_commands.Choice(name="Scorbunny", value=813),
-      discord.app_commands.Choice(name="Sobble", value=816)
-  ])
-  async def startergalar(self, inter: discord.Interaction,
-                         pokemon: discord.app_commands.Choice[int]):
-    print("STARTER called")
-    return await self.start_trainer(inter, pokemon.value)
-
-  @app_commands.command(name="starterpaldea",
-                        description="Start your trainer!")
-  @app_commands.choices(pokemon=[
-      discord.app_commands.Choice(name="Sprigatito", value=810),
-      discord.app_commands.Choice(name="Fuecoco", value=813),
-      discord.app_commands.Choice(name="Quaxly", value=816)
-  ])
-  async def starterpaldea(self, inter: discord.Interaction,
-                          pokemon: discord.app_commands.Choice[int]):
-    print("STARTER called")
-    return await self.start_trainer(inter, pokemon.value)
-
-  async def start_trainer(self, inter: discord.Interaction, pokemonId):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
     if trainer:
       return await inter.response.send_message(
           f"The trainer {inter.user.display_name} already has started to capture Pokemon. This command is only for trainers that have yet to begin their journey.",
           ephemeral=True)
 
-    result = trainerservice.StartTrainer(pokemonId, inter.user.id,
+    result = trainerservice.StartTrainer(pokemon, inter.user.id,
                                          inter.guild_id)
     if result:
       embed = discordservice.CreateEmbed(

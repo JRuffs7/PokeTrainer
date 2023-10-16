@@ -11,6 +11,10 @@ def GetPokemonCount():
   return pokemonda.GetPokemonCount()
 
 
+def GetPokemonColors():
+  return pokemonda.GetAllColors()
+
+
 def GetRandomSpawnPokemon():
   count = 0
   pokemon = None
@@ -65,11 +69,9 @@ def GetPokemonByRarity(rarity: int):
   return pokemonda.GetPokemonByProperty([rarity], 'Rarity')
 
 
+def GetPokemonByColor(color: str):
+  return pokemonda.GetPokemonByProperty([color], 'Color')
+
+
 def ConvertSpawnPokemonToPokemon(pokeList: List[SpawnPokemon]):
   return pokemonda.GetPokemonByIds([x.Pokemon_Id for x in pokeList])
-
-
-def CreateImageUrl(pokemonUrl: str, png: str):
-  if pokemonUrl:
-    return pokemonUrl.replace(pokemonUrl[pokemonUrl.rindex('/') + 1:], png)
-  return pokemonUrl

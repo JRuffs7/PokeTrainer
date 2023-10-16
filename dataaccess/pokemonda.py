@@ -15,6 +15,10 @@ def GetFormsCount():
   return GetJson().__len__()
 
 
+def GetAllColors():
+  return set([x['Color'] for x in GetJson()])
+
+
 def GetPokemonByProperty(searchVals: List, property: str):
   return [
       Pokemon(x) for x in GetJson() if searchVals.__contains__(x[property])

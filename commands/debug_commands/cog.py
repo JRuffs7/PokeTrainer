@@ -15,7 +15,7 @@ class DebugCommands(commands.Cog, name="DebugCommands"):
     await ctx.bot.tree.sync()
     print("Synced bot commands")
 
-  #Add Pokemon test
+
   @commands.command(name="cheatAddPokemon")
   @commands.has_permissions(administrator=True)
   async def addPokemon(self, ctx: commands.Context, pokemonId: int,
@@ -32,7 +32,7 @@ class DebugCommands(commands.Cog, name="DebugCommands"):
     trainer.OwnedPokemon.append(spawn)
     trainerservice.UpsertTrainer(trainer)
 
-  #Add Pokemon test
+
   @commands.command(name="cheatSetMoney")
   @commands.has_permissions(administrator=True)
   async def setMoney(self, ctx: commands.Context, amount: int):
@@ -42,7 +42,6 @@ class DebugCommands(commands.Cog, name="DebugCommands"):
     trainer.Money = amount
     trainerservice.UpsertTrainer(trainer)
 
-#Modify pokeball test
 
   @commands.command(name="cheatModifypokeball")
   @commands.has_permissions(administrator=True)
@@ -59,8 +58,6 @@ class DebugCommands(commands.Cog, name="DebugCommands"):
     except Exception as e:
       print(f"{e}")
 
-
-#Modify potion test
 
   @commands.command(name="cheatModifypotion")
   @commands.has_permissions(administrator=True)
@@ -87,6 +84,18 @@ class DebugCommands(commands.Cog, name="DebugCommands"):
         return
       spawn = pokemonservice.GenerateSpawnPokemon(pkmn)
       await discordservice.SendPokemon(ctx.guild.id, ctx.channel.id, spawn, True)
+    except Exception as e:
+      print(f"{e}")
+
+
+  @commands.command(name="listallcolors")
+  @commands.has_permissions(administrator=True)
+  async def cheatSpawnPokemon(self, ctx: commands.Context):
+    try:
+      colors = pokemonservice.GetPokemonColors()
+      if not colors:
+        return
+      await ctx.channel.send(colors)
     except Exception as e:
       print(f"{e}")
 

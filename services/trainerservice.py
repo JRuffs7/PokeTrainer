@@ -63,7 +63,7 @@ def GetPokedexList(serverId, userId, orderString, shiny):
         'Name': pokemonList[i].Name,
         'PokedexId': pokemonList[i].PokedexId,
         'Types': pokemonList[i].Types,
-        'Image': pokemonList[i].GetImage(pkmn.IsShiny, pkmn.IsFemale),
+        'Sprite': pokemonList[i].GetImage(pkmn.IsShiny, pkmn.IsFemale),
         'Pokemon': pkmn
       } )
   match orderString:
