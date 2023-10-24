@@ -2,6 +2,7 @@ import math
 import random
 from typing import List
 
+from services import typeservice
 from dataaccess import pokemonda
 from globals import ShinyOdds, StarterDexIds
 from models.Pokemon import Pokemon, SpawnPokemon
@@ -75,3 +76,30 @@ def GetPokemonByColor(color: str):
 
 def ConvertSpawnPokemonToPokemon(pokeList: List[SpawnPokemon]):
   return pokemonda.GetPokemonByIds([x.Pokemon_Id for x in pokeList])
+
+
+def PokemonFight(attack: Pokemon, defend: Pokemon, isGym: bool):
+  fightTotal = typeservice.TypeWeakness(attack.Types[0], defend.Types[0])
+  fightTotal += typeservice.TypeWeakness(
+    attack.Types[1] if len(attack.Types) > 1 else attack.Types[0],
+    defend.Types[1] if len(defend.Types) > 1 else defend.Types[0])
+  doubleAdv = fightTotal == 2
+  doubleDis = fightTotal <= -2
+  attackGroup = 1 if attack.Rarity <= 2 else 2 if attack.Rarity == 3 else 3
+  defendGroup = 1 if defend.Rarity <= 2 else 2 if defend.Rarity == 3 else 3
+
+  # 1/2 vs 4/5
+  if (attackGroup == 1 and defendGroup == 3) or (defendGroup == 1 and attackGroup == 3):
+    fightTotal += (2 * (attack.Rarity - defend.Rarity))
+  # 1/2 vs 3
+  elif (attackGroup == 1 and defendGroup == 2 and not doubleAdv) or (defendGroup == 1 and attackGroup == 2 and not doubleDis):
+    fightTotal += (2 * (attack.Rarity - defend.Rarity))
+  # 3 vs 4/5
+  elif (attackGroup == 2 and defendGroup == 3 and not doubleAdv) or (defendGroup == 2 and attackGroup == 3 and not doubleDis):
+    fightTotal += (2 * (attack.Rarity - defend.Rarity))
+
+  #gym battles must use similar rarity
+  if isGym and attackGroup < defendGroup:
+    fightTotal = -1
+
+  return fightTotal

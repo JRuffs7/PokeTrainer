@@ -5,7 +5,7 @@ import discord
 import discordbot
 
 from commands.views.PokedexView import PokedexView
-from globals import PokemonColor, to_dict
+from globals import PokemonColor
 from services import pokemonservice
 from services.utility import discordservice
 
@@ -34,20 +34,16 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
                         color: str,
                         images: app_commands.Choice[int] | None):
     print("POKEMON COLORS called")
-    try:
-      pokemonList = pokemonservice.GetPokemonByColor(color)
-      if pokemonList:
-        pokemonList.sort(key=lambda x: x.Name)
-        if images and images.value:
-            dexViewer = PokedexView(inter, 1, None, f"List of {color} Pokemon")
-            dexViewer.data = to_dict(pokemonList)
-        else:
-          dexViewer = PokedexView(inter, 10, None, f"List of {color} Pokemon")
-          dexViewer.data = [f"{x['Name']}" for x in to_dict(pokemonList)]
-        await dexViewer.send()
-      await discordservice.SendMessage(inter, f"List of {color} Pokemon", "No Pokemon fit this color", PokemonColor, True)
-    except Exception as e:
-      print(f"{e}")
+    pokemonList = pokemonservice.GetPokemonByColor(color)
+    if pokemonList:
+      pokemonList.sort(key=lambda x: x.Name)
+      if images and images.value:
+        dexViewer = PokedexView(inter, 1, None, f"List of {color} Pokemon")
+      else:
+        dexViewer = PokedexView(inter, 10, None, f"List of {color} Pokemon")
+      dexViewer.data = pokemonList
+      await dexViewer.send()
+    await discordservice.SendMessage(inter, f"List of {color} Pokemon", "No Pokemon fit this color", PokemonColor, True)
 
 
 async def setup(bot: commands.Bot):

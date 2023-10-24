@@ -8,6 +8,7 @@ class Trainer:
   UserId: int
   ServerId: int
   OwnedPokemon: List[SpawnPokemon]
+  Team: List[str]
   Health: int
   Money: int
   Fights: int
@@ -22,6 +23,9 @@ class Trainer:
     self.OwnedPokemon = [SpawnPokemon(s) for s in owned] if isinstance(
         owned, List) else ([SpawnPokemon(s)
                             for s in owned.value] if owned else [])
+    team = dict.get('Team') if dict else []
+    self.Team = team or [None]*6 if isinstance(
+        team, List) else team.value if team else [None]*6
     self.Health = dict.get('Health') or 0 if dict else 0
     self.Money = dict.get('Money') or 0 if dict else 0
     self.Fights = dict.get('Fights') or 0 if dict else 0
@@ -42,5 +46,3 @@ class Trainer:
 
     return f"__Stats__\nHP: {self.Health}\nFights: {self.Fights}\n${self.Money}\n\n__Pokemon__\nPokedex: {len(uniquePkmn)}/{totalPkmn} ({round((len(uniquePkmn)*100)/totalPkmn)}%)\nOwned Count: {len(self.OwnedPokemon)}\nTotal Caught: {self.TotalCaught}"
 
-  def FilterOwnedPokemon(self, function):
-    return list(filter(function, self.OwnedPokemon))

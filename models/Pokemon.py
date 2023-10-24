@@ -77,6 +77,9 @@ class SpawnPokemon:
   Weight: float
   IsShiny: bool
   IsFemale: bool
+  Level: int
+  CurrentExp: int
+  EvolutionStage: int | None
 
   def __init__(self, dict: Dict | None):
     self.Id = dict.get('Id') or uuid.uuid4().hex if dict else uuid.uuid4().hex
@@ -85,3 +88,42 @@ class SpawnPokemon:
     self.Weight = dict.get('Weight') or 0.0 if dict else 0.0
     self.IsShiny = dict.get('IsShiny') or False if dict else False
     self.IsFemale = dict.get('IsFemale') or False if dict else False
+    self.Level = dict.get('Level') or 1 if dict else 1
+    self.CurrentExp = dict.get('CurrentExp') or 0 if dict else 0
+    self.EvolutionStage = dict.get('EvolutionStage') or None if dict else None
+
+    if self.Level > 100:
+      self.Level = 100
+    if self.Level == 100:
+      self.CurrentExp = 0
+
+  def GainExp(self, expGain: int):
+    self.CurrentExp += expGain
+    if self.CurrentExp >= (50 * self.EvolutionStage):
+      self.Level += 1
+      self.CurrentExp -= (50 * self.EvolutionStage)
+  
+  def CanEvolve(self):
+    return self.EvolutionStage and ((self.EvolutionStage == 1 and self.Level >= 20) or (self.EvolutionStage == 2 and self.Level >= 30))
+
+
+class PokedexEntry:
+  Name: str
+  PokedexId: int
+  Types: List[str]
+  Sprite: str
+  Pokemon: SpawnPokemon
+
+  def __init__(self, dict: Dict):
+    self.Name = dict.get('Name') or '' if dict else ''
+    self.PokedexId = dict.get('PokedexId') or 0 if dict else 0
+    types = dict.get('Types') if dict else []
+    self.Types = types or [] if isinstance(
+        types, List) else types.value if types else []
+    self.Sprite = dict.get('Sprite') or '' if dict else ''
+    pkmn = dict.get('Pokemon') if dict else None
+    self.Pokemon = SpawnPokemon(pkmn) or None if isinstance(
+        pkmn, Dict) else SpawnPokemon(pkmn.value) if pkmn else None
+  
+  def GetNameString(self):
+    return f"{self.Name}{' :female_sign:' if self.Pokemon.IsFemale == True else ' :male_sign:' if self.Pokemon.IsFemale == False else ''}{' :sparkles:' if self.Pokemon.IsShiny else ''}"

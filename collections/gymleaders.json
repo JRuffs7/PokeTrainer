@@ -1,58 +1,649 @@
-[
-  {
-  	"Name": "Brock",
-  	"Gen": 1,
-  	"Rank": 1,
-  	"Type": "rock",
-  	"Location": "Pewter City",
-  	"Badge": {
-      "Name": "Boulder",
-      "Description": "",
-      "ImageUrl": "https://archives.bulbagarden.net/media/upload/thumb/d/dd/Boulder_Badge.png/60px-Boulder_Badge.png"
+{
+  "GymLeaders": [
+    {
+      "Name": "Brock",
+      "PokemonIds": [
+        74,
+        95
+      ],
+      "BadgeId": 1
     },
-  	"Description": "",
-    "ImageUrl": ""
-  },
-  {
-  	"Name": "Misty",
-  	"Gen": 1,
-  	"Rank": 2,
-  	"Type": "water",
-  	"Location": "Cerulean City",
-  	"Badge": {
-      "Name": "Cascade",
-      "Description": "",
-      "ImageUrl": "https://archives.bulbagarden.net/media/upload/thumb/9/9c/Cascade_Badge.png/60px-Cascade_Badge.png"
+    {
+      "Name": "Misty",
+      "PokemonIds": [
+        120,
+        121
+      ],
+      "BadgeId": 2
     },
-  	"Description": "",
-    "ImageUrl": ""
-  },
-  {
-  	"Name": "Lt. Surge",
-  	"Gen": 1,
-  	"Rank": 3,
-  	"Type": "electric",
-  	"Location": "Vermillion City",
-  	"Badge": {
-      "Name": "Thunder",
-      "Description": "",
-      "ImageUrl": "https://archives.bulbagarden.net/media/upload/thumb/a/a6/Thunder_Badge.png/60px-Thunder_Badge.png"
+    {
+      "Name": "Lt. Surge",
+      "PokemonIds": [
+        25,
+        26,
+        100
+      ],
+      "BadgeId": 3
     },
-  	"Description": "",
-    "ImageUrl": ""
-  },
-  {
-  	"Name": "Erika",
-  	"Gen": 1,
-  	"Rank": 4,
-  	"Type": "grass",
-  	"Location": "Celadon City",
-  	"Badge": {
-      "Name": "Rainbow",
-      "Description": "",
-      "ImageUrl": "https://archives.bulbagarden.net/media/upload/thumb/b/b5/Rainbow_Badge.png/60px-Rainbow_Badge.png"
+    {
+      "Name": "Erika",
+      "PokemonIds": [
+        45,
+        71,
+        114
+      ],
+      "BadgeId": 4
+    },
+    {
+      "Name": "Koga",
+      "PokemonIds": [
+        89,
+        109,
+        110
+      ],
+      "BadgeId": 5
+    },
+    {
+      "Name": "Sabrina",
+      "PokemonIds": [
+        49,
+        64,
+        65,
+        122
+      ],
+      "BadgeId": 6
+    },
+    {
+      "Name": "Blaine",
+      "PokemonIds": [
+        58,
+        59,
+        77,
+        78
+      ],
+      "BadgeId": 7
+    },
+    {
+      "Name": "Giovanni",
+      "PokemonIds": [
+        31,
+        34,
+        51,
+        111,
+        112
+      ],
+      "BadgeId": 1
+    },
+    {
+      "Name": "Falkner",
+      "PokemonIds": [
+        16,
+        17
+      ],
+      "BadgeId": 9
+    },
+    {
+      "Name": "Bugsy",
+      "PokemonIds": [
+        11,
+        14,
+        123
+      ],
+      "BadgeId": 10
+    },
+    {
+      "Name": "Whitney",
+      "PokemonIds": [
+        35,
+        241
+      ],
+      "BadgeId": 11
+    },
+    {
+      "Name": "Morty",
+      "PokemonIds": [
+        92,
+        93,
+        94
+      ],
+      "BadgeId": 12
+    },
+    {
+      "Name": "Chuck",
+      "PokemonIds": [
+        57,
+        62
+      ],
+      "BadgeId": 13
+    },
+    {
+      "Name": "Jasmine",
+      "PokemonIds": [
+        81,
+        208
+      ],
+      "BadgeId": 14
+    },
+    {
+      "Name": "Pryce",
+      "PokemonIds": [
+        86,
+        87,
+        221
+      ],
+      "BadgeId": 15
+    },
+    {
+      "Name": "Clair",
+      "PokemonIds": [
+        148,
+        230
+      ],
+      "BadgeId": 16
+    },
+    {
+      "Name": "Roxanne",
+      "PokemonIds": [
+        74,
+        299
+      ],
+      "BadgeId": 17
+    },
+    {
+      "Name": "Brawly",
+      "PokemonIds": [
+        66,
+        296
+      ],
+      "BadgeId": 18
+    },
+    {
+      "Name": "Wattson",
+      "PokemonIds": [
+        81,
+        82,
+        100
+      ],
+      "BadgeId": 19
+    },
+    {
+      "Name": "Flannery",
+      "PokemonIds": [
+        218,
+        324
+      ],
+      "BadgeId": 20
+    },
+    {
+      "Name": "Norman",
+      "PokemonIds": [
+        288,
+        289
+      ],
+      "BadgeId": 21
+    },
+    {
+      "Name": "Winona",
+      "PokemonIds": [
+        227,
+        277,
+        279,
+        334
+      ],
+      "BadgeId": 22
+    },
+    {
+      "Name": "Tate & Liza",
+      "PokemonIds": [
+        337,
+        338
+      ],
+      "BadgeId": 23
+    },
+    {
+      "Name": "Wallace",
+      "PokemonIds": [
+        119,
+        340,
+        350,
+        364,
+        370
+      ],
+      "BadgeId": 24
+    },
+    {
+      "Name": "Roark",
+      "PokemonIds": [
+        74,
+        95,
+        408
+      ],
+      "BadgeId": 25
+    },
+    {
+      "Name": "Gardenia",
+      "PokemonIds": [
+        387,
+        407,
+        420
+      ],
+      "BadgeId": 26
+    },
+    {
+      "Name": "Maylene",
+      "PokemonIds": [
+        67,
+        307,
+        448
+      ],
+      "BadgeId": 27
+    },
+    {
+      "Name": "Crasher Wake",
+      "PokemonIds": [
+        130,
+        195,
+        419
+      ],
+      "BadgeId": 28
+    },
+    {
+      "Name": "Fantina",
+      "PokemonIds": [
+        94,
+        426,
+        429
+      ],
+      "BadgeId": 29
+    },
+    {
+      "Name": "Byron",
+      "PokemonIds": [
+        208,
+        411,
+        436
+      ],
+      "BadgeId": 30
+    },
+    {
+      "Name": "Candice",
+      "PokemonIds": [
+        215,
+        308,
+        459,
+        460
+      ],
+      "BadgeId": 31
+    },
+    {
+      "Name": "Volkner",
+      "PokemonIds": [
+        26,
+        224,
+        405,
+        424
+      ],
+      "BadgeId": 32
+    },
+    {
+      "Name": "Chili, Cilan, Cress",
+      "PokemonIds": [
+        506,
+        511,
+        513,
+        515
+      ],
+      "BadgeId": 33
+    },
+    {
+      "Name": "Lenora",
+      "PokemonIds": [
+        505,
+        507
+      ],
+      "BadgeId": 34
+    },
+    {
+      "Name": "Burgh",
+      "PokemonIds": [
+        542,
+        544,
+        557
+      ],
+      "BadgeId": 35
+    },
+    {
+      "Name": "Elesa",
+      "PokemonIds": [
+        523,
+        587
+      ],
+      "BadgeId": 36
+    },
+    {
+      "Name": "Clay",
+      "PokemonIds": [
+        530,
+        536,
+        552
+      ],
+      "BadgeId": 37
+    },
+    {
+      "Name": "Skyla",
+      "PokemonIds": [
+        521,
+        528,
+        581
+      ],
+      "BadgeId": 38
+    },
+    {
+      "Name": "Brycen",
+      "PokemonIds": [
+        583,
+        614,
+        615
+      ],
+      "BadgeId": 39
+    },
+    {
+      "Name": "Iris",
+      "PokemonIds": [
+        611,
+        612,
+        621
+      ],
+      "BadgeId": 40
+    },
+    {
+      "Name": "Viola",
+      "PokemonIds": [
+        283,
+        666
+      ],
+      "BadgeId": 41
+    },
+    {
+      "Name": "Grant",
+      "PokemonIds": [
+        696,
+        698
+      ],
+      "BadgeId": 42
+    },
+    {
+      "Name": "Korrina",
+      "PokemonIds": [
+        67,
+        619,
+        701
+      ],
+      "BadgeId": 43
+    },
+    {
+      "Name": "Ramos",
+      "PokemonIds": [
+        70,
+        189,
+        673
+      ],
+      "BadgeId": 44
+    },
+    {
+      "Name": "Clemont",
+      "PokemonIds": [
+        82,
+        587,
+        695
+      ],
+      "BadgeId": 45
+    },
+    {
+      "Name": "Valerie",
+      "PokemonIds": [
+        122,
+        303,
+        700
+      ],
+      "BadgeId": 46
+    },
+    {
+      "Name": "Olympia",
+      "PokemonIds": [
+        199,
+        561,
+        678
+      ],
+      "BadgeId": 47
+    },
+    {
+      "Name": "Wulfric",
+      "PokemonIds": [
+        460,
+        615,
+        713
+      ],
+      "BadgeId": 48
+    },
+    {
+      "Name": "Ilima",
+      "PokemonIds": [
+        235,
+        735
+      ],
+      "BadgeId": 49
+    },
+    {
+      "Name": "Lana",
+      "PokemonIds": [
+        90,
+        170,
+        752
+      ],
+      "BadgeId": 50
+    },
+    {
+      "Name": "Kiawe",
+      "PokemonIds": [
+        58,
+        662,
+        1110
+      ],
+      "BadgeId": 51
+    },
+    {
+      "Name": "Mallow",
+      "PokemonIds": [
+        708,
+        756,
+        762
+      ],
+      "BadgeId": 52
+    },
+    {
+      "Name": "Sophocles",
+      "PokemonIds": [
+        462,
+        466,
+        738,
+        777,
+        1106
+      ],
+      "BadgeId": 53
+    },
+    {
+      "Name": "Acerola",
+      "PokemonIds": [
+        302,
+        426,
+        478,
+        770,
+        781
+      ],
+      "BadgeId": 54
+    },
+    {
+      "Name": "Mina",
+      "PokemonIds": [
+        40,
+        210,
+        707,
+        743,
+        756
+      ],
+      "BadgeId": 55
+    },
+    {
+      "Name": "Milo",
+      "PokemonIds": [
+        829,
+        830
+      ],
+      "BadgeId": 56
+    },
+    {
+      "Name": "Nessa",
+      "PokemonIds": [
+        118,
+        834,
+        846
+      ],
+      "BadgeId": 57
+    },
+    {
+      "Name": "Kabu",
+      "PokemonIds": [
+        38,
+        59,
+        851
+      ],
+      "BadgeId": 58
+    },
+    {
+      "Name": "Bea",
+      "PokemonIds": [
+        68,
+        237,
+        675,
+        865
+      ],
+      "BadgeId": 59
+    },
+    {
+      "Name": "Allister",
+      "PokemonIds": [
+        94,
+        562,
+        778,
+        864
+      ],
+      "BadgeId": 60
+    },
+    {
+      "Name": "Opal",
+      "PokemonIds": [
+        303,
+        468,
+        869,
+        1167
+      ],
+      "BadgeId": 61
+    },
+    {
+      "Name": "Gordie",
+      "PokemonIds": [
+        213,
+        689,
+        839,
+        874
+      ],
+      "BadgeId": 62
+    },
+    {
+      "Name": "Melony",
+      "PokemonIds": [
+        131,
+        873,
+        875
+      ],
+      "BadgeId": 63
+    },
+    {
+      "Name": "Katy",
+      "PokemonIds": [
+        216,
+        915,
+        917
+      ],
+      "BadgeId": 64
+    },
+    {
+      "Name": "Brassius",
+      "PokemonIds": [
+        185,
+        548,
+        926
+      ],
+      "BadgeId": 65
+    },
+    {
+      "Name": "Iono",
+      "PokemonIds": [
+        404,
+        429,
+        937,
+        938
+      ],
+      "BadgeId": 66
+    },
+    {
+      "Name": "Kofu",
+      "PokemonIds": [
+        740,
+        959,
+        974
+      ],
+      "BadgeId": 67
+    },
+    {
+      "Name": "Larry",
+      "PokemonIds": [
+        398,
+        775,
+        980
+      ],
+      "BadgeId": 68
+    },
+    {
+      "Name": "Ryme",
+      "PokemonIds": [
+        354,
+        778,
+        849,
+        970
+      ],
+      "BadgeId": 69
+    },
+    {
+      "Name": "Tulip",
+      "PokemonIds": [
+        282,
+        671,
+        954,
+        979
+      ],
+      "BadgeId": 70
+    },
+    {
+      "Name": "Grusha",
+      "PokemonIds": [
+        334,
+        614,
+        873,
+        973
+      ],
+      "BadgeId": 71
     }
-  	"Description": "",
-    "ImageUrl": ""
-  }
-]
+  ]
+}
