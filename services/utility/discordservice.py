@@ -26,13 +26,13 @@ async def SendErrorMessage(interaction, command):
                                             ephemeral=True)
 
 
-async def SendMessage(interaction, title, desc, color, eph=False):
+async def SendMessage(interaction, title, desc, color, eph=True):
   return await interaction.response.send_message(embed=CreateEmbed(
       title, desc, color),
                                           ephemeral=eph)
 
 
-async def SendEmbed(interaction, embed, eph=False):
+async def SendEmbed(interaction, embed, eph=True):
   return await interaction.response.send_message(embed=embed, ephemeral=eph)
 
 
@@ -90,7 +90,7 @@ async def SendPokemon(guildid,
 async def SendTrainerError(interaction):
   return await interaction.response.send_message(embed=CreateEmbed(
       "Trainer Missing!",
-      "You have not started your PokeTrainer journey yet! To do so, use one of the **/starter*region*** commands. Please use **/help** for more explanation on how PokeTrainer is used.",
+      "You have not started your PokeTrainer journey yet! To do so, use one of the **/starter** commands. Please use **/help** for more explanation on how PokeTrainer is used.",
       ErrorColor),
                                           ephemeral=True)
 

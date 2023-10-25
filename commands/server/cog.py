@@ -14,12 +14,12 @@ class ServerCommands(commands.Cog, name="ServerCommands"):
   def __init__(self, bot: commands.Bot):
     self.bot = bot
 
-  @app_commands.command(name="start",
-                        description="Start PokeTrainer in your server")
+  @app_commands.command(name="register",
+                        description="Register your server with PokeTrainer. Choose spawn % and if previous spawns should be deleted.")
   @is_admin()
-  async def start(self, inter: discord.Interaction, percent: int, delete: bool | None):
+  async def register(self, inter: discord.Interaction, percent: int, delete: bool | None):
 
-    print("START called")
+    print("REGISTER called")
     if inter.guild and 0 < percent < 101:
       serv = serverservice.StartServer(inter.guild_id, inter.channel_id,
                                        inter.guild.name, percent, delete or True)
