@@ -74,40 +74,34 @@ def TryBuyPokeball(serverId, userId, ballId, amount):
   if not trainer:
     raise TrainerInvalidException
   ball = itemservice.GetPokeball(ballId)
-  if not ball:
+  if not ball or trainer.Money < (ball.BuyAmount * amount):
     return None
-
-  if trainer.Money < (ball.BuyAmount * amount):
-    return (False, 0)
 
   trainer.Money -= (ball.BuyAmount * amount)
   trainer.PokeballList = ModifyItemList(trainer.PokeballList, ballId, amount)
   trainerda.UpsertTrainer(trainer)
-  return (True, (ball.BuyAmount * amount))
+  return ball
 
 def TryBuyPotion(serverId, userId, potionId, amount):
   trainer = GetTrainer(serverId, userId)
   if not trainer:
     raise TrainerInvalidException
   potion = itemservice.GetPotion(potionId)
-  if not potion:
+  if not potion or trainer.Money < (potion.BuyAmount * amount):
     return None
-
-  if trainer.Money < (potion.BuyAmount * amount):
-    return (False, 0)
 
   trainer.Money -= (potion.BuyAmount * amount)
   trainer.PotionList = ModifyItemList(trainer.PotionList, potionId, amount)
   trainerda.UpsertTrainer(trainer)
-  return (True, (potion.BuyAmount * amount))
+  return potion
 
 def TrySellPokeball(serverId, userId, ballId, amount):
   trainer = GetTrainer(serverId, userId)
   if not trainer:
     raise TrainerInvalidException
   ball = itemservice.GetPokeball(ballId)
-  if not ball:
-    return (0, 0)
+  if not ball or ballId not in trainer.PokeballList:
+    return None
 
   currentNum = len(trainer.PokeballList)
   trainer.PokeballList = ModifyItemList(trainer.PokeballList, ballId,
@@ -115,16 +109,15 @@ def TrySellPokeball(serverId, userId, ballId, amount):
   postModNum = len(trainer.PokeballList)
   trainer.Money += (ball.SellAmount * (currentNum - postModNum))
   trainerda.UpsertTrainer(trainer)
-  return (currentNum - postModNum,
-          (ball.SellAmount * (currentNum - postModNum)))
+  return { 'NumSold': currentNum - postModNum, 'Item': ball }
 
 def TrySellPotion(serverId, userId, potionId, amount):
   trainer = GetTrainer(serverId, userId)
   if not trainer:
     raise TrainerInvalidException
   potion = itemservice.GetPotion(potionId)
-  if not potion:
-    return (0, 0)
+  if not potion or potionId not in trainer.PotionList:
+    return None
 
   currentNum = len(trainer.PotionList)
   trainer.PotionList = ModifyItemList(trainer.PotionList, potionId,
@@ -132,8 +125,7 @@ def TrySellPotion(serverId, userId, potionId, amount):
   postModNum = len(trainer.PotionList)
   trainer.Money += (potion.SellAmount * (currentNum - postModNum))
   trainerda.UpsertTrainer(trainer)
-  return (currentNum - postModNum,
-          (potion.SellAmount * (currentNum - postModNum)))
+  return { 'NumSold': (currentNum - postModNum), 'Item': potion }
 
 def TryUsePotion(serverId, userId, potionId):
   trainer = GetTrainer(serverId, userId)
@@ -256,37 +248,37 @@ def SetTeamSlot(trainer, slotNum, pokemonId):
 #region REACTION
 
 async def ReationReceived(bot, user, reaction):
-  try:
-    message = reaction.message
-    server = serverservice.GetServer(message.guild.id)
-    users = [user async for user in reaction.users()]
-    #Not a supported reaction
-    if not users.__contains__(bot.user) or server is None:
-      return False
+  message = reaction.message
+  server = serverservice.GetServer(message.guild.id)
+  users = [user async for user in reaction.users()]
+  #Not a supported reaction
+  if not users.__contains__(bot.user) or server is None:
+    await reaction.remove(user)
+    return False
 
-    #Not a reaction on the last spawn pokemon or no spawn at all
-    if reaction.message.id != server.LastSpawnMessage or not server.LastSpawned:
-      return False
+  #Not a reaction on the last spawn pokemon or no spawn at all
+  if reaction.message.id != server.LastSpawnMessage or not server.LastSpawned:
+    await reaction.remove(user)
+    return False
 
-    spawn = server.LastSpawned
-    trainer = GetTrainer(server.ServerId, user.id)
-    if not trainer:
-      embed = discordservice.CreateEmbed(
-          "Trainer Not Started",
-          "To start catching and fighting Pokemon that spawn, please begin your journey by using the **/starter[region]** command.",
-          ErrorColor)
-      await user.send(embed=embed)
-      return False
+  spawn = server.LastSpawned
+  trainer = GetTrainer(server.ServerId, user.id)
+  if not trainer:
+    await reaction.remove(user)
+    return False
 
-    fighting = reaction.emoji == FightReaction
+  fighting = reaction.emoji == FightReaction
 
-    if fighting and trainer.UserId not in server.FoughtBy:
-      TryFight(server, trainer, spawn.Pokemon_Id)
+  if fighting and trainer.Health > 0 and trainer.UserId not in server.FoughtBy:
+    TryWildFight(server, trainer, spawn.Pokemon_Id)
+    return False
+  elif not fighting and server.CaughtBy == 0:
+    if not TryCapture(reaction, server, trainer, spawn):
+      await reaction.remove(user)
       return False
-    elif not fighting and server.CaughtBy == 0:
-      return TryCapture(reaction, server, trainer, spawn)
-  except Exception as e:
-    print(f"{e}")
+    return True
+  await reaction.remove(user)
+  return False
 
 def TryCapture(reaction: Reaction, server, trainer, spawn):
   #Update Server to prevent duplicate
@@ -307,22 +299,24 @@ def TryCapture(reaction: Reaction, server, trainer, spawn):
   serverservice.UpsertServer(server)
   return False
 
-def TryFight(server, trainer, spawnId):
+def TryWildFight(server, trainer, spawnId):
   pokemon = pokemonservice.GetPokemonById(spawnId)
   if not pokemon:
     return
 
   pkmnId = next((p for p in trainer.Team if p))
   battlePkmn = pokemonservice.GetPokemonById(next((p for p in trainer.OwnedPokemon if p.Id == pkmnId)).Pokemon_Id)
-  healthLost = -10 + pokemonservice.PokemonFight(battlePkmn, pokemon, False)
+  battleResult = pokemonservice.PokemonFight(battlePkmn, pokemon)
+  healthLost = battleResult - 6
 
-  if trainer.Health >= abs(healthLost) if healthLost < 0 else 0:
-    server.FoughtBy.append(trainer.UserId)
-    serverservice.UpsertServer(server)
-    trainer.Health -= abs(healthLost) if healthLost < 0 else 0
+  server.FoughtBy.append(trainer.UserId)
+  serverservice.UpsertServer(server)
+  trainer.Health += healthLost
+  trainer.Health = 0 if trainer.Health < 0 else trainer.Health
+  if healthLost > -10:
     next((p for p in trainer.OwnedPokemon if p.Id == pkmnId)).GainExp(pokemon.Rarity)
-    trainer.Money += (pokemon.Rarity * 50)
+    trainer.Money += 50
     trainer.Fights += 1
-    UpsertTrainer(trainer)
+  UpsertTrainer(trainer)
 
 #endregion

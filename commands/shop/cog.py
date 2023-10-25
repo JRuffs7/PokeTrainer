@@ -1,6 +1,7 @@
 from discord import app_commands
 from discord.ext import commands
 from discord.user import discord
+from typing import List
 
 from globals import ShopFailColor, ShopSuccessColor
 from models.CustomException import TrainerInvalidException
@@ -25,121 +26,81 @@ class ShopCommands(commands.Cog, name="ShopCommands"):
         "PokeTrainer Shop",
         f"Use the **/buy*item*** commands to purchase.\n\n{pokeballString}\n\n{potionString}",
         ShopSuccessColor)
-    return await discordservice.SendEmbed(inter, embed)
+    return await discordservice.SendEmbed(inter, embed, True)
+
+  async def item_autocomplete(self, inter: discord.Interaction, current: str) -> List[app_commands.Choice[int]]:
+    pokeballs, potions = itemservice.GetFullShop()
+    type = inter.namespace['type']
+    choices = []
+    if not type:
+      choices.append(app_commands.Choice(name='Choose a type',value=0))
+    else:
+      for p in (pokeballs if type == "ball" else potions):
+        if current.lower() in p.Name.lower():
+          choices.append(app_commands.Choice(name=f"{p.Name} - ${p.BuyAmount if inter.command.name == 'buy' else p.SellAmount}",value=p.Id))
+    return choices
 
   @app_commands.command(
-      name="buypokeball",
-      description="Buy one or multiple of the selected Pokeball")
-  @app_commands.choices(ball=[
-      discord.app_commands.Choice(name="Pokeball", value=1),
-      discord.app_commands.Choice(name="Greatball", value=2),
-      discord.app_commands.Choice(name="Ultraball", value=3)
+      name="buy",
+      description="Buy one or multiple of the selected item")
+  @app_commands.choices(type=[
+      discord.app_commands.Choice(name="Ball", value="ball"),
+      discord.app_commands.Choice(name="Potion", value="potion")
   ])
-  async def buypokeball(self, inter: discord.Interaction,
-                        ball: app_commands.Choice[int], amount: int | None):
-    print(f"BUY POKEBALL called")
+  @app_commands.autocomplete(item=item_autocomplete)
+  async def buy(self, inter: discord.Interaction,
+                        type: app_commands.Choice[str], 
+                        item: int, 
+                        amount: int | None):
+    print(f"BUY called")
     try:
-      sale = trainerservice.TryBuyPokeball(inter.guild_id, inter.user.id,
-                                           ball.value, amount or 1)
+      if type == "ball":
+        sale = trainerservice.TryBuyPokeball(inter.guild_id, inter.user.id, item, amount or 1)
+      else:
+        sale = trainerservice.TryBuyPotion(inter.guild_id, inter.user.id, item, amount or 1)
+        
       if sale is None:
-        return await discordservice.SendErrorMessage(inter, 'buypokeball')
-
-      if sale and sale[0]:
         return await discordservice.SendMessage(
-            inter, "Purchase Success",
-            f"{ball.name} x{amount or 1} purchased for ${sale[1]}",
-            ShopSuccessColor, True)
-      return await discordservice.SendMessage(
           inter, "Purchase Failed",
-          f"{ball.name} x{amount or 1} could not be purchased due to insufficient funds.\nPlease check the shop list by using **/shop** and your current funds by using **/trainerinfo** or **/inventory**",
-          ShopFailColor, True)
+          f"Item could not be purchased.\nPlease check your current funds by using **/trainer** or **/inventory**",
+          ShopFailColor)
+      return await discordservice.SendMessage(
+          inter, "Purchase Success",
+          f"{sale.Name} x{amount or 1} purchased for ${(amount or 1)*sale.BuyAmount}",
+          ShopSuccessColor)
     except TrainerInvalidException:
       return await discordservice.SendTrainerError(inter)
 
   @app_commands.command(
-      name="sellpokeball",
-      description="Sell one or multiple of the selected Pokeball")
-  @app_commands.choices(ball=[
-      discord.app_commands.Choice(name="Pokeball", value=1),
-      discord.app_commands.Choice(name="Greatball", value=2),
-      discord.app_commands.Choice(name="Ultraball", value=3)
+      name="sell",
+      description="Sell one or multiple of the selected item")
+  @app_commands.choices(type=[
+      discord.app_commands.Choice(name="Ball", value="ball"),
+      discord.app_commands.Choice(name="Potion", value="potion")
   ])
-  async def sellpokeball(self, inter: discord.Interaction,
-                         ball: app_commands.Choice[int], amount: int | None):
-    print(f"SELL POKEBALL called")
+  @app_commands.autocomplete(item=item_autocomplete)
+  async def sell(self, inter: discord.Interaction,
+                        type: app_commands.Choice[str], 
+                        item: int, 
+                        amount: int | None):
+    print(f"SELL called")
     try:
-      sale = trainerservice.TrySellPokeball(inter.guild_id, inter.user.id,
-                                            ball.value, amount or 1)
+      if type.value == "ball":
+        sale = trainerservice.TrySellPokeball(inter.guild_id, inter.user.id, item, amount or 1)
+      else:
+        sale = trainerservice.TrySellPotion(inter.guild_id, inter.user.id, item, amount or 1)
 
-      if sale[0] > 0:
+      if not sale:
         return await discordservice.SendMessage(
-            inter, "Sell Success",
-            f"{ball.name} x{sale[0]} sold for ${sale[1]}", ShopSuccessColor,
-            True)
-      return await discordservice.SendMessage(
           inter, "Sell Failed",
-          f"You do not own any {ball.name}s.\nPlease check your inventory by using **/inventory**",
-          ShopFailColor, True)
-    except TrainerInvalidException:
-      return await discordservice.SendTrainerError(inter)
-
-  @app_commands.command(
-      name="buypotion",
-      description="Buy one or multiple of the selected Potion")
-  @app_commands.choices(potion=[
-      discord.app_commands.Choice(name="Potion", value=1),
-      discord.app_commands.Choice(name="Super Potion", value=2),
-      discord.app_commands.Choice(name="Hyper Potion", value=3),
-      discord.app_commands.Choice(name="Max Potion", value=4)
-  ])
-  async def buypotion(self, inter: discord.Interaction,
-                      potion: app_commands.Choice[int], amount: int | None):
-    print(f"BUY POKEBALL called")
-    try:
-      sale = trainerservice.TryBuyPotion(inter.guild_id, inter.user.id,
-                                         potion.value, amount or 1)
-      if sale is None:
-        return await discordservice.SendErrorMessage(inter, 'buypotion')
-
-      if sale[0]:
-        return await discordservice.SendMessage(
-            inter, "Purchase Success",
-            f"{potion.name} x{amount or 1} purchased for ${sale[1]}",
-            ShopSuccessColor, True)
+          f"You do not own any of the specified item.\nPlease check your inventory by using **/inventory**", ShopFailColor)
       return await discordservice.SendMessage(
-          inter, "Purchase Failed",
-          f"{potion.name} x{amount or 1} could not be purchased due to insufficient funds.\nPlease check the shop list by using **/shop** and your current funds by using **/trainerinfo** or **/inventory**",
-          ShopFailColor, True)
+          inter, "Sell Success",
+          f"{sale['Item'].Name} x{sale['NumSold']} sold for ${sale['NumSold']*sale['Item'].SellAmount}", ShopSuccessColor)
     except TrainerInvalidException:
       return await discordservice.SendTrainerError(inter)
-
-  @app_commands.command(
-      name="sellpotion",
-      description="Sell one or multiple of the selected Potion")
-  @app_commands.choices(potion=[
-      discord.app_commands.Choice(name="Potion", value=1),
-      discord.app_commands.Choice(name="Super Potion", value=2),
-      discord.app_commands.Choice(name="Hyper Potion", value=3),
-      discord.app_commands.Choice(name="Max Potion", value=4)
-  ])
-  async def sellpotion(self, inter: discord.Interaction,
-                       potion: app_commands.Choice[int], amount: int | None):
-    print(f"SELL POKEBALL called")
-    try:
-      sale = trainerservice.TrySellPotion(inter.guild_id, inter.user.id,
-                                          potion.value, amount or 1)
-
-      if sale[0] > 0:
-        return await discordservice.SendMessage(
-            inter, "Sell Success",
-            f"{potion.name} x{sale[0]} sold for ${sale[1]}", ShopSuccessColor,
-            True)
-      return await discordservice.SendMessage(
-          inter, "Sell Failed",
-          f"You do not own any {potion.name}s.\nPlease check your inventory by using **/inventory**",
-          ShopFailColor, True)
-    except TrainerInvalidException:
-      return await discordservice.SendTrainerError(inter)
+    except Exception as e:
+      print(f"{e}")
 
 
 async def setup(bot: commands.Bot):

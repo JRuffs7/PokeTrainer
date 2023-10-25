@@ -3,7 +3,7 @@ from dataaccess import itemda
 
 def GetFullShop():
   pokeballs = [p for p in itemda.GetAllPokeballs() if p.BuyAmount > 0]
-  potions = itemda.GetAllPotions()
+  potions = [p for p in itemda.GetAllPotions() if p.BuyAmount > 0]
   return (pokeballs, potions)
 
 

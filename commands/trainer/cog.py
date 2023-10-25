@@ -53,15 +53,15 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
         return await discordservice.SendMessage(
             inter, 'Health Restored',
             f'{potion.name} used to restore {result[1]} trainer health.',
-            TrainerColor, True)
+            TrainerColor)
       return await discordservice.SendMessage(
           inter, 'Health Full',
           f'{potion.name} not used because health is already full.',
-          TrainerColor, True)
+          TrainerColor)
     return await discordservice.SendMessage(
         inter, 'No Healing',
         f'You do not own an {potion.name}s. Please visit the **/shop** to stock up.',
-        TrainerColor, True)
+        TrainerColor)
 
   @app_commands.command(name="inventory",
                         description="Displays your current inventory.")
@@ -106,7 +106,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
       result = trainerservice.GetPokedexList(inter.guild_id, inter.user.id, None, None)
       result = [x for x in result if x.Name.lower() == pokemon.lower() and x.Pokemon.Id not in trainer.Team]
       if not result:
-        return await discordservice.SendMessage(inter, 'Invalid Pokemon', f'You do not own any Pokemon with the name {pokemon}', ErrorColor, True)
+        return await discordservice.SendMessage(inter, 'Invalid Pokemon', f'You do not own any Pokemon with the name {pokemon}', ErrorColor)
 
       teamSelect = TeamSelectorView(
         inter,
@@ -202,7 +202,6 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
       {'Region':9,'Name':'Fuecoco','Value':909},
       {'Region':9,'Name':'Quaxly','Value':912}
     ]
-    print(f"{current}: {inter.namespace['region']}")
     region = int(inter.namespace['region'])
     choices = []
     if not region:
@@ -237,7 +236,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
     return await discordservice.SendMessage(
         inter, "Unable to Create Trainer",
         "Something went wrong while starting your journey. Maybe there weren't any of the Pokemon you chose? Nah, must have been something else...",
-        ErrorColor, True)
+        ErrorColor)
 
   #endregion
 
