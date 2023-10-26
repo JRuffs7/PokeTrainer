@@ -44,5 +44,5 @@ class Trainer:
     }.values()
     totalPkmn = pokemonservice.GetPokemonCount()
 
-    return f"__Stats__\nHP: {self.Health}\nFights: {self.Fights}\n${self.Money}\n\n__Pokemon__\nPokedex: {len(uniquePkmn)}/{totalPkmn} ({round((len(uniquePkmn)*100)/totalPkmn)}%)\nOwned Count: {len(self.OwnedPokemon)}\nTotal Caught: {self.TotalCaught}"
+    return f"__Stats__\nHP: {self.Health}\nFights: {self.Fights}\n${self.Money}\n\n__Pokemon__\nPokedex: {len(uniquePkmn)}/{totalPkmn} ({round((len(uniquePkmn)*100)/totalPkmn)}%)\nOwned Count: {len(self.OwnedPokemon)}\nShiny Count: {len([x for x in self.OwnedPokemon if x.IsShiny])}\nTotal Caught: {self.TotalCaught}"
 

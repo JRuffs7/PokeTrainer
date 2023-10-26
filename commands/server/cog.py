@@ -114,18 +114,6 @@ class ServerCommands(commands.Cog, name="ServerCommands"):
     except ServerInvalidException:
       return await discordservice.SendServerError(inter)
 
-  @app_commands.command(
-      name="testspawn",
-      description="Spawns a test Pokemon in this channel. Cannot be caught")
-  @is_admin()
-  async def testspawn(self, inter: discord.Interaction):
-    print("TEST SPAWN called")
-    pkmn = pokemonservice.GetRandomSpawnPokemon()
-    if pkmn:
-      return await discordservice.SendPokemon(inter.guild_id, inter.channel_id,
-                                              pkmn, True)
-    return await discordservice.SendErrorMessage(inter, "TestSpawn")
-
 
 async def setup(bot: commands.Bot):
   await bot.add_cog(ServerCommands(bot))
