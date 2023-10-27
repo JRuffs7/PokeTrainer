@@ -103,16 +103,16 @@
       "requireadmin": false
     }
   ],
-  "other": [
+  "Actions": [
     {
-      "name": "fight",
-      "shortstring": "",
-      "helpstring": "",
+      "name": "spawn",
+      "shortstring": "Pokemon will have a chance to spawn in channels set up by a server admin.",
+      "helpstring": "There are no commands that spawn a Pokemon, but rather a random chance appointed by a server admin. When the bot is active, the spawn chance will be set to 1-100%. There can also be multiple channels registered to be valid spawn areas for PokeTrainer, also set by a server admin.\n\nSpawning is how trainers can grow their collection through capturing and earn money through fighting. When a Pokemon is determined to spawn, there are a few factors that go into the spawn calculation. The first factor to be considered is the spawn rarity, then there are some exclusions,and finally there are numbers crunched for shiny odds and other details.\n\n__Rarity__\nRarity is best described as how rare a Pokemon should be to chosen during a regular spawn event. There are 5 different levels of rarity:\n```Level 1 - Initial stage of a 3-stage evolution. Examples: Pidgey, Nidoran.\nLevel 2 - Initial stage of a 2-stage evolution. Examples: Onix, Eevee.\nLevel 3 - Second stage of a 3-stage evolution OR a Pokemon without an evolution. Examples: Lapras, Haunter.\nLevel 4 - Final stage of a 2-stage evolution. Examples: Gyarados, Weezing.\nLevel 5 - Final stage of a 3-stage evolution. Examples: Victreebel, Kingdra.```\nRarity is calculate based on if there are evolutions preceeding and succeeding the current Pokemon, and how many. One strange example is the Mime Jr. line:\n```             ---> Mr. Mime (4)\nMime Jr. (1) |\n             ---> Galarian Mr. Mime (3) ---> Mr. Rime (5)\n\nMime Jr. is considered a rarity 1 because it's the initial stage and its maximum chain is 3 evolutions. Mr. Mime is considered rarity 4 because it's considered the final evolution in a chain of 2.```\nRarities have certain chances to spawn:\nRarity 1 - 60%\nRarity 2 - 25%\nRarity 3 - 10%\nRarity 4 - 3%\nRarity 5 - 2%\n\n__Exclusions__\nThere are exclusions that will not be found during a regular spawn event. Here is a list of Pokemon types that are not considered:\n- Starters, Legendaries/Mythicals, Mega forms.\n\n__Details__\nSome details that are calculated during the spawn process are *shiny rate*, *height/weight*, and *female chance*\n- **Shiny Rate** - Currently set at 1/3000\n- **Height/Weight** - Randomly set to +-10% of average stat seen from **/pokeinfo**\n- **Gender** - Each Pokemon has a stat out of 8 to be female. Seen in **/pokeinfo**.\n\nEvery spawn will have 4 emojis attached: Pokeball, Greatball, Ultraball, Fight. The explanation for each can be seen through **/help capture** and **/help fight**.",
       "requireadmin": false
     },
     {
-      "name": "spawn",
-      "shortstring": "",
+      "name": "fight",
+      "shortstring": "Fighting in battles cost trainer HP, but earn money.",
       "helpstring": "",
       "requireadmin": false
     },

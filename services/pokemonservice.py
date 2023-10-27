@@ -22,8 +22,8 @@ def GetRandomSpawnPokemon():
   encounter = random.randint(1, 100)
   while not pokemon:
     pokemonList = GetPokemonByRarity(
-        1 if 1 <= encounter <= 60 else 2 if 61 <= encounter <= 80 else
-        3 if 81 <= encounter <= 95 else 4 if 96 <= encounter <= 98 else 5)
+        1 if 1 <= encounter <= 60 else 2 if 61 <= encounter <= 85 else
+        3 if 86 <= encounter <= 95 else 4 if 96 <= encounter <= 98 else 5)
     pokemon = random.choice(pokemonList)
     if pokemon.IsMega or pokemon.IsBattleOnly or pokemon.IsLegendary or pokemon.IsMythical or not pokemon.Sprite or not pokemon.ShinySprite:
       pokemon = None
