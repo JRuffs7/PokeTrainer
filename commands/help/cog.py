@@ -12,10 +12,25 @@ class HelpCommands(commands.Cog, name="HelpCommands"):
   def __init__(self, bot: commands.Bot):
     self.bot = bot
 
+
+  def command_autofill(self, inter: discord.Interaction, current: str):
+    commands = helpservice.GetAllHelpCommands()
+    choices = []
+    for c in commands:
+      if current.lower() in c.lower():
+        choices.append(app_commands.Choice(name=c,value=c))
+        if len(choices) == 25:
+          break
+    return choices
+
+
   @app_commands.command(
       name="help",
-      description="Sends a DM of the full help docs or a specified command")
-  async def help(self, inter: discord.Interaction, command: str | None):
+      description="Sends a full help doc as a DM, or single command in the channel")
+  @app_commands.autocomplete(command=command_autofill)
+  async def help(self, 
+                 inter: discord.Interaction, 
+                 command: str | None):
     print("HELP called")
     if not command:
       helpList = helpservice.BuildFullHelp()

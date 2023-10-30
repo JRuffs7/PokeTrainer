@@ -1,6 +1,6 @@
 [
     {
-        "Type": "normal",
+        "Name": "normal",
         "Weakness": [
             "fighting"
         ],
@@ -10,7 +10,7 @@
         ]
     },
     {
-        "Type": "fire",
+        "Name": "fire",
         "Weakness": [
             "water", "ground", "rock"
         ],
@@ -20,7 +20,7 @@
         "Immune": []
     },
     {
-        "Type": "water",
+        "Name": "water",
         "Weakness": [
             "grass", "electric"
         ],
@@ -30,7 +30,7 @@
         "Immune": []
     },
     {
-        "Type": "grass",
+        "Name": "grass",
         "Weakness": [
             "fire", "ice", "poison", "flying", "bug"
         ],
@@ -40,7 +40,7 @@
         "Immune": []
     },
     {
-        "Type": "electric",
+        "Name": "electric",
         "Weakness": [
             "ground"
         ],
@@ -50,7 +50,7 @@
         "Immune": []
     },
     {
-        "Type": "ice",
+        "Name": "ice",
         "Weakness": [
             "fire", "fighting", "rock", "steel"
         ],
@@ -60,7 +60,7 @@
         "Immune": []
     },
     {
-        "Type": "fighting",
+        "Name": "fighting",
         "Weakness": [
             "flying", "psychic", "fairy"
         ],
@@ -70,7 +70,7 @@
         "Immune": []
     },
     {
-        "Type": "poison",
+        "Name": "poison",
         "Weakness": [
             "ground", "psychic"
         ],
@@ -80,7 +80,7 @@
         "Immune": []
     },
     {
-        "Type": "ground",
+        "Name": "ground",
         "Weakness": [
             "water", "grass", "ice"
         ],
@@ -92,7 +92,7 @@
         ]
     },
     {
-        "Type": "flying",
+        "Name": "flying",
         "Weakness": [
             "electric", "ice", "rock"
         ],
@@ -104,7 +104,7 @@
         ]
     },
     {
-        "Type": "psychic",
+        "Name": "psychic",
         "Weakness": [
             "bug", "ghost", "dark"
         ],
@@ -114,7 +114,7 @@
         "Immune": []
     },
     {
-        "Type": "bug",
+        "Name": "bug",
         "Weakness": [
             "fire", "flying", "rock"
         ],
@@ -124,7 +124,7 @@
         "Immune": []
     },
     {
-        "Type": "rock",
+        "Name": "rock",
         "Weakness": [
             "water", "grass", "fighting", "ground", "steel"
         ],
@@ -134,7 +134,7 @@
         "Immune": []
     },
     {
-        "Type": "ghost",
+        "Name": "ghost",
         "Weakness": [
             "ghost", "dark"
         ],
@@ -146,7 +146,7 @@
         ]
     },
     {
-        "Type": "dragon",
+        "Name": "dragon",
         "Weakness": [
             "ice", "dragon", "fairy"
         ],
@@ -158,7 +158,7 @@
         ]
     },
     {
-        "Type": "dark",
+        "Name": "dark",
         "Weakness": [
             "fighting", "bug", "fairy"
         ],
@@ -170,7 +170,7 @@
         ]
     },
     {
-        "Type": "steel",
+        "Name": "steel",
         "Weakness": [
             "fire", "fighting", "ground"
         ],
@@ -182,7 +182,7 @@
         ]
     },
     {
-        "Type": "fairy",
+        "Name": "fairy",
         "Weakness": [
             "poison", "steel"
         ],

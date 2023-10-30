@@ -1,13 +1,13 @@
 from typing import List, Dict
 
 class Type:
-  Type: str
+  Name: str
   Weakness: List[str]
   Resistant: List[str]
   Immune: List[str]
 
   def __init__(self, dict: Dict | None):
-    self.Type = dict.get('Type') or '' if dict else ''
+    self.Name = dict.get('Name') or '' if dict else ''
     weak = dict.get('Weakness') if dict else []
     self.Weakness = weak or [] if isinstance(
         weak, List) else weak.value if weak else []

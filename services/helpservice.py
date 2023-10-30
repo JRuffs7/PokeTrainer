@@ -4,6 +4,17 @@ botHelp = "files/helpfiles/bothelp.json"
 commandHelp = "files/helpfiles/commandhelp.json"
 
 
+def GetAllHelpCommands():
+  serverComs = [x['name'] for x in GetJson(commandHelp)['Server']]
+  trainerComs = [x['name'] for x in GetJson(commandHelp)['Trainer']]
+  pokemonComs = [x['name'] for x in GetJson(commandHelp)['Pokemon']]
+  shopComs = [x['name'] for x in GetJson(commandHelp)['Shop']]
+  actions = [x['name'] for x in GetJson(commandHelp)['Actions']]
+  commands = serverComs + trainerComs + pokemonComs + shopComs + actions
+  commands.sort()
+  return commands
+
+
 def BuildCommandHelp(command: str, interaction):
   helpObj = GetJson(commandHelp)
 

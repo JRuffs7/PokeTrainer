@@ -5,6 +5,10 @@ from models.Type import Type
 typeFile = "collections/types.json"
 
 
+def GetTypes():
+  return [Type(t) for t in GetJson()]
+
+
 def GetTypeByName(type):
   return next((Type(t) for t in GetJson() if t['Type'].lower() == type.lower()), None)
 

@@ -10,3 +10,6 @@ def TypeWeakness(attacking, defending):
     if attacking in defenseType.Immune:
         return -2
     return 0
+
+def GetAllTypes():
+    return typeda.GetTypes()
