@@ -107,7 +107,7 @@ class PokedexView(discord.ui.View):
     newline = '\n'
     if self.user:
       if self.pageLength == 1:
-        pkmnData = t2a(body=[['CurrentExp:', f"{data.Pokemon.CurrentExp}/{50 * (1 if data.Pokemon.Rarity <= 2 else 2 if data.Pokemon.Rarity == 3 else 4)}", '|', 'Height:', data.Pokemon.Height],
+        pkmnData = t2a(body=[['CurrentExp:', f"{data.Pokemon.CurrentExp}/{(50 * data.Pokemon.Rarity) if data.Pokemon.Rarity <= 3 else 250}", '|', 'Height:', data.Pokemon.Height],
                             ['Can Evolve:',f"{'Yes' if pokemonservice.CanTrainerPokemonEvolve(data.Pokemon) else 'No'}", '|','Weight:', data.Pokemon.Weight], 
                             ['Types:', f"{data.Types[0]}"f"{'/' + data.Types[1] if len(data.Types) > 1 else ''}", Merge.LEFT, Merge.LEFT, Merge.LEFT]], 
                       first_col_heading=False,
@@ -115,5 +115,5 @@ class PokedexView(discord.ui.View):
                       style=PresetStyle.plain,
                       cell_padding=0)
         return f"**__{data.GetNameString()} (Lvl. {data.Pokemon.Level})__**\n```{pkmnData}```"
-      return f"{newline.join([x.GetNameString() for x in data])}"
+      return f"{newline.join([x.GetNameString() + '(Lvl. ' + x.Level + ')' for x in data])}"
     return f"**__{data.Name}__**\nAvg. Height: {data.Height}\nAvg. Weight: {data.Weight}\nTypes: {','.join(data.Types)}" if self.pageLength == 1 else f"{newline.join([x.Name for x in data])}"
