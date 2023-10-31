@@ -79,7 +79,6 @@ class SpawnPokemon:
   IsFemale: bool
   Level: int
   CurrentExp: int
-  EvolutionStage: int | None
 
   def __init__(self, dict: Dict | None):
     self.Id = dict.get('Id') or uuid.uuid4().hex if dict else uuid.uuid4().hex
@@ -90,28 +89,24 @@ class SpawnPokemon:
     self.IsFemale = dict.get('IsFemale') or False if dict else False
     self.Level = dict.get('Level') or 1 if dict else 1
     self.CurrentExp = dict.get('CurrentExp') or 0 if dict else 0
-    self.EvolutionStage = dict.get('EvolutionStage') or None if dict else None
 
     if self.Level > 100:
       self.Level = 100
     if self.Level == 100:
       self.CurrentExp = 0
 
-  def GainExp(self, expGain: int):
+  def GainExp(self, expGain: int, rarity: int):
     self.CurrentExp += expGain
-    if self.CurrentExp >= (50 * self.EvolutionStage):
+    if self.CurrentExp >= (50 * (1 if rarity <= 2 else 2 if rarity == 3 else 4)):
       self.Level += 1
-      self.CurrentExp -= (50 * self.EvolutionStage)
+      self.CurrentExp -= (50 * (1 if rarity <= 2 else 2 if rarity == 3 else 4))
   
-  def CanEvolve(self):
-    return self.EvolutionStage and ((self.EvolutionStage == 1 and self.Level >= 20) or (self.EvolutionStage == 2 and self.Level >= 30))
-
-
 class PokedexEntry:
   Name: str
   PokedexId: int
   Types: List[str]
   Sprite: str
+  Rarity: int
   Pokemon: SpawnPokemon
 
   def __init__(self, dict: Dict):
@@ -121,6 +116,7 @@ class PokedexEntry:
     self.Types = types or [] if isinstance(
         types, List) else types.value if types else []
     self.Sprite = dict.get('Sprite') or '' if dict else ''
+    self.Rarity = dict.get('Rarity') or 0 if dict else 0
     pkmn = dict.get('Pokemon') if dict else None
     self.Pokemon = SpawnPokemon(pkmn) or None if isinstance(
         pkmn, Dict) else SpawnPokemon(pkmn.value) if pkmn else None

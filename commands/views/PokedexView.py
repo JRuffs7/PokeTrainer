@@ -3,6 +3,7 @@ import discord
 from table2ascii import table2ascii as t2a, PresetStyle, Alignment, Merge
 
 from globals import TrainerColor
+from services import pokemonservice
 from services.utility import discordservice
 
 
@@ -106,8 +107,8 @@ class PokedexView(discord.ui.View):
     newline = '\n'
     if self.user:
       if self.pageLength == 1:
-        pkmnData = t2a(body=[['CurrentExp:', f"{data.Pokemon.CurrentExp}/{50 * data.Pokemon.EvolutionStage}", '|', 'Height:', data.Pokemon.Height],
-                            ['Can Evolve:',f"{'Yes' if data.Pokemon.CanEvolve() else 'No'}", '|','Weight:', data.Pokemon.Weight], 
+        pkmnData = t2a(body=[['CurrentExp:', f"{data.Pokemon.CurrentExp}/{50 * (1 if data.Pokemon.Rarity <= 2 else 2 if data.Pokemon.Rarity == 3 else 4)}", '|', 'Height:', data.Pokemon.Height],
+                            ['Can Evolve:',f"{'Yes' if pokemonservice.CanTrainerPokemonEvolve(data.Pokemon) else 'No'}", '|','Weight:', data.Pokemon.Weight], 
                             ['Types:', f"{data.Types[0]}"f"{'/' + data.Types[1] if len(data.Types) > 1 else ''}", Merge.LEFT, Merge.LEFT, Merge.LEFT]], 
                       first_col_heading=False,
                       alignments=[Alignment.LEFT,Alignment.LEFT,Alignment.CENTER,Alignment.LEFT,Alignment.LEFT],

@@ -63,8 +63,11 @@ def GenerateSpawnPokemon(pokemon: Pokemon):
       'Height': height if height > 0.00 else 0.01,
       'Weight': weight if weight > 0.00 else 0.01,
       'IsShiny': shiny,
-      'IsFemale': female
+      'IsFemale': female,
+      'Level': 1 if pokemon.Rarity <= 2 else 20 if pokemon.Rarity == 3 else 30 if pokemon.Rarity == 4 else 35,
+      'CurrentExp': 0
   })
+
 
 
 def GetPokemonById(id: int):
@@ -95,6 +98,17 @@ def ConvertSpawnPokemonToPokemon(pokeList: List[SpawnPokemon]):
   return pokemonda.GetPokemonByIds([x.Pokemon_Id for x in pokeList])
 
 
+def CanTrainerPokemonEvolve(pkmn: SpawnPokemon):
+  poke = GetPokemonById(pkmn.Pokemon_Id)
+  if poke.Rarity == 1 and len(poke.EvolvesInto) > 1:
+    return pkmn.Level >= 20
+  elif poke.Rarity == 2 and len(poke.EvolvesInto) > 1:
+    return pkmn.Level >= 30
+  elif poke.Rarity == 3 and len(poke.EvolvesInto) > 1:
+    return pkmn.Level >= 35
+  return False
+
+
 def SplitPokemonForSearch(pokemonId):
   pkmn = GetPokemonById(pokemonId)
   if not Pokemon:
@@ -106,6 +120,7 @@ def SplitPokemonForSearch(pokemonId):
         'PokedexId': pkmn.PokedexId,
         'Types': pkmn.Types,
         'Sprite': pkmn.GetImage(False, pkmn.FemaleChance == 8),
+        'Rarity': pkmn.Rarity,
         'Pokemon': to_dict(SpawnPokemon({
           'Id': '',
           'Pokemon_Id': pkmn.Id,
@@ -123,6 +138,7 @@ def SplitPokemonForSearch(pokemonId):
         'PokedexId': pkmn.PokedexId,
         'Types': pkmn.Types,
         'Sprite': pkmn.GetImage(True, pkmn.FemaleChance == 8),
+        'Rarity': pkmn.Rarity,
         'Pokemon': to_dict(SpawnPokemon({
           'Id': '',
           'Pokemon_Id': pkmn.Id,

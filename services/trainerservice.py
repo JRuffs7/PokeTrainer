@@ -180,6 +180,7 @@ def GetPokedexList(serverId, userId, orderString, shiny):
         'PokedexId': pokemonList[i].PokedexId,
         'Types': pokemonList[i].Types,
         'Sprite': pokemonList[i].GetImage(pkmn.IsShiny, pkmn.IsFemale),
+        'Rarity': pokemonList[i].Rarity,
         'Pokemon': to_dict(pkmn)
       }) )
   match orderString:
@@ -233,6 +234,7 @@ def GetTrainerTeam(serverId, userId):
         'PokedexId': pkmn.PokedexId,
         'Types': pkmn.Types,
         'Sprite': pkmn.GetImage(spawn.IsShiny, spawn.IsFemale),
+        'Rarity': pkmn.Rarity,
         'Pokemon': to_dict(spawn)
       }))
     else:
@@ -314,7 +316,7 @@ def TryWildFight(server, trainer, spawnId):
   trainer.Health += healthLost
   trainer.Health = 0 if trainer.Health < 0 else trainer.Health
   if healthLost > -10:
-    next((p for p in trainer.OwnedPokemon if p.Id == pkmnId)).GainExp(pokemon.Rarity)
+    next((p for p in trainer.OwnedPokemon if p.Id == pkmnId)).GainExp(pokemon.Rarity, battlePkmn.Rarity)
     trainer.Money += 50
     trainer.Fights += 1
   UpsertTrainer(trainer)

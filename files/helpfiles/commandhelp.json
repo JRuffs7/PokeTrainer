@@ -127,6 +127,11 @@
       "shortstring": "Every Pokemon has a calculated rarity used for spawning and fighting.",
       "helpstring": "Rarity is best described as how rare a Pokemon is to be chosen during a regular spawn event. There are 5 different levels of rarity:\n```Level 1 - Initial stage of a 3-stage evolution. Examples: Pidgey, Nidoran.\nLevel 2 - Initial stage of a 2-stage evolution. Examples: Onix, Eevee.\nLevel 3 - Second stage of a 3-stage evolution OR a Pokemon without an evolution. Examples: Lapras, Haunter.\nLevel 4 - Final stage of a 2-stage evolution. Examples: Gyarados, Weezing.\nLevel 5 - Final stage of a 3-stage evolution. Examples: Victreebel, Dragonite.```\nRarity is calculate based on if there are evolutions preceeding or succeeding the current Pokemon, and how many. Two normal examples are the Pidgey/Fearow lines:\n```Pidgey (1) ---> Pidgeotto (3) ---> Pidgeot (5)\n\nSpearow (2) ---> Fearow (4)```\nOne strange example is the Mime Jr. line:\n```             ---> Mr. Mime (4)\nMime Jr. (1) |\n             ---> Galarian Mr. Mime (3) ---> Mr. Rime (5)```\nMime Jr. is considered a rarity 1 because it's the initial stage and its maximum chain is 3 evolutions. Mr. Mime is considered rarity 4 because it's considered the final evolution in a 2-stage chain.",
       "requireadmin": false
+    },
+    {
+      "name": "evolution",
+      "shortstring": "Some Pokemon are able to evolve through levels.",
+      "helpstring": "Evolution in PokeTrainer is much more simplified than the mainstream games. If a Pokemon has an option for evolution, the level still comes into play, but is standardized among all Pokemon of the same rarity"
     }
   ]
 }
