@@ -10,13 +10,16 @@ from commands.views.selectors.OwnedSelector import TeamSelector, OwnedSelector
 class TeamSelectorView(discord.ui.View):
   
   def __init__(self, interaction: discord.Interaction, currentTeam: List[PokedexEntry], pokeList: List[PokedexEntry]):
-    self.interaction = interaction
-    self.pokeList = pokeList
-    super().__init__(timeout=300)
-    positionOptions = TeamSelector(currentTeam)
-    pokemonOptions = OwnedSelector(pokeList, 1)
-    self.add_item(positionOptions)
-    self.add_item(pokemonOptions)
+    try:
+      self.interaction = interaction
+      self.pokeList = pokeList
+      super().__init__(timeout=300)
+      positionOptions = TeamSelector(currentTeam)
+      pokemonOptions = OwnedSelector(pokeList, 1)
+      self.add_item(positionOptions)
+      self.add_item(pokemonOptions)
+    except Exception as e:
+      print(f"{e}")
 
   #async def interaction_check(self, interaction: discord.Interaction) -> bool:
   #  return interaction.user.id == self.trainer.UserId

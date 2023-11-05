@@ -110,7 +110,7 @@ class PokedexView(discord.ui.View):
     newline = '\n'
     if self.user:
       if self.pageLength == 1:
-        pkmnData = t2a(body=[['CurrentExp:', f"{data.Pokemon.CurrentExp}/{(50 * data.Pokemon.Rarity) if data.Pokemon.Rarity <= 3 else 250}", '|', 'Height:', data.Pokemon.Height],
+        pkmnData = t2a(body=[['CurrentExp:', f"{data.Pokemon.CurrentExp}/{(50 * data.Rarity) if data.Rarity <= 3 else 250}", '|', 'Height:', data.Pokemon.Height],
                             ['Can Evolve:',f"{'Yes' if pokemonservice.CanTrainerPokemonEvolve(data.Pokemon) else 'No'}", '|','Weight:', data.Pokemon.Weight], 
                             ['Types:', f"{data.Types[0]}"f"{'/' + data.Types[1] if len(data.Types) > 1 else ''}", Merge.LEFT, Merge.LEFT, Merge.LEFT]], 
                       first_col_heading=False,

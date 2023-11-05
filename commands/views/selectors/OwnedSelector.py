@@ -4,7 +4,7 @@ import discord
 class TeamSelector(discord.ui.Select):
     def __init__(self, data):
         options = [discord.SelectOption(
-            label=f'Slot {i}',
+            label=f'Slot {i+1}',
             description=f"{data[i].GetNameString()} (Lvl. {data[i].Pokemon.Level})" if data[i] else 'Empty',
             value=f'{i}'
             ) for i in range(6)
@@ -20,7 +20,7 @@ class OwnedSelector(discord.ui.Select):
             data = data[:25]
         options=[discord.SelectOption(
             label=f"{d.GetNameString()}",
-            description= f"Lvl. {d.Pokemon.Level}({d.Pokemon.CurrentExp}/{50 * d.Pokemon.EvolutionStage}) | Types: {'/'.join(d.Types)}",
+            description= f"Lvl. {d.Pokemon.Level}({d.Pokemon.CurrentExp}/{(50 * d.Rarity) if d.Rarity <= 3 else 250}) | Types: {'/'.join(d.Types)}",
             value=f'{d.Pokemon.Id}'
             ) for d in data
         ]
