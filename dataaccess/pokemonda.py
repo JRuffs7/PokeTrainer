@@ -22,7 +22,7 @@ def GetFormsCount():
 
 def GetPokemonByType(type):
   return [
-    Pokemon(x) for x in GetJson() if type.lower() in [y for y in x['Types']]
+    Pokemon(x) for x in GetJson() if type.lower() in [y.lower() for y in x['Types']]
   ]
 
 

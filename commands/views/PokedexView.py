@@ -60,18 +60,21 @@ class PokedexView(discord.ui.View):
     await self.update_message(self.data[:self.pageLength])
 
   async def update_message(self, data):
-    self.update_buttons()
-    if self.pageLength == 1:
-      data = data[0]
-    embed = discordservice.CreateEmbed(
-        self.title,
-        self.CreateEmbedDesc(data), TrainerColor)
-    if self.pageLength == 1:
-      embed.set_image(url=data.Sprite)
-    elif self.pageLength > 1 and self.user:
-      embed.set_thumbnail(url=self.user.display_avatar.url)
-    embed.set_footer(text=f"{self.currentPage}/{int(len(self.data)/self.pageLength)+self.addition}")
-    await self.message.edit(embed=embed, view=self)
+    try:
+      self.update_buttons()
+      if self.pageLength == 1:
+        data = data[0]
+      embed = discordservice.CreateEmbed(
+          self.title,
+          self.CreateEmbedDesc(data), TrainerColor)
+      if self.pageLength == 1:
+        embed.set_image(url=data.Sprite)
+      elif self.pageLength > 1 and self.user:
+        embed.set_thumbnail(url=self.user.display_avatar.url)
+      embed.set_footer(text=f"{self.currentPage}/{int(len(self.data)/self.pageLength)+self.addition}")
+      await self.message.edit(embed=embed, view=self)
+    except Exception as e:
+      print(f"{e}")
 
   @discord.ui.button(label="|<", style=discord.ButtonStyle.green)
   async def first_page_button(self, interaction: discord.Interaction,
@@ -116,4 +119,4 @@ class PokedexView(discord.ui.View):
                       cell_padding=0)
         return f"**__{data.GetNameString()} (Lvl. {data.Pokemon.Level})__**\n```{pkmnData}```"
       return f"{newline.join([x.GetNameString() + '(Lvl. ' + x.Level + ')' for x in data])}"
-    return f"**__{data.Name}__**\nAvg. Height: {data.Height}\nAvg. Weight: {data.Weight}\nTypes: {','.join(data.Types)}" if self.pageLength == 1 else f"{newline.join([x.Name for x in data])}"
+    return f"**__{data.Name}{' :female_sign:' if data.Pokemon.IsFemale == True else ''}{' :sparkles:' if data.Pokemon.IsShiny else ''}__**\nAvg. Height: {data.Pokemon.Height}\nAvg. Weight: {data.Pokemon.Weight}\nTypes: {','.join(data.Types)}" if self.pageLength == 1 else f"{newline.join([x.Name for x in data])}"

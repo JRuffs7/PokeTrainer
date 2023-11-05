@@ -19,7 +19,7 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
     
 
   async def filter_autocomplete(self, inter: discord.Interaction, current: str) -> List[app_commands.Choice[str]]:
-    search = int(inter.namespace['search'])
+    search = inter.namespace['search']
     choiceList = []
     if search == 'single':
       searchList = pokemonservice.GetAllPokemon()
@@ -30,7 +30,7 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
           if len(choiceList) == 25:
             break
     elif search == 'color':
-      searchList = pokemonservice.GetPokemonColors()
+      searchList = list(pokemonservice.GetPokemonColors())
       searchList.sort()
       for color in searchList:
         if current.lower() in color.lower():
@@ -39,6 +39,7 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
             break
     elif search == 'type':
       searchList = typeservice.GetAllTypes()
+      searchList.sort(key=lambda x: x.Name)
       for type in searchList:
         if current.lower() in type.Name.lower():
             choiceList.append(app_commands.Choice(name=type.Name, value=type.Name))
@@ -57,15 +58,20 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
   @app_commands.autocomplete(filter=filter_autocomplete)
   async def pokeinfo(self,
                       inter: discord.Interaction,
-                      search: app_commands.Choice[str] | None,
+                      search: app_commands.Choice[str],
                       filter: str):
     print("POKEMON INFO called")
-
+    if search.value == 'single':
+      await PokeInfoSingle(inter, int(filter))
+    elif search.value == 'color':
+      await PokeInfoColor(inter, filter)
+    elif search.value == 'type':
+      await PokeInfoType(inter, filter)
     
 
 
 async def PokeInfoSingle(inter, pokemonId):
-  pokemonList = pokemonservice.SplitPokemonForSearch(pokemonservice.GetPokemonById(pokemonId))
+  pokemonList = pokemonservice.SplitPokemonForSearch(pokemonId)
   if not pokemonList:
     return await discordservice.SendErrorMessage(inter, 'pokeinfo')
   dexViewer = PokedexView(inter, 1, None, 'Pokemon Search')

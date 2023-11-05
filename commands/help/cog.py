@@ -14,22 +14,19 @@ class HelpCommands(commands.Cog, name="HelpCommands"):
 
 
   async def command_autofill(self, inter: discord.Interaction, current: str):
-    try:
-      allHelpComms = helpservice.GetAllHelpCommands(inter.user.guild_permissions.administrator)
-      commands = []
-      for x in allHelpComms:
-        helpList = allHelpComms[x]
-        commands += [h.Name for h in helpList]
-      commands.sort()
-      choices = []
-      for c in commands:
-        if current.lower() in c.lower():
-          choices.append(app_commands.Choice(name=c,value=c))
-          if len(choices) == 25:
-            break
-      return choices
-    except Exception as e:
-      print(f"{e}")
+    allHelpComms = helpservice.GetAllHelpCommands(inter.user.guild_permissions.administrator)
+    commands = []
+    for x in allHelpComms:
+      helpList = allHelpComms[x]
+      commands += [h.Name for h in helpList]
+    commands.sort()
+    choices = []
+    for c in commands:
+      if current.lower() in c.lower():
+        choices.append(app_commands.Choice(name=c,value=c))
+        if len(choices) == 25:
+          break
+    return choices
 
 
   @app_commands.command(
