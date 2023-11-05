@@ -4,37 +4,37 @@
       "name": "register",
       "shortstring": "(Admin Only) Registers this server with the PokeTrainer bot.",
       "helpstring":"Proper command usage: **/start *percent* *[delete]***\nParameters:\n**percent** - The percent chance for a Pokemon to spawn 0-100\n**delete** - (Optional) True/False if the previous spawn message will be deleted every spawn. Default true\n\nWhen this command is run, Pokemon will only spawn in the channel the command is executed, overriding any previous settings if they exist. If you wish to include more channels in the random spawn cycle, look into the **/togglechannel** command. This command also voids any spawn currently available.\n\nEx. **/start 60 True** will have a 60% chance to spawn a Pokemon every 5 minutes after the previous spawn and will delete the previous spawn message.",
-      "requireadmin": true
+      "requiresadmin": true
     },
     {
       "name": "stop",
       "shortstring": "(Admin Only) Deregisters this server from the PokeTrainer bot.",
       "helpstring":"Proper command usage: **/stop**\n\nThis command will remove your server and all settings associated from the PokeTrainer bot. If you wish to use the PokeTrainer bot again, look into the **/register** command.\n\nTrainer data will NOT be deleted in case the server decides to start using PokeTrainer again at a later date.",
-      "requireadmin": true
+      "requiresadmin": true
     },
     {
       "name": "togglechannel",
-      "shortstring": "(Admin Only) Adds/removes the current channel to the random spawn cycle.",
+      "shortstring": "(Admin Only) Add/remove the current channel to the spawn list.",
       "helpstring":"Proper command usage: **/togglechannel**\n\nThis command will toggle the spawning of Pokemon in the current channel. If the channel is already in the spawn list, it will be removed. The full list of channels can be seen through the **/getserver** command.\n\nYour server must be registered with the bot by using the **/start** command first, and there must always be at least one channel in the spawn list.\nIf you wish to turn the bot off, please use the **/stop** command.",
-      "requireadmin": true
+      "requiresadmin": true
     },
     {
       "name": "getserver",
       "shortstring": "(Admin Only) Prints the current server settings.",
       "helpstring":"Proper command usage: **/getserver**\n\nThis command will return the details of the server settings for the bot. This includes the server name, channels toggled for spawning, the percent chance for a spawn, and if previous spawns will be deleted.",
-      "requireadmin": true
+      "requiresadmin": true
     },
     {
       "name": "editspawnchance",
-      "shortstring": "(Admin Only) Change the spawn interval percentage for the server.",
+      "shortstring": "(Admin Only) Change the spawn percentage for the server.",
       "helpstring":"Proper command usage: **/editspawnchance *percent***\nParameters:\n**percent** - New percent chance for a Pokemon to spawn 1-100\n\nThis command will edit the spawn chance of Pokemon in the server. The current spawn chance can be seen through the **/getserver** command.\n\nYour server must be registered with the bot by using the **/start** command first.",
-      "requireadmin": true
+      "requiresadmin": true
     },
     {
       "name": "toggledeletespawn",
-      "shortstring": "(Admin Only) Toggle if the previous spawn should be deleted on new spawn.",
+      "shortstring": "(Admin Only) Toggle if the previous spawn should be deleted.",
       "helpstring":"Proper command usage: **/toggledeletespawn**\n\nThis command will toggle the deletion of previously spawned Pokemon messages. The current toggle can be seen through the **/getserver** command.\n\nYour server must be registered with the bot by using the **/start** command first.",
-      "requireadmin": true
+      "requiresadmin": true
     }
   ],
   "Trainer": [
@@ -42,37 +42,37 @@
       "name": "starter",
       "shortstring":"Begin your PokeTrainer journey by selecting a region and Pokemon.",
       "helpstring":"Proper command usage: **/starter *region* *pokemon***\nParameters:\n**region** - The region in which your starter Pokemon will be from.\n**pokemon** - The starter Pokemon of your choice.\n\nThis command will start the trainers journey, giving them the starter Pokemon of their choosing as well as $500 and 5 Pokeballs. Trainers will begin with 50 Health used for fights, but no Potions. Use **/trainer** and **/inventory** to view your stats and items as well as **/shop** to buy!",
-      "requireadmin": false
+      "requiresadmin": false
     },
     {
       "name": "trainer",
       "shortstring":"Displays information about the current or given user.",
       "helpstring":"Proper command usage: **/trainerinfo *[@user]***\nParameters:\n**@user** - (Optional) A member of the current server.\n\nThis command will give statistics regarding the trainer belonging to either yourself or the specified user. Information will include stats such as health and number of fights, as well as Pokedex statistics such as Pokedex completion, current number of Pokemon, current number of shiny Pokemon, and total Pokemon caught.",
-      "requireadmin": false
+      "requiresadmin": false
     },
     {
       "name": "inventory",
       "shortstring": "Displays the users Pokeballs, Potions, and money.",
       "helpstring":"Proper command usage: **/inventory**\n\nThis command will provide the trainer with their inventory for the current server. You cannot view the inventory of other trainers. Inventory will include money, Pokeball count, and Potion count.",
-      "requireadmin": false
+      "requiresadmin": false
     },
     {
       "name": "pokedex",
       "shortstring": "Displays the current or given users Pokedex.",
       "helpstring":"Proper command usage: **/pokedex *[image]* *[order]* *[shiny]* *[@user]***\nParameters:\n**image** - (Optional) Whether the Pokedex should be shown in image format. Default no images.\n**order** - (Optional) How the Pokedex should be ordered. Default catch order.\n**shiny** - (Optional) Choose if shiny Pokemon are sorted separate.\n**@user** - (Optional) A member of the current server.\n\nThis command will display the current (or given) users Pokedex in a text list form by default. Using the options above, you can format and change the returned list to your liking.\n\n__Examples__\n**/pokedex images:Yes** - Display the current (or given) users Pokedex in a carousel image format with default ordering and no special shiny sorting.\n**/pokedex order:Name shiny:Shiny First** - Display the Pokedex in a text list and sort the Pokedex by name. Shiny Pokemon will be displayed and sorted by name at the front of the list.\n```Gloom✨\nVulpix✨\nAbra\nBlaziken\nZubat```\n**/pokedex  order:National Dex shiny:Shiny Only** - Displays the Pokedex in sorted order by National Dex number and only displays shinies.",
-      "requireadmin": false
+      "requiresadmin": false
     },
     {
       "name": "modifyteam",
       "shortstring": "Place or replace a team slot with the selected Pokemon.",
-      "helpstring": "Proper command usage: **/modifyteam *pokemon***\nParameters:\n**pokemon** - Which Pokemon species you own that you wish to put into your team.\n\nThis command will bring up two dropdowns.\n\nThe first dropdown will be the team slot you wish to place your Pokemon. The list will display the slot number and if there is currently a Pokemon slotted in that space. If a slot already has a Pokemon, it will display the name (along with gender and if it is shiny) as well as it's current level.\n\nThe second dropdown will display all possible Pokemon you are able to select and place into that slot based on the Pokemon name specified in the command parameter. There is no order to the Pokemon dropdown, but you will see the name (along with gender and if it is shiny), hieght, weight, level, and current experience for each listed. The selection list will contain a maximum of 25 Pokemon, so if you own 30 Pidgeys it will display the first 25 in your Pokedex. If the one you wish to place in your team does not show in the selections, you can **/release** some of the Pokemon to make room within the list.",
-      "requireadmin": false
+      "helpstring": "Proper command usage: **/modifyteam *pokemon***\nParameters:\n**pokemon** - Which Pokemon species you own that you wish to put into your team.\n\nThis command will bring up two dropdowns.\n\nThe first dropdown will be the team slot you wish to place your Pokemon. The list will display the slot number and if there is currently a Pokemon slotted in that space. If a slot already has a Pokemon, it will display the name (along with gender and if it is shiny) as well as it's current level.\n\nThe second dropdown will display all possible Pokemon you are able to select and place into that slot based on the Pokemon name specified in the command parameter. There is no order to the Pokemon dropdown, but you will see the name (along with gender and if it is shiny), hieght, weight, level, and current experience for each listed. The selection list will contain a maximum of 25 Pokemon, so if you own 30 Pidgeys it will display the first 25 in your Pokedex. If the one you wish to place in your team does not show in the selections, you can **/release** some of the Pokemon to make room.",
+      "requiresadmin": false
     },
     {
       "name": "usepotion",
       "shortstring": "Select a potion from your inventory to heal your trainer.",
       "helpstring": "Proper command usage: **/usepotion *potion***\nParameters:\n**potion** - Which type of potion to heal yourself with.\n\nThis command is how you can heal your trainer health using the potions within your **/inventory**. If your trainer is at full health, it will notify you and not use any of your potions. The command will list all potion types, so make sure you select one that you own! To buy more potions, use the **/buy** command.\n\n__Healing__\n**Potion** - $100 - 10 HP\n**Super Potion** - $350 - 40 HP\n**Hyper Potion** - $600 - 80 HP\n**Max Potion** - $750 - 100 HP",
-      "requireadmin": false
+      "requiresadmin": false
     }
   ],
   "Shop": [
@@ -80,19 +80,19 @@
       "name": "shop",
       "shortstring": "Displays available shop items and prices.",
       "helpstring":"Proper command usage: **/shop**\n\nDisplays the current available items in the shop. The categories for now include *Pokeballs* and *Potions*.\n\nPokeballs are used for capturing wild Pokemon that spawn. You can only buy 3 types of Pokeballs. Masterballs cannot be purchased.\n__Prices__\nPokeball - $100\nGreatball - $300\nUltraball - $600\n\nPotions are used to restore Trainer Health. You may buy 4 types of potions.\n__Prices__\nPotion - $100\nSuper Potion - $350\nHyper Potion - $600\nMax Potion - $750",
-      "requireadmin": false
+      "requiresadmin": false
     },
     {
       "name": "buy",
       "shortstring":"Uses the shop to buy the specified item(s).",
       "helpstring":"Proper command usage: **/buy *type* *item* *[amount]***\nParameters:\n**type** - Which type of item you wish to purchase.\n**item** - Which item of the specified type to purchase.\n**amount** - (Optional) How many of the item you wish to buy. Default 1.\n\nThis command is used to purchase the item of your choice.\n\nThe first selection will be which type of item to buy. As of now, it includes *Ball* and *Potion*.\n\nThe second choice will be which item of the specified type you wish to buy. The list will have the name and buying price of each item.\n\nYou may also specify how many of the item you wish to buy. If you select an amount that you cannot afford, no purchase will be made. You can check your funds by using the **/inventory** command.\n\nA full list of items to purchase can be seen in the **/shop** command.",
-      "requireadmin": false
+      "requiresadmin": false
     },
     {
       "name": "sell",
       "shortstring":"Uses the shop to sell the specified item(s).",
       "helpstring":"Proper command usage: **/sell *type* *item* *[amount]***\nParameters:\n**type** - Which type of item you wish to sell.\n**item** - Which item of the specified type to sell.\n**amount** - (Optional) How many of the item you wish to sell. Default 1.\n\nThis command is used to sell the item of your choice.\n\nThe first selection will be which type of item to sell. As of now, it includes *Ball* and *Potion*.\n\nThe second choice will be which item of the specified type you wish to sell. The list will have the name and selling price of each item.\n\nYou may also specify how many of the item you wish to sell.\n\nYour list of items available to sell can be seen through the **/inventory** command.",
-      "requireadmin": false
+      "requiresadmin": false
     }
   ],
   "Pokemon": [
@@ -100,7 +100,7 @@
       "name": "pokeinfo",
       "shortstring": "Displays information for the specified Pokemon.",
       "helpstring":"Proper command usage: **/pokeinfo *search* *filter***\nParameters:\n**search** - Which kind of search to perform.\n**filter** - The filter based on the search provided.\n\nA way for trainers to look at average information about a specific Pokemon species that may spawn or be obtained through other means. Currently, there are 3 different options to search for:\n\n__Single Pokemon__\nThe filter will just be an auto-completing list of Pokemon names. This search will display a carousel of two images: the basic and shiny form of the specified Pokemon. Each card will display the average information of the Pokemon such as Average Height, Average Weight, Typing, and Spawn Rarity (1-5). Types are used during fights which can be further explained using the **/help fight** command. Spawn Rarity is used for multiple reasons, which can be seen in both **/help spawn** and **/help fight**\n\n__Pokemon By Color__\nThe filter for this search will be all color classifications the Pokemon can have (such as *blue*, *red*, etc.). The color of a Pokemon is based on the Color filter within **Pokemon HOME**. The result of this search will be a text-based list of Pokemon names that belong in the selected color group, sorted by name.\n\nYou may see some oddities, such as Alolan Rattata being grouped with *purple*. This is because **Pokemon Home** classifies each Pokemon based on the *species*, and both Rattata and Alolan Rattata are of the same *Rattata* species, which base color is purple.\n\n__Pokemon By Type__\nThe filter will consist of all the different types a Pokemon can be. Once the type is selected, a list of text-based Pokemon names belonging to the type will be shown. They will also have their types listed, and will be sorted by specified type being their first type, then by name:\nExample: **/pokeinfo Pokemon-By-Type Dragon**```Axew (Dragon)\nBagon (Dragon)\n...\nAltaria (Dragon/Flying)\nArctibax (Dragon/Ice)\n...\nAlolan Exeggutor (Grass/Dragon)\nKingdra (Water/Dragon)\n...```",
-      "requireadmin": false
+      "requiresadmin": false
     }
   ],
   "Actions": [
@@ -108,30 +108,31 @@
       "name": "spawn",
       "shortstring": "Pokemon will have a chance to spawn in channels set up by a server admin.",
       "helpstring": "There are no commands that spawn a Pokemon, but rather a random chance appointed by a server admin. When the bot is active, the spawn chance will be set to 1-100%. There can also be multiple channels registered to be valid spawn areas for PokeTrainer, also set by a server admin.\n\nSpawning is how trainers can grow their collection through capturing and earn money through fighting. When a Pokemon is determined to spawn, there are a few factors that go into the spawn calculation. The first factor to be considered is the spawn rarity, then there are some exclusions, and finally there are numbers crunched for shiny odds and other details.\n\n__Rarity__\nMore information can be seen through the **/help rarity** command. Rarities have certain chances to spawn:\nRarity 1 - 60%\nRarity 2 - 25%\nRarity 3 - 10%\nRarity 4 - 3%\nRarity 5 - 2%\n\n__Exclusions__\nThere are exclusions that will not be found during a regular spawn event. Here is a list of Pokemon types that are not considered:\n- Starters, Legendaries/Mythicals, Mega forms.\n\n__Details__\nSome details that are calculated during the spawn process are *shiny rate*, *height/weight*, and *female chance*\n- **Shiny Rate** - Currently set at 1/3000\n- **Height/Weight** - Randomly set to +-10% of average stat seen from **/pokeinfo**\n- **Gender** - Each Pokemon has a stat out of 8 to be female. Seen in **/pokeinfo**.\n\nEvery spawn will have 4 emojis attached: Pokeball, Greatball, Ultraball, Fight. The explanation for each can be seen through **/help capture** and **/help fight**.",
-      "requireadmin": false
+      "requiresadmin": false
     },
     {
       "name": "fight",
       "shortstring": "Fighting in battles cost trainer HP, but can earn money.",
-      "helpstring": "When a Pokemon spawns, there is a reaction available to fight it (⚔️), both gaining money for your trainer and experience for your first slotted Pokemon. Fighting results are based off of 3 different comparisons in the process: Typing 1, Typing 2, and rarity. When fighting a wild Pokemon, the Pokemon in the first slow of the trainers team will be used to fight. Trainers can change their team using the **/modifyteam** command. Calculations and examples of fights seen below.\n\nThe first and second comparisons on *typing* are treated the exact same way. When a trainer fights a wild Pokemon, they are always on the offensive. This means every typing check is based off of the trainer's Pokemon being the attacker and the wild Pokemon being the defender. Each type can be strong, weak, neutral, or inaffective against the defending type. If a Pokemon only has one type, it will use that same type for the first and second comparison. Examples:\n```__Chinchou (Water/Electric) vs Charizard (Fire/Flying)__\nWater vs Fire      --> Chinchou Wins\nElectric vs Flying --> Chinchou Wins\n__Ninetales (Fire) vs Dewgong (Water/Ice)__\nFire vs Water      --> Dewgong Wins\nFire vs Ice        --> Ninetales Wins```\nNow based on just this, Chinchou would beat a Charizard....but that doesn't make much sense, so then Rarity of each may also come into play.\n\nRarity has a large part in the battle, but only if it actually bcomes a determining factor. If rarity is decided, the larger the difference beween the two, the bigger the impact.\n```First-stage vs Final-stage: Rarity will superceed type advantages.\nChinchou (2) vs Charizard (5) --> Charizard Wins\nRalts (1) vs Machamp (5)      --> Machamp Wins\n\nFirst-stage vs Middle-stage (or non-evolving):\nMiddle-stage (or non-evolving) vs Final-stage: Rarity will only come into play if the lower-rarity Pokemon does NOT have a double type advantage.\n```Squirtle (1) vs. Charmeleon (3) --> No rarity impact\nGloom (3) vs Gyarados (4) --> Rarity will be a factor```\nWhen fighting wild Pokemon, the amount of trainer HP lost is determined by how many above comparisons the trainer's Pokemon wins or loses. You may heal your trainer HP by using a potion with **/usepotion**. You ma purchase potions using the shop. If a fight fails for any reason, such as the user has not created a trainer, the reaction will be removed.\n\nNOTE: Pokemon level **__does NOT__** effect the battle outcomes. Levels are purely used for evolving and events.",
-      "requireadmin": false
+      "helpstring": "When a Pokemon spawns, there is a reaction available to fight it (⚔️), both gaining money for your trainer and experience for your first slotted Pokemon. Fighting results are based off of 3 different comparisons in the process: Typing 1, Typing 2, and rarity. When fighting a wild Pokemon, the Pokemon in the first slow of the trainers team will be used to fight. Trainers can change their team using the **/modifyteam** command. Calculations and examples of fights seen below.\n\nThe first and second comparisons on *typing* are treated the exact same way. When a trainer fights a wild Pokemon, they are always on the offensive. This means every typing check is based off of the trainer's Pokemon being the attacker and the wild Pokemon being the defender. Each type can be strong, weak, neutral, or inaffective against the defending type. If a Pokemon only has one type, it will use that same type for the first and second comparison. Examples:\n```Chinchou (Water/Electric) vs Charizard (Fire/Flying)\n- Water vs Fire      --> Chinchou Wins\n- Electric vs Flying --> Chinchou Wins\nNinetales (Fire) vs Dewgong (Water/Ice)\n- Fire vs Water      --> Dewgong Wins\n- Fire vs Ice        --> Ninetales Wins```\nNow based on just this, Chinchou would beat a Charizard....but that doesn't make much sense, so then Rarity of each may also come into play.\n\nRarity has a large part in the battle, but only if it actually bcomes a determining factor. If rarity is decided, the larger the difference beween the two, the bigger the impact.\n```First-stage vs Final-stage:\nRarity will superceed type advantages.\n- Chinchou (2) vs Charizard (5) --> Charizard Wins\n- Ralts (1) vs Machamp (5)      --> Machamp Wins\n\nFirst-stage vs Middle-stage (or non-evolving):\nMiddle-stage (or non-evolving) vs Final-stage:\nRarity will only come into play if the lower-rarity Pokemon does NOT have a double type advantage.\n- Squirtle (1) vs. Charmeleon (3) --> No rarity impact\n- Gloom (3) vs Gyarados (4) --> Rarity will be a factor```\nWhen fighting wild Pokemon, the amount of trainer HP lost is determined by how many above comparisons the trainer's Pokemon wins or loses. You may heal your trainer HP by using a potion with **/usepotion**. You ma purchase potions using the shop. If a fight fails for any reason, such as the user has not created a trainer, the reaction will be removed.\n\nNOTE: Pokemon level **__does NOT__** effect the battle outcomes. Levels are purely used for evolving and events.",
+      "requiresadmin": false
     },
     {
       "name": "capture",
       "shortstring": "When a wild Pokemon spawns, trainers may attempt to capture it.",
-      "helpstring": "With every Pokemon wild spawn, there are three different reactions to try and capture. The three correspond to:\n🔴 - Pokeball, 🔵 - Greatball, 🟡 - Ultraball\n\nFor a capture to be successful, the trainer must choose one of the ball reactions and have at least one of the chosen ball in their inventory, able to be checked with the **/inventory** command. If a fight fails for any reason, such as the user has not created a trainer, the reaction will be removed.\n\nNOTE: Ball capture rate is coming soon. For now it is smart to only purchase Pokeballs.",
-      "requireadmin": false
+      "helpstring": "With every Pokemon wild spawn, there are three different reactions to try and capture. The three correspond to:\n🔴 - Pokeball, 🔵 - Greatball, 🟡 - Ultraball\n\nFor a capture to be successful, the trainer must choose one of the ball reactions and have at least one of the chosen ball in their inventory, able to be checked with the **/inventory** command. If a fight fails for any reason, such as the user has not created a trainer, the reaction will be removed. Reactions will be removed on a failed attempt as well, such as selecting a ball that you do not possess.\n\nNOTE: Ball capture rate is coming soon. For now it is smart to only purchase Pokeballs.",
+      "requiresadmin": false
     },
     {
       "name": "rarity",
       "shortstring": "Every Pokemon has a calculated rarity used for spawning and fighting.",
       "helpstring": "Rarity is best described as how rare a Pokemon is to be chosen during a regular spawn event. There are 5 different levels of rarity:\n```Level 1 - Initial stage of a 3-stage evolution. Examples: Pidgey, Nidoran.\nLevel 2 - Initial stage of a 2-stage evolution. Examples: Onix, Eevee.\nLevel 3 - Second stage of a 3-stage evolution OR a Pokemon without an evolution. Examples: Lapras, Haunter.\nLevel 4 - Final stage of a 2-stage evolution. Examples: Gyarados, Weezing.\nLevel 5 - Final stage of a 3-stage evolution. Examples: Victreebel, Dragonite.```\nRarity is calculate based on if there are evolutions preceeding or succeeding the current Pokemon, and how many. Two normal examples are the Pidgey/Fearow lines:\n```Pidgey (1) ---> Pidgeotto (3) ---> Pidgeot (5)\n\nSpearow (2) ---> Fearow (4)```\nOne strange example is the Mime Jr. line:\n```             ---> Mr. Mime (4)\nMime Jr. (1) |\n             ---> Galarian Mr. Mime (3) ---> Mr. Rime (5)```\nMime Jr. is considered a rarity 1 because it's the initial stage and its maximum chain is 3 evolutions. Mr. Mime is considered rarity 4 because it's considered the final evolution in a 2-stage chain.",
-      "requireadmin": false
+      "requiresadmin": false
     },
     {
       "name": "evolution",
       "shortstring": "Some Pokemon are able to evolve through levels.",
-      "helpstring": "Evolution in PokeTrainer is much more simplified than the mainstream games. If a Pokemon has an option for evolution, the level still comes into play, but is standardized among all Pokemon of the same rarity"
+      "helpstring": "Evolution in PokeTrainer is much more simplified than the mainstream games. If a Pokemon has an option for evolution, the level still comes into play, but is standardized among all Pokemon of the same rarity:\n\nInitial Stage -> Second Stage: **Level 20**\nEx. Weedle -> Kakuna\n\nInitial Stage -> Final Stage: **Level 30**\nEx. Ekans -> Arbok\n\nSecond Stage -> Final Stage: Level 35\nEx. Nidorino -> Nidoking",
+      "requiresadmin": false
     }
   ]
 }
