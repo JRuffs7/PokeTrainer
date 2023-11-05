@@ -45,7 +45,8 @@ class HelpCommands(commands.Cog, name="HelpCommands"):
       tr = discordservice.CreateEmbed("", helpList[2], HelpColor)
       cm = discordservice.CreateEmbed("", helpList[3], HelpColor)
 
-      await discordservice.SendDMs(inter, [su, sp, tr, cm])
+      await discordservice.SendDMs(inter, [su, sp])
+      await discordservice.SendDMs(inter, [tr, cm])
       return await discordservice.SendMessage(
           inter, "Help DM sent.",
           "For more information on specific commands, use **/help** and specify a command",
