@@ -131,7 +131,7 @@
     {
       "name": "evolution",
       "shortstring": "Some Pokemon are able to evolve through levels.",
-      "helpstring": "Evolution in PokeTrainer is much more simplified than the mainstream games. If a Pokemon has an option for evolution, the level still comes into play, but is standardized among all Pokemon of the same rarity:\n\nInitial Stage -> Second Stage: **Level 20**\nEx. Weedle -> Kakuna\n\nInitial Stage -> Final Stage: **Level 30**\nEx. Ekans -> Arbok\n\nSecond Stage -> Final Stage: Level 35\nEx. Nidorino -> Nidoking",
+      "helpstring": "Evolution in PokeTrainer is much more simplified than the mainstream games. If a Pokemon has an option for evolution, it will always use a level requirement to evolve, standardized among all Pokemon of the same rarity. Rarity explanations can be viewed with **/help rarity**. A breif summary of level requirements are as such:\n- Initial Stage > Stage 2: **Level 20**\nEx. Caterpie > Metapod\n\n- Initial Stage > Final Stage: **Level 30**\nEx. Ponyta > Rapidash\n\nStage 2 > Final Stage: **Level 35**\nEx. Dragonair > Dragonite\n\nGaining experience comes from battling wild Pokemon, a better descriptions seen through **/help fight**, and the amount of experience required is based off of the Pokemons current rarity.\n\nBulbasaur (1): 50 experience needed per level\nIvysaur (3): 150 experience needed per level\nVenusaur (5): 250 experience per level\nGrowlithe (2): 100 experience per level\nArcanine (4): 250 experience per level",
       "requiresadmin": false
     }
   ]

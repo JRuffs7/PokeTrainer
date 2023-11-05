@@ -97,9 +97,9 @@ class SpawnPokemon:
 
   def GainExp(self, expGain: int, rarity: int):
     self.CurrentExp += expGain
-    if self.CurrentExp >= (50 * (1 if rarity <= 2 else 2 if rarity == 3 else 4)):
+    if self.CurrentExp >= (50 * rarity) if rarity <= 3 else 250:
       self.Level += 1
-      self.CurrentExp -= (50 * (1 if rarity <= 2 else 2 if rarity == 3 else 4))
+      self.CurrentExp -= (50 * rarity) if rarity <= 3 else 250
   
 class PokedexEntry:
   Name: str
