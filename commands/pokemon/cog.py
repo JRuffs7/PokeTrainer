@@ -5,8 +5,8 @@ import discord
 import discordbot
 
 from commands.views.PokedexView import PokedexView
-from globals import PokemonColor, to_dict
-from services import pokemonservice
+from globals import PokemonColor
+from services import pokemonservice, typeservice
 from services.utility import discordservice
 
 
@@ -18,36 +18,84 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
     self.bot = bot
     
 
-  async def color_autocomplete(self, inter: discord.Interaction, current: str) -> List[app_commands.Choice[str]]:
-    return [app_commands.Choice(name=c,value=c) for c in pokemonservice.GetPokemonColors() if current.lower() in c.lower()]
+  async def filter_autocomplete(self, inter: discord.Interaction, current: str) -> List[app_commands.Choice[str]]:
+    search = inter.namespace['search']
+    choiceList = []
+    if search == 'single':
+      searchList = pokemonservice.GetAllPokemon()
+      searchList.sort(key=lambda x: x.Name)
+      for pkmn in searchList:
+        if current.lower() in pkmn.Name.lower():
+          choiceList.append(app_commands.Choice(name=pkmn.Name, value=f"{pkmn.Id}"))
+          if len(choiceList) == 25:
+            break
+    elif search == 'color':
+      searchList = list(pokemonservice.GetPokemonColors())
+      searchList.sort()
+      for color in searchList:
+        if current.lower() in color.lower():
+          choiceList.append(app_commands.Choice(name=color, value=color))
+          if len(choiceList) == 25:
+            break
+    elif search == 'type':
+      searchList = typeservice.GetAllTypes()
+      searchList.sort(key=lambda x: x.Name)
+      for type in searchList:
+        if current.lower() in type.Name.lower():
+            choiceList.append(app_commands.Choice(name=type.Name, value=type.Name))
+            if len(choiceList) == 25:
+              break
+    return choiceList
 
 
-  @app_commands.command(name="pokemoncolors",
+  @app_commands.command(name="pokeinfo",
                         description="Lists all Pokemon for the given color alphabetically.")
-  @app_commands.choices(images=[
-      discord.app_commands.Choice(name="Yes", value=1),
-      discord.app_commands.Choice(name="No", value=0)
+  @app_commands.choices(search=[
+      discord.app_commands.Choice(name="Single Pokemon", value='single'),
+      discord.app_commands.Choice(name="Color", value="color"),
+      discord.app_commands.Choice(name="Type", value="type")
   ])
-  @app_commands.autocomplete(color=color_autocomplete)
-  async def PokemonColors(self,
-                        inter: discord.Interaction,
-                        color: str,
-                        images: app_commands.Choice[int] | None):
-    print("POKEMON COLORS called")
-    try:
-      pokemonList = pokemonservice.GetPokemonByColor(color)
-      if pokemonList:
-        pokemonList.sort(key=lambda x: x.Name)
-        if images and images.value:
-            dexViewer = PokedexView(inter, 1, None, f"List of {color} Pokemon")
-            dexViewer.data = to_dict(pokemonList)
-        else:
-          dexViewer = PokedexView(inter, 10, None, f"List of {color} Pokemon")
-          dexViewer.data = [f"{x['Name']}" for x in to_dict(pokemonList)]
-        await dexViewer.send()
-      await discordservice.SendMessage(inter, f"List of {color} Pokemon", "No Pokemon fit this color", PokemonColor, True)
-    except Exception as e:
-      print(f"{e}")
+  @app_commands.autocomplete(filter=filter_autocomplete)
+  async def pokeinfo(self,
+                      inter: discord.Interaction,
+                      search: app_commands.Choice[str],
+                      filter: str):
+    print("POKEMON INFO called")
+    if search.value == 'single':
+      await PokeInfoSingle(inter, int(filter))
+    elif search.value == 'color':
+      await PokeInfoColor(inter, filter)
+    elif search.value == 'type':
+      await PokeInfoType(inter, filter)
+    
+
+
+async def PokeInfoSingle(inter, pokemonId):
+  pokemonList = pokemonservice.SplitPokemonForSearch(pokemonId)
+  if not pokemonList:
+    return await discordservice.SendErrorMessage(inter, 'pokeinfo')
+  dexViewer = PokedexView(inter, 1, None, 'Pokemon Search')
+  dexViewer.data = pokemonList
+  await dexViewer.send()
+  
+
+async def PokeInfoColor(inter, color):
+  pokemonList = pokemonservice.GetPokemonByColor(color.lower())
+  if not pokemonList:
+    return await discordservice.SendErrorMessage(inter, 'pokeinfo')
+  pokemonList.sort(key=lambda x: x.Name)
+  dexViewer = PokedexView(inter, 10, None, f"List of {color} Pokemon")
+  dexViewer.data = pokemonList
+  await dexViewer.send()
+
+
+async def PokeInfoType(inter, type):
+  pokemonList = pokemonservice.GetPokemonByType(type.lower())
+  if not pokemonList:
+    return await discordservice.SendErrorMessage(inter, 'pokeinfo')
+  dexViewer = PokedexView(inter, 10, None, f"List of {type} type Pokemon")
+  dexViewer.data = pokemonList
+  await dexViewer.send()
 
 
 async def setup(bot: commands.Bot):

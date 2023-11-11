@@ -29,7 +29,7 @@ class DebugCommands(commands.Cog, name="DebugCommands"):
     spawn = pokemonservice.GenerateSpawnPokemon(pokemon)
     if shiny:
       spawn.IsShiny = True
-    trainer.OwnedPokemon.append(spawn)
+    trainer = trainerservice.AddNewOwnedPokemon(trainer, spawn)
     trainerservice.UpsertTrainer(trainer)
 
 
@@ -46,58 +46,37 @@ class DebugCommands(commands.Cog, name="DebugCommands"):
   @commands.command(name="cheatModifypokeball")
   @commands.has_permissions(administrator=True)
   async def modify_pokeball(self, ctx: commands.Context, amount: int):
-    try:
-      trainer = trainerservice.GetTrainer(ctx.guild.id, ctx.author.id)
-      if trainer is None:
-        return await ctx.message.channel.send(
-            "This trainer doesn't exist, ya dummy")
-      trainer.PokeballList = trainerservice.ModifyItemList(
-          trainer.PokeballList, 1, amount)
-      trainerservice.UpsertTrainer(trainer)
-      await ctx.message.channel.send("You modified your pokeball list!!!!!")
-    except Exception as e:
-      print(f"{e}")
+    trainer = trainerservice.GetTrainer(ctx.guild.id, ctx.author.id)
+    if trainer is None:
+      return await ctx.message.channel.send(
+          "This trainer doesn't exist, ya dummy")
+    trainer.PokeballList = trainerservice.ModifyItemList(
+        trainer.PokeballList, 1, amount)
+    trainerservice.UpsertTrainer(trainer)
+    await ctx.message.channel.send("You modified your pokeball list!!!!!")
 
 
   @commands.command(name="cheatModifypotion")
   @commands.has_permissions(administrator=True)
   async def modify_potion(self, ctx: commands.Context, amount: int):
-    try:
-      trainer = trainerservice.GetTrainer(ctx.guild.id, ctx.author.id)
-      if trainer is None:
-        return await ctx.message.channel.send(
-            "This trainer doesn't exist, ya dummy")
-      trainer.PotionList = trainerservice.ModifyItemList(
-          trainer.PotionList, 1, amount)
-      trainerservice.UpsertTrainer(trainer)
-      await ctx.message.channel.send("You modified your potions list!!!!!")
-    except Exception as e:
-      print(f"{e}")
+    trainer = trainerservice.GetTrainer(ctx.guild.id, ctx.author.id)
+    if trainer is None:
+      return await ctx.message.channel.send(
+          "This trainer doesn't exist, ya dummy")
+    trainer.PotionList = trainerservice.ModifyItemList(
+        trainer.PotionList, 1, amount)
+    trainerservice.UpsertTrainer(trainer)
+    await ctx.message.channel.send("You modified your potions list!!!!!")
 
   
   @commands.command(name="cheatSpawnPokemon")
   @commands.has_permissions(administrator=True)
   async def cheatSpawnPokemon(self, ctx: commands.Context, id: int):
-    try:
-      pkmn = pokemonservice.GetPokemonById(id)
-      if not pkmn:
-        return
-      spawn = pokemonservice.GenerateSpawnPokemon(pkmn)
-      await discordservice.SendPokemon(ctx.guild.id, ctx.channel.id, spawn, True)
-    except Exception as e:
-      print(f"{e}")
-
-
-  @commands.command(name="listallcolors")
-  @commands.has_permissions(administrator=True)
-  async def cheatSpawnPokemon(self, ctx: commands.Context):
-    try:
-      colors = pokemonservice.GetPokemonColors()
-      if not colors:
-        return
-      await ctx.channel.send(colors)
-    except Exception as e:
-      print(f"{e}")
+    pkmn = pokemonservice.GetPokemonById(id)
+    if not pkmn:
+      return
+    spawn = pokemonservice.GenerateSpawnPokemon(pkmn)
+    await discordservice.SendPokemon(ctx.guild.id, ctx.channel.id, spawn, True)
 
 
 async def setup(bot: commands.Bot):

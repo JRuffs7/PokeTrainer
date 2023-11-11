@@ -3,10 +3,10 @@ from discord import Member, app_commands
 from discord.ext import commands
 from discord.user import discord
 from commands.views.PokedexView import PokedexView
+from commands.views.TeamSelectorView import TeamSelectorView
 
 from globals import ErrorColor, TrainerColor
-from models.CustomException import TrainerInvalidException
-from services import trainerservice
+from services import trainerservice, pokemonservice, itemservice
 from services.utility import discordservice
 
 
@@ -15,36 +15,47 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
   def __init__(self, bot: commands.Bot):
     self.bot = bot
 
-  @app_commands.command(name="trainerinfo",
+  @app_commands.command(name="trainer",
                         description="Displays trainer info.")
-  async def trainerinfo(self,
+  async def trainer(self,
                         interaction: discord.Interaction,
                         member: Member | None = None):
-    print("TRAINER INFO called")
+    print("TRAINER called")
     targetUser = member if member else interaction.user
     trainer = trainerservice.GetTrainer(interaction.guild_id, targetUser.id)
+    if not trainer:
+      return await discordservice.SendTrainerError(interaction)
 
-    embed = discordservice.CreateEmbed(
-        f"{targetUser.display_name}'s Trainer Info", trainer if trainer else
-        "This user does not have a registered trainer for this server. To create a trainer, react and catch a spawned Pokemon, or use the **~starter** command.",
-        TrainerColor)
-    if trainer:
-      embed.set_thumbnail(url=targetUser.display_avatar.url)
+    embed = discordservice.CreateEmbed(f"{targetUser.display_name}'s Trainer Info", trainer, TrainerColor)
+    embed.set_thumbnail(url=targetUser.display_avatar.url)
     await discordservice.SendEmbed(interaction, embed)
+
+  async def autofill_usepotion(self, inter: discord.Interaction, current: str):
+    data = []
+    trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
+    if trainer:
+      ptnList = [itemservice.GetPotion(p) for p in trainer.PotionList]
+      ptnList.sort(key=lambda x: x.Id)
+      for ptn in ptnList:
+        if current.lower() in ptn.Name.lower() and ptn.Name not in [i.name for i in data]:
+          data.append(app_commands.Choice(name=ptn.Name, value=ptn.Id))
+        if len(data) == 25:
+          break
+    return data
 
   @app_commands.command(name="usepotion",
                         description="Use a potion to restore trainer health.")
-  @app_commands.choices(potion=[
-      discord.app_commands.Choice(name="Potion", value=1),
-      discord.app_commands.Choice(name="Super Potion", value=2),
-      discord.app_commands.Choice(name="Hyper Potion", value=3),
-      discord.app_commands.Choice(name="Max Potion", value=4)
-  ])
+  @app_commands.autocomplete(potion=autofill_usepotion)
   async def usepotion(self, inter: discord.Interaction,
-                      potion: app_commands.Choice[int]):
+                      potion: int):
+    print("USE POTION called")
     try:
-      result = trainerservice.TryUsePotion(inter.guild_id, inter.user.id,
-                                           potion.value)
+      trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
+      ptn = itemservice.GetPotion(potion)
+      if not trainer or not ptn:
+        return await discordservice.SendTrainerError(inter)
+      
+      result = trainerservice.TryUsePotion(trainer, ptn)
       if result is None:
         return await discordservice.SendErrorMessage(inter, 'usepotion')
 
@@ -52,37 +63,77 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
         if result[1] > 0:
           return await discordservice.SendMessage(
               inter, 'Health Restored',
-              f'{potion.name} used to restore {result[1]} trainer health.',
-              TrainerColor, True)
+              f'{ptn.Name} used to restore {result[1]} trainer health.',
+              TrainerColor)
         return await discordservice.SendMessage(
             inter, 'Health Full',
-            f'{potion.name} not used because health is already full.',
-            TrainerColor, True)
+            f'{ptn.Name} not used because health is already full.',
+            TrainerColor)
       return await discordservice.SendMessage(
           inter, 'No Healing',
-          f'You do not own an {potion.name}s. Please visit the **/shop** to stock up.',
-          TrainerColor, True)
-    except TrainerInvalidException:
-      await discordservice.SendTrainerError(inter)
+          f'You do not own an {ptn.Name}s. Please visit the **/shop** to stock up.',
+          TrainerColor)
+    except Exception as e:
+      print(f"{e}")
 
   @app_commands.command(name="inventory",
                         description="Displays your current inventory.")
   async def inventory(self, inter: discord.Interaction):
     print("INVENTORY called")
-    try:
-      items = trainerservice.GetInventory(inter.guild_id, inter.user.id)
-      pkblList = items[1]
-      ptnList = items[2]
-      newline = '\n'
+    trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
+    if not trainer:
+      return await discordservice.SendTrainerError(inter)
+    
+    items = trainerservice.GetInventory(trainer)
+    pkblList = items[1]
+    ptnList = items[2]
+    newline = '\n'
 
-      pokeballString = f"__Pokeballs__\n{newline.join([f'{i}: {pkblList[i]}' for i in pkblList])}"
-      potionString = f"__Potions__\n{newline.join([f'{i}: {ptnList[i]}' for i in ptnList])}"
-      embed = discordservice.CreateEmbed(
-          f"{inter.user.display_name}'s Inventory",
-          f"${items[0]}\n\n{pokeballString}\n\n{potionString}", TrainerColor)
-      return await discordservice.SendEmbed(inter, embed, True)
-    except TrainerInvalidException:
-      await discordservice.SendTrainerError(inter)
+    pokeballString = f"__Pokeballs__\n{newline.join([f'{i}: {pkblList[i]}' for i in pkblList])}"
+    potionString = f"__Potions__\n{newline.join([f'{i}: {ptnList[i]}' for i in ptnList])}"
+    embed = discordservice.CreateEmbed(
+        f"{inter.user.display_name}'s Inventory",
+        f"${items[0]}\n\n{pokeballString}\n\n{potionString}", TrainerColor)
+    return await discordservice.SendEmbed(inter, embed, True)
+      
+
+  #region TEAM
+
+  async def pokemon_autocomplete(self, inter: discord.Interaction, current: str) -> List[app_commands.Choice[str]]:
+    data = []
+    trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
+    if trainer:
+      pkmnList = list(set([p.Name for p in trainer.OwnedPokemon if p.Id not in trainer.Team]))
+      pkmnList.sort()
+      for pkmn in pkmnList:
+        if current.lower() in pkmn.lower():
+          data.append(app_commands.Choice(name=pkmn, value=pkmn.lower()))
+        if len(data) == 25:
+          break
+    return data
+
+  @app_commands.command(name="modifyteam",
+                        description="Add or substitute a Pokemon to a team slot.")
+  @app_commands.autocomplete(pokemon=pokemon_autocomplete)
+  async def modifyteam(self, inter: discord.Interaction,
+                    pokemon: str):
+    print('MODIFY TEAM called')
+    trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
+    if not trainer:
+      return await discordservice.SendTrainerError(inter)
+    
+    result = [x for x in trainer.OwnedPokemon if x.Name.lower() == pokemon.lower()]
+    if not result:
+      return await discordservice.SendMessage(inter, 'Invalid Pokemon', f'You do not own any Pokemon with the name {pokemon}', ErrorColor)
+
+    teamSelect = TeamSelectorView(
+      inter,
+      [next((p for p in trainer.OwnedPokemon if t and p.Pokemon.Id == t), None) for t in trainer.Team],
+      result)
+    await teamSelect.send()
+      
+
+  #endregion
 
   #region POKEDEX
 
@@ -110,23 +161,19 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
                     shiny: app_commands.Choice[int] | None,
                     user: discord.Member | None):
     print("POKEDEX called")
-    try:
-      pokedex = trainerservice.GetPokedexList(
-          inter.guild_id, user.id if user else inter.user.id,
-          order.value if order else None, shiny.value if shiny else None)
-      if images and images.value:
-        dexViewer = PokedexView(inter, 1, user if user else inter.user, f"{user.display_name if user else inter.user.display_name}'s Pokedex")
-        dexViewer.data = pokedex
-      else:
-        dexViewer = PokedexView(inter, 10, user if user else inter.user, f"{user.display_name if user else inter.user.display_name}'s Pokedex")
-        dexViewer.data = [
-            f"{x['Name']}:sparkles:" if x['Pokemon'].IsShiny else x['Name']
-            for x in pokedex
-        ]
-      await dexViewer.send()
-
-    except TrainerInvalidException:
-      await discordservice.SendTrainerError(inter)
+    trainer = trainerservice.GetTrainer(inter.guild_id, user.id if user else inter.user.id)
+    if not trainer:
+      return await discordservice.SendTrainerError(inter)
+    
+    numUnique = len(set([p.Pokemon.Pokemon_Id for p in trainer.OwnedPokemon]))
+    numPkmn = pokemonservice.GetPokemonCount()
+    if images and images.value:
+      dexViewer = PokedexView(inter, 1, user if user else inter.user, f"{user.display_name if user else inter.user.display_name}'s Pokedex ({numUnique}/{numPkmn})")
+    else:
+      dexViewer = PokedexView(inter, 10, user if user else inter.user, f"{user.display_name if user else inter.user.display_name}'s Pokedex ({numUnique}/{numPkmn})")
+    dexViewer.data = trainerservice.GetPokedexList(trainer, order.value if order else None, shiny.value if shiny else None)
+    await dexViewer.send()
+      
 
   #endregion
 
@@ -170,7 +217,6 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
       {'Region':9,'Name':'Fuecoco','Value':909},
       {'Region':9,'Name':'Quaxly','Value':912}
     ]
-    print(f"{current}: {inter.namespace['region']}")
     region = int(inter.namespace['region'])
     choices = []
     if not region:
@@ -192,20 +238,19 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
           f"The trainer {inter.user.display_name} already has started to capture Pokemon. This command is only for trainers that have yet to begin their journey.",
           ephemeral=True)
 
-    result = trainerservice.StartTrainer(pokemon, inter.user.id,
+    trainer = trainerservice.StartTrainer(pokemon, inter.user.id,
                                          inter.guild_id)
-    if result:
+    if trainer:
       embed = discordservice.CreateEmbed(
           "Trainer Created!",
-          f"Starter: {result[1].Name} {':female_sign:' if result[0].OwnedPokemon[0].IsFemale else ':male_sign:'}\nStarting Money: ${result[0].Money}",
+          f"Starter: {trainer.OwnedPokemon[0].GetNameString()}\nStarting Money: ${trainer.Money}\nStarting Pokeballs: 5",
           TrainerColor)
-      embed.set_image(
-          url=result[1].GetImage(result[2].IsShiny, result[2].IsFemale))
+      embed.set_image(url=trainer.OwnedPokemon[0].Sprite)
       return await discordservice.SendEmbed(inter, embed)
     return await discordservice.SendMessage(
         inter, "Unable to Create Trainer",
         "Something went wrong while starting your journey. Maybe there weren't any of the Pokemon you chose? Nah, must have been something else...",
-        ErrorColor, True)
+        ErrorColor)
 
   #endregion
 

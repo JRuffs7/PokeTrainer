@@ -1,0 +1,196 @@
+[
+    {
+        "Name": "normal",
+        "Weakness": [
+            "fighting"
+        ],
+        "Resistant": [],
+        "Immune": [
+            "ghost"
+        ]
+    },
+    {
+        "Name": "fire",
+        "Weakness": [
+            "water", "ground", "rock"
+        ],
+        "Resistant": [
+            "fire", "grass", "ice", "bug", "steel", "fairy"
+        ],
+        "Immune": []
+    },
+    {
+        "Name": "water",
+        "Weakness": [
+            "grass", "electric"
+        ],
+        "Resistant": [
+            "fire", "water", "ice", "steel"
+        ],
+        "Immune": []
+    },
+    {
+        "Name": "grass",
+        "Weakness": [
+            "fire", "ice", "poison", "flying", "bug"
+        ],
+        "Resistant": [
+            "water", "grass", "electric", "ground"
+        ],
+        "Immune": []
+    },
+    {
+        "Name": "electric",
+        "Weakness": [
+            "ground"
+        ],
+        "Resistant": [
+            "electric", "flying", "steel"
+        ],
+        "Immune": []
+    },
+    {
+        "Name": "ice",
+        "Weakness": [
+            "fire", "fighting", "rock", "steel"
+        ],
+        "Resistant": [
+            "ice"
+        ],
+        "Immune": []
+    },
+    {
+        "Name": "fighting",
+        "Weakness": [
+            "flying", "psychic", "fairy"
+        ],
+        "Resistant": [
+            "bug", "rock", "dark"
+        ],
+        "Immune": []
+    },
+    {
+        "Name": "poison",
+        "Weakness": [
+            "ground", "psychic"
+        ],
+        "Resistant": [
+            "grass", "fighting", "poison", "bug", "fairy"
+        ],
+        "Immune": []
+    },
+    {
+        "Name": "ground",
+        "Weakness": [
+            "water", "grass", "ice"
+        ],
+        "Resistant": [
+            "poison", "rock"
+        ],
+        "Immune": [
+            "electric"
+        ]
+    },
+    {
+        "Name": "flying",
+        "Weakness": [
+            "electric", "ice", "rock"
+        ],
+        "Resistant": [
+            "grass", "fighting", "bug"
+        ],
+        "Immune": [
+            "ground"
+        ]
+    },
+    {
+        "Name": "psychic",
+        "Weakness": [
+            "bug", "ghost", "dark"
+        ],
+        "Resistant": [
+            "fighting", "psychic"
+        ],
+        "Immune": []
+    },
+    {
+        "Name": "bug",
+        "Weakness": [
+            "fire", "flying", "rock"
+        ],
+        "Resistant": [
+            "grass", "fighting", "ground"
+        ],
+        "Immune": []
+    },
+    {
+        "Name": "rock",
+        "Weakness": [
+            "water", "grass", "fighting", "ground", "steel"
+        ],
+        "Resistant": [
+            "normal", "fire", "poison", "flying"
+        ],
+        "Immune": []
+    },
+    {
+        "Name": "ghost",
+        "Weakness": [
+            "ghost", "dark"
+        ],
+        "Resistant": [
+            "poison", "bug"
+        ],
+        "Immune": [
+            "normal", "fighting"
+        ]
+    },
+    {
+        "Name": "dragon",
+        "Weakness": [
+            "ice", "dragon", "fairy"
+        ],
+        "Resistant": [
+            "fire", "water", "grass", "electric"
+        ],
+        "Immune": [
+            "ghost"
+        ]
+    },
+    {
+        "Name": "dark",
+        "Weakness": [
+            "fighting", "bug", "fairy"
+        ],
+        "Resistant": [
+            "ghost", "dark"
+        ],
+        "Immune": [
+            "psychic"
+        ]
+    },
+    {
+        "Name": "steel",
+        "Weakness": [
+            "fire", "fighting", "ground"
+        ],
+        "Resistant": [
+            "normal", "grass", "ice", "flying", "psychic", "bug", "rock", "dragon", "steel", "fairy"
+        ],
+        "Immune": [
+            "poison"
+        ]
+    },
+    {
+        "Name": "fairy",
+        "Weakness": [
+            "poison", "steel"
+        ],
+        "Resistant": [
+            "fighting", "bug", "dark"
+        ],
+        "Immune": [
+            "dragon"
+        ]
+    }
+]
