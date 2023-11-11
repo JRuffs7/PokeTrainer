@@ -35,7 +35,7 @@ class ServerCommands(commands.Cog, name="ServerCommands"):
     serv = serverservice.GetServer(inter.guild_id)
     return await discordservice.SendMessage(
         inter, 'Server Details', serv if serv else
-        "Server is not registered. Use **/start *percent*** command. Use **~help start** for more information.",
+        "Server is not registered. Use **/register** command. Use **/help register** for more information.",
         ServerDetailColor, True)
 
   @app_commands.command(
