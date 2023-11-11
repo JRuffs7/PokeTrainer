@@ -17,9 +17,11 @@ class OwnedSelector(discord.ui.Select):
     def __init__(self, data, max_select):
         if len(data) > 25:
             data = data[:25]
+        if len(data) < max_select:
+            max_select = len(data)
         options=[discord.SelectOption(
             label=f"{d.GetNameString()}",
-            description= f"Lvl. {d.Level}({d.CurrentExp}/{(50 * d.Rarity) if d.Rarity <= 3 else 250}) | Types: {'/'.join(d.Types)}",
+            description= f"Lvl. {d.Level}({d.CurrentExp}/{(50 * d.Rarity) if d.Rarity <= 3 else 250}) | H:{d.Pokemon.Height} | W:{d.Pokemon.Weight} | Types: {'/'.join(d.Types)}",
             value=f'{d.Id}'
             ) for d in data
         ]

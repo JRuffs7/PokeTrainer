@@ -3,69 +3,75 @@
     {
       "name": "register",
       "shortstring": "(Admin Only) Registers this server with the PokeTrainer bot.",
-      "helpstring":"Proper command usage: **/register *percent* *[delete]***\nParameters:\n**percent** - The percent chance for a Pokemon to spawn 0-100\n**delete** - (Optional) True/False if the previous spawn message will be deleted every spawn. Default true\n\nWhen this command is run, Pokemon will only spawn in the channel the command is executed, overriding any previous settings if they exist. If you wish to include more channels in the random spawn cycle, look into the **/togglechannel** command. This command also voids any spawn currently available.\n\nEx. **/register 60 True** will have a 60% chance to spawn a Pokemon every 5 minutes after the previous spawn and will delete the previous spawn message.",
+      "helpstring": "Proper command usage: **/register *percent* *[delete]***\nParameters:\n**percent** - The percent chance for a Pokemon to spawn 0-100\n**delete** - (Optional) True/False if the previous spawn message will be deleted every spawn. Default true\n\nWhen this command is run, Pokemon will only spawn in the channel the command is executed, overriding any previous settings if they exist. If you wish to include more channels in the random spawn cycle, look into the **/togglechannel** command. This command also voids any spawn currently available.\n\nEx. **/register 60 True** will have a 60% chance to spawn a Pokemon every 5 minutes after the previous spawn and will delete the previous spawn message.",
       "requiresadmin": true
     },
     {
       "name": "stop",
       "shortstring": "(Admin Only) Deregisters this server from the PokeTrainer bot.",
-      "helpstring":"Proper command usage: **/stop**\n\nThis command will remove your server and all settings associated from the PokeTrainer bot. If you wish to use the PokeTrainer bot again, look into the **/register** command.\n\nTrainer data will NOT be deleted in case the server decides to start using PokeTrainer again at a later date.",
+      "helpstring": "Proper command usage: **/stop**\n\nThis command will remove your server and all settings associated from the PokeTrainer bot. If you wish to use the PokeTrainer bot again, look into the **/register** command.\n\nTrainer data will NOT be deleted in case the server decides to start using PokeTrainer again at a later date.",
       "requiresadmin": true
     },
     {
       "name": "togglechannel",
       "shortstring": "(Admin Only) Add/remove the current channel to the spawn list.",
-      "helpstring":"Proper command usage: **/togglechannel**\n\nThis command will toggle the spawning of Pokemon in the current channel. If the channel is already in the spawn list, it will be removed. The full list of channels can be seen through the **/serverinfo** command.\n\nYour server must be registered with the bot by using the **/register** command first, and there must always be at least one channel in the spawn list.\nIf you wish to turn the bot off, please use the **/stop** command.",
+      "helpstring": "Proper command usage: **/togglechannel**\n\nThis command will toggle the spawning of Pokemon in the current channel. If the channel is already in the spawn list, it will be removed. The full list of channels can be seen through the **/serverinfo** command.\n\nYour server must be registered with the bot by using the **/register** command first, and there must always be at least one channel in the spawn list.\nIf you wish to turn the bot off, please use the **/stop** command.",
       "requiresadmin": true
     },
     {
       "name": "serverinfo",
       "shortstring": "(Admin Only) Prints the current server settings.",
-      "helpstring":"Proper command usage: **/serverinfo**\n\nThis command will return the details of the server settings for the bot. This includes the server name, channels toggled for spawning, the percent chance for a spawn, and if previous spawns will be deleted.",
+      "helpstring": "Proper command usage: **/serverinfo**\n\nThis command will return the details of the server settings for the bot. This includes the server name, channels toggled for spawning, the percent chance for a spawn, and if previous spawns will be deleted.",
       "requiresadmin": true
     },
     {
       "name": "editspawnchance",
       "shortstring": "(Admin Only) Change the spawn percentage for the server.",
-      "helpstring":"Proper command usage: **/editspawnchance *percent***\nParameters:\n**percent** - New percent chance for a Pokemon to spawn 1-100\n\nThis command will edit the spawn chance of Pokemon in the server. The current spawn chance can be seen through the **/serverinfo** command.\n\nYour server must be registered with the bot by using the **/register** command first.",
+      "helpstring": "Proper command usage: **/editspawnchance *percent***\nParameters:\n**percent** - New percent chance for a Pokemon to spawn 1-100\n\nThis command will edit the spawn chance of Pokemon in the server. The current spawn chance can be seen through the **/serverinfo** command.\n\nYour server must be registered with the bot by using the **/register** command first.",
       "requiresadmin": true
     },
     {
       "name": "toggledeletespawn",
       "shortstring": "(Admin Only) Toggle if the previous spawn should be deleted.",
-      "helpstring":"Proper command usage: **/toggledeletespawn**\n\nThis command will toggle the deletion of previously spawned Pokemon messages. The current toggle can be seen through the **/serverinfo** command.\n\nYour server must be registered with the bot by using the **/register** command first.",
+      "helpstring": "Proper command usage: **/toggledeletespawn**\n\nThis command will toggle the deletion of previously spawned Pokemon messages. The current toggle can be seen through the **/serverinfo** command.\n\nYour server must be registered with the bot by using the **/register** command first.",
       "requiresadmin": true
     }
   ],
   "Trainer": [
     {
       "name": "starter",
-      "shortstring":"Begin your PokeTrainer journey by selecting a region and Pokemon.",
-      "helpstring":"Proper command usage: **/starter *region* *pokemon***\nParameters:\n**region** - The region in which your starter Pokemon will be from.\n**pokemon** - The starter Pokemon of your choice.\n\nThis command will start the trainers journey, giving them the starter Pokemon of their choosing as well as $500 and 5 Pokeballs. Trainers will begin with 50 Health used for fights, but no Potions. Use **/trainer** and **/inventory** to view your stats and items as well as **/shop** to buy!",
+      "shortstring": "Begin your PokeTrainer journey by selecting a region and Pokemon.",
+      "helpstring": "Proper command usage: **/starter *region* *pokemon***\nParameters:\n**region** - The region in which your starter Pokemon will be from.\n**pokemon** - The starter Pokemon of your choice.\n\nThis command will start the trainers journey, giving them the starter Pokemon of their choosing as well as $500 and 5 Pokeballs. Trainers will begin with 50 Health used for fights, but no Potions. Use **/trainer** and **/inventory** to view your stats and items as well as **/shop** to buy!",
       "requiresadmin": false
     },
     {
       "name": "trainer",
-      "shortstring":"Displays information about the current or given user.",
-      "helpstring":"Proper command usage: **/trainer *[@user]***\nParameters:\n**@user** - (Optional) A member of the current server.\n\nThis command will give statistics regarding the trainer belonging to either yourself or the specified user. Information will include stats such as health and number of fights, as well as Pokedex statistics such as Pokedex completion, current number of Pokemon, current number of shiny Pokemon, and total Pokemon caught.",
+      "shortstring": "Displays information about the current or given user.",
+      "helpstring": "Proper command usage: **/trainer *[@user]***\nParameters:\n**@user** - (Optional) A member of the current server.\n\nThis command will give statistics regarding the trainer belonging to either yourself or the specified user. Information will include stats such as health and number of fights, as well as Pokedex statistics such as Pokedex completion, current number of Pokemon, current number of shiny Pokemon, and total Pokemon caught.",
       "requiresadmin": false
     },
     {
       "name": "inventory",
       "shortstring": "Displays the users Pokeballs, Potions, and money.",
-      "helpstring":"Proper command usage: **/inventory**\n\nThis command will provide the trainer with their inventory for the current server. You cannot view the inventory of other trainers. Inventory will include money, Pokeball count, and Potion count.",
+      "helpstring": "Proper command usage: **/inventory**\n\nThis command will provide the trainer with their inventory for the current server. You cannot view the inventory of other trainers. Inventory will include money, Pokeball count, and Potion count.",
       "requiresadmin": false
     },
     {
       "name": "pokedex",
       "shortstring": "Displays the current or given users Pokedex.",
-      "helpstring":"Proper command usage: **/pokedex *[image]* *[order]* *[shiny]* *[@user]***\nParameters:\n**image** - (Optional) Whether the Pokedex should be shown in image format. Default no images.\n**order** - (Optional) How the Pokedex should be ordered. Default catch order.\n**shiny** - (Optional) Choose if shiny Pokemon are sorted separate.\n**@user** - (Optional) A member of the current server.\n\nThis command will display the current (or given) users Pokedex in a text list form by default. Using the options above, you can format and change the returned list to your liking.\n\n__Examples__\n**/pokedex images:Yes** - Display the current (or given) users Pokedex in a carousel image format with default ordering and no special shiny sorting.\n**/pokedex order:Name shiny:Shiny First** - Display the Pokedex in a text list and sort the Pokedex by name. Shiny Pokemon will be displayed and sorted by name at the front of the list.\n```Gloom✨\nVulpix✨\nAbra\nBlaziken\nZubat```\n**/pokedex  order:National Dex shiny:Shiny Only** - Displays the Pokedex in sorted order by National Dex number and only displays shinies.",
+      "helpstring": "Proper command usage: **/pokedex *[image]* *[order]* *[shiny]* *[@user]***\nParameters:\n**image** - (Optional) Whether the Pokedex should be shown in image format. Default no images.\n**order** - (Optional) How the Pokedex should be ordered. Default catch order.\n**shiny** - (Optional) Choose if shiny Pokemon are sorted separate.\n**@user** - (Optional) A member of the current server.\n\nThis command will display the current (or given) users Pokedex in a text list form by default. Using the options above, you can format and change the returned list to your liking.\n\n__Examples__\n**/pokedex images:Yes** - Display the current (or given) users Pokedex in a carousel image format with default ordering and no special shiny sorting.\n**/pokedex order:Name shiny:Shiny First** - Display the Pokedex in a text list and sort the Pokedex by name. Shiny Pokemon will be displayed and sorted by name at the front of the list.\n```Gloom✨\nVulpix✨\nAbra\nBlaziken\nZubat```\n**/pokedex  order:National Dex shiny:Shiny Only** - Displays the Pokedex in sorted order by National Dex number and only displays shinies.",
       "requiresadmin": false
     },
     {
       "name": "modifyteam",
       "shortstring": "Place or replace a team slot with the selected Pokemon.",
-      "helpstring": "Proper command usage: **/modifyteam *pokemon***\nParameters:\n**pokemon** - Which Pokemon species you own that you wish to put into your team.\n\nThis command will bring up two dropdowns.\n\nThe first dropdown will be the team slot you wish to place your Pokemon. The list will display the slot number and if there is currently a Pokemon slotted in that space. If a slot already has a Pokemon, it will display the name (along with gender and if it is shiny) as well as it's current level.\n\nThe second dropdown will display all possible Pokemon you are able to select and place into that slot based on the Pokemon name specified in the command parameter. There is no order to the Pokemon dropdown, but you will see the name (along with gender and if it is shiny), hieght, weight, level, and current experience for each listed. The selection list will contain a maximum of 25 Pokemon, so if you own 30 Pidgeys it will display the first 25 in your Pokedex. If the one you wish to place in your team does not show in the selections, you can **/release** some of the Pokemon to make room.",
+      "helpstring": "Proper command usage: **/modifyteam *pokemon***\nParameters:\n**pokemon** - Which Pokemon species you own that you wish to put into your team.\n\nThis command will bring up two dropdowns.\n\nThe first dropdown will be the team slot you wish to place your Pokemon. The list will display the slot number and if there is currently a Pokemon slotted in that space. If a slot already has a Pokemon, it will display the name (along with gender and if it is shiny) as well as it's current level.\n\nThe second dropdown will display all possible Pokemon you are able to select and place into that slot based on the Pokemon name specified in the command. There is no order to the Pokemon dropdown, but you will see the name (along with gender and if it is shiny), level, current experience, hieght, weight, and types. The selection list will contain a maximum of 25 Pokemon, so if you own 30 Pidgeys it will display the first 25 in your Pokedex. If the one you wish to place in your team does not show in the selections, you can **/release** some of the Pokemon to make room.",
+      "requiresadmin": false
+    },
+    {
+      "name": "release",
+      "shortstring": "Release one or many of the selected Pokemon.",
+      "helpstring": "Proper command usage: **/release *pokemon***\nParameters:\n**pokemon** - Which Pokemon species you own that you wish to release.\n\nThis command will bring up a single dropdown listing all variations of the selected Pokemon outside of your set team. The selection list will contain a maximum of 25 Pokemon, so if you own 30 Pidgeys it will display the first 25 in your Pokedex. You will see the level, current experience, hieght, weight, and types for each Pokemon listed. You may select one, a select few, or all Pokemon listed.\n\n**NOTE:** You cannot release a Pokemon currently in your team. You must change it out using **/modifyteam** first.",
       "requiresadmin": false
     },
     {
@@ -79,19 +85,19 @@
     {
       "name": "shop",
       "shortstring": "Displays available shop items and prices.",
-      "helpstring":"Proper command usage: **/shop**\n\nDisplays the current available items in the shop. The categories for now include *Pokeballs* and *Potions*.\n\nPokeballs are used for capturing wild Pokemon that spawn. You can only buy 3 types of Pokeballs. Masterballs cannot be purchased.\n__Prices__\nPokeball - $100\nGreatball - $300\nUltraball - $600\n\nPotions are used to restore Trainer Health. You may buy 4 types of potions.\n__Prices__\nPotion - $100\nSuper Potion - $350\nHyper Potion - $600\nMax Potion - $750",
+      "helpstring": "Proper command usage: **/shop**\n\nDisplays the current available items in the shop. The categories for now include *Pokeballs* and *Potions*.\n\nPokeballs are used for capturing wild Pokemon that spawn. You can only buy 3 types of Pokeballs. Masterballs cannot be purchased.\n__Prices__\nPokeball - $100\nGreatball - $300\nUltraball - $600\n\nPotions are used to restore Trainer Health. You may buy 4 types of potions.\n__Prices__\nPotion - $100\nSuper Potion - $350\nHyper Potion - $600\nMax Potion - $750",
       "requiresadmin": false
     },
     {
       "name": "buy",
-      "shortstring":"Uses the shop to buy the specified item(s).",
-      "helpstring":"Proper command usage: **/buy *type* *item* *[amount]***\nParameters:\n**type** - Which type of item you wish to purchase.\n**item** - Which item of the specified type to purchase.\n**amount** - (Optional) How many of the item you wish to buy. Default 1.\n\nThis command is used to purchase the item of your choice.\n\nThe first selection will be which type of item to buy. As of now, it includes *Ball* and *Potion*.\n\nThe second choice will be which item of the specified type you wish to buy. The list will have the name and buying price of each item.\n\nYou may also specify how many of the item you wish to buy. If you select an amount that you cannot afford, no purchase will be made. You can check your funds by using the **/inventory** command.\n\nA full list of items to purchase can be seen in the **/shop** command.",
+      "shortstring": "Uses the shop to buy the specified item(s).",
+      "helpstring": "Proper command usage: **/buy *type* *item* *[amount]***\nParameters:\n**type** - Which type of item you wish to purchase.\n**item** - Which item of the specified type to purchase.\n**amount** - (Optional) How many of the item you wish to buy. Default 1.\n\nThis command is used to purchase the item of your choice.\n\nThe first selection will be which type of item to buy. As of now, it includes *Ball* and *Potion*.\n\nThe second choice will be which item of the specified type you wish to buy. The list will have the name and buying price of each item.\n\nYou may also specify how many of the item you wish to buy. If you select an amount that you cannot afford, no purchase will be made. You can check your funds by using the **/inventory** command.\n\nA full list of items to purchase can be seen in the **/shop** command.",
       "requiresadmin": false
     },
     {
       "name": "sell",
-      "shortstring":"Uses the shop to sell the specified item(s).",
-      "helpstring":"Proper command usage: **/sell *type* *item* *[amount]***\nParameters:\n**type** - Which type of item you wish to sell.\n**item** - Which item of the specified type to sell.\n**amount** - (Optional) How many of the item you wish to sell. Default 1.\n\nThis command is used to sell the item of your choice.\n\nThe first selection will be which type of item to sell. As of now, it includes *Ball* and *Potion*.\n\nThe second choice will be which item of the specified type you wish to sell. The list will have the name and selling price of each item.\n\nYou may also specify how many of the item you wish to sell.\n\nYour list of items available to sell can be seen through the **/inventory** command.",
+      "shortstring": "Uses the shop to sell the specified item(s).",
+      "helpstring": "Proper command usage: **/sell *type* *item* *[amount]***\nParameters:\n**type** - Which type of item you wish to sell.\n**item** - Which item of the specified type to sell.\n**amount** - (Optional) How many of the item you wish to sell. Default 1.\n\nThis command is used to sell the item of your choice.\n\nThe first selection will be which type of item to sell. As of now, it includes *Ball* and *Potion*.\n\nThe second choice will be which item of the specified type you wish to sell. The list will have the name and selling price of each item.\n\nYou may also specify how many of the item you wish to sell.\n\nYour list of items available to sell can be seen through the **/inventory** command.",
       "requiresadmin": false
     }
   ],
@@ -99,7 +105,7 @@
     {
       "name": "pokeinfo",
       "shortstring": "Displays information for the specified Pokemon.",
-      "helpstring":"Proper command usage: **/pokeinfo *search* *filter***\nParameters:\n**search** - Which kind of search to perform.\n**filter** - The filter based on the search provided.\n\nA way for trainers to look at average information about a specific Pokemon species that may spawn or be obtained through other means. Currently, there are 3 different options to search for:\n\n__Single Pokemon__\nThe filter will just be an auto-completing list of Pokemon names. This search will display a carousel of two images: the basic and shiny form of the specified Pokemon. Each card will display the average information of the Pokemon such as Average Height, Average Weight, Typing, and Spawn Rarity (1-5). Types are used during fights which can be further explained using the **/help fight** command. Spawn Rarity is used for multiple reasons, which can be seen in both **/help spawn** and **/help fight**\n\n__Pokemon By Color__\nThe filter for this search will be all color classifications the Pokemon can have (such as *blue*, *red*, etc.). The color of a Pokemon is based on the Color filter within **Pokemon HOME**. The result of this search will be a text-based list of Pokemon names that belong in the selected color group, sorted by name.\n\nYou may see some oddities, such as Alolan Rattata being grouped with *purple*. This is because **Pokemon Home** classifies each Pokemon based on the *species*, and both Rattata and Alolan Rattata are of the same *Rattata* species, which base color is purple.\n\n__Pokemon By Type__\nThe filter will consist of all the different types a Pokemon can be. Once the type is selected, a list of text-based Pokemon names belonging to the type will be shown. They will also have their types listed, and will be sorted by specified type being their first type, then by name:\nExample: **/pokeinfo Pokemon-By-Type Dragon**```Axew (Dragon)\nBagon (Dragon)\n...\nAltaria (Dragon/Flying)\nArctibax (Dragon/Ice)\n...\nAlolan Exeggutor (Grass/Dragon)\nKingdra (Water/Dragon)\n...```",
+      "helpstring": "Proper command usage: **/pokeinfo *search* *filter***\nParameters:\n**search** - Which kind of search to perform.\n**filter** - The filter based on the search provided.\n\nA way for trainers to look at average information about a specific Pokemon species that may spawn or be obtained through other means. Currently, there are 3 different options to search for:\n\n__Single Pokemon__\nThe filter will just be an auto-completing list of Pokemon names. This search will display a carousel of two images: the basic and shiny form of the specified Pokemon. Each card will display the average information of the Pokemon such as Average Height, Average Weight, Typing, and Spawn Rarity (1-5). Types are used during fights which can be further explained using the **/help fight** command. Spawn Rarity is used for multiple reasons, which can be seen in both **/help spawn** and **/help fight**\n\n__Pokemon By Color__\nThe filter for this search will be all color classifications the Pokemon can have (such as *blue*, *red*, etc.). The color of a Pokemon is based on the Color filter within **Pokemon HOME**. The result of this search will be a text-based list of Pokemon names that belong in the selected color group, sorted by name.\n\nYou may see some oddities, such as Alolan Rattata being grouped with *purple*. This is because **Pokemon Home** classifies each Pokemon based on the *species*, and both Rattata and Alolan Rattata are of the same *Rattata* species, which base color is purple.\n\n__Pokemon By Type__\nThe filter will consist of all the different types a Pokemon can be. Once the type is selected, a list of text-based Pokemon names belonging to the type will be shown. They will also have their types listed, and will be sorted by specified type being their first type, then by name:\nExample: **/pokeinfo Pokemon-By-Type Dragon**```Axew (Dragon)\nBagon (Dragon)\n...\nAltaria (Dragon/Flying)\nArctibax (Dragon/Ice)\n...\nAlolan Exeggutor (Grass/Dragon)\nKingdra (Water/Dragon)\n...```",
       "requiresadmin": false
     }
   ],

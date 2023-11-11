@@ -4,6 +4,7 @@ from discord.ext import commands
 from discord.user import discord
 from commands.views.PokedexView import PokedexView
 from commands.views.TeamSelectorView import TeamSelectorView
+from commands.views.ReleasePokemonView import ReleasePokemonView
 
 from globals import ErrorColor, TrainerColor
 from services import trainerservice, pokemonservice, itemservice
@@ -174,6 +175,25 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
     dexViewer.data = trainerservice.GetPokedexList(trainer, order.value if order else None, shiny.value if shiny else None)
     await dexViewer.send()
       
+
+  @app_commands.command(name="release",
+                        description="Choose a Pokemon to release.")
+  @app_commands.autocomplete(pokemon=pokemon_autocomplete)
+  async def release(self, inter: discord.Interaction,
+                    pokemon: str):
+    print('RELEASE called')
+    trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
+    if not trainer:
+      return await discordservice.SendTrainerError(inter)
+    
+    result = [x for x in trainer.OwnedPokemon if x.Name.lower() == pokemon.lower()]
+    if not result:
+      return await discordservice.SendMessage(inter, 'Invalid Pokemon', f'You do not own any Pokemon with the name {pokemon}', ErrorColor)
+
+    releaseSelect = ReleasePokemonView(
+      inter,
+      result)
+    await releaseSelect.send()
 
   #endregion
 

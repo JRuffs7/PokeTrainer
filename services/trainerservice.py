@@ -178,6 +178,12 @@ def SetTeamSlot(trainer: Trainer, slotNum, pokemonId):
   trainer.Team[slotNum] = pokemonId
   UpsertTrainer(trainer)
 
+def ReleasePokemon(trainer: Trainer, pokemonIds):
+  released = next((p for p in trainer.OwnedPokemon if p.Id in pokemonIds), None)
+  trainer.OwnedPokemon = [p for p in trainer.OwnedPokemon if p.Id not in pokemonIds]
+  UpsertTrainer(trainer)
+  return released.Name
+
 #endregion
 
 #region REACTION
