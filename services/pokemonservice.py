@@ -96,17 +96,32 @@ def GetPokemonByType(type: str):
   return [PokedexEntry({ 'Name': f"{p.Name} ({','.join(p.Types)})"}) for p in singleType]+[PokedexEntry({ 'Name': f"{p.Name} ({','.join(p.Types)})"}) for p in firstType]+[PokedexEntry({ 'Name': f"{p.Name} ({','.join(p.Types)})"}) for p in secondType]
 
 
+def ConvertSpawnPokemonToPokedexEntry(pokemon: SpawnPokemon):
+  pkmn = GetPokemonById(pokemon.Pokemon_Id)
+  return PokedexEntry({
+      'Id': pokemon.Id,
+      'Name': pkmn.Name,
+      'PokedexId': pkmn.PokedexId,
+      'Types': pkmn.Types,
+      'Sprite': pkmn.GetImage(pokemon.IsShiny, pokemon.IsFemale),
+      'Rarity': pkmn.Rarity,
+      'Level': 1 if pkmn.Rarity <= 2 else 20 if pkmn.Rarity == 3 else 30 if pkmn.Rarity == 4 else 35,
+      'CurrentExp': 0,
+      'Pokemon': pokemon.__dict__
+    })
+
+
 def ConvertSpawnPokemonToPokemon(pokeList: List[SpawnPokemon]):
   return pokemonda.GetPokemonByIds([x.Pokemon_Id for x in pokeList])
 
 
-def CanTrainerPokemonEvolve(pkmn: SpawnPokemon):
-  poke = GetPokemonById(pkmn.Pokemon_Id)
-  if poke.Rarity == 1 and len(poke.EvolvesInto) > 1:
+def CanTrainerPokemonEvolve(pkmn: PokedexEntry):
+  poke = GetPokemonById(pkmn.Pokemon.Pokemon_Id)
+  if pkmn.Rarity == 1 and len(poke.EvolvesInto) > 1:
     return pkmn.Level >= 20
-  elif poke.Rarity == 2 and len(poke.EvolvesInto) > 1:
+  elif pkmn.Rarity == 2 and len(poke.EvolvesInto) > 1:
     return pkmn.Level >= 30
-  elif poke.Rarity == 3 and len(poke.EvolvesInto) > 1:
+  elif pkmn.Rarity == 3 and len(poke.EvolvesInto) > 1:
     return pkmn.Level >= 35
   return False
 
@@ -118,98 +133,77 @@ def SplitPokemonForSearch(pokemonId):
   pkmnList = []
   pkmnList.append(PokedexEntry({
       'Name': pkmn.Name,
-      'PokedexId': pkmn.PokedexId,
       'Types': pkmn.Types,
       'Sprite': pkmn.GetImage(False, pkmn.FemaleChance == 8),
       'Rarity': pkmn.Rarity,
       'Pokemon': to_dict(SpawnPokemon({
-        'Id': '',
-        'Pokemon_Id': pkmn.Id,
         'Height': pkmn.Height,
         'Weight': pkmn.Weight,
         'IsShiny': False,
         'IsFemale': pkmn.FemaleChance == 8,
-        'Level': None,
-        'CurrentExp': None,
-        'EvolutionStage': 1 if pkmn.Rarity <= 2 and len(pkmn.EvolvesInto) > 0 else 2 if pkmn.Rarity == 3 and len(pkmn.EvolvesInto) > 0 else 3 if pkmn.Rarity >= 4 else None
       }))
   }))
   if pkmn.ShinySprite:
     pkmnList.append(PokedexEntry({
         'Name': pkmn.Name,
-        'PokedexId': pkmn.PokedexId,
         'Types': pkmn.Types,
         'Sprite': pkmn.GetImage(True, pkmn.FemaleChance == 8),
         'Rarity': pkmn.Rarity,
         'Pokemon': to_dict(SpawnPokemon({
-          'Id': '',
-          'Pokemon_Id': pkmn.Id,
           'Height': pkmn.Height,
           'Weight': pkmn.Weight,
           'IsShiny': True,
           'IsFemale': pkmn.FemaleChance == 8,
-          'Level': None,
-          'CurrentExp': None,
-          'EvolutionStage': 1 if pkmn.Rarity <= 2 and len(pkmn.EvolvesInto) > 0 else 2 if pkmn.Rarity == 3 and len(pkmn.EvolvesInto) > 0 else 3 if pkmn.Rarity >= 4 else None
         }))
     }))
   if pkmn.SpriteFemale and pkmn.FemaleChance != 0:
     pkmnList.append(PokedexEntry({
         'Name': pkmn.Name,
-        'PokedexId': pkmn.PokedexId,
         'Types': pkmn.Types,
         'Sprite': pkmn.GetImage(False, True),
         'Rarity': pkmn.Rarity,
         'Pokemon': to_dict(SpawnPokemon({
-          'Id': '',
-          'Pokemon_Id': pkmn.Id,
           'Height': pkmn.Height,
           'Weight': pkmn.Weight,
           'IsShiny': False,
           'IsFemale': True,
-          'Level': None,
-          'CurrentExp': None,
-          'EvolutionStage': 1 if pkmn.Rarity <= 2 and len(pkmn.EvolvesInto) > 0 else 2 if pkmn.Rarity == 3 and len(pkmn.EvolvesInto) > 0 else 3 if pkmn.Rarity >= 4 else None
         }))
     }))
   if pkmn.ShinySpriteFemale and pkmn.FemaleChance != 0:
     pkmnList.append(PokedexEntry({
         'Name': pkmn.Name,
-        'PokedexId': pkmn.PokedexId,
         'Types': pkmn.Types,
         'Sprite': pkmn.GetImage(True, True),
         'Rarity': pkmn.Rarity,
         'Pokemon': to_dict(SpawnPokemon({
-          'Id': '',
-          'Pokemon_Id': pkmn.Id,
           'Height': pkmn.Height,
           'Weight': pkmn.Weight,
           'IsShiny': True,
           'IsFemale': True,
-          'Level': None,
-          'CurrentExp': None,
-          'EvolutionStage': 1 if pkmn.Rarity <= 2 and len(pkmn.EvolvesInto) > 0 else 2 if pkmn.Rarity == 3 and len(pkmn.EvolvesInto) > 0 else 3 if pkmn.Rarity >= 4 else None
         }))
     }))
   return pkmnList
 
 
 def PokemonFight(attack: Pokemon, defend: Pokemon):
-  fightTotal = typeservice.TypeWeakness(attack.Types[0], defend.Types[0])
-  fightTotal += typeservice.TypeWeakness(
-    attack.Types[1] if len(attack.Types) > 1 else attack.Types[0],
-    defend.Types[1] if len(defend.Types) > 1 else defend.Types[0])
-  doubleAdv = fightTotal == 2
-  doubleDis = fightTotal <= -2
-  attackGroup = 1 if attack.Rarity <= 2 else 2 if attack.Rarity == 3 else 3
-  defendGroup = 1 if defend.Rarity <= 2 else 2 if defend.Rarity == 3 else 3
+  try:
+    fightTotal = typeservice.TypeWeakness(attack.Types[0].lower(), defend.Types[0].lower())
+    fightTotal += typeservice.TypeWeakness(
+      attack.Types[1].lower() if len(attack.Types) > 1 else attack.Types[0].lower(),
+      defend.Types[1].lower() if len(defend.Types) > 1 else defend.Types[0].lower())
+    doubleAdv = fightTotal == 2
+    doubleDis = fightTotal <= -2
+    attackGroup = 1 if attack.Rarity <= 2 else 2 if attack.Rarity == 3 else 3
+    defendGroup = 1 if defend.Rarity <= 2 else 2 if defend.Rarity == 3 else 3
 
-  # 1v2 2v3
-  if abs(attackGroup - defendGroup) == 1:
-    if (attackGroup < defendGroup and not doubleAdv) or not doubleDis:
+    # 1v2 2v3
+    if abs(attackGroup - defendGroup) == 1:
+      if (attackGroup < defendGroup and not doubleAdv) or not doubleDis:
+        fightTotal += (2 * (attack.Rarity - defend.Rarity))
+    # 1v3
+    elif abs(attackGroup - defendGroup) == 2:
       fightTotal += (2 * (attack.Rarity - defend.Rarity))
-  # 1v3
-  elif abs(attackGroup - defendGroup) == 2:
-    fightTotal += (2 * (attack.Rarity - defend.Rarity))
 
-  return fightTotal
+    return fightTotal
+  except Exception as e:
+    print(f"{e}")

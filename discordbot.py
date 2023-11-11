@@ -8,7 +8,6 @@ import random
 from globals import PokemonCaughtColor, ErrorColor
 from services import trainerservice, serverservice, pokemonservice
 from services.utility import discordservice
-from models.CustomException import TrainerInvalidException
 
 intents = discord.Intents.all()
 discordBot = commands.Bot(command_prefix='~',
@@ -34,20 +33,13 @@ async def StartBot():
     if reaction.message.author.id != discordBot.user.id:
       return
     
-    try:
-      result = await trainerservice.ReationReceived(discordBot, user, reaction)
-      if result:
-        em = reaction.message.embeds[0].set_footer(
-            text=f"Caught by {user.display_name}",
-            icon_url=user.display_avatar.url)
-        em.color = PokemonCaughtColor
-        await reaction.message.edit(embed=em)
-    except TrainerInvalidException:
-      embed = discordservice.CreateEmbed(
-          "Trainer Missing!",
-          "You have not started your PokeTrainer journey yet! To do so, use one of the **/starter*region*** commands. Please use **/help** for more explanation on how PokeTrainer is used.",
-          ErrorColor)
-      await user.send(embed=embed)
+    result = await trainerservice.ReationReceived(discordBot, user, reaction)
+    if result:
+      em = reaction.message.embeds[0].set_footer(
+          text=f"Caught by {user.display_name}",
+          icon_url=user.display_avatar.url)
+      em.color = PokemonCaughtColor
+      await reaction.message.edit(embed=em)
 
 
   @tasks.loop(seconds=300)

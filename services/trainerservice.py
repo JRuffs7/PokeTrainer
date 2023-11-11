@@ -4,17 +4,13 @@ from discord import Reaction
 
 from dataaccess import trainerda
 from globals import (
-    to_dict,
-    ErrorColor,
     FightReaction,
     GreatBallReaction,
     PokeballReaction,
 )
-from models.CustomException import TrainerInvalidException
 from models.Trainer import Trainer
-from models.Pokemon import PokedexEntry
+from models.Pokemon import SpawnPokemon
 from services import itemservice, pokemonservice, serverservice
-from services.utility import discordservice
 
 
 def GetTrainer(serverId, userId):
@@ -30,49 +26,40 @@ def StartTrainer(pokemonId, userId, serverId):
   pkmn = pokemonservice.GetPokemonById(pokemonId)
   if not pkmn:
     return None
-
-  pokemon = pokemonservice.GenerateSpawnPokemon(pkmn)
-  pokemon.Level = 5
-  pokemon.EvolutionStage = 1
-
   trainer = Trainer({
       'UserId': userId,
       'ServerId': serverId,
-      'Team': [pokemon.__dict__, None, None, None, None, None],
-      'OwnedPokemon': [pokemon.__dict__],
+      'Team': [None, None, None, None, None, None],
+      'OwnedPokemon': [],
       'Health': 50,
       'Money': 500,
       'PokeballList': [1,1,1,1,1]
   })
+  trainer = AddNewOwnedPokemon(trainer, pokemonservice.GenerateSpawnPokemon(pkmn))
+  trainer.OwnedPokemon[0].Level = 5
+  trainer.Team[0] = trainer.OwnedPokemon[0].Id
   UpsertTrainer(trainer)
-  return (trainer, pkmn, pokemon)
+  return trainer
 
 #region Inventory/Items
 
-def GetInventory(serverId, userId):
-  trainer = GetTrainer(serverId, userId)
-  if not trainer:
-    raise TrainerInvalidException
-
+def GetInventory(trainer: Trainer):
   pkblList = {
-      "Pokeballs": trainer.PokeballList.count(1),
-      "Greatballs": trainer.PokeballList.count(2),
-      "Ultraballs": trainer.PokeballList.count(3),
-      "Masterball": trainer.PokeballList.count(4),
+      "Pokeball": trainer.PokeballList.count(1),
+      "Greatball": trainer.PokeballList.count(2),
+      "Ultraball": trainer.PokeballList.count(3),
+      "Masterball": trainer.PokeballList.count(4)
   }
   ptnList = {
-      "Potions": trainer.PotionList.count(1),
-      "Super Potions": trainer.PotionList.count(2),
-      "Hyper Potions": trainer.PotionList.count(3),
-      "Max Potions": trainer.PotionList.count(4),
+      "Potion": trainer.PotionList.count(1),
+      "Super Potion": trainer.PotionList.count(2),
+      "Hyper Potion": trainer.PotionList.count(3),
+      "Max Potion": trainer.PotionList.count(4)
   }
   return (trainer.Money, dict(filter(lambda x: x[1] != 0, pkblList.items())),
           dict(filter(lambda x: x[1] != 0, ptnList.items())))
 
-def TryBuyPokeball(serverId, userId, ballId, amount):
-  trainer = GetTrainer(serverId, userId)
-  if not trainer:
-    raise TrainerInvalidException
+def TryBuyPokeball(trainer: Trainer, ballId, amount):
   ball = itemservice.GetPokeball(ballId)
   if not ball or trainer.Money < (ball.BuyAmount * amount):
     return None
@@ -82,10 +69,7 @@ def TryBuyPokeball(serverId, userId, ballId, amount):
   trainerda.UpsertTrainer(trainer)
   return ball
 
-def TryBuyPotion(serverId, userId, potionId, amount):
-  trainer = GetTrainer(serverId, userId)
-  if not trainer:
-    raise TrainerInvalidException
+def TryBuyPotion(trainer: Trainer, potionId, amount):
   potion = itemservice.GetPotion(potionId)
   if not potion or trainer.Money < (potion.BuyAmount * amount):
     return None
@@ -95,10 +79,7 @@ def TryBuyPotion(serverId, userId, potionId, amount):
   trainerda.UpsertTrainer(trainer)
   return potion
 
-def TrySellPokeball(serverId, userId, ballId, amount):
-  trainer = GetTrainer(serverId, userId)
-  if not trainer:
-    raise TrainerInvalidException
+def TrySellPokeball(trainer: Trainer, ballId, amount):
   ball = itemservice.GetPokeball(ballId)
   if not ball or ballId not in trainer.PokeballList:
     return None
@@ -111,10 +92,7 @@ def TrySellPokeball(serverId, userId, ballId, amount):
   trainerda.UpsertTrainer(trainer)
   return { 'NumSold': currentNum - postModNum, 'Item': ball }
 
-def TrySellPotion(serverId, userId, potionId, amount):
-  trainer = GetTrainer(serverId, userId)
-  if not trainer:
-    raise TrainerInvalidException
+def TrySellPotion(trainer: Trainer, potionId, amount):
   potion = itemservice.GetPotion(potionId)
   if not potion or potionId not in trainer.PotionList:
     return None
@@ -127,15 +105,8 @@ def TrySellPotion(serverId, userId, potionId, amount):
   trainerda.UpsertTrainer(trainer)
   return { 'NumSold': (currentNum - postModNum), 'Item': potion }
 
-def TryUsePotion(serverId, userId, potionId):
-  trainer = GetTrainer(serverId, userId)
-  if not trainer:
-    raise TrainerInvalidException
-  potion = itemservice.GetPotion(potionId)
-  if not potion:
-    return None
-
-  if potionId not in trainer.PotionList:
+def TryUsePotion(trainer: Trainer, potion):
+  if potion.Id not in trainer.PotionList:
     return (False, 0)
 
   if trainer.Health == 100:
@@ -145,7 +116,7 @@ def TryUsePotion(serverId, userId, potionId):
   trainer.Health += potion.HealingAmount
   if trainer.Health > 100:
     trainer.Health = 100
-  trainer.PotionList = ModifyItemList(trainer.PotionList, potionId, -1)
+  trainer.PotionList = ModifyItemList(trainer.PotionList, potion.Id, -1)
   trainerda.UpsertTrainer(trainer)
   return (True, (trainer.Health - preHealth))
 
@@ -164,84 +135,46 @@ def ModifyItemList(listProperty: List, itemId, amount):
 
 #region Pokedex
 
-def GetPokedexList(serverId, userId, orderString, shiny):
-  trainer = GetTrainer(serverId, userId)
-  if not trainer:
-    raise TrainerInvalidException
-  
-  pokemonList = pokemonservice.ConvertSpawnPokemonToPokemon(trainer.OwnedPokemon)
+def AddNewOwnedPokemon(trainer: Trainer, pokemon: SpawnPokemon):
+  trainer.OwnedPokemon.append(pokemonservice.ConvertSpawnPokemonToPokedexEntry(pokemon))
+  return trainer
 
-  combine: List[PokedexEntry] = []
-  for i, pkmn in enumerate(trainer.OwnedPokemon):
-    if shiny != 2 or (shiny == 2 and pkmn.IsShiny):
-      combine.append(PokedexEntry(
-      {
-        'Name': pokemonList[i].Name,
-        'PokedexId': pokemonList[i].PokedexId,
-        'Types': pokemonList[i].Types,
-        'Sprite': pokemonList[i].GetImage(pkmn.IsShiny, pkmn.IsFemale),
-        'Rarity': pokemonList[i].Rarity,
-        'Pokemon': to_dict(pkmn)
-      }) )
+def GetPokedexList(trainer: Trainer, orderString, shiny):
+  pokemonList = trainer.OwnedPokemon
+  if shiny == 2:
+    pokemonList = [p for p in pokemonList if p.Pokemon.IsShiny]
+
   match orderString:
     case "height":
       if shiny == 3:
-        combine.sort(key=lambda x: (-x.Pokemon.IsShiny,x.Pokemon.Height))
+        pokemonList.sort(key=lambda x: (-x.Pokemon.IsShiny,x.Pokemon.Height))
       else:
-        combine.sort(key=lambda x: x.Pokemon.Height)
+        pokemonList.sort(key=lambda x: x.Pokemon.Height)
     case "dex":
       if shiny == 3:
-        combine.sort(key=lambda x: (-x.Pokemon.IsShiny,x.PokedexId))
+        pokemonList.sort(key=lambda x: (-x.Pokemon.IsShiny,x.PokedexId))
       else:
-        combine.sort(key=lambda x: x.PokedexId)
+        pokemonList.sort(key=lambda x: x.PokedexId)
     case "name":
       if shiny == 3:
-        combine.sort(key=lambda x: (-x.Pokemon.IsShiny,x.Name))
+        pokemonList.sort(key=lambda x: (-x.Pokemon.IsShiny,x.Name))
       else:
-        combine.sort(key=lambda x: x.Name)
+        pokemonList.sort(key=lambda x: x.Name)
     case "weight":
       if shiny == 3:
-        combine.sort(key=lambda x: (-x.Pokemon.IsShiny,x.Pokemon.Weight))
+        pokemonList.sort(key=lambda x: (-x.Pokemon.IsShiny,x.Pokemon.Weight))
       else:
-        combine.sort(key=lambda x: x.Pokemon.Weight)
+        pokemonList.sort(key=lambda x: x.Pokemon.Weight)
     case _:
       if shiny == 3:
-        combine.sort(key=lambda x: -x.Pokemon.IsShiny)
-  return combine
-
-def GetUniquePokemon(serverId, userId):
-  trainer = GetTrainer(serverId, userId)
-  uniqueIds = set()
-  pokemonList = pokemonservice.ConvertSpawnPokemonToPokemon([p for p in trainer.OwnedPokemon if p.Pokemon_Id not in uniqueIds and not uniqueIds.add(p.Pokemon_Id)])
+        pokemonList.sort(key=lambda x: -x.Pokemon.IsShiny)
   return pokemonList
 
 #endregion
 
 #region Team
 
-def GetTrainerTeam(serverId, userId):
-  trainer = GetTrainer(serverId, userId)
-  if not trainer:
-    raise TrainerInvalidException
-  
-  team: List[PokedexEntry | None] = []
-  for t in trainer.Team:
-    if t:
-      spawn = next((p for p in trainer.OwnedPokemon if p.Id == t), None)
-      pkmn = pokemonservice.ConvertSpawnPokemonToPokemon([spawn])[0]
-      team.append(PokedexEntry({
-        'Name': pkmn.Name,
-        'PokedexId': pkmn.PokedexId,
-        'Types': pkmn.Types,
-        'Sprite': pkmn.GetImage(spawn.IsShiny, spawn.IsFemale),
-        'Rarity': pkmn.Rarity,
-        'Pokemon': to_dict(spawn)
-      }))
-    else:
-      team.append(None)
-  return team
-
-def SetTeamSlot(trainer, slotNum, pokemonId):
+def SetTeamSlot(trainer: Trainer, slotNum, pokemonId):
   trainer.Team[slotNum] = pokemonId
   UpsertTrainer(trainer)
 
@@ -291,7 +224,7 @@ def TryCapture(reaction: Reaction, server, trainer, spawn):
   if pokeballId in trainer.PokeballList:
     #TODO: IMPLEMENT CAPTURE RATE
     ModifyItemList(trainer.PokeballList, pokeballId, -1)
-    trainer.OwnedPokemon.append(spawn)
+    trainer = AddNewOwnedPokemon(trainer, spawn)
     trainer.TotalCaught += 1
     UpsertTrainer(trainer)
     return True
@@ -302,23 +235,23 @@ def TryCapture(reaction: Reaction, server, trainer, spawn):
   return False
 
 def TryWildFight(server, trainer, spawnId):
-  pokemon = pokemonservice.GetPokemonById(spawnId)
-  if not pokemon:
-    return
+    pokemon = pokemonservice.GetPokemonById(spawnId)
+    if not pokemon:
+      return
 
-  pkmnId = next((p for p in trainer.Team if p))
-  battlePkmn = pokemonservice.GetPokemonById(next((p for p in trainer.OwnedPokemon if p.Id == pkmnId)).Pokemon_Id)
-  battleResult = pokemonservice.PokemonFight(battlePkmn, pokemon)
-  healthLost = battleResult - 6
+    pkmnId = next((p for p in trainer.Team if p))
+    battlePkmn = pokemonservice.GetPokemonById(next((p for p in trainer.OwnedPokemon if p.Id == pkmnId)).Pokemon.Pokemon_Id)
+    battleResult = pokemonservice.PokemonFight(battlePkmn, pokemon)
+    healthLost = battleResult - 6
 
-  server.FoughtBy.append(trainer.UserId)
-  serverservice.UpsertServer(server)
-  trainer.Health += healthLost
-  trainer.Health = 0 if trainer.Health < 0 else trainer.Health
-  if healthLost > -10:
-    next((p for p in trainer.OwnedPokemon if p.Id == pkmnId)).GainExp(pokemon.Rarity, battlePkmn.Rarity)
-    trainer.Money += 50
-    trainer.Fights += 1
-  UpsertTrainer(trainer)
+    server.FoughtBy.append(trainer.UserId)
+    serverservice.UpsertServer(server)
+    trainer.Health += healthLost
+    trainer.Health = 0 if trainer.Health < 0 else trainer.Health
+    if healthLost > -10:
+      next((p for p in trainer.OwnedPokemon if p.Id == pkmnId)).GainExp(pokemon.Rarity)
+      trainer.Money += 50
+      trainer.Fights += 1
+    UpsertTrainer(trainer)
 
 #endregion

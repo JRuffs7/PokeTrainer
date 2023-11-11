@@ -42,13 +42,10 @@ class TeamSelectorView(discord.ui.View):
   @discord.ui.button(label="Submit", style=discord.ButtonStyle.green)
   async def submit_button(self, inter: discord.Interaction,
                         button: discord.ui.Button):
-    try:
-      if self.pokemonchoice and self.teamslotchoice:
-        trainerservice.SetTeamSlot(trainerservice.GetTrainer(inter.guild_id, inter.user.id), int(self.teamslotchoice), self.pokemonchoice)
-        await self.message.delete()
-        await inter.response.send_message(content=f"{next((p.GetNameString() for p in self.pokeList if p.Pokemon.Id.lower() == self.pokemonchoice.lower()), None) or 'Error'} set in Slot {self.teamslotchoice}",ephemeral=True)
-    except Exception as e:
-      print(f"{e}")
+    if self.pokemonchoice and self.teamslotchoice:
+      trainerservice.SetTeamSlot(trainerservice.GetTrainer(inter.guild_id, inter.user.id), int(self.teamslotchoice), self.pokemonchoice)
+      await self.message.delete()
+      await inter.response.send_message(content=f"{next((p.GetNameString() for p in self.pokeList if p.Pokemon.Id.lower() == self.pokemonchoice.lower()), None) or 'Error'} set in Slot {int(self.teamslotchoice) + 1}",ephemeral=True)
 
 
   async def send(self):

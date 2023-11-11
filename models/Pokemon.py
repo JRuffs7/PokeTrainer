@@ -77,8 +77,6 @@ class SpawnPokemon:
   Weight: float
   IsShiny: bool
   IsFemale: bool
-  Level: int
-  CurrentExp: int
 
   def __init__(self, dict: Dict | None):
     self.Id = dict.get('Id') or uuid.uuid4().hex if dict else uuid.uuid4().hex
@@ -87,29 +85,20 @@ class SpawnPokemon:
     self.Weight = dict.get('Weight') or 0.0 if dict else 0.0
     self.IsShiny = dict.get('IsShiny') or False if dict else False
     self.IsFemale = dict.get('IsFemale') or False if dict else False
-    self.Level = dict.get('Level') or 1 if dict else 1
-    self.CurrentExp = dict.get('CurrentExp') or 0 if dict else 0
-
-    if self.Level > 100:
-      self.Level = 100
-    if self.Level == 100:
-      self.CurrentExp = 0
-
-  def GainExp(self, expGain: int, rarity: int):
-    self.CurrentExp += expGain
-    if self.CurrentExp >= (50 * rarity) if rarity <= 3 else 250:
-      self.Level += 1
-      self.CurrentExp -= (50 * rarity) if rarity <= 3 else 250
   
 class PokedexEntry:
+  Id: str
   Name: str
   PokedexId: int
   Types: List[str]
   Sprite: str
   Rarity: int
+  Level: int
+  CurrentExp: int
   Pokemon: SpawnPokemon
 
   def __init__(self, dict: Dict):
+    self.Id = dict.get('Id') or uuid.uuid4().hex if dict else uuid.uuid4().hex
     self.Name = dict.get('Name') or '' if dict else ''
     self.PokedexId = dict.get('PokedexId') or 0 if dict else 0
     types = dict.get('Types') if dict else []
@@ -117,9 +106,22 @@ class PokedexEntry:
         types, List) else types.value if types else []
     self.Sprite = dict.get('Sprite') or '' if dict else ''
     self.Rarity = dict.get('Rarity') or 0 if dict else 0
+    self.Level = dict.get('Level') or 1 if dict else 1
+    self.CurrentExp = dict.get('CurrentExp') or 0 if dict else 0
     pkmn = dict.get('Pokemon') if dict else None
     self.Pokemon = SpawnPokemon(pkmn) or None if isinstance(
         pkmn, Dict) else SpawnPokemon(pkmn.value) if pkmn else None
+
+    if self.Level > 100:
+      self.Level = 100
+    if self.Level == 100:
+      self.CurrentExp = 0
+
+  def GainExp(self, expGain: int):
+    self.CurrentExp += expGain
+    if self.CurrentExp >= (50 * self.Rarity) if self.Rarity <= 3 else 250:
+      self.Level += 1
+      self.CurrentExp -= (50 * self.Rarity) if self.Rarity <= 3 else 250
   
   def GetNameString(self):
     return f"{self.Name}{' :female_sign:' if self.Pokemon.IsFemale == True else ' :male_sign:' if self.Pokemon.IsFemale == False else ''}{' :sparkles:' if self.Pokemon.IsShiny else ''}"

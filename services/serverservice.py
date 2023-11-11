@@ -1,5 +1,4 @@
 from dataaccess import serverda
-from models.CustomException import ServerInvalidException
 from models.Server import Server
 
 
@@ -25,23 +24,16 @@ def GetServers():
   return serverda.GetAllServers()
 
 
-def UpsertServer(server):
+def UpsertServer(server: Server):
   return serverda.UpsertServer(server)
 
 
-def DeleteServer(serverId):
-  serv = GetServer(serverId)
-  if not serv:
-    raise ServerInvalidException
-  return serverda.DeleteServer(serverId)
+def DeleteServer(server: Server):
+  return serverda.DeleteServer(server.ServerId)
 
 
-def ToggleChannel(serverId, channelId):
-  server = serverda.GetServer(serverId)
+def ToggleChannel(server: Server, channelId):
   added = True
-  if not server:
-    raise ServerInvalidException
-
   if not server.ChannelIds.__contains__(channelId):
     server.ChannelIds.append(channelId)
   else:
@@ -53,19 +45,11 @@ def ToggleChannel(serverId, channelId):
   serverda.UpsertServer(server)
   return added
 
-def ChangePercent(serverId, percent):
-  serv = GetServer(serverId)
-  if not serv:
-    raise ServerInvalidException
+def ChangePercent(server: Server, percent):
+  server.SpawnChance = percent
+  UpsertServer(server)
   
-  serv.SpawnChance = percent
-  UpsertServer(serv)
-  
-def ToggleDeleteSpawn(serverId):
-  serv = GetServer(serverId)
-  if not serv:
-    raise ServerInvalidException
-  
-  serv.DeletePrevious = 0 if serv.DeletePrevious else 1
-  UpsertServer(serv)
-  return serv.DeletePrevious
+def ToggleDeleteSpawn(server: Server):
+  server.DeletePrevious = 0 if server.DeletePrevious else 1
+  UpsertServer(server)
+  return server.DeletePrevious

@@ -10,7 +10,7 @@ def GetTypes():
 
 
 def GetTypeByName(type):
-  return next((Type(t) for t in GetJson() if t['Type'].lower() == type.lower()), None)
+  return next((Type(t) for t in GetJson() if t['Name'].lower() == type.lower()), None)
 
 
 def GetJson():

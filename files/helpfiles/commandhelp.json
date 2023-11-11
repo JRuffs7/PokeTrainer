@@ -3,7 +3,7 @@
     {
       "name": "register",
       "shortstring": "(Admin Only) Registers this server with the PokeTrainer bot.",
-      "helpstring":"Proper command usage: **/start *percent* *[delete]***\nParameters:\n**percent** - The percent chance for a Pokemon to spawn 0-100\n**delete** - (Optional) True/False if the previous spawn message will be deleted every spawn. Default true\n\nWhen this command is run, Pokemon will only spawn in the channel the command is executed, overriding any previous settings if they exist. If you wish to include more channels in the random spawn cycle, look into the **/togglechannel** command. This command also voids any spawn currently available.\n\nEx. **/start 60 True** will have a 60% chance to spawn a Pokemon every 5 minutes after the previous spawn and will delete the previous spawn message.",
+      "helpstring":"Proper command usage: **/register *percent* *[delete]***\nParameters:\n**percent** - The percent chance for a Pokemon to spawn 0-100\n**delete** - (Optional) True/False if the previous spawn message will be deleted every spawn. Default true\n\nWhen this command is run, Pokemon will only spawn in the channel the command is executed, overriding any previous settings if they exist. If you wish to include more channels in the random spawn cycle, look into the **/togglechannel** command. This command also voids any spawn currently available.\n\nEx. **/register 60 True** will have a 60% chance to spawn a Pokemon every 5 minutes after the previous spawn and will delete the previous spawn message.",
       "requiresadmin": true
     },
     {
@@ -15,25 +15,25 @@
     {
       "name": "togglechannel",
       "shortstring": "(Admin Only) Add/remove the current channel to the spawn list.",
-      "helpstring":"Proper command usage: **/togglechannel**\n\nThis command will toggle the spawning of Pokemon in the current channel. If the channel is already in the spawn list, it will be removed. The full list of channels can be seen through the **/getserver** command.\n\nYour server must be registered with the bot by using the **/start** command first, and there must always be at least one channel in the spawn list.\nIf you wish to turn the bot off, please use the **/stop** command.",
+      "helpstring":"Proper command usage: **/togglechannel**\n\nThis command will toggle the spawning of Pokemon in the current channel. If the channel is already in the spawn list, it will be removed. The full list of channels can be seen through the **/serverinfo** command.\n\nYour server must be registered with the bot by using the **/register** command first, and there must always be at least one channel in the spawn list.\nIf you wish to turn the bot off, please use the **/stop** command.",
       "requiresadmin": true
     },
     {
-      "name": "getserver",
+      "name": "serverinfo",
       "shortstring": "(Admin Only) Prints the current server settings.",
-      "helpstring":"Proper command usage: **/getserver**\n\nThis command will return the details of the server settings for the bot. This includes the server name, channels toggled for spawning, the percent chance for a spawn, and if previous spawns will be deleted.",
+      "helpstring":"Proper command usage: **/serverinfo**\n\nThis command will return the details of the server settings for the bot. This includes the server name, channels toggled for spawning, the percent chance for a spawn, and if previous spawns will be deleted.",
       "requiresadmin": true
     },
     {
       "name": "editspawnchance",
       "shortstring": "(Admin Only) Change the spawn percentage for the server.",
-      "helpstring":"Proper command usage: **/editspawnchance *percent***\nParameters:\n**percent** - New percent chance for a Pokemon to spawn 1-100\n\nThis command will edit the spawn chance of Pokemon in the server. The current spawn chance can be seen through the **/getserver** command.\n\nYour server must be registered with the bot by using the **/start** command first.",
+      "helpstring":"Proper command usage: **/editspawnchance *percent***\nParameters:\n**percent** - New percent chance for a Pokemon to spawn 1-100\n\nThis command will edit the spawn chance of Pokemon in the server. The current spawn chance can be seen through the **/serverinfo** command.\n\nYour server must be registered with the bot by using the **/register** command first.",
       "requiresadmin": true
     },
     {
       "name": "toggledeletespawn",
       "shortstring": "(Admin Only) Toggle if the previous spawn should be deleted.",
-      "helpstring":"Proper command usage: **/toggledeletespawn**\n\nThis command will toggle the deletion of previously spawned Pokemon messages. The current toggle can be seen through the **/getserver** command.\n\nYour server must be registered with the bot by using the **/start** command first.",
+      "helpstring":"Proper command usage: **/toggledeletespawn**\n\nThis command will toggle the deletion of previously spawned Pokemon messages. The current toggle can be seen through the **/serverinfo** command.\n\nYour server must be registered with the bot by using the **/register** command first.",
       "requiresadmin": true
     }
   ],
@@ -47,7 +47,7 @@
     {
       "name": "trainer",
       "shortstring":"Displays information about the current or given user.",
-      "helpstring":"Proper command usage: **/trainerinfo *[@user]***\nParameters:\n**@user** - (Optional) A member of the current server.\n\nThis command will give statistics regarding the trainer belonging to either yourself or the specified user. Information will include stats such as health and number of fights, as well as Pokedex statistics such as Pokedex completion, current number of Pokemon, current number of shiny Pokemon, and total Pokemon caught.",
+      "helpstring":"Proper command usage: **/trainer *[@user]***\nParameters:\n**@user** - (Optional) A member of the current server.\n\nThis command will give statistics regarding the trainer belonging to either yourself or the specified user. Information will include stats such as health and number of fights, as well as Pokedex statistics such as Pokedex completion, current number of Pokemon, current number of shiny Pokemon, and total Pokemon caught.",
       "requiresadmin": false
     },
     {
@@ -107,7 +107,7 @@
     {
       "name": "spawn",
       "shortstring": "Pokemon will have a chance to spawn in channels set up by a server admin.",
-      "helpstring": "There are no commands that spawn a Pokemon, but rather a random chance appointed by a server admin. When the bot is active, the spawn chance will be set to 1-100%. There can also be multiple channels registered to be valid spawn areas for PokeTrainer, also set by a server admin.\n\nSpawning is how trainers can grow their collection through capturing and earn money through fighting. When a Pokemon is determined to spawn, there are a few factors that go into the spawn calculation. The first factor to be considered is the spawn rarity, then there are some exclusions, and finally there are numbers crunched for shiny odds and other details.\n\n__Rarity__\nMore information can be seen through the **/help rarity** command. Rarities have certain chances to spawn:\nRarity 1 - 60%\nRarity 2 - 25%\nRarity 3 - 10%\nRarity 4 - 3%\nRarity 5 - 2%\n\n__Exclusions__\nThere are exclusions that will not be found during a regular spawn event. Here is a list of Pokemon types that are not considered:\n- Starters, Legendaries/Mythicals, Mega forms.\n\n__Details__\nSome details that are calculated during the spawn process are *shiny rate*, *height/weight*, and *female chance*\n- **Shiny Rate** - Currently set at 1/3000\n- **Height/Weight** - Randomly set to +-10% of average stat seen from **/pokeinfo**\n- **Gender** - Each Pokemon has a stat out of 8 to be female. Seen in **/pokeinfo**.\n\nEvery spawn will have 4 emojis attached: Pokeball, Greatball, Ultraball, Fight. The explanation for each can be seen through **/help capture** and **/help fight**.",
+      "helpstring": "There are no commands that spawn a Pokemon, but rather a random chance appointed by a server admin. When the bot is active, the spawn chance will be set to 1-100%. There can also be multiple channels registered to be valid spawn areas for PokeTrainer, also set by a server admin.\n\nSpawning is how trainers can grow their collection through capturing and earn money through fighting. When a Pokemon is determined to spawn, there are a few factors that go into the spawn calculation. The first factor to be considered is the spawn rarity, then there are some exclusions, and finally there are numbers crunched for shiny odds and other details.\n\n__Rarity__\nMore information can be seen through the **/help rarity** command. Rarities have certain chances to spawn:\nRarity 1 - 60%\nRarity 2 - 25%\nRarity 3 - 10%\nRarity 4 - 3%\nRarity 5 - 2%\n\n__Exclusions__\nThere are exclusions that will not be found during a regular spawn event. Here is a list of Pokemon types that do not spawn:\n- Starters\n- Legendaries/Mythicals\n- Mega forms.\n\n__Details__\nSome details that are calculated during the spawn process are *shiny rate*, *height/weight*, and *female chance*\n- **Shiny Rate** - Currently set at 1/3000\n- **Height/Weight** - Randomly set to +-10% of average stat seen from **/pokeinfo**\n- **Gender** - Each Pokemon has a stat out of 8 to be female.\n\nEvery spawn will have 4 emojis attached: Pokeball, Greatball, Ultraball, Fight. The explanation for each can be seen through **/help capture** and **/help fight**.",
       "requiresadmin": false
     },
     {

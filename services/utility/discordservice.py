@@ -15,11 +15,11 @@ from services import helpservice, pokemonservice
 
 
 async def SendErrorMessage(interaction, command):
-  valid, helpString = helpservice.BuildCommandHelp(
+  helpObj = helpservice.BuildCommandHelp(
       command, interaction.user.guild_permissions.administrator)
-  if valid:
+  if helpObj:
     return await interaction.response.send_message(embed=CreateEmbed(
-        f'{command} Command Usage', helpString, ErrorColor),
+        f'{helpObj.Name} Command Usage', helpObj.HelpString, ErrorColor),
                                             ephemeral=True)
   return await interaction.response.send_message(embed=CreateEmbed(
         f'{command} Command Usage', "You do not have permission to use this command. Inquire a server administrator for further details.", ErrorColor),

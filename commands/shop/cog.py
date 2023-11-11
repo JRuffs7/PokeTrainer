@@ -4,7 +4,6 @@ from discord.user import discord
 from typing import List
 
 from globals import ShopFailColor, ShopSuccessColor
-from models.CustomException import TrainerInvalidException
 from services import itemservice, trainerservice
 from services.utility import discordservice
 
@@ -53,23 +52,25 @@ class ShopCommands(commands.Cog, name="ShopCommands"):
                         item: int, 
                         amount: int | None):
     print(f"BUY called")
-    try:
-      if type == "ball":
-        sale = trainerservice.TryBuyPokeball(inter.guild_id, inter.user.id, item, amount or 1)
-      else:
-        sale = trainerservice.TryBuyPotion(inter.guild_id, inter.user.id, item, amount or 1)
-        
-      if sale is None:
-        return await discordservice.SendMessage(
-          inter, "Purchase Failed",
-          f"Item could not be purchased.\nPlease check your current funds by using **/trainer** or **/inventory**",
-          ShopFailColor)
-      return await discordservice.SendMessage(
-          inter, "Purchase Success",
-          f"{sale.Name} x{amount or 1} purchased for ${(amount or 1)*sale.BuyAmount}",
-          ShopSuccessColor)
-    except TrainerInvalidException:
+    trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
+    if not trainer:
       return await discordservice.SendTrainerError(inter)
+    
+    if type.value == "ball":
+      sale = trainerservice.TryBuyPokeball(trainer, item, amount or 1)
+    else:
+      sale = trainerservice.TryBuyPotion(trainer, item, amount or 1)
+      
+    if sale is None:
+      return await discordservice.SendMessage(
+        inter, "Purchase Failed",
+        f"Item could not be purchased.\nPlease check your current funds by using **/trainer** or **/inventory**",
+        ShopFailColor)
+    return await discordservice.SendMessage(
+        inter, "Purchase Success",
+        f"{sale.Name} x{amount or 1} purchased for ${(amount or 1)*sale.BuyAmount}",
+        ShopSuccessColor)
+      
 
   @app_commands.command(
       name="sell",
@@ -84,23 +85,22 @@ class ShopCommands(commands.Cog, name="ShopCommands"):
                         item: int, 
                         amount: int | None):
     print(f"SELL called")
-    try:
-      if type.value == "ball":
-        sale = trainerservice.TrySellPokeball(inter.guild_id, inter.user.id, item, amount or 1)
-      else:
-        sale = trainerservice.TrySellPotion(inter.guild_id, inter.user.id, item, amount or 1)
-
-      if not sale:
-        return await discordservice.SendMessage(
-          inter, "Sell Failed",
-          f"You do not own any of the specified item.\nPlease check your inventory by using **/inventory**", ShopFailColor)
-      return await discordservice.SendMessage(
-          inter, "Sell Success",
-          f"{sale['Item'].Name} x{sale['NumSold']} sold for ${sale['NumSold']*sale['Item'].SellAmount}", ShopSuccessColor)
-    except TrainerInvalidException:
+    trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
+    if not trainer:
       return await discordservice.SendTrainerError(inter)
-    except Exception as e:
-      print(f"{e}")
+    
+    if type.value == "ball":
+      sale = trainerservice.TrySellPokeball(trainer, item, amount or 1)
+    else:
+      sale = trainerservice.TrySellPotion(trainer, item, amount or 1)
+
+    if not sale:
+      return await discordservice.SendMessage(
+        inter, "Sell Failed",
+        f"You do not own any of the specified item.\nPlease check your inventory by using **/inventory**", ShopFailColor)
+    return await discordservice.SendMessage(
+        inter, "Sell Success",
+        f"{sale['Item'].Name} x{sale['NumSold']} sold for ${sale['NumSold']*sale['Item'].SellAmount}", ShopSuccessColor)
 
 
 async def setup(bot: commands.Bot):

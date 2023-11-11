@@ -1,13 +1,13 @@
 from typing import Dict, List
 
-from models.Pokemon import SpawnPokemon
+from models.Pokemon import PokedexEntry
 from services import pokemonservice
 
 
 class Trainer:
   UserId: int
   ServerId: int
-  OwnedPokemon: List[SpawnPokemon]
+  OwnedPokemon: List[PokedexEntry]
   Team: List[str]
   Health: int
   Money: int
@@ -20,9 +20,9 @@ class Trainer:
     self.UserId = dict.get('UserId') or 0 if dict else 0
     self.ServerId = dict.get('ServerId') or 0 if dict else 0
     owned = dict.get('OwnedPokemon') if dict else []
-    self.OwnedPokemon = [SpawnPokemon(s) for s in owned] if isinstance(
-        owned, List) else ([SpawnPokemon(s)
-                            for s in owned.value] if owned else [])
+    self.OwnedPokemon = [PokedexEntry(p) for p in owned] if isinstance(
+        owned, List) else ([PokedexEntry(p)
+                            for p in owned.value] if owned else [])
     team = dict.get('Team') if dict else []
     self.Team = team or [None]*6 if isinstance(
         team, List) else team.value if team else [None]*6
@@ -38,11 +38,8 @@ class Trainer:
         ptn, List) else ([int(p) for p in ptn.value] if ptn else [])
 
   def __str__(self):
-    uniquePkmn = {
-        x.PokedexId: x
-        for x in pokemonservice.ConvertSpawnPokemonToPokemon(self.OwnedPokemon)
-    }.values()
+    uniquePkmn = len(set([x.PokedexId for x in self.OwnedPokemon]))
     totalPkmn = pokemonservice.GetPokemonCount()
 
-    return f"__Stats__\nHP: {self.Health}\nFights: {self.Fights}\n${self.Money}\n\n__Pokemon__\nPokedex: {len(uniquePkmn)}/{totalPkmn} ({round((len(uniquePkmn)*100)/totalPkmn)}%)\nOwned Count: {len(self.OwnedPokemon)}\nShiny Count: {len([x for x in self.OwnedPokemon if x.IsShiny])}\nTotal Caught: {self.TotalCaught}"
+    return f"__Stats__\nHP: {self.Health}\nFights: {self.Fights}\n${self.Money}\n\n__Pokemon__\nPokedex: {uniquePkmn}/{totalPkmn} ({round((uniquePkmn*100)/totalPkmn)}%)\nPokemon Owned: {len(self.OwnedPokemon)}\nShiny Count: {len([x for x in self.OwnedPokemon if x.Pokemon.IsShiny])}\nTotal Caught: {self.TotalCaught}"
 

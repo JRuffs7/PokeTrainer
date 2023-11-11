@@ -55,6 +55,8 @@ class PokedexView(discord.ui.View):
     return self.data[from_item:until_item]
 
   async def send(self):
+    if not self.data:
+      await self.interaction.response.send_message("You do not own any Pokemon that fit the filters.", ephemeral=True)
     await self.interaction.response.send_message(view=self, ephemeral=True)
     self.message = await self.interaction.original_response()
     await self.update_message(self.data[:self.pageLength])
@@ -110,13 +112,13 @@ class PokedexView(discord.ui.View):
     newline = '\n'
     if self.user:
       if self.pageLength == 1:
-        pkmnData = t2a(body=[['CurrentExp:', f"{data.Pokemon.CurrentExp}/{(50 * data.Rarity) if data.Rarity <= 3 else 250}", '|', 'Height:', data.Pokemon.Height],
-                            ['Can Evolve:',f"{'Yes' if pokemonservice.CanTrainerPokemonEvolve(data.Pokemon) else 'No'}", '|','Weight:', data.Pokemon.Weight], 
+        pkmnData = t2a(body=[['CurrentExp:', f"{data.CurrentExp}/{(50 * data.Rarity) if data.Rarity <= 3 else 250}", '|', 'Height:', data.Pokemon.Height],
+                            ['Can Evolve:',f"{'Yes' if pokemonservice.CanTrainerPokemonEvolve(data) else 'No'}", '|','Weight:', data.Pokemon.Weight], 
                             ['Types:', f"{data.Types[0]}"f"{'/' + data.Types[1] if len(data.Types) > 1 else ''}", Merge.LEFT, Merge.LEFT, Merge.LEFT]], 
                       first_col_heading=False,
                       alignments=[Alignment.LEFT,Alignment.LEFT,Alignment.CENTER,Alignment.LEFT,Alignment.LEFT],
                       style=PresetStyle.plain,
                       cell_padding=0)
-        return f"**__{data.GetNameString()} (Lvl. {data.Pokemon.Level})__**\n```{pkmnData}```"
-      return f"{newline.join([x.GetNameString() + '(Lvl. ' + x.Level + ')' for x in data])}"
-    return f"**__{data.Name}{' :female_sign:' if data.Pokemon.IsFemale == True else ''}{' :sparkles:' if data.Pokemon.IsShiny else ''}__**\nAvg. Height: {data.Pokemon.Height}\nAvg. Weight: {data.Pokemon.Weight}\nTypes: {','.join(data.Types)}" if self.pageLength == 1 else f"{newline.join([x.Name for x in data])}"
+        return f"**__{data.GetNameString()} (Lvl. {data.Level})__**\n```{pkmnData}```"
+      return f"{newline.join([x.GetNameString() + f'(Lvl. {x.Level})' for x in data])}"
+    return f"**__{data.Name}{' :female_sign:' if data.Pokemon.IsFemale == True else ''}{' :sparkles:' if data.Pokemon.IsShiny else ''}__**\nAvg. Height: {data.Pokemon.Height}\nAvg. Weight: {data.Pokemon.Weight}\nTypes: {'/'.join(data.Types)}\nRarity: {data.Rarity}" if self.pageLength == 1 else f"{newline.join([x.Name for x in data])}"
