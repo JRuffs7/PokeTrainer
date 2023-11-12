@@ -1,20 +1,7 @@
 import discord
 
-class TeamSelector(discord.ui.Select):
-    def __init__(self, data):
-        options = [discord.SelectOption(
-            label=f'Slot {i+1}',
-            description=f"{data[i].GetNameString()} (Lvl. {data[i].Level})" if data[i] else 'Empty',
-            value=f'{i}'
-            ) for i in range(6)
-        ]
-        super().__init__(options=options, max_values=1, min_values=1, placeholder='Select team slot to change')
-    
-    async def callback(self, inter: discord.Interaction):
-        await self.view.TeamSlotSelection(inter, self.values)
-
 class OwnedSelector(discord.ui.Select):
-    def __init__(self, data, max_select):
+    def __init__(self, data, max_select, defaultId = None):
         if len(data) > 25:
             data = data[:25]
         if len(data) < max_select:
@@ -22,10 +9,11 @@ class OwnedSelector(discord.ui.Select):
         options=[discord.SelectOption(
             label=f"{d.GetNameString()}",
             description= f"Lvl. {d.Level}({d.CurrentExp}/{(50 * d.Rarity) if d.Rarity <= 3 else 250}) | H:{d.Pokemon.Height} | W:{d.Pokemon.Weight} | Types: {'/'.join(d.Types)}",
-            value=f'{d.Id}'
+            value=f'{d.Id}',
+            default=(defaultId and d.Id == defaultId)
             ) for d in data
         ]
-        super().__init__(options=options, max_values=max_select, min_values=1, placeholder='Select Pokemon to place in slot')
+        super().__init__(options=options, max_values=max_select, min_values=1, placeholder='Select Pokemon')
     
     async def callback(self, inter: discord.Interaction):
         await self.view.PokemonSelection(inter, self.values)

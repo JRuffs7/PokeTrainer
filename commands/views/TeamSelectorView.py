@@ -4,7 +4,8 @@ from typing import List
 
 from services import trainerservice
 from models.Pokemon import PokedexEntry
-from commands.views.selectors.OwnedSelector import TeamSelector, OwnedSelector
+from commands.views.selectors.OwnedSelector import OwnedSelector
+from commands.views.selectors.TeamSelector import TeamSelector
 
 
 class TeamSelectorView(discord.ui.View):
@@ -13,10 +14,10 @@ class TeamSelectorView(discord.ui.View):
     self.interaction = interaction
     self.pokeList = pokeList
     super().__init__(timeout=300)
-    positionOptions = TeamSelector(currentTeam)
     pokemonOptions = OwnedSelector(pokeList, 1)
-    self.add_item(positionOptions)
+    positionOptions = TeamSelector(currentTeam)
     self.add_item(pokemonOptions)
+    self.add_item(positionOptions)
 
   async def TeamSlotSelection(self, inter: discord.Interaction, choice):
     self.teamslotchoice = choice[0]
@@ -39,7 +40,7 @@ class TeamSelectorView(discord.ui.View):
     if self.pokemonchoice and self.teamslotchoice:
       trainerservice.SetTeamSlot(trainerservice.GetTrainer(inter.guild_id, inter.user.id), int(self.teamslotchoice), self.pokemonchoice)
       await self.message.delete()
-      await inter.response.send_message(content=f"{next((p.GetNameString() for p in self.pokeList if p.Pokemon.Id.lower() == self.pokemonchoice.lower()), None) or 'Error'} set in Slot {int(self.teamslotchoice) + 1}",ephemeral=True)
+      await inter.response.send_message(content=f"{next((p.GetNameString() for p in self.pokeList if p.Id.lower() == self.pokemonchoice.lower()), None) or 'Error'} set in Slot {int(self.teamslotchoice) + 1}",ephemeral=True)
 
 
   async def send(self):

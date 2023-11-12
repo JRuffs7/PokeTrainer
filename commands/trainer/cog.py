@@ -129,7 +129,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
 
     teamSelect = TeamSelectorView(
       inter,
-      [next((p for p in trainer.OwnedPokemon if t and p.Pokemon.Id == t), None) for t in trainer.Team],
+      [next((p for p in trainer.OwnedPokemon if t and p.Id == t), None) for t in trainer.Team],
       result)
     await teamSelect.send()
 
