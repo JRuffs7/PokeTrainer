@@ -174,6 +174,15 @@ def GetPokedexList(trainer: Trainer, orderString, shiny):
 
 #region Team
 
+def GetTeam(trainer: Trainer):
+  teamList = []
+  for ind, pokeId in enumerate(trainer.Team):
+    if pokeId:
+      mon = next((p for p in trainer.OwnedPokemon if pokeId and p.Id == pokeId))
+      mon.Name = f"({ind + 1}) {mon.Name}"
+      teamList.append(mon)
+  return teamList
+
 def SetTeamSlot(trainer: Trainer, slotNum, pokemonId):
   trainer.Team[slotNum] = pokemonId
   UpsertTrainer(trainer)
