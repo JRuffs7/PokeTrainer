@@ -17,8 +17,3 @@ class OwnedSelector(discord.ui.Select):
     
     async def callback(self, inter: discord.Interaction):
         await self.view.PokemonSelection(inter, self.values)
-
-    def SetValues(self, valueList):
-        for option in self.options:
-            if option.value in valueList:
-                self.values.append(option.value)
