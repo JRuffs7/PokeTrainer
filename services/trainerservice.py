@@ -187,6 +187,14 @@ def SetTeamSlot(trainer: Trainer, slotNum, pokemonId):
   trainer.Team[slotNum] = pokemonId
   UpsertTrainer(trainer)
 
+def Evolve(trainer: Trainer, initialPkmn, evolveId):
+  newPkmn = pokemonservice.EvolvePokemon(initialPkmn, evolveId)
+  index = trainer.OwnedPokemon.index(initialPkmn)
+  trainer.OwnedPokemon[index] = newPkmn
+  UpsertTrainer(trainer)
+  return newPkmn
+
+
 def ReleasePokemon(trainer: Trainer, pokemonIds):
   released = next((p for p in trainer.OwnedPokemon if p.Id in pokemonIds), None)
   trainer.OwnedPokemon = [p for p in trainer.OwnedPokemon if p.Id not in pokemonIds]

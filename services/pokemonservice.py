@@ -117,11 +117,11 @@ def ConvertSpawnPokemonToPokemon(pokeList: List[SpawnPokemon]):
 
 def CanTrainerPokemonEvolve(pkmn: PokedexEntry):
   poke = GetPokemonById(pkmn.Pokemon.Pokemon_Id)
-  if pkmn.Rarity == 1 and len(poke.EvolvesInto) > 1:
+  if pkmn.Rarity == 1 and len(poke.EvolvesInto) >= 1:
     return pkmn.Level >= 20
-  elif pkmn.Rarity == 2 and len(poke.EvolvesInto) > 1:
+  elif pkmn.Rarity == 2 and len(poke.EvolvesInto) >= 1:
     return pkmn.Level >= 30
-  elif pkmn.Rarity == 3 and len(poke.EvolvesInto) > 1:
+  elif pkmn.Rarity == 3 and len(poke.EvolvesInto) >= 1:
     return pkmn.Level >= 35
   return False
 
@@ -183,6 +183,24 @@ def SplitPokemonForSearch(pokemonId):
         }))
     }))
   return pkmnList
+
+
+def EvolvePokemon(initial: PokedexEntry, evolveId):
+  pkmn = GetPokemonById(evolveId)
+  spawn = GenerateSpawnPokemon(pkmn)
+  spawn.IsFemale = initial.Pokemon.IsFemale
+  spawn.IsShiny = initial.Pokemon.IsShiny
+  return PokedexEntry({
+      'Id': initial.Id,
+      'Name': pkmn.Name,
+      'PokedexId': pkmn.PokedexId,
+      'Types': pkmn.Types,
+      'Sprite': pkmn.GetImage(spawn.IsShiny, spawn.IsFemale),
+      'Rarity': pkmn.Rarity,
+      'Level': initial.Level,
+      'CurrentExp': initial.CurrentExp,
+      'Pokemon': spawn.__dict__
+    })
 
 
 def PokemonFight(attack: Pokemon, defend: Pokemon):

@@ -1,0 +1,16 @@
+import discord
+
+class EvolveSelector(discord.ui.Select):
+    def __init__(self, data):
+        if len(data) > 25:
+            data = data[:25]
+        options=[discord.SelectOption(
+            label=f"{d.Name}",
+            description= f"Types: {'/'.join(d.Types) if d.Types else ''} | Rarity: {d.Rarity}",
+            value=f'{d.Id}'
+            ) for d in data
+        ]
+        super().__init__(options=options, max_values=1, min_values=1, placeholder='Evolve Into...')
+    
+    async def callback(self, inter: discord.Interaction):
+        await self.view.EvolveSelection(inter, self.values)

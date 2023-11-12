@@ -4,7 +4,8 @@ from typing import List
 
 from services import trainerservice
 from models.Pokemon import PokedexEntry
-from commands.views.selectors.OwnedSelector import TeamSelector, OwnedSelector
+from commands.views.selectors.OwnedSelector import OwnedSelector
+from commands.views.selectors.TeamSelector import TeamSelector
 
 
 class TeamSelectorView(discord.ui.View):
@@ -13,10 +14,10 @@ class TeamSelectorView(discord.ui.View):
     self.interaction = interaction
     self.pokeList = pokeList
     super().__init__(timeout=300)
-    positionOptions = TeamSelector(currentTeam)
     pokemonOptions = OwnedSelector(pokeList, 1)
-    self.add_item(positionOptions)
+    positionOptions = TeamSelector(currentTeam)
     self.add_item(pokemonOptions)
+    self.add_item(positionOptions)
 
   async def TeamSlotSelection(self, inter: discord.Interaction, choice):
     self.teamslotchoice = choice[0]
