@@ -12,7 +12,6 @@ class ReleasePokemonView(discord.ui.View):
 	def __init__(self, interaction: discord.Interaction, pokeList: List[PokedexEntry]):
 		self.interaction = interaction
 		self.pokeList = pokeList
-		print(len(pokeList))
 		super().__init__(timeout=300)
 		self.add_item(OwnedSelector(pokeList, 25))
 

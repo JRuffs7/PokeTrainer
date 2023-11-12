@@ -67,7 +67,7 @@ async def SendPokemon(guildid,
     return
 
   embed = CreateEmbed(
-      f"{pkmn.Name}{' :female_sign:' if pokemon.IsFemale == True else ' :male_sign:' if pokemon.IsFemale == False else ''}{' :sparkles:' if pokemon.IsShiny else ''}",
+      f"{pkmn.Name}{pokemon.GetNameEmojis()}",
       f"Height: {pokemon.Height}\nWeight: {pokemon.Weight}", PokemonSpawnColor)
   embed.set_image(url=pkmn.GetImage(pokemon.IsShiny, pokemon.IsFemale))
   bot = discordbot.GetBot()
