@@ -1,5 +1,6 @@
 import uuid
 from typing import Dict, List
+from globals import FemaleSign, MaleSign, ShinySign
 
 
 class Pokemon:
@@ -85,6 +86,9 @@ class SpawnPokemon:
     self.Weight = dict.get('Weight') or 0.0 if dict else 0.0
     self.IsShiny = dict.get('IsShiny') or False if dict else False
     self.IsFemale = dict.get('IsFemale') or False if dict else False
+
+  def GetNameEmojis(self):
+    return f"{f' {FemaleSign} ' if self.IsFemale == True else f' {MaleSign} ' if self.IsFemale == False else ' '}{f'{ShinySign} ' if self.IsShiny else ' '}"
   
 class PokedexEntry:
   Id: str
@@ -124,4 +128,5 @@ class PokedexEntry:
       self.CurrentExp -= (50 * self.Rarity) if self.Rarity <= 3 else 250
   
   def GetNameString(self):
-    return f"{self.Name}{' :female_sign:' if self.Pokemon.IsFemale == True else ' :male_sign:' if self.Pokemon.IsFemale == False else ''}{' :sparkles:' if self.Pokemon.IsShiny else ''}"
+
+    return f"{self.Name}{self.Pokemon.GetNameEmojis()}"

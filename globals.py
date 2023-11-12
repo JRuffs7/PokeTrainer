@@ -18,9 +18,9 @@ GreatBallReaction = "🔵"
 UltraBallReaction = "🟡"
 MasterBallReaction = "🟣"
 FightReaction = "⚔️"
-MaleSign = ""
-FemaleSign = ""
-ShinySign = ""
+MaleSign = "🟦"
+FemaleSign = "🟥"
+ShinySign = "✨"
 
 StarterDexIds = [
     range(1, 10),
