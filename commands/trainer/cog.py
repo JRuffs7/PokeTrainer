@@ -132,7 +132,18 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
       [next((p for p in trainer.OwnedPokemon if t and p.Pokemon.Id == t), None) for t in trainer.Team],
       result)
     await teamSelect.send()
-      
+
+  @app_commands.command(name="myteam",
+                        description="View your current team.")
+  async def myteam(self, inter: discord.Interaction):
+    print("MY TEAM called")
+    trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
+    if not trainer:
+      return await discordservice.SendTrainerError(inter)
+
+    teamViewer = PokedexView(inter, 1, inter.user, f"{inter.user.display_name}'s Battle Team")
+    teamViewer.data = trainerservice.GetTeam(trainer)
+    await teamViewer.send()
 
   #endregion
 
