@@ -32,9 +32,7 @@ class EvolveView(discord.ui.View):
 			self.remove_item(self.ownlist)
 			self.remove_item(self.evlist)
 			self.ownlist = OwnedSelector(self.evolvelist, 1, choice[0])
-			print("own")
 			self.evlist = EvolveSelector([pokemonservice.GetPokemonById(p) for p in pokemonservice.GetPokemonById(self.pokemonchoice.Pokemon.Pokemon_Id).EvolvesInto])
-			print("ev")
 			self.add_item(self.ownlist)
 			self.add_item(self.evlist)
 			await self.message.edit(view=self)
@@ -51,8 +49,6 @@ class EvolveView(discord.ui.View):
 	async def submit_button(self, inter: discord.Interaction,
 												button: discord.ui.Button):
 		try:
-			print(self.pokemonchoice)
-			print(self.evolvechoice)
 			if self.pokemonchoice and self.evolvechoice and self.evolvechoice != '0':
 				evolvedPokemon = trainerservice.Evolve(self.trainer, self.pokemonchoice, int(self.evolvechoice))
 				await self.message.delete()
