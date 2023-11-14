@@ -9,6 +9,7 @@ class Trainer:
   ServerId: int
   OwnedPokemon: List[PokedexEntry]
   Team: List[str]
+  Badges: List[int]
   Health: int
   Money: int
   Fights: int
@@ -26,6 +27,9 @@ class Trainer:
     team = dict.get('Team') if dict else []
     self.Team = team or [None]*6 if isinstance(
         team, List) else team.value if team else [None]*6
+    badges = dict.get('Badges') if dict else []
+    self.Badges = badges or [] if isinstance(
+        badges, List) else badges.value if badges else []
     self.Health = dict.get('Health') or 0 if dict else 0
     self.Money = dict.get('Money') or 0 if dict else 0
     self.Fights = dict.get('Fights') or 0 if dict else 0

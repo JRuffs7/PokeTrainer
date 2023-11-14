@@ -6,7 +6,8 @@
         74,
         95
       ],
-      "BadgeId": 1
+      "BadgeId": 1,
+      "Reward": 200
     },
     {
       "Name": "Misty",
@@ -14,7 +15,8 @@
         120,
         121
       ],
-      "BadgeId": 2
+      "BadgeId": 2,
+      "Reward": 200
     },
     {
       "Name": "Lt. Surge",
@@ -23,7 +25,8 @@
         26,
         100
       ],
-      "BadgeId": 3
+      "BadgeId": 3,
+      "Reward": 300
     },
     {
       "Name": "Erika",
@@ -32,16 +35,19 @@
         71,
         114
       ],
-      "BadgeId": 4
+      "BadgeId": 4,
+      "Reward": 300
     },
     {
       "Name": "Koga",
       "PokemonIds": [
         89,
         109,
+        109,
         110
       ],
-      "BadgeId": 5
+      "BadgeId": 5,
+      "Reward": 400
     },
     {
       "Name": "Sabrina",
@@ -51,7 +57,8 @@
         65,
         122
       ],
-      "BadgeId": 6
+      "BadgeId": 6,
+      "Reward": 400
     },
     {
       "Name": "Blaine",
@@ -61,7 +68,8 @@
         77,
         78
       ],
-      "BadgeId": 7
+      "BadgeId": 7,
+      "Reward": 400
     },
     {
       "Name": "Giovanni",
@@ -72,7 +80,8 @@
         111,
         112
       ],
-      "BadgeId": 1
+      "BadgeId": 1,
+      "Reward": 500
     },
     {
       "Name": "Falkner",
@@ -80,7 +89,8 @@
         16,
         17
       ],
-      "BadgeId": 9
+      "BadgeId": 9,
+      "Reward": 200
     },
     {
       "Name": "Bugsy",
@@ -89,7 +99,8 @@
         14,
         123
       ],
-      "BadgeId": 10
+      "BadgeId": 10,
+      "Reward": 300
     },
     {
       "Name": "Whitney",
@@ -97,16 +108,19 @@
         35,
         241
       ],
-      "BadgeId": 11
+      "BadgeId": 11,
+      "Reward": 200
     },
     {
       "Name": "Morty",
       "PokemonIds": [
         92,
         93,
+        93,
         94
       ],
-      "BadgeId": 12
+      "BadgeId": 12,
+      "Reward": 400
     },
     {
       "Name": "Chuck",
@@ -114,15 +128,18 @@
         57,
         62
       ],
-      "BadgeId": 13
+      "BadgeId": 13,
+      "Reward": 200
     },
     {
       "Name": "Jasmine",
       "PokemonIds": [
         81,
+        81,
         208
       ],
-      "BadgeId": 14
+      "BadgeId": 14,
+      "Reward": 300
     },
     {
       "Name": "Pryce",
@@ -131,15 +148,19 @@
         87,
         221
       ],
-      "BadgeId": 15
+      "BadgeId": 15,
+      "Reward": 300
     },
     {
       "Name": "Clair",
       "PokemonIds": [
         148,
+        148,
+        148,
         230
       ],
-      "BadgeId": 16
+      "BadgeId": 16,
+      "Reward": 200
     },
     {
       "Name": "Roxanne",
@@ -147,7 +168,8 @@
         74,
         299
       ],
-      "BadgeId": 17
+      "BadgeId": 17,
+      "Reward": 200
     },
     {
       "Name": "Brawly",
@@ -155,7 +177,8 @@
         66,
         296
       ],
-      "BadgeId": 18
+      "BadgeId": 18,
+      "Reward": 200
     },
     {
       "Name": "Wattson",
@@ -164,23 +187,28 @@
         82,
         100
       ],
-      "BadgeId": 19
+      "BadgeId": 19,
+      "Reward": 300
     },
     {
       "Name": "Flannery",
       "PokemonIds": [
         218,
+        218,
         324
       ],
-      "BadgeId": 20
+      "BadgeId": 20,
+      "Reward": 300
     },
     {
       "Name": "Norman",
       "PokemonIds": [
         288,
+        289,
         289
       ],
-      "BadgeId": 21
+      "BadgeId": 21,
+      "Reward": 300
     },
     {
       "Name": "Winona",
@@ -190,7 +218,8 @@
         279,
         334
       ],
-      "BadgeId": 22
+      "BadgeId": 22,
+      "Reward": 400
     },
     {
       "Name": "Tate & Liza",
@@ -198,7 +227,8 @@
         337,
         338
       ],
-      "BadgeId": 23
+      "BadgeId": 23,
+      "Reward": 200
     },
     {
       "Name": "Wallace",
@@ -209,7 +239,8 @@
         364,
         370
       ],
-      "BadgeId": 24
+      "BadgeId": 24,
+      "Reward": 500
     },
     {
       "Name": "Roark",
@@ -218,7 +249,8 @@
         95,
         408
       ],
-      "BadgeId": 25
+      "BadgeId": 25,
+      "Reward": 300
     },
     {
       "Name": "Gardenia",
@@ -227,7 +259,8 @@
         407,
         420
       ],
-      "BadgeId": 26
+      "BadgeId": 26,
+      "Reward": 300
     },
     {
       "Name": "Maylene",
@@ -236,7 +269,8 @@
         307,
         448
       ],
-      "BadgeId": 27
+      "BadgeId": 27,
+      "Reward": 300
     },
     {
       "Name": "Crasher Wake",
@@ -245,7 +279,8 @@
         195,
         419
       ],
-      "BadgeId": 28
+      "BadgeId": 28,
+      "Reward": 300
     },
     {
       "Name": "Fantina",
@@ -254,7 +289,8 @@
         426,
         429
       ],
-      "BadgeId": 29
+      "BadgeId": 29,
+      "Reward": 300
     },
     {
       "Name": "Byron",
@@ -263,7 +299,8 @@
         411,
         436
       ],
-      "BadgeId": 30
+      "BadgeId": 30,
+      "Reward": 300
     },
     {
       "Name": "Candice",
@@ -273,7 +310,8 @@
         459,
         460
       ],
-      "BadgeId": 31
+      "BadgeId": 31,
+      "Reward": 400
     },
     {
       "Name": "Volkner",
@@ -283,7 +321,8 @@
         405,
         424
       ],
-      "BadgeId": 32
+      "BadgeId": 32,
+      "Reward": 400
     },
     {
       "Name": "Chili, Cilan, Cress",
@@ -293,7 +332,8 @@
         513,
         515
       ],
-      "BadgeId": 33
+      "BadgeId": 33,
+      "Reward": 400
     },
     {
       "Name": "Lenora",
@@ -301,7 +341,8 @@
         505,
         507
       ],
-      "BadgeId": 34
+      "BadgeId": 34,
+      "Reward": 200
     },
     {
       "Name": "Burgh",
@@ -310,15 +351,18 @@
         544,
         557
       ],
-      "BadgeId": 35
+      "BadgeId": 35,
+      "Reward": 300
     },
     {
       "Name": "Elesa",
       "PokemonIds": [
         523,
+        587,
         587
       ],
-      "BadgeId": 36
+      "BadgeId": 36,
+      "Reward": 200
     },
     {
       "Name": "Clay",
@@ -327,7 +371,8 @@
         536,
         552
       ],
-      "BadgeId": 37
+      "BadgeId": 37,
+      "Reward": 300
     },
     {
       "Name": "Skyla",
@@ -336,7 +381,8 @@
         528,
         581
       ],
-      "BadgeId": 38
+      "BadgeId": 38,
+      "Reward": 300
     },
     {
       "Name": "Brycen",
@@ -345,7 +391,8 @@
         614,
         615
       ],
-      "BadgeId": 39
+      "BadgeId": 39,
+      "Reward": 300
     },
     {
       "Name": "Iris",
@@ -354,7 +401,8 @@
         612,
         621
       ],
-      "BadgeId": 40
+      "BadgeId": 40,
+      "Reward": 300
     },
     {
       "Name": "Viola",
@@ -362,7 +410,8 @@
         283,
         666
       ],
-      "BadgeId": 41
+      "BadgeId": 41,
+      "Reward": 200
     },
     {
       "Name": "Grant",
@@ -370,7 +419,8 @@
         696,
         698
       ],
-      "BadgeId": 42
+      "BadgeId": 42,
+      "Reward": 200
     },
     {
       "Name": "Korrina",
@@ -379,7 +429,8 @@
         619,
         701
       ],
-      "BadgeId": 43
+      "BadgeId": 43,
+      "Reward": 300
     },
     {
       "Name": "Ramos",
@@ -388,7 +439,8 @@
         189,
         673
       ],
-      "BadgeId": 44
+      "BadgeId": 44,
+      "Reward": 300
     },
     {
       "Name": "Clemont",
@@ -397,7 +449,8 @@
         587,
         695
       ],
-      "BadgeId": 45
+      "BadgeId": 45,
+      "Reward": 300
     },
     {
       "Name": "Valerie",
@@ -406,7 +459,8 @@
         303,
         700
       ],
-      "BadgeId": 46
+      "BadgeId": 46,
+      "Reward": 300
     },
     {
       "Name": "Olympia",
@@ -415,7 +469,8 @@
         561,
         678
       ],
-      "BadgeId": 47
+      "BadgeId": 47,
+      "Reward": 300
     },
     {
       "Name": "Wulfric",
@@ -424,75 +479,8 @@
         615,
         713
       ],
-      "BadgeId": 48
-    },
-    {
-      "Name": "Ilima",
-      "PokemonIds": [
-        235,
-        735
-      ],
-      "BadgeId": 49
-    },
-    {
-      "Name": "Lana",
-      "PokemonIds": [
-        90,
-        170,
-        752
-      ],
-      "BadgeId": 50
-    },
-    {
-      "Name": "Kiawe",
-      "PokemonIds": [
-        58,
-        662,
-        1110
-      ],
-      "BadgeId": 51
-    },
-    {
-      "Name": "Mallow",
-      "PokemonIds": [
-        708,
-        756,
-        762
-      ],
-      "BadgeId": 52
-    },
-    {
-      "Name": "Sophocles",
-      "PokemonIds": [
-        462,
-        466,
-        738,
-        777,
-        1106
-      ],
-      "BadgeId": 53
-    },
-    {
-      "Name": "Acerola",
-      "PokemonIds": [
-        302,
-        426,
-        478,
-        770,
-        781
-      ],
-      "BadgeId": 54
-    },
-    {
-      "Name": "Mina",
-      "PokemonIds": [
-        40,
-        210,
-        707,
-        743,
-        756
-      ],
-      "BadgeId": 55
+      "BadgeId": 48,
+      "Reward": 300
     },
     {
       "Name": "Milo",
@@ -500,7 +488,8 @@
         829,
         830
       ],
-      "BadgeId": 56
+      "BadgeId": 56,
+      "Reward": 200
     },
     {
       "Name": "Nessa",
@@ -509,7 +498,8 @@
         834,
         846
       ],
-      "BadgeId": 57
+      "BadgeId": 57,
+      "Reward": 300
     },
     {
       "Name": "Kabu",
@@ -518,7 +508,8 @@
         59,
         851
       ],
-      "BadgeId": 58
+      "BadgeId": 58,
+      "Reward": 300
     },
     {
       "Name": "Bea",
@@ -528,7 +519,8 @@
         675,
         865
       ],
-      "BadgeId": 59
+      "BadgeId": 59,
+      "Reward": 400
     },
     {
       "Name": "Allister",
@@ -538,7 +530,8 @@
         778,
         864
       ],
-      "BadgeId": 60
+      "BadgeId": 60,
+      "Reward": 400
     },
     {
       "Name": "Opal",
@@ -548,7 +541,8 @@
         869,
         1167
       ],
-      "BadgeId": 61
+      "BadgeId": 61,
+      "Reward": 400
     },
     {
       "Name": "Gordie",
@@ -558,16 +552,42 @@
         839,
         874
       ],
-      "BadgeId": 62
+      "BadgeId": 62,
+      "Reward": 400
     },
     {
       "Name": "Melony",
       "PokemonIds": [
         131,
         873,
-        875
+        875,
+        1177
       ],
-      "BadgeId": 63
+      "BadgeId": 63,
+      "Reward": 400
+    },
+    {
+      "Name": "Marnie",
+      "PokemonIds": [
+        454,
+        510,
+        560,
+        861,
+        877
+      ],
+      "BadgeId": 63,
+      "Reward": 500
+    },
+    {
+      "Name": "Raihan",
+      "PokemonIds": [
+        330,
+        526,
+        844,
+        884
+      ],
+      "BadgeId": 63,
+      "Reward": 400
     },
     {
       "Name": "Katy",
@@ -576,7 +596,8 @@
         915,
         917
       ],
-      "BadgeId": 64
+      "BadgeId": 64,
+      "Reward": 300
     },
     {
       "Name": "Brassius",
@@ -585,7 +606,8 @@
         548,
         926
       ],
-      "BadgeId": 65
+      "BadgeId": 65,
+      "Reward": 300
     },
     {
       "Name": "Iono",
@@ -595,7 +617,8 @@
         937,
         938
       ],
-      "BadgeId": 66
+      "BadgeId": 66,
+      "Reward": 400
     },
     {
       "Name": "Kofu",
@@ -604,7 +627,8 @@
         959,
         974
       ],
-      "BadgeId": 67
+      "BadgeId": 67,
+      "Reward": 300
     },
     {
       "Name": "Larry",
@@ -613,7 +637,8 @@
         775,
         980
       ],
-      "BadgeId": 68
+      "BadgeId": 68,
+      "Reward": 300
     },
     {
       "Name": "Ryme",
@@ -623,7 +648,8 @@
         849,
         970
       ],
-      "BadgeId": 69
+      "BadgeId": 69,
+      "Reward": 400
     },
     {
       "Name": "Tulip",
@@ -633,7 +659,8 @@
         954,
         979
       ],
-      "BadgeId": 70
+      "BadgeId": 70,
+      "Reward": 400
     },
     {
       "Name": "Grusha",
@@ -643,7 +670,8 @@
         873,
         973
       ],
-      "BadgeId": 71
+      "BadgeId": 71,
+      "Reward": 400
     }
   ]
 }

@@ -7,15 +7,9 @@
       "requiresadmin": true
     },
     {
-      "name": "stop",
-      "shortstring": "(Admin Only) Deregisters this server from the PokeTrainer bot.",
-      "helpstring": "Proper command usage: **/stop**\n\nThis command will remove your server and all settings associated from the PokeTrainer bot. If you wish to use the PokeTrainer bot again, look into the **/register** command.\n\nTrainer data will NOT be deleted in case the server decides to start using PokeTrainer again at a later date.",
-      "requiresadmin": true
-    },
-    {
-      "name": "togglechannel",
-      "shortstring": "(Admin Only) Add/remove the current channel to the spawn list.",
-      "helpstring": "Proper command usage: **/togglechannel**\n\nThis command will toggle the spawning of Pokemon in the current channel. If the channel is already in the spawn list, it will be removed. The full list of channels can be seen through the **/serverinfo** command.\n\nYour server must be registered with the bot by using the **/register** command first, and there must always be at least one channel in the spawn list.\nIf you wish to turn the bot off, please use the **/stop** command.",
+      "name": "editspawnchance",
+      "shortstring": "(Admin Only) Change the spawn percentage for the server.",
+      "helpstring": "Proper command usage: **/editspawnchance *percent***\nParameters:\n**percent** - New percent chance for a Pokemon to spawn 1-100\n\nThis command will edit the spawn chance of Pokemon in the server. The current spawn chance can be seen through the **/serverinfo** command.\n\nYour server must be registered with the bot by using the **/register** command first.",
       "requiresadmin": true
     },
     {
@@ -25,9 +19,15 @@
       "requiresadmin": true
     },
     {
-      "name": "editspawnchance",
-      "shortstring": "(Admin Only) Change the spawn percentage for the server.",
-      "helpstring": "Proper command usage: **/editspawnchance *percent***\nParameters:\n**percent** - New percent chance for a Pokemon to spawn 1-100\n\nThis command will edit the spawn chance of Pokemon in the server. The current spawn chance can be seen through the **/serverinfo** command.\n\nYour server must be registered with the bot by using the **/register** command first.",
+      "name": "stop",
+      "shortstring": "(Admin Only) Deregisters this server from the PokeTrainer bot.",
+      "helpstring": "Proper command usage: **/stop**\n\nThis command will remove your server and all settings associated from the PokeTrainer bot. If you wish to use the PokeTrainer bot again, look into the **/register** command.\n\nTrainer data will NOT be deleted in case the server decides to start using PokeTrainer again at a later date.",
+      "requiresadmin": true
+    },
+    {
+      "name": "togglechannel",
+      "shortstring": "(Admin Only) Add/remove the current channel to the spawn list.",
+      "helpstring": "Proper command usage: **/togglechannel**\n\nThis command will toggle the spawning of Pokemon in the current channel. If the channel is already in the spawn list, it will be removed. The full list of channels can be seen through the **/serverinfo** command.\n\nYour server must be registered with the bot by using the **/register** command first, and there must always be at least one channel in the spawn list.\nIf you wish to turn the bot off, please use the **/stop** command.",
       "requiresadmin": true
     },
     {
@@ -45,21 +45,9 @@
       "requiresadmin": false
     },
     {
-      "name": "trainer",
-      "shortstring": "Displays information about the current or given user.",
-      "helpstring": "Proper command usage: **/trainer *[@user]***\nParameters:\n**@user** - (Optional) A member of the current server.\n\nThis command will give statistics regarding the trainer belonging to either yourself or the specified user. Information will include stats such as health and number of fights, as well as Pokedex statistics such as Pokedex completion, current number of Pokemon, current number of shiny Pokemon, and total Pokemon caught.",
-      "requiresadmin": false
-    },
-    {
       "name": "inventory",
       "shortstring": "Displays the users Pokeballs, Potions, and money.",
       "helpstring": "Proper command usage: **/inventory**\n\nThis command will provide the trainer with their inventory for the current server. You cannot view the inventory of other trainers. Inventory will include money, Pokeball count, and Potion count.",
-      "requiresadmin": false
-    },
-    {
-      "name": "pokedex",
-      "shortstring": "Displays the current or given users Pokedex.",
-      "helpstring": "Proper command usage: **/pokedex *[image]* *[order]* *[shiny]* *[@user]***\nParameters:\n**image** - (Optional) Whether the Pokedex should be shown in image format. Default no images.\n**order** - (Optional) How the Pokedex should be ordered. Default catch order.\n**shiny** - (Optional) Choose if shiny Pokemon are sorted separate.\n**@user** - (Optional) A member of the current server.\n\nThis command will display the current (or given) users Pokedex in a text list form by default. Using the options above, you can format and change the returned list to your liking.\n\n__Examples__\n**/pokedex images:Yes** - Display the current (or given) users Pokedex in a carousel image format with default ordering and no special shiny sorting.\n**/pokedex order:Name shiny:Shiny First** - Display the Pokedex in a text list and sort the Pokedex by name. Shiny Pokemon will be displayed and sorted by name at the front of the list.\n```Gloom✨\nVulpix✨\nAbra\nBlaziken\nZubat```\n**/pokedex  order:National Dex shiny:Shiny Only** - Displays the Pokedex in sorted order by National Dex number and only displays shinies.",
       "requiresadmin": false
     },
     {
@@ -69,9 +57,27 @@
       "requiresadmin": false
     },
     {
+      "name": "myteam",
+      "shortstring": "View your current battle team in detailed image format.",
+      "helpstring": "Proper command usage: **/myteam**\n\nThis command will display your current battle team in the order of slots and placement. If you have an empty slot on your team, this will just be skipped and not be a page in the display carousel. Information displayed on each page will contain the same information seen through **/pokedex**, as well as the team slot number next to the name. To change your team, use the **/modifyteam** command.\n\nExample: (2) Blaziken would mean it is in the second slot on your battle team.",
+      "requiresadmin": false
+    },
+    {
+      "name": "pokedex",
+      "shortstring": "Displays the current or given users Pokedex.",
+      "helpstring": "Proper command usage: **/pokedex *[image]* *[order]* *[shiny]* *[@user]***\nParameters:\n**image** - (Optional) Whether the Pokedex should be shown in image format. Default no images.\n**order** - (Optional) How the Pokedex should be ordered. Default catch order.\n**shiny** - (Optional) Choose if shiny Pokemon are sorted separate.\n**@user** - (Optional) A member of the current server.\n\nThis command will display the current (or given) users Pokedex in a text list form by default. Using the options above, you can format and change the returned list to your liking.\n\n__Examples__\n**/pokedex images:Yes** - Display the current (or given) users Pokedex in a carousel image format with default ordering and no special shiny sorting.\n**/pokedex order:Name shiny:Shiny First** - Display the Pokedex in a text list and sort the Pokedex by name. Shiny Pokemon will be displayed and sorted by name at the front of the list.\n```Gloom✨\nVulpix✨\nAbra\nBlaziken\nZubat```\n**/pokedex  order:National Dex shiny:Shiny Only** - Displays the Pokedex in sorted order by National Dex number and only displays shinies.",
+      "requiresadmin": false
+    },
+    {
       "name": "release",
       "shortstring": "Release one or many of the selected Pokemon.",
       "helpstring": "Proper command usage: **/release *pokemon***\nParameters:\n**pokemon** - Which Pokemon species you own that you wish to release.\n\nThis command will bring up a single dropdown listing all variations of the selected Pokemon outside of your set team. The selection list will contain a maximum of 25 Pokemon, so if you own 30 Pidgeys it will display the first 25 in your Pokedex. You will see the level, current experience, hieght, weight, and types for each Pokemon listed. You may select one, a select few, or all Pokemon listed.\n\n**NOTE:** You cannot release a Pokemon currently in your team. You must change it out using **/modifyteam** first.",
+      "requiresadmin": false
+    },
+    {
+      "name": "trainer",
+      "shortstring": "Displays information about the current or given user.",
+      "helpstring": "Proper command usage: **/trainer *[@user]***\nParameters:\n**@user** - (Optional) A member of the current server.\n\nThis command will give statistics regarding the trainer belonging to either yourself or the specified user. Information will include stats such as health and number of fights, as well as Pokedex statistics such as Pokedex completion, current number of Pokemon, current number of shiny Pokemon, and total Pokemon caught.",
       "requiresadmin": false
     },
     {
@@ -102,6 +108,12 @@
     }
   ],
   "Pokemon": [
+    {
+      "name": "evolve",
+      "shortstring": "Evolve your Pokemon that are eligible.",
+      "helpstring": "Proper command usage: **/evolve *[pokemon]***\nParameters:\n**pokemon** - (Optional) Specific Pokemon you wish to evolve.\n\nWhen you own a Pokemon that meets the criteria for evolution, this command is used to actually do the evolution step. To see the criteria needed, check out **/help evolution** whcih will contain much more detail. After running the evolve command, you will be prompted with 2 select menus. The first menu will be all available options for evolution (filtered if the parameter is given), up to 25 different selections. Once the first option is selected, the second menu will contain all available options for the initial Pokemon to evolve into.\n\nExample: If Gloom is chosen to evolve, the second list will contain Vileplume and Bellossom.\n\nThe optional parameter will also be filtered as you type, only showing Pokemon able to evolve and matching the characters as you type. You may evolve any Pokemon that you own, including any members of your party.",
+      "requiresadmin": false
+    },
     {
       "name": "pokeinfo",
       "shortstring": "Displays information for the specified Pokemon.",

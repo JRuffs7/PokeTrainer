@@ -30,7 +30,6 @@ def StartTrainer(pokemonId, userId, serverId):
       'UserId': userId,
       'ServerId': serverId,
       'Team': [None, None, None, None, None, None],
-      'OwnedPokemon': [],
       'Health': 50,
       'Money': 500,
       'PokeballList': [1,1,1,1,1]
@@ -194,12 +193,21 @@ def Evolve(trainer: Trainer, initialPkmn, evolveId):
   UpsertTrainer(trainer)
   return newPkmn
 
-
 def ReleasePokemon(trainer: Trainer, pokemonIds):
   released = next((p for p in trainer.OwnedPokemon if p.Id in pokemonIds), None)
   trainer.OwnedPokemon = [p for p in trainer.OwnedPokemon if p.Id not in pokemonIds]
   UpsertTrainer(trainer)
   return released.Name
+
+#endregion
+
+#region Gym Badges
+
+def GetNextTrainerGym(trainer: Trainer):
+  currBadges = trainer.Badges
+
+  next
+
 
 #endregion
 

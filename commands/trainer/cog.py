@@ -145,6 +145,16 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
     teamViewer.data = trainerservice.GetTeam(trainer)
     await teamViewer.send()
 
+  @app_commands.command(name="gymbattle"
+                        description="Battle each gym leader from every region.")
+  async def gymbattle(self, inter: discord.Interaction):
+    print("GYM BATTLE called")
+    trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
+    if not trainer:
+      return await discordservice.SendTrainerError(inter)
+    
+    gymleader = trainerservice.GetNextTrainerGym(trainer)
+
   #endregion
 
   #region POKEDEX
