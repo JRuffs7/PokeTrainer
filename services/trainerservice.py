@@ -203,12 +203,6 @@ def ReleasePokemon(trainer: Trainer, pokemonIds):
 
 #region Gym Badges
 
-def GetNextTrainerGym(trainer: Trainer):
-  currBadges = trainer.Badges
-
-  next
-
-
 #endregion
 
 #region REACTION

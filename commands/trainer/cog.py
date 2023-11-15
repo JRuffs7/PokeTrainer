@@ -7,7 +7,7 @@ from commands.views.TeamSelectorView import TeamSelectorView
 from commands.views.ReleasePokemonView import ReleasePokemonView
 
 from globals import ErrorColor, TrainerColor
-from services import trainerservice, pokemonservice, itemservice
+from services import trainerservice, pokemonservice, itemservice, gymservice
 from services.utility import discordservice
 
 
@@ -15,6 +15,8 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
 
   def __init__(self, bot: commands.Bot):
     self.bot = bot
+
+  #region Info
 
   @app_commands.command(name="trainer",
                         description="Displays trainer info.")
@@ -97,6 +99,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
         f"${items[0]}\n\n{pokeballString}\n\n{potionString}", TrainerColor)
     return await discordservice.SendEmbed(inter, embed, True)
       
+  #endregion
 
   #region TEAM
 
@@ -145,7 +148,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
     teamViewer.data = trainerservice.GetTeam(trainer)
     await teamViewer.send()
 
-  @app_commands.command(name="gymbattle"
+  @app_commands.command(name="gymbattle",
                         description="Battle each gym leader from every region.")
   async def gymbattle(self, inter: discord.Interaction):
     print("GYM BATTLE called")
@@ -153,7 +156,14 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
     if not trainer:
       return await discordservice.SendTrainerError(inter)
     
-    gymleader = trainerservice.GetNextTrainerGym(trainer)
+    gymleader = gymservice.GetNextTrainerGym(trainer)
+    if not gymleader:
+      return await discordservice.SendMessage(
+        inter, 
+        "No Battles Left",
+        "Congratulations! You have beaten all the gym leaders! Check out your badges by using **/badges**.",
+        TrainerColor)
+    
 
   #endregion
 
