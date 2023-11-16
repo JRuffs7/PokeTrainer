@@ -1,6 +1,5 @@
-from discord import app_commands
+from discord import app_commands, Interaction
 from discord.ext import commands
-from discord.user import discord
 from typing import List
 
 from globals import ShopFailColor, ShopSuccessColor
@@ -15,7 +14,7 @@ class ShopCommands(commands.Cog, name="ShopCommands"):
 
   @app_commands.command(name="shop",
                         description="Prints all available items for sale")
-  async def shop(self, inter: discord.Interaction):
+  async def shop(self, inter: Interaction):
     print("SHOP called")
     items = itemservice.GetFullShop()
     newline = '\n'
@@ -27,7 +26,7 @@ class ShopCommands(commands.Cog, name="ShopCommands"):
         ShopSuccessColor)
     return await discordservice.SendEmbed(inter, embed, True)
 
-  async def item_autocomplete(self, inter: discord.Interaction, current: str) -> List[app_commands.Choice[int]]:
+  async def item_autocomplete(self, inter: Interaction, current: str) -> List[app_commands.Choice[int]]:
     pokeballs, potions = itemservice.GetFullShop()
     type = inter.namespace['type']
     choices = []
@@ -43,11 +42,11 @@ class ShopCommands(commands.Cog, name="ShopCommands"):
       name="buy",
       description="Buy one or multiple of the selected item")
   @app_commands.choices(type=[
-      discord.app_commands.Choice(name="Ball", value="ball"),
-      discord.app_commands.Choice(name="Potion", value="potion")
+      app_commands.Choice(name="Ball", value="ball"),
+      app_commands.Choice(name="Potion", value="potion")
   ])
   @app_commands.autocomplete(item=item_autocomplete)
-  async def buy(self, inter: discord.Interaction,
+  async def buy(self, inter: Interaction,
                         type: app_commands.Choice[str], 
                         item: int, 
                         amount: int | None):
@@ -76,11 +75,11 @@ class ShopCommands(commands.Cog, name="ShopCommands"):
       name="sell",
       description="Sell one or multiple of the selected item")
   @app_commands.choices(type=[
-      discord.app_commands.Choice(name="Ball", value="ball"),
-      discord.app_commands.Choice(name="Potion", value="potion")
+      app_commands.Choice(name="Ball", value="ball"),
+      app_commands.Choice(name="Potion", value="potion")
   ])
   @app_commands.autocomplete(item=item_autocomplete)
-  async def sell(self, inter: discord.Interaction,
+  async def sell(self, inter: Interaction,
                         type: app_commands.Choice[str], 
                         item: int, 
                         amount: int | None):

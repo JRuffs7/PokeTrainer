@@ -11,7 +11,7 @@ def GetAllGymLeaders():
 
 
 def GetGymLeaderByBadgeId(badgeId):
-  return next((GymLeader(g) for g in GetJson() if g['BadgeId'] == badgeId), None)
+  return next((GymLeader(g) for g in GetJson(leadersFile) if g['BadgeId'] == badgeId), None)
 
 
 def GetJson(file):

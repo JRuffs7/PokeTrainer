@@ -1,7 +1,6 @@
-from discord import app_commands
+from discord import app_commands, Interaction
 from discord.ext import commands
 from typing import List
-import discord
 import discordbot
 
 from commands.views.PokedexView import PokedexView
@@ -19,7 +18,7 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
     self.bot = bot
     
 
-  async def filter_autocomplete(self, inter: discord.Interaction, current: str) -> List[app_commands.Choice[str]]:
+  async def filter_autocomplete(self, inter: Interaction, current: str) -> List[app_commands.Choice[str]]:
     search = inter.namespace['search']
     choiceList = []
     if search == 'single':
@@ -53,13 +52,13 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
   @app_commands.command(name="pokeinfo",
                         description="Lists all Pokemon for the given color alphabetically.")
   @app_commands.choices(search=[
-      discord.app_commands.Choice(name="Single Pokemon", value='single'),
-      discord.app_commands.Choice(name="Color", value="color"),
-      discord.app_commands.Choice(name="Type", value="type")
+      app_commands.Choice(name="Single Pokemon", value='single'),
+      app_commands.Choice(name="Color", value="color"),
+      app_commands.Choice(name="Type", value="type")
   ])
   @app_commands.autocomplete(filter=filter_autocomplete)
   async def pokeinfo(self,
-                      inter: discord.Interaction,
+                      inter: Interaction,
                       search: app_commands.Choice[str],
                       filter: str):
     print("POKEMON INFO called")
@@ -103,7 +102,7 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
 
   #region Evolution
 
-  async def autofill_evolution(self, inter: discord.Interaction, current):
+  async def autofill_evolution(self, inter: Interaction, current):
     data = []
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
     if trainer:
@@ -118,7 +117,7 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
   @app_commands.command(name="evolve",
                         description="Evolve your Pokemon.")
   @app_commands.autocomplete(pokemon=autofill_evolution)
-  async def evolve(self, inter: discord.Interaction, pokemon: str | None):
+  async def evolve(self, inter: Interaction, pokemon: str | None):
     print("EVOLVE called")
     try:
       trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)

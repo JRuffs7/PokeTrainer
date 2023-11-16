@@ -1,6 +1,5 @@
-from discord import Member, app_commands
+from discord import app_commands, Interaction
 from discord.ext import commands
-from discord.user import discord
 
 from globals import ErrorColor, HelpColor
 from services import helpservice
@@ -13,7 +12,7 @@ class HelpCommands(commands.Cog, name="HelpCommands"):
     self.bot = bot
 
 
-  async def command_autofill(self, inter: discord.Interaction, current: str):
+  async def command_autofill(self, inter: Interaction, current: str):
     allHelpComms = helpservice.GetAllHelpCommands(inter.user.guild_permissions.administrator)
     commands = []
     for x in allHelpComms:
@@ -34,7 +33,7 @@ class HelpCommands(commands.Cog, name="HelpCommands"):
       description="Sends a full help doc as a DM, or single command in the channel")
   @app_commands.autocomplete(command=command_autofill)
   async def help(self, 
-                 inter: discord.Interaction, 
+                 inter: Interaction, 
                  command: str | None):
     print("HELP called")
     if not command:

@@ -9,7 +9,7 @@ from globals import (
     PokeballReaction,
 )
 from models.Trainer import Trainer
-from models.Pokemon import SpawnPokemon
+from models.Pokemon import SpawnPokemon, PokedexEntry
 from services import itemservice, pokemonservice, serverservice
 
 
@@ -174,12 +174,10 @@ def GetPokedexList(trainer: Trainer, orderString, shiny):
 #region Team
 
 def GetTeam(trainer: Trainer):
-  teamList = []
+  teamList: List[PokedexEntry | None] = []
   for ind, pokeId in enumerate(trainer.Team):
     if pokeId:
-      mon = next((p for p in trainer.OwnedPokemon if pokeId and p.Id == pokeId))
-      mon.Name = f"({ind + 1}) {mon.Name}"
-      teamList.append(mon)
+      teamList.append(next((p for p in trainer.OwnedPokemon if p.Id == pokeId), None))
   return teamList
 
 def SetTeamSlot(trainer: Trainer, slotNum, pokemonId):
@@ -240,7 +238,7 @@ async def ReationReceived(bot, user, reaction):
   await reaction.remove(user)
   return False
 
-def TryCapture(reaction: Reaction, server, trainer, spawn):
+def TryCapture(reaction: Reaction, server, trainer: Trainer, spawn):
   #Update Server to prevent duplicate
   server.CaughtBy = trainer.UserId
   serverservice.UpsertServer(server)
@@ -259,7 +257,7 @@ def TryCapture(reaction: Reaction, server, trainer, spawn):
   serverservice.UpsertServer(server)
   return False
 
-def TryWildFight(server, trainer, spawnId):
+def TryWildFight(server, trainer: Trainer, spawnId):
     pokemon = pokemonservice.GetPokemonById(spawnId)
     if not pokemon:
       return

@@ -11,6 +11,7 @@ PokemonSpawnColor: discord.Colour = discord.Colour.light_embed()
 PokemonCaughtColor: discord.Colour = discord.Colour.green()
 ShopSuccessColor: discord.Colour = discord.Colour.dark_green()
 ShopFailColor: discord.Colour = discord.Colour.dark_red()
+GymColor: discord.Colour = discord.Colour.dark_orange()
 HelpColor: discord.Colour = discord.Colour.default()
 
 PokeballReaction = "🔴"

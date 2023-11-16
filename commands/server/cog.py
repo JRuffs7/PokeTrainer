@@ -1,5 +1,4 @@
-import discord
-from discord import app_commands
+from discord import app_commands, Interaction
 from discord.ext import commands
 
 from globals import ServerDetailColor
@@ -16,7 +15,7 @@ class ServerCommands(commands.Cog, name="ServerCommands"):
   @app_commands.command(name="register",
                         description="Register your server with PokeTrainer. Choose spawn % and if previous spawns should be deleted.")
   @is_admin()
-  async def register(self, inter: discord.Interaction, percent: int, delete: bool | None):
+  async def register(self, inter: Interaction, percent: int, delete: bool | None):
 
     print("REGISTER called")
     if inter.guild and 0 < percent < 101:
@@ -30,7 +29,7 @@ class ServerCommands(commands.Cog, name="ServerCommands"):
   @app_commands.command(name="serverinfo",
                         description="(Admin only) Display server details")
   @is_admin()
-  async def serverinfo(self, inter: discord.Interaction):
+  async def serverinfo(self, inter: Interaction):
     print("GS called")
     serv = serverservice.GetServer(inter.guild_id)
     return await discordservice.SendMessage(
@@ -43,7 +42,7 @@ class ServerCommands(commands.Cog, name="ServerCommands"):
       description=
       "(Admin only) Toggles the current channel for PokeTrainer spawns")
   @is_admin()
-  async def togglechannel(self, inter: discord.Interaction):
+  async def togglechannel(self, inter: Interaction):
     print("TOGGLE CHANNEL called")
     serv = serverservice.GetServer(inter.guild_id)
     if not serv:
@@ -67,7 +66,7 @@ class ServerCommands(commands.Cog, name="ServerCommands"):
       description=
       "(Admin only) Edit the spawn percentage for the server")
   @is_admin()
-  async def editspawnchance(self, inter: discord.Interaction, percent: int):
+  async def editspawnchance(self, inter: Interaction, percent: int):
     print("CHANGE PERCENT called")
     server = serverservice.GetServer(inter.guild_id)
     if not server:
@@ -85,7 +84,7 @@ class ServerCommands(commands.Cog, name="ServerCommands"):
       description=
       "(Admin only) Toggles the deletion of previously spawned Pokemon messages")
   @is_admin()
-  async def toggledeletespawn(self, inter: discord.Interaction):
+  async def toggledeletespawn(self, inter: Interaction):
     print("TOGGLE DELETE called")
     server = serverservice.GetServer(inter.guild_id)
     if not server:
@@ -102,7 +101,7 @@ class ServerCommands(commands.Cog, name="ServerCommands"):
       description="(Admin only) Stop PokeTrainer from operating in your server"
   )
   @is_admin()
-  async def stop(self, inter: discord.Interaction):
+  async def stop(self, inter: Interaction):
     print("STOP called")
     server = serverservice.GetServer(inter.guild_id)
     if not server:
