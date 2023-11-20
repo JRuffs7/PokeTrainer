@@ -1,6 +1,7 @@
 [
   {
     "Name": "Brock",
+    "Generation": 1,
     "Team": [
       74,
       95
@@ -10,6 +11,7 @@
   },
   {
     "Name": "Misty",
+    "Generation": 1,
     "Team": [
       120,
       121
@@ -19,6 +21,7 @@
   },
   {
     "Name": "Lt. Surge",
+    "Generation": 1,
     "Team": [
       25,
       26,
@@ -29,6 +32,7 @@
   },
   {
     "Name": "Erika",
+    "Generation": 1,
     "Team": [
       45,
       71,
@@ -39,6 +43,7 @@
   },
   {
     "Name": "Koga",
+    "Generation": 1,
     "Team": [
       89,
       109,
@@ -50,6 +55,7 @@
   },
   {
     "Name": "Sabrina",
+    "Generation": 1,
     "Team": [
       49,
       64,
@@ -61,6 +67,7 @@
   },
   {
     "Name": "Blaine",
+    "Generation": 1,
     "Team": [
       58,
       59,
@@ -72,6 +79,7 @@
   },
   {
     "Name": "Giovanni",
+    "Generation": 1,
     "Team": [
       31,
       34,
@@ -84,6 +92,7 @@
   },
   {
     "Name": "Falkner",
+    "Generation": 2,
     "Team": [
       16,
       17
@@ -93,6 +102,7 @@
   },
   {
     "Name": "Bugsy",
+    "Generation": 2,
     "Team": [
       11,
       14,
@@ -103,6 +113,7 @@
   },
   {
     "Name": "Whitney",
+    "Generation": 2,
     "Team": [
       35,
       241
@@ -112,6 +123,7 @@
   },
   {
     "Name": "Morty",
+    "Generation": 2,
     "Team": [
       92,
       93,
@@ -123,6 +135,7 @@
   },
   {
     "Name": "Chuck",
+    "Generation": 2,
     "Team": [
       57,
       62
@@ -132,6 +145,7 @@
   },
   {
     "Name": "Jasmine",
+    "Generation": 2,
     "Team": [
       81,
       81,
@@ -142,6 +156,7 @@
   },
   {
     "Name": "Pryce",
+    "Generation": 2,
     "Team": [
       86,
       87,
@@ -152,6 +167,7 @@
   },
   {
     "Name": "Clair",
+    "Generation": 2,
     "Team": [
       148,
       148,
@@ -163,6 +179,7 @@
   },
   {
     "Name": "Roxanne",
+    "Generation": 3,
     "Team": [
       74,
       299
@@ -172,6 +189,7 @@
   },
   {
     "Name": "Brawly",
+    "Generation": 3,
     "Team": [
       66,
       296
@@ -181,6 +199,7 @@
   },
   {
     "Name": "Wattson",
+    "Generation": 3,
     "Team": [
       81,
       82,
@@ -191,6 +210,7 @@
   },
   {
     "Name": "Flannery",
+    "Generation": 3,
     "Team": [
       218,
       218,
@@ -201,6 +221,7 @@
   },
   {
     "Name": "Norman",
+    "Generation": 3,
     "Team": [
       288,
       289,
@@ -211,6 +232,7 @@
   },
   {
     "Name": "Winona",
+    "Generation": 3,
     "Team": [
       227,
       277,
@@ -222,6 +244,7 @@
   },
   {
     "Name": "Tate & Liza",
+    "Generation": 3,
     "Team": [
       337,
       338
@@ -231,6 +254,7 @@
   },
   {
     "Name": "Wallace",
+    "Generation": 3,
     "Team": [
       119,
       340,
@@ -243,6 +267,7 @@
   },
   {
     "Name": "Roark",
+    "Generation": 4,
     "Team": [
       74,
       95,
@@ -253,6 +278,7 @@
   },
   {
     "Name": "Gardenia",
+    "Generation": 4,
     "Team": [
       387,
       407,
@@ -263,6 +289,7 @@
   },
   {
     "Name": "Maylene",
+    "Generation": 4,
     "Team": [
       67,
       307,
@@ -273,6 +300,7 @@
   },
   {
     "Name": "Crasher Wake",
+    "Generation": 4,
     "Team": [
       130,
       195,
@@ -283,6 +311,7 @@
   },
   {
     "Name": "Fantina",
+    "Generation": 4,
     "Team": [
       94,
       426,
@@ -293,6 +322,7 @@
   },
   {
     "Name": "Byron",
+    "Generation": 4,
     "Team": [
       208,
       411,
@@ -303,6 +333,7 @@
   },
   {
     "Name": "Candice",
+    "Generation": 4,
     "Team": [
       215,
       308,
@@ -314,6 +345,7 @@
   },
   {
     "Name": "Volkner",
+    "Generation": 4,
     "Team": [
       26,
       224,
@@ -325,6 +357,7 @@
   },
   {
     "Name": "Chili, Cilan, Cress",
+    "Generation": 5,
     "Team": [
       506,
       511,
@@ -336,6 +369,7 @@
   },
   {
     "Name": "Lenora",
+    "Generation": 5,
     "Team": [
       505,
       507
@@ -345,6 +379,7 @@
   },
   {
     "Name": "Burgh",
+    "Generation": 5,
     "Team": [
       542,
       544,
@@ -355,6 +390,7 @@
   },
   {
     "Name": "Elesa",
+    "Generation": 5,
     "Team": [
       523,
       587,
@@ -365,6 +401,7 @@
   },
   {
     "Name": "Clay",
+    "Generation": 5,
     "Team": [
       530,
       536,
@@ -375,6 +412,7 @@
   },
   {
     "Name": "Skyla",
+    "Generation": 5,
     "Team": [
       521,
       528,
@@ -385,6 +423,7 @@
   },
   {
     "Name": "Brycen",
+    "Generation": 5,
     "Team": [
       583,
       614,
@@ -395,6 +434,7 @@
   },
   {
     "Name": "Iris",
+    "Generation": 5,
     "Team": [
       611,
       612,
@@ -405,6 +445,7 @@
   },
   {
     "Name": "Viola",
+    "Generation": 6,
     "Team": [
       283,
       666
@@ -414,6 +455,7 @@
   },
   {
     "Name": "Grant",
+    "Generation": 6,
     "Team": [
       696,
       698
@@ -423,6 +465,7 @@
   },
   {
     "Name": "Korrina",
+    "Generation": 6,
     "Team": [
       67,
       619,
@@ -433,6 +476,7 @@
   },
   {
     "Name": "Ramos",
+    "Generation": 6,
     "Team": [
       70,
       189,
@@ -443,6 +487,7 @@
   },
   {
     "Name": "Clemont",
+    "Generation": 6,
     "Team": [
       82,
       587,
@@ -453,6 +498,7 @@
   },
   {
     "Name": "Valerie",
+    "Generation": 6,
     "Team": [
       122,
       303,
@@ -463,6 +509,7 @@
   },
   {
     "Name": "Olympia",
+    "Generation": 6,
     "Team": [
       199,
       561,
@@ -473,6 +520,7 @@
   },
   {
     "Name": "Wulfric",
+    "Generation": 6,
     "Team": [
       460,
       615,
@@ -483,6 +531,7 @@
   },
   {
     "Name": "Milo",
+    "Generation": 8,
     "Team": [
       829,
       830
@@ -492,6 +541,7 @@
   },
   {
     "Name": "Nessa",
+    "Generation": 8,
     "Team": [
       118,
       834,
@@ -502,6 +552,7 @@
   },
   {
     "Name": "Kabu",
+    "Generation": 8,
     "Team": [
       38,
       59,
@@ -512,6 +563,7 @@
   },
   {
     "Name": "Bea",
+    "Generation": 8,
     "Team": [
       68,
       237,
@@ -523,6 +575,7 @@
   },
   {
     "Name": "Allister",
+    "Generation": 8,
     "Team": [
       94,
       562,
@@ -534,6 +587,7 @@
   },
   {
     "Name": "Opal",
+    "Generation": 8,
     "Team": [
       303,
       468,
@@ -545,6 +599,7 @@
   },
   {
     "Name": "Gordie",
+    "Generation": 8,
     "Team": [
       213,
       689,
@@ -556,6 +611,7 @@
   },
   {
     "Name": "Melony",
+    "Generation": 8,
     "Team": [
       131,
       873,
@@ -567,6 +623,7 @@
   },
   {
     "Name": "Marnie",
+    "Generation": 8,
     "Team": [
       454,
       510,
@@ -574,102 +631,111 @@
       861,
       877
     ],
-    "BadgeId": 63,
+    "BadgeId": 64,
     "Reward": 500
   },
   {
     "Name": "Raihan",
+    "Generation": 8,
     "Team": [
       330,
       526,
       844,
       884
     ],
-    "BadgeId": 63,
+    "BadgeId": 65,
     "Reward": 400
   },
   {
     "Name": "Katy",
+    "Generation": 9,
     "Team": [
       216,
       915,
       917
     ],
-    "BadgeId": 64,
+    "BadgeId": 66,
     "Reward": 300
   },
   {
     "Name": "Brassius",
+    "Generation": 9,
     "Team": [
       185,
       548,
       926
     ],
-    "BadgeId": 65,
+    "BadgeId": 67,
     "Reward": 300
   },
   {
     "Name": "Iono",
+    "Generation": 9,
     "Team": [
       404,
       429,
       937,
       938
     ],
-    "BadgeId": 66,
+    "BadgeId": 68,
     "Reward": 400
   },
   {
     "Name": "Kofu",
+    "Generation": 9,
     "Team": [
       740,
       959,
       974
     ],
-    "BadgeId": 67,
+    "BadgeId": 69,
     "Reward": 300
   },
   {
     "Name": "Larry",
+    "Generation": 9,
     "Team": [
       398,
       775,
       980
     ],
-    "BadgeId": 68,
+    "BadgeId": 70,
     "Reward": 300
   },
   {
     "Name": "Ryme",
+    "Generation": 9,
     "Team": [
       354,
       778,
       849,
       970
     ],
-    "BadgeId": 69,
+    "BadgeId": 71,
     "Reward": 400
   },
   {
     "Name": "Tulip",
+    "Generation": 9,
     "Team": [
       282,
       671,
       954,
       979
     ],
-    "BadgeId": 70,
+    "BadgeId": 72,
     "Reward": 400
   },
   {
     "Name": "Grusha",
+    "Generation": 9,
     "Team": [
       334,
       614,
       873,
       973
     ],
-    "BadgeId": 71,
+    "BadgeId": 73,
     "Reward": 400
   }
 ]
