@@ -30,7 +30,7 @@ class ServerCommands(commands.Cog, name="ServerCommands"):
                         description="(Admin only) Display server details")
   @is_admin()
   async def serverinfo(self, inter: Interaction):
-    print("GS called")
+    print("SERVER INFO called")
     serv = serverservice.GetServer(inter.guild_id)
     return await discordservice.SendMessage(
         inter, 'Server Details', serv if serv else

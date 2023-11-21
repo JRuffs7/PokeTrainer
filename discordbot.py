@@ -44,30 +44,32 @@ async def StartBot():
 
   @tasks.loop(seconds=300)
   async def spawn_loop():
-    print("SPAWN")
     servers = serverservice.GetServers()
     for server in servers:
       asyncio.run_coroutine_threadsafe(spawn_thread(server), GetBot().loop)
 
 
   async def spawn_thread(server):
-      print(f"SPAWN: {server.ServerId}")
-      channel = random.choice(server.ChannelIds)
-      if random.randint(1, 100) < server.SpawnChance:
-        if server.DeletePrevious:
-          await discordservice.DeleteMessage(server.ServerId, server.LastSpawnChannel, server.LastSpawnMessage)
+      try:
+        print(f"SPAWN: {server.ServerId}")
+        channel = random.choice(server.ChannelIds)
+        if random.randint(1, 100) < server.SpawnChance:
+          if server.DeletePrevious:
+            await discordservice.DeleteMessage(server.ServerId, server.LastSpawnChannel, server.LastSpawnMessage)
 
-        pkmn = pokemonservice.GetRandomSpawnPokemon()
-        if pkmn:
-          message = await discordservice.SendPokemon(server.ServerId, channel,
-                                                    pkmn)
-          if message:
-            server.LastSpawned = pkmn
-            server.LastSpawnMessage = message.id
-            server.LastSpawnChannel = channel
-            server.CaughtBy = 0
-            server.FoughtBy = []
-            serverservice.UpsertServer(server)
+          pkmn = pokemonservice.GetRandomSpawnPokemon()
+          if pkmn:
+            message = await discordservice.SendPokemon(server.ServerId, channel,
+                                                      pkmn)
+            if message:
+              server.LastSpawned = pkmn
+              server.LastSpawnMessage = message.id
+              server.LastSpawnChannel = channel
+              server.CaughtBy = 0
+              server.FoughtBy = []
+              serverservice.UpsertServer(server)
+      except Exception as e:
+        print(f"{e}")
 
   for f in os.listdir("commands"):
     if os.path.exists(os.path.join("commands", f, "cog.py")):

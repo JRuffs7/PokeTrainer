@@ -22,7 +22,7 @@ class GymCommands(commands.Cog, name="GymCommands"):
             return await discordservice.SendTrainerError(inter)
         
         try:
-            gymleader = gymservice.GetNextTrainerGym(trainer)
+            gymleader = gymservice.GetNextTrainerGym(trainer.Badges)
             if not gymleader:
                 return await discordservice.SendMessage(
                     inter, 
@@ -30,13 +30,17 @@ class GymCommands(commands.Cog, name="GymCommands"):
                     "Congratulations! You have beaten all the gym leaders! Check out your badges by using **/badges**.",
                     BattleColor)
             leaderTeam = gymservice.GetGymLeaderTeam(gymleader)
-            fightResults = gymservice.GymLeaderFight(trainer, leaderTeam, gymleader.Reward, gymleader.BadgeId)
+            fightResults = gymservice.GymLeaderFight([t for t in trainerservice.GetTeam(trainer) if t], leaderTeam)
             if -1 in fightResults:
                 return await discordservice.SendMessage(
                     inter, 
                     "Battle Error",
                     f"There was an error while performing the battle with {gymleader.Name}. Please try again.",
                     ErrorColor)
+            elif fightResults.count(1) == len(leaderTeam):
+                trainer.Money += gymleader.Reward
+                trainer.Badges.append(gymleader.BadgeId)
+                trainerservice.UpsertTrainer(trainer)
             await GymView(inter, gymleader, [t.Name for t in trainerservice.GetTeam(trainer) if t], [l.Name for l in leaderTeam], fightResults).send()
         except Exception as e:
             print(f"{e}")

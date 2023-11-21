@@ -1,7 +1,7 @@
 from typing import Dict, List
 
 from models.Pokemon import PokedexEntry
-from services import pokemonservice
+from services import pokemonservice, gymservice
 
 
 class Trainer:
@@ -44,6 +44,7 @@ class Trainer:
   def __str__(self):
     uniquePkmn = len(set([x.PokedexId for x in self.OwnedPokemon]))
     totalPkmn = pokemonservice.GetPokemonCount()
+    totalBadges = len(gymservice.GetAllBadges())
 
-    return f"__Stats__\nHP: {self.Health}\nFights: {self.Fights}\n${self.Money}\n\n__Pokemon__\nPokedex: {uniquePkmn}/{totalPkmn} ({round((uniquePkmn*100)/totalPkmn)}%)\nPokemon Owned: {len(self.OwnedPokemon)}\nShiny Count: {len([x for x in self.OwnedPokemon if x.Pokemon.IsShiny])}\nTotal Caught: {self.TotalCaught}"
+    return f"__Stats__\nHP: {self.Health}\nFights: {self.Fights}\n${self.Money}\n\n__Pokemon__\nPokedex: {uniquePkmn}/{totalPkmn} ({round((uniquePkmn*100)/totalPkmn)}%)\nPokemon Owned: {len(self.OwnedPokemon)}\nShiny Count: {len([x for x in self.OwnedPokemon if x.Pokemon.IsShiny])}\nTotal Caught: {self.TotalCaught}\n\n__Gyms__\nBadges: {len(self.Badges)}/{totalBadges}"
 

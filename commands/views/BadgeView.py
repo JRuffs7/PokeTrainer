@@ -66,10 +66,9 @@ class BadgeView(discord.ui.View):
 				self.title,
 				self.CreateEmbedDesc(data), TrainerColor)
 		if self.pageLength == 1:
-			print(data.Sprite)
 			embed.set_image(url=data.Sprite)
 		else:
-			embed.set_thumbnail(url=self.user.display_avatar.url)
+			embed.set_thumbnail(url=self.interaction.user.display_avatar.url)
 		embed.set_footer(text=f"{self.currentPage}/{int(len(self.data)/self.pageLength)+self.addition}")
 		await self.message.edit(embed=embed, view=self)
 
@@ -107,4 +106,4 @@ class BadgeView(discord.ui.View):
 		newline = '\n'
 		if self.pageLength == 1:
 			return f'**__{data.Name} Badge__**\nRegion: {region_name(data.Generation)}'
-		return f"{newline.join([b.Name + ' Badge' for b in data])}"
+		return f"{newline.join([f'{b.Name} Badge' for b in data])}"
