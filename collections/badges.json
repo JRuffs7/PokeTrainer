@@ -1,0 +1,398 @@
+[
+	{
+		"Id": 1,
+		"Name": "Boulder",
+		"Generation": 1,
+		"Sprite": "https://imgur.com/uQaf7vN"
+	},
+	{
+		"Id": 2,
+		"Name": "Cascade",
+		"Generation": 1,
+		"Sprite": "https://imgur.com/esLk2ow"
+	},
+	{
+		"Id": 3,
+		"Name": "Thunder",
+		"Generation": 1,
+		"Sprite": "https://imgur.com/49VM9ii"
+	},
+	{
+		"Id": 4,
+		"Name": "Rainbow",
+		"Generation": 1,
+		"Sprite": "https://imgur.com/wryD1xV"
+	},
+	{
+		"Id": 5,
+		"Name": "Soul",
+		"Generation": 1,
+		"Sprite": "https://imgur.com/2Ufrdll"
+	},
+	{
+		"Id": 6,
+		"Name": "Marsh",
+		"Generation": 1,
+		"Sprite": "https://imgur.com/ow2lpnb"
+	},
+	{
+		"Id": 7,
+		"Name": "Volcano",
+		"Generation": 1,
+		"Sprite": "https://imgur.com/yoZ9ZFr"
+	},
+	{
+		"Id": 8,
+		"Name": "Earth",
+		"Generation": 1,
+		"Sprite": "https://imgur.com/fsrC5OL"
+	},
+	{
+		"Id": 9,
+		"Name": "Zephyr",
+		"Generation": 2,
+		"Sprite": "https://imgur.com/naFLz99"
+	},
+	{
+		"Id": 10,
+		"Name": "Hive",
+		"Generation": 2,
+		"Sprite": "https://imgur.com/faclqXu"
+	},
+	{
+		"Id": 11,
+		"Name": "Plain",
+		"Generation": 2,
+		"Sprite": "https://imgur.com/8igG17w"
+	},
+	{
+		"Id": 12,
+		"Name": "Fog",
+		"Generation": 2,
+		"Sprite": "https://imgur.com/6dRy8tZ"
+	},
+	{
+		"Id": 13,
+		"Name": "Storm",
+		"Generation": 2,
+		"Sprite": "https://imgur.com/WSbFj0N"
+	},
+	{
+		"Id": 14,
+		"Name": "Mineral",
+		"Generation": 2,
+		"Sprite": "https://imgur.com/GUwjzOl"
+	},
+	{
+		"Id": 15,
+		"Name": "Glacier",
+		"Generation": 2,
+		"Sprite": "https://imgur.com/u7YaU5e"
+	},
+	{
+		"Id": 16,
+		"Name": "Rising",
+		"Generation": 2,
+		"Sprite": "https://imgur.com/XbPiYo8"
+	},
+	{
+		"Id": 17,
+		"Name": "Stone",
+		"Generation": 3,
+		"Sprite": "https://imgur.com/CmBxmiD"
+	},
+	{
+		"Id": 18,
+		"Name": "Knuckle",
+		"Generation": 3,
+		"Sprite": "https://imgur.com/2mveAcl"
+	},
+	{
+		"Id": 19,
+		"Name": "Dynamo",
+		"Generation": 3,
+		"Sprite": "https://imgur.com/YJfl4g8"
+	},
+	{
+		"Id": 20,
+		"Name": "Heat",
+		"Generation": 3,
+		"Sprite": "https://imgur.com/TvcJX06"
+	},
+	{
+		"Id": 21,
+		"Name": "Balance",
+		"Generation": 3,
+		"Sprite": "https://imgur.com/RT61JXG"
+	},
+	{
+		"Id": 22,
+		"Name": "Feather",
+		"Generation": 3,
+		"Sprite": "https://imgur.com/r4tVrya"
+	},
+	{
+		"Id": 23,
+		"Name": "Mind",
+		"Generation": 3,
+		"Sprite": "https://imgur.com/6JsORCt"
+	},
+	{
+		"Id": 24,
+		"Name": "Rain",
+		"Generation": 3,
+		"Sprite": "https://imgur.com/trv25u6"
+	},
+	{
+		"Id": 25,
+		"Name": "Coal",
+		"Generation": 4,
+		"Sprite": "https://imgur.com/RsM3MXp"
+	},
+	{
+		"Id": 26,
+		"Name": "Forest",
+		"Generation": 4,
+		"Sprite": "https://imgur.com/8rI9m9D"
+	},
+	{
+		"Id": 27,
+		"Name": "Cobble",
+		"Generation": 4,
+		"Sprite": "https://imgur.com/9QDtGhR"
+	},
+	{
+		"Id": 28,
+		"Name": "Fen",
+		"Generation": 4,
+		"Sprite": "https://imgur.com/TBjApNy"
+	},
+	{
+		"Id": 29,
+		"Name": "Relic",
+		"Generation": 4,
+		"Sprite": "https://imgur.com/cohYZHY"
+	},
+	{
+		"Id": 30,
+		"Name": "Mine",
+		"Generation": 4,
+		"Sprite": "https://imgur.com/Oli711i"
+	},
+	{
+		"Id": 31,
+		"Name": "Icicle",
+		"Generation": 4,
+		"Sprite": "https://imgur.com/ZjV9ap1"
+	},
+	{
+		"Id": 32,
+		"Name": "Beacon",
+		"Generation": 4,
+		"Sprite": "https://imgur.com/fLQHWAj"
+	},
+	{
+		"Id": 33,
+		"Name": "Trio",
+		"Generation": 5,
+		"Sprite": "https://imgur.com/MrQOcSo"
+	},
+	{
+		"Id": 34,
+		"Name": "Basic",
+		"Generation": 5,
+		"Sprite": "https://imgur.com/P2hHiXd"
+	},
+	{
+		"Id": 35,
+		"Name": "Insect",
+		"Generation": 5,
+		"Sprite": "https://imgur.com/qXJFYwR"
+	},
+	{
+		"Id": 36,
+		"Name": "Bolt",
+		"Generation": 5,
+		"Sprite": "https://imgur.com/YSLaf5X"
+	},
+	{
+		"Id": 37,
+		"Name": "Quake",
+		"Generation": 5,
+		"Sprite": "https://imgur.com/iHnUt9Y"
+	},
+	{
+		"Id": 38,
+		"Name": "Jet",
+		"Generation": 5,
+		"Sprite": "https://imgur.com/e9vT8D4"
+	},
+	{
+		"Id": 39,
+		"Name": "Freeze",
+		"Generation": 5,
+		"Sprite": "https://imgur.com/Bl8RXXU"
+	},
+	{
+		"Id": 40,
+		"Name": "Legend",
+		"Generation": 5,
+		"Sprite": "https://imgur.com/Xuzo4aC"
+	},
+	{
+		"Id": 41,
+		"Name": "Bug",
+		"Generation": 6,
+		"Sprite": "https://imgur.com/cSwlDdv"
+	},
+	{
+		"Id": 42,
+		"Name": "Cliff",
+		"Generation": 6,
+		"Sprite": "https://imgur.com/IQJ6e6L"
+	},
+	{
+		"Id": 43,
+		"Name": "Rumble",
+		"Generation": 6,
+		"Sprite": "https://imgur.com/ALhwQm1"
+	},
+	{
+		"Id": 44,
+		"Name": "Plant",
+		"Generation": 6,
+		"Sprite": "https://imgur.com/fEfkLvm"
+	},
+	{
+		"Id": 45,
+		"Name": "Voltage",
+		"Generation": 6,
+		"Sprite": "https://imgur.com/nhYfsI2"
+	},
+	{
+		"Id": 46,
+		"Name": "Fairy",
+		"Generation": 6,
+		"Sprite": "https://imgur.com/kp7GYvx"
+	},
+	{
+		"Id": 47,
+		"Name": "Psychic",
+		"Generation": 6,
+		"Sprite": "https://imgur.com/h6ak2wZ"
+	},
+	{
+		"Id": 48,
+		"Name": "Iceberg",
+		"Generation": 6,
+		"Sprite": "https://imgur.com/4xA2EjJ"
+	},
+	{
+		"Id": 49,
+		"Name": "Grass",
+		"Generation": 8,
+		"Sprite": "https://imgur.com/bMDtHEh"
+	},
+	{
+		"Id": 50,
+		"Name": "Water",
+		"Generation": 8,
+		"Sprite": "https://imgur.com/CK0IOmY"
+	},
+	{
+		"Id": 51,
+		"Name": "Fire",
+		"Generation": 8,
+		"Sprite": "https://imgur.com/Ao7Kxdb"
+	},
+	{
+		"Id": 52,
+		"Name": "Fighting",
+		"Generation": 8,
+		"Sprite": "https://imgur.com/Qj8Hlgt"
+	},
+	{
+		"Id": 53,
+		"Name": "Ghost",
+		"Generation": 8,
+		"Sprite": "https://imgur.com/5f6XSP5"
+	},
+	{
+		"Id": 54,
+		"Name": "Fairy",
+		"Generation": 8,
+		"Sprite": "https://imgur.com/ABbNDLh"
+	},
+	{
+		"Id": 55,
+		"Name": "Rock",
+		"Generation": 8,
+		"Sprite": "https://imgur.com/HDeCCsU"
+	},
+	{
+		"Id": 56,
+		"Name": "Ice",
+		"Generation": 8,
+		"Sprite": "https://imgur.com/qM3sF4D"
+	},
+	{
+		"Id": 57,
+		"Name": "Dark",
+		"Generation": 8,
+		"Sprite": "https://imgur.com/Gr8VRHS"
+	},
+	{
+		"Id": 58,
+		"Name": "Dragon",
+		"Generation": 8,
+		"Sprite": "https://imgur.com/5SstbRF"
+	},
+	{
+		"Id": 59,
+		"Name": "Bug",
+		"Generation": 9,
+		"Sprite": "https://imgur.com/45WzzlV"
+	},
+	{
+		"Id": 60,
+		"Name": "Grass",
+		"Generation": 9,
+		"Sprite": "https://imgur.com/coh5agu"
+	},
+	{
+		"Id": 61,
+		"Name": "Electric",
+		"Generation": 9,
+		"Sprite": "https://imgur.com/7ZAeGg6"
+	},
+	{
+		"Id": 62,
+		"Name": "Water",
+		"Generation": 9,
+		"Sprite": "https://imgur.com/TkynMQg"
+	},
+	{
+		"Id": 63,
+		"Name": "Normal",
+		"Generation": 9,
+		"Sprite": "https://imgur.com/WJz0sYV"
+	},
+	{
+		"Id": 64,
+		"Name": "Ghost",
+		"Generation": 9,
+		"Sprite": "https://imgur.com/MUPjc8M"
+	},
+	{
+		"Id": 65,
+		"Name": "Psychic",
+		"Generation": 9,
+		"Sprite": "https://imgur.com/t8m5d2m"
+	},
+	{
+		"Id": 66,
+		"Name": "Ice",
+		"Generation": 9,
+		"Sprite": "https://imgur.com/EIF0Ikg"
+	}
+]
