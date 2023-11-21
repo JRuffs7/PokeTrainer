@@ -2,9 +2,10 @@
 from discord import app_commands, Interaction
 from discord.ext import commands
 
+from commands.views.GymView import GymView
 from services import trainerservice, gymservice
 from services.utility import discordservice
-from globals import GymColor, ErrorColor
+from globals import BattleColor, ErrorColor
 
 class GymCommands(commands.Cog, name="GymCommands"):
 
@@ -27,19 +28,16 @@ class GymCommands(commands.Cog, name="GymCommands"):
                     inter, 
                     "No Battles Left",
                     "Congratulations! You have beaten all the gym leaders! Check out your badges by using **/badges**.",
-                    GymColor)
-            print(gymleader.__dict__)
-            trainerTeam = [t for t in trainerservice.GetTeam(trainer) if t]
+                    BattleColor)
             leaderTeam = gymservice.GetGymLeaderTeam(gymleader)
-            fightResults = gymservice.GymLeaderFight(trainerTeam, leaderTeam)
+            fightResults = gymservice.GymLeaderFight(trainer, leaderTeam, gymleader.Reward, gymleader.BadgeId)
             if -1 in fightResults:
                 return await discordservice.SendMessage(
                     inter, 
                     "Battle Error",
                     f"There was an error while performing the battle with {gymleader.Name}. Please try again.",
                     ErrorColor)
-            print(fightResults)
-            return await inter.response.send_message("ok", ephemeral=True)
+            await GymView(inter, gymleader, [t.Name for t in trainerservice.GetTeam(trainer) if t], [l.Name for l in leaderTeam], fightResults).send()
         except Exception as e:
             print(f"{e}")
 

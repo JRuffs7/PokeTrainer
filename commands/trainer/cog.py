@@ -4,6 +4,7 @@ from discord.ext import commands
 from commands.views.PokedexView import PokedexView
 from commands.views.TeamSelectorView import TeamSelectorView
 from commands.views.ReleasePokemonView import ReleasePokemonView
+from commands.views.BadgeView import BadgeView
 
 from globals import ErrorColor, TrainerColor
 from services import trainerservice, pokemonservice, itemservice
@@ -144,13 +145,36 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
       return await discordservice.SendTrainerError(inter)
 
     teamViewer = PokedexView(inter, 1, inter.user, f"{inter.user.display_name}'s Battle Team")
-    team = trainerservice.GetTeam(trainer)
-    for t in range(len(team)):
-      if team[t]:
-        team[t].Name = f"({(t + 1)}) {team[t].Name}"
-    teamViewer.data = [t for t in team if t]
+    teamViewer.data = [t for t in trainerservice.GetTeam(trainer) if t]
     await teamViewer.send() 
 
+  @app_commands.command(name="badges",description="View your obtained badges")
+  @app_commands.choices(region=[
+      app_commands.Choice(name="Kanto", value=1),
+      app_commands.Choice(name="Johto", value=2),
+      app_commands.Choice(name="Hoenn", value=3),
+      app_commands.Choice(name="Sinnoh", value=4),
+      app_commands.Choice(name="Unova", value=5),
+      app_commands.Choice(name="Kalos", value=6),
+      app_commands.Choice(name="Galar", value=8),
+      app_commands.Choice(name="Paldea", value=9)
+  ])
+  @app_commands.choices(images=[
+      app_commands.Choice(name="Yes", value=1),
+      app_commands.Choice(name="No", value=0)
+  ])
+  async def badges(self, inter: Interaction, 
+                   region: app_commands.Choice[int] | None, 
+                   images: app_commands.Choice[int] | None,
+                   user: Member | None):
+    print("BADGES called")
+    trainer = trainerservice.GetTrainer(inter.guild_id, user.id if user else inter.user.id)
+    if not trainer:
+      return await discordservice.SendTrainerError(inter)
+
+    badgeView = BadgeView(inter, 1 if images else 10, f"{user.display_name if user else inter.user.display_name}'s Badges")
+    badgeView.data = trainerservice.GetGymBadges(trainer, region.value if region else 0)
+    await badgeView.send()
   #endregion
 
   #region POKEDEX

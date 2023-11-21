@@ -10,7 +10,7 @@ from globals import (
 )
 from models.Trainer import Trainer
 from models.Pokemon import SpawnPokemon, PokedexEntry
-from services import itemservice, pokemonservice, serverservice
+from services import itemservice, pokemonservice, serverservice, gymservice
 
 
 def GetTrainer(serverId, userId):
@@ -175,7 +175,7 @@ def GetPokedexList(trainer: Trainer, orderString, shiny):
 
 def GetTeam(trainer: Trainer):
   teamList: List[PokedexEntry | None] = []
-  for ind, pokeId in enumerate(trainer.Team):
+  for pokeId in trainer.Team:
     if pokeId:
       teamList.append(next((p for p in trainer.OwnedPokemon if p.Id == pokeId), None))
   return teamList
@@ -200,6 +200,12 @@ def ReleasePokemon(trainer: Trainer, pokemonIds):
 #endregion
 
 #region Gym Badges
+
+def GetGymBadges(trainer: Trainer, generation: int):
+  badgeList = [gymservice.GetBadgeById(b) for b in trainer.Badges]
+  if generation:
+    badgeList = [b for b in badgeList if b.Generation == generation]
+  return badgeList
 
 #endregion
 

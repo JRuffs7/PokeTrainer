@@ -123,9 +123,9 @@ class PokedexEntry:
 
   def GainExp(self, expGain: int):
     self.CurrentExp += expGain
-    if self.CurrentExp >= (50 * self.Rarity) if self.Rarity <= 3 else 250:
+    if self.CurrentExp >= ((50 * self.Rarity) if self.Rarity <= 3 else 250):
       self.Level += 1
-      self.CurrentExp -= (50 * self.Rarity) if self.Rarity <= 3 else 250
+      self.CurrentExp -= ((50 * self.Rarity) if self.Rarity <= 3 else 250)
   
   def GetNameString(self):
 

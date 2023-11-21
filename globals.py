@@ -11,7 +11,7 @@ PokemonSpawnColor: discord.Colour = discord.Colour.light_embed()
 PokemonCaughtColor: discord.Colour = discord.Colour.green()
 ShopSuccessColor: discord.Colour = discord.Colour.dark_green()
 ShopFailColor: discord.Colour = discord.Colour.dark_red()
-GymColor: discord.Colour = discord.Colour.dark_orange()
+BattleColor: discord.Colour = discord.Colour.dark_orange()
 HelpColor: discord.Colour = discord.Colour.default()
 
 PokeballReaction = "🔴"
@@ -38,3 +38,6 @@ StarterDexIds = [
 
 def to_dict(obj):
   return json.loads(json.dumps(obj, default=lambda o: o.__dict__))
+
+def region_name(id):
+  return "Kanto" if id == 1 else "Johto" if id == 2 else "Hoenn" if id == 3 else "Sinnoh" if id == 4 else "Unova" if id == 5 else "Kalos" if id == 6 else "Alola" if id == 7 else "Galar" if id == 8 else "Paldea"
