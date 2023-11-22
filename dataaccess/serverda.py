@@ -19,7 +19,7 @@ def GetServer(serverId):
 
 
 def GetAllServers():
-  serverList = []
+  serverList: list[Server] = []
   servs = mongodb.GetManyDocs(collection, {})
   for s in servs if servs else []:
     if s:

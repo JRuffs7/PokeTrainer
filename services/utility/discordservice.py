@@ -61,6 +61,17 @@ async def DeleteMessage(serverId, channelId, messageId):
         return
 
 
+async def SendMessageNoInteraction(serverId, channelId, message):
+  bot = discordbot.GetBot()
+  guild = bot.get_guild(serverId)
+  if guild:
+    channel = guild.get_channel(channelId)
+    if channel and not isinstance(channel,
+                                  discord.ForumChannel) and not isinstance(
+                                      channel, discord.CategoryChannel):
+      await channel.send(message)
+
+
 async def SendPokemon(guildid,
                       channelid,
                       pokemon: SpawnPokemon,
