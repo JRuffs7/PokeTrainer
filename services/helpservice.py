@@ -16,13 +16,16 @@ def GetAllHelpCommands(isAdmin: bool):
   pokemonComs = [Help(x) for x in GetJson(commandHelp)['Pokemon']]
   pokemonComs = list(filter(lambda x: (x.RequiresAdmin and isAdmin) or not x.RequiresAdmin, pokemonComs))
   pokemonComs.sort(key=lambda x: x.Name)
+  gymComs = [Help(x) for x in GetJson(commandHelp)['Gym']]
+  gymComs = list(filter(lambda x: (x.RequiresAdmin and isAdmin) or not x.RequiresAdmin, gymComs))
+  gymComs.sort(key=lambda x: x.Name)
   shopComs = [Help(x) for x in GetJson(commandHelp)['Shop']]
   shopComs = list(filter(lambda x: (x.RequiresAdmin and isAdmin) or not x.RequiresAdmin, shopComs))
   shopComs.sort(key=lambda x: x.Name)
   actions = [Help(x) for x in GetJson(commandHelp)['Actions']]
   actions = list(filter(lambda x: (x.RequiresAdmin and isAdmin) or not x.RequiresAdmin, actions))
   actions.sort(key=lambda x: x.Name)
-  commands = { 'Server': serverComs, 'Trainer': trainerComs, 'Pokemon': pokemonComs, 'Shop': shopComs, 'Actions': actions }
+  commands = { 'Server': serverComs, 'Trainer': trainerComs, 'Pokemon': pokemonComs, 'Gym': gymComs, 'Shop': shopComs, 'Actions': actions }
   return commands
 
 
