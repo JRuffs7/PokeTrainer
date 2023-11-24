@@ -1,6 +1,5 @@
-from discord import Member, app_commands
+from discord import app_commands, Interaction
 from discord.ext import commands
-from discord.user import discord
 
 from globals import ErrorColor, HelpColor
 from services import helpservice
@@ -13,7 +12,7 @@ class HelpCommands(commands.Cog, name="HelpCommands"):
     self.bot = bot
 
 
-  async def command_autofill(self, inter: discord.Interaction, current: str):
+  async def command_autofill(self, inter: Interaction, current: str):
     allHelpComms = helpservice.GetAllHelpCommands(inter.user.guild_permissions.administrator)
     commands = []
     for x in allHelpComms:
@@ -34,31 +33,34 @@ class HelpCommands(commands.Cog, name="HelpCommands"):
       description="Sends a full help doc as a DM, or single command in the channel")
   @app_commands.autocomplete(command=command_autofill)
   async def help(self, 
-                 inter: discord.Interaction, 
+                 inter: Interaction, 
                  command: str | None):
     print("HELP called")
-    if not command:
-      helpList = helpservice.BuildFullHelp()
+    try:
+      if not command:
+        helpList = helpservice.BuildFullHelp()
 
-      su = discordservice.CreateEmbed("PokeTrainer Help", helpList[0], HelpColor)
-      sp = discordservice.CreateEmbed("", helpList[1], HelpColor)
-      tr = discordservice.CreateEmbed("", helpList[2], HelpColor)
-      cm = discordservice.CreateEmbed("", helpList[3], HelpColor)
+        su = discordservice.CreateEmbed("PokeTrainer Help", helpList[0], HelpColor)
+        sp = discordservice.CreateEmbed("", helpList[1], HelpColor)
+        tr = discordservice.CreateEmbed("", helpList[2], HelpColor)
+        cm = discordservice.CreateEmbed("", helpList[3], HelpColor)
 
-      await discordservice.SendDMs(inter, [su, sp])
-      await discordservice.SendDMs(inter, [tr, cm])
-      return await discordservice.SendMessage(
-          inter, "Help DM sent.",
-          "For more information on specific commands, use **/help** and specify a command",
-          HelpColor, True)
-    else:
-      helpComm = helpservice.BuildCommandHelp(command, inter.user.guild_permissions.administrator)
-      if not helpComm:
+        await discordservice.SendDMs(inter, [su, sp])
+        await discordservice.SendDMs(inter, [tr, cm])
         return await discordservice.SendMessage(
-          inter, "Invalid Command",
-          f"The {command.lower()} command either does not exist or is restricted to administrators only. To find commands you may have access to, use **/help** for a full list.",
-          ErrorColor, True)
-      return await discordservice.SendMessage(inter, f"{command.lower()} Command", helpComm.HelpString, HelpColor, True)
+            inter, "Help DM sent.",
+            "For more information on specific commands, use **/help** and specify a command",
+            HelpColor, True)
+      else:
+        helpComm = helpservice.BuildCommandHelp(command, inter.user.guild_permissions.administrator)
+        if not helpComm:
+          return await discordservice.SendMessage(
+            inter, "Invalid Command",
+            f"The {command.lower()} command either does not exist or is restricted to administrators only. To find commands you may have access to, use **/help** for a full list.",
+            ErrorColor, True)
+        return await discordservice.SendMessage(inter, f"{command.lower()}", helpComm.HelpString, HelpColor, True)
+    except Exception as e:
+      print(f"{e}")
       
 
 

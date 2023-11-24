@@ -54,7 +54,22 @@ async def DeleteMessage(serverId, channelId, messageId):
   if guild:
     channel = guild.get_channel(channelId)
     if channel:
-      return await (await channel.fetch_message(messageId)).delete()
+      try:
+        return await (await channel.fetch_message(messageId)).delete()
+      except:
+        print(f"SERVER: {serverId} deleted last spawn already")
+        return
+
+
+async def SendMessageNoInteraction(serverId, channelId, message):
+  bot = discordbot.GetBot()
+  guild = bot.get_guild(serverId)
+  if guild:
+    channel = guild.get_channel(channelId)
+    if channel and not isinstance(channel,
+                                  discord.ForumChannel) and not isinstance(
+                                      channel, discord.CategoryChannel):
+      await channel.send(message)
 
 
 async def SendPokemon(guildid,

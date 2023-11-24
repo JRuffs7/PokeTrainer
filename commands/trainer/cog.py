@@ -1,10 +1,10 @@
 from typing import List
-from discord import Member, app_commands
+from discord import Member, app_commands, Interaction
 from discord.ext import commands
-from discord.user import discord
 from commands.views.PokedexView import PokedexView
 from commands.views.TeamSelectorView import TeamSelectorView
 from commands.views.ReleasePokemonView import ReleasePokemonView
+from commands.views.BadgeView import BadgeView
 
 from globals import ErrorColor, TrainerColor
 from services import trainerservice, pokemonservice, itemservice
@@ -16,10 +16,12 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
   def __init__(self, bot: commands.Bot):
     self.bot = bot
 
+  #region Info
+
   @app_commands.command(name="trainer",
                         description="Displays trainer info.")
   async def trainer(self,
-                        interaction: discord.Interaction,
+                        interaction: Interaction,
                         member: Member | None = None):
     print("TRAINER called")
     targetUser = member if member else interaction.user
@@ -31,7 +33,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
     embed.set_thumbnail(url=targetUser.display_avatar.url)
     await discordservice.SendEmbed(interaction, embed)
 
-  async def autofill_usepotion(self, inter: discord.Interaction, current: str):
+  async def autofill_usepotion(self, inter: Interaction, current: str):
     data = []
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
     if trainer:
@@ -47,7 +49,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
   @app_commands.command(name="usepotion",
                         description="Use a potion to restore trainer health.")
   @app_commands.autocomplete(potion=autofill_usepotion)
-  async def usepotion(self, inter: discord.Interaction,
+  async def usepotion(self, inter: Interaction,
                       potion: int):
     print("USE POTION called")
     try:
@@ -79,7 +81,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
 
   @app_commands.command(name="inventory",
                         description="Displays your current inventory.")
-  async def inventory(self, inter: discord.Interaction):
+  async def inventory(self, inter: Interaction):
     print("INVENTORY called")
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
     if not trainer:
@@ -97,10 +99,11 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
         f"${items[0]}\n\n{pokeballString}\n\n{potionString}", TrainerColor)
     return await discordservice.SendEmbed(inter, embed, True)
       
+  #endregion
 
   #region TEAM
 
-  async def pokemon_autocomplete(self, inter: discord.Interaction, current: str) -> List[app_commands.Choice[str]]:
+  async def pokemon_autocomplete(self, inter: Interaction, current: str) -> List[app_commands.Choice[str]]:
     data = []
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
     if trainer:
@@ -116,7 +119,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
   @app_commands.command(name="modifyteam",
                         description="Add or substitute a Pokemon to a team slot.")
   @app_commands.autocomplete(pokemon=pokemon_autocomplete)
-  async def modifyteam(self, inter: discord.Interaction,
+  async def modifyteam(self, inter: Interaction,
                     pokemon: str):
     print('MODIFY TEAM called')
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
@@ -135,16 +138,43 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
 
   @app_commands.command(name="myteam",
                         description="View your current team.")
-  async def myteam(self, inter: discord.Interaction):
+  async def myteam(self, inter: Interaction):
     print("MY TEAM called")
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
     if not trainer:
       return await discordservice.SendTrainerError(inter)
 
     teamViewer = PokedexView(inter, 1, inter.user, f"{inter.user.display_name}'s Battle Team")
-    teamViewer.data = trainerservice.GetTeam(trainer)
-    await teamViewer.send()
+    teamViewer.data = [t for t in trainerservice.GetTeam(trainer) if t]
+    await teamViewer.send() 
 
+  @app_commands.command(name="badges",description="View your obtained badges")
+  @app_commands.choices(region=[
+      app_commands.Choice(name="Kanto", value=1),
+      app_commands.Choice(name="Johto", value=2),
+      app_commands.Choice(name="Hoenn", value=3),
+      app_commands.Choice(name="Sinnoh", value=4),
+      app_commands.Choice(name="Unova", value=5),
+      app_commands.Choice(name="Kalos", value=6),
+      app_commands.Choice(name="Galar", value=8),
+      app_commands.Choice(name="Paldea", value=9)
+  ])
+  @app_commands.choices(images=[
+      app_commands.Choice(name="Yes", value=1),
+      app_commands.Choice(name="No", value=0)
+  ])
+  async def badges(self, inter: Interaction, 
+                   region: app_commands.Choice[int] | None, 
+                   images: app_commands.Choice[int] | None,
+                   user: Member | None):
+    print("BADGES called")
+    trainer = trainerservice.GetTrainer(inter.guild_id, user.id if user else inter.user.id)
+    if not trainer:
+      return await discordservice.SendTrainerError(inter)
+
+    badgeView = BadgeView(inter, 1 if images else 10, f"{user.display_name if user else inter.user.display_name}'s Badges")
+    badgeView.data = trainerservice.GetGymBadges(trainer, region.value if region else 0)
+    await badgeView.send()
   #endregion
 
   #region POKEDEX
@@ -152,26 +182,26 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
   @app_commands.command(name="pokedex",
                         description="Displays your current Pokedex.")
   @app_commands.choices(images=[
-      discord.app_commands.Choice(name="Yes", value=1),
-      discord.app_commands.Choice(name="No", value=0)
+      app_commands.Choice(name="Yes", value=1),
+      app_commands.Choice(name="No", value=0)
   ])
   @app_commands.choices(order=[
-      discord.app_commands.Choice(name="Default", value="default"),
-      discord.app_commands.Choice(name="Height", value="height"),
-      discord.app_commands.Choice(name="National Dex", value="dex"),
-      discord.app_commands.Choice(name="Name", value="name"),
-      discord.app_commands.Choice(name="Weight", value="weight")
+      app_commands.Choice(name="Default", value="default"),
+      app_commands.Choice(name="Height", value="height"),
+      app_commands.Choice(name="National Dex", value="dex"),
+      app_commands.Choice(name="Name", value="name"),
+      app_commands.Choice(name="Weight", value="weight")
   ])
   @app_commands.choices(shiny=[
-      discord.app_commands.Choice(name="All", value=1),
-      discord.app_commands.Choice(name="Shiny Only", value=2),
-      discord.app_commands.Choice(name="Shiny First", value=3)
+      app_commands.Choice(name="All", value=1),
+      app_commands.Choice(name="Shiny Only", value=2),
+      app_commands.Choice(name="Shiny First", value=3)
   ])
-  async def pokedex(self, inter: discord.Interaction,
+  async def pokedex(self, inter: Interaction,
                     images: app_commands.Choice[int] | None,
                     order: app_commands.Choice[str] | None,
                     shiny: app_commands.Choice[int] | None,
-                    user: discord.Member | None):
+                    user: Member | None):
     print("POKEDEX called")
     trainer = trainerservice.GetTrainer(inter.guild_id, user.id if user else inter.user.id)
     if not trainer:
@@ -190,7 +220,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
   @app_commands.command(name="release",
                         description="Choose a Pokemon to release.")
   @app_commands.autocomplete(pokemon=pokemon_autocomplete)
-  async def release(self, inter: discord.Interaction,
+  async def release(self, inter: Interaction,
                     pokemon: str):
     print('RELEASE called')
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
@@ -210,7 +240,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
 
   #region STARTER
 
-  async def region_autocomplete(self, inter: discord.Interaction, current: str) -> List[app_commands.Choice[str]]:
+  async def region_autocomplete(self, inter: Interaction, current: str) -> List[app_commands.Choice[str]]:
     regions = ['Kanto','Johto','Hoenn','Sinnoh','Unova','Kalos','Alola','Galar','Paldea']
     choices = []
     for i in range(len(regions)):
@@ -218,7 +248,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
         choices.append(app_commands.Choice(name=regions[i],value=i+1))
     return choices
   
-  async def starter_autocomplete(self, inter: discord.Interaction, current: str) -> List[app_commands.Choice[int]]:
+  async def starter_autocomplete(self, inter: Interaction, current: str) -> List[app_commands.Choice[int]]:
     starters = [ 
       {'Region':1,'Name':'Bulbasaur','Value':1},
       {'Region':1,'Name':'Charmander','Value':4},
@@ -261,7 +291,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
   @app_commands.command(name="starter",
                         description="Choose a region and Pokemon to start your trainer!")
   @app_commands.autocomplete(region=region_autocomplete,pokemon=starter_autocomplete)
-  async def starter(self, inter: discord.Interaction, region: int, pokemon: int):
+  async def starter(self, inter: Interaction, region: int, pokemon: int):
     print("STARTER called")
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
     if trainer:

@@ -203,7 +203,7 @@ def EvolvePokemon(initial: PokedexEntry, evolveId):
     })
 
 
-def PokemonFight(attack: Pokemon, defend: Pokemon):
+def PokemonFight(attack: Pokemon, defend: Pokemon, gymBattle: bool = False):
   try:
     fightTotal = typeservice.TypeWeakness(attack.Types[0].lower(), defend.Types[0].lower())
     fightTotal += typeservice.TypeWeakness(
@@ -213,6 +213,9 @@ def PokemonFight(attack: Pokemon, defend: Pokemon):
     doubleDis = fightTotal <= -2
     attackGroup = 1 if attack.Rarity <= 2 else 2 if attack.Rarity == 3 else 3
     defendGroup = 1 if defend.Rarity <= 2 else 2 if defend.Rarity == 3 else 3
+
+    if gymBattle:
+      return 1 if doubleAdv and attackGroup >= defendGroup else 0
 
     # 1v2 2v3
     if abs(attackGroup - defendGroup) == 1:

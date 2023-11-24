@@ -9,8 +9,8 @@ from globals import (
     PokeballReaction,
 )
 from models.Trainer import Trainer
-from models.Pokemon import SpawnPokemon
-from services import itemservice, pokemonservice, serverservice
+from models.Pokemon import SpawnPokemon, PokedexEntry
+from services import itemservice, pokemonservice, serverservice, gymservice
 
 
 def GetTrainer(serverId, userId):
@@ -30,7 +30,6 @@ def StartTrainer(pokemonId, userId, serverId):
       'UserId': userId,
       'ServerId': serverId,
       'Team': [None, None, None, None, None, None],
-      'OwnedPokemon': [],
       'Health': 50,
       'Money': 500,
       'PokeballList': [1,1,1,1,1]
@@ -175,12 +174,10 @@ def GetPokedexList(trainer: Trainer, orderString, shiny):
 #region Team
 
 def GetTeam(trainer: Trainer):
-  teamList = []
-  for ind, pokeId in enumerate(trainer.Team):
+  teamList: List[PokedexEntry | None] = []
+  for pokeId in trainer.Team:
     if pokeId:
-      mon = next((p for p in trainer.OwnedPokemon if pokeId and p.Id == pokeId))
-      mon.Name = f"({ind + 1}) {mon.Name}"
-      teamList.append(mon)
+      teamList.append(next((p for p in trainer.OwnedPokemon if p.Id == pokeId), None))
   return teamList
 
 def SetTeamSlot(trainer: Trainer, slotNum, pokemonId):
@@ -194,12 +191,21 @@ def Evolve(trainer: Trainer, initialPkmn, evolveId):
   UpsertTrainer(trainer)
   return newPkmn
 
-
 def ReleasePokemon(trainer: Trainer, pokemonIds):
   released = next((p for p in trainer.OwnedPokemon if p.Id in pokemonIds), None)
   trainer.OwnedPokemon = [p for p in trainer.OwnedPokemon if p.Id not in pokemonIds]
   UpsertTrainer(trainer)
   return released.Name
+
+#endregion
+
+#region Gym Badges
+
+def GetGymBadges(trainer: Trainer, generation: int):
+  badgeList = [gymservice.GetBadgeById(b) for b in trainer.Badges]
+  if generation:
+    badgeList = [b for b in badgeList if b.Generation == generation]
+  return badgeList
 
 #endregion
 
@@ -238,7 +244,7 @@ async def ReationReceived(bot, user, reaction):
   await reaction.remove(user)
   return False
 
-def TryCapture(reaction: Reaction, server, trainer, spawn):
+def TryCapture(reaction: Reaction, server, trainer: Trainer, spawn):
   #Update Server to prevent duplicate
   server.CaughtBy = trainer.UserId
   serverservice.UpsertServer(server)
@@ -257,7 +263,7 @@ def TryCapture(reaction: Reaction, server, trainer, spawn):
   serverservice.UpsertServer(server)
   return False
 
-def TryWildFight(server, trainer, spawnId):
+def TryWildFight(server, trainer: Trainer, spawnId):
     pokemon = pokemonservice.GetPokemonById(spawnId)
     if not pokemon:
       return

@@ -3358,9 +3358,7 @@
     "IsDefault": true,
     "CaptureRate": 45,
     "Color": "pink",
-    "EvolvesInto": [
-      866
-    ],
+    "EvolvesInto": [],
     "FemaleChance": 4,
     "Generation": 1,
     "IsBaby": false,
@@ -3378,7 +3376,7 @@
       "Fairy"
     ],
     "Weight": 545,
-    "Rarity": 3
+    "Rarity": 4
   },
   {
     "Id": 123,
@@ -32277,7 +32275,7 @@
     "Color": "red",
     "EvolvesInto": [],
     "FemaleChance": 4,
-    "Generation": 5,
+    "Generation": 8,
     "IsBaby": false,
     "IsLegendary": false,
     "IsMythical": false,
@@ -33336,7 +33334,7 @@
     "Color": "brown",
     "EvolvesInto": [],
     "FemaleChance": 0,
-    "Generation": 1,
+    "Generation": 9,
     "IsBaby": false,
     "IsLegendary": false,
     "IsMythical": false,
@@ -33362,7 +33360,7 @@
     "Color": "brown",
     "EvolvesInto": [],
     "FemaleChance": 0,
-    "Generation": 1,
+    "Generation": 9,
     "IsBaby": false,
     "IsLegendary": false,
     "IsMythical": false,
@@ -33389,7 +33387,7 @@
     "Color": "brown",
     "EvolvesInto": [],
     "FemaleChance": 0,
-    "Generation": 1,
+    "Generation": 9,
     "IsBaby": false,
     "IsLegendary": false,
     "IsMythical": false,

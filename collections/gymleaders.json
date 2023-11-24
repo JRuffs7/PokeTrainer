@@ -1,649 +1,807 @@
-{
-  "GymLeaders": [
-    {
-      "Name": "Brock",
-      "PokemonIds": [
-        74,
-        95
-      ],
-      "BadgeId": 1
-    },
-    {
-      "Name": "Misty",
-      "PokemonIds": [
-        120,
-        121
-      ],
-      "BadgeId": 2
-    },
-    {
-      "Name": "Lt. Surge",
-      "PokemonIds": [
-        25,
-        26,
-        100
-      ],
-      "BadgeId": 3
-    },
-    {
-      "Name": "Erika",
-      "PokemonIds": [
-        45,
-        71,
-        114
-      ],
-      "BadgeId": 4
-    },
-    {
-      "Name": "Koga",
-      "PokemonIds": [
-        89,
-        109,
-        110
-      ],
-      "BadgeId": 5
-    },
-    {
-      "Name": "Sabrina",
-      "PokemonIds": [
-        49,
-        64,
-        65,
-        122
-      ],
-      "BadgeId": 6
-    },
-    {
-      "Name": "Blaine",
-      "PokemonIds": [
-        58,
-        59,
-        77,
-        78
-      ],
-      "BadgeId": 7
-    },
-    {
-      "Name": "Giovanni",
-      "PokemonIds": [
-        31,
-        34,
-        51,
-        111,
-        112
-      ],
-      "BadgeId": 1
-    },
-    {
-      "Name": "Falkner",
-      "PokemonIds": [
-        16,
-        17
-      ],
-      "BadgeId": 9
-    },
-    {
-      "Name": "Bugsy",
-      "PokemonIds": [
-        11,
-        14,
-        123
-      ],
-      "BadgeId": 10
-    },
-    {
-      "Name": "Whitney",
-      "PokemonIds": [
-        35,
-        241
-      ],
-      "BadgeId": 11
-    },
-    {
-      "Name": "Morty",
-      "PokemonIds": [
-        92,
-        93,
-        94
-      ],
-      "BadgeId": 12
-    },
-    {
-      "Name": "Chuck",
-      "PokemonIds": [
-        57,
-        62
-      ],
-      "BadgeId": 13
-    },
-    {
-      "Name": "Jasmine",
-      "PokemonIds": [
-        81,
-        208
-      ],
-      "BadgeId": 14
-    },
-    {
-      "Name": "Pryce",
-      "PokemonIds": [
-        86,
-        87,
-        221
-      ],
-      "BadgeId": 15
-    },
-    {
-      "Name": "Clair",
-      "PokemonIds": [
-        148,
-        230
-      ],
-      "BadgeId": 16
-    },
-    {
-      "Name": "Roxanne",
-      "PokemonIds": [
-        74,
-        299
-      ],
-      "BadgeId": 17
-    },
-    {
-      "Name": "Brawly",
-      "PokemonIds": [
-        66,
-        296
-      ],
-      "BadgeId": 18
-    },
-    {
-      "Name": "Wattson",
-      "PokemonIds": [
-        81,
-        82,
-        100
-      ],
-      "BadgeId": 19
-    },
-    {
-      "Name": "Flannery",
-      "PokemonIds": [
-        218,
-        324
-      ],
-      "BadgeId": 20
-    },
-    {
-      "Name": "Norman",
-      "PokemonIds": [
-        288,
-        289
-      ],
-      "BadgeId": 21
-    },
-    {
-      "Name": "Winona",
-      "PokemonIds": [
-        227,
-        277,
-        279,
-        334
-      ],
-      "BadgeId": 22
-    },
-    {
-      "Name": "Tate & Liza",
-      "PokemonIds": [
-        337,
-        338
-      ],
-      "BadgeId": 23
-    },
-    {
-      "Name": "Wallace",
-      "PokemonIds": [
-        119,
-        340,
-        350,
-        364,
-        370
-      ],
-      "BadgeId": 24
-    },
-    {
-      "Name": "Roark",
-      "PokemonIds": [
-        74,
-        95,
-        408
-      ],
-      "BadgeId": 25
-    },
-    {
-      "Name": "Gardenia",
-      "PokemonIds": [
-        387,
-        407,
-        420
-      ],
-      "BadgeId": 26
-    },
-    {
-      "Name": "Maylene",
-      "PokemonIds": [
-        67,
-        307,
-        448
-      ],
-      "BadgeId": 27
-    },
-    {
-      "Name": "Crasher Wake",
-      "PokemonIds": [
-        130,
-        195,
-        419
-      ],
-      "BadgeId": 28
-    },
-    {
-      "Name": "Fantina",
-      "PokemonIds": [
-        94,
-        426,
-        429
-      ],
-      "BadgeId": 29
-    },
-    {
-      "Name": "Byron",
-      "PokemonIds": [
-        208,
-        411,
-        436
-      ],
-      "BadgeId": 30
-    },
-    {
-      "Name": "Candice",
-      "PokemonIds": [
-        215,
-        308,
-        459,
-        460
-      ],
-      "BadgeId": 31
-    },
-    {
-      "Name": "Volkner",
-      "PokemonIds": [
-        26,
-        224,
-        405,
-        424
-      ],
-      "BadgeId": 32
-    },
-    {
-      "Name": "Chili, Cilan, Cress",
-      "PokemonIds": [
-        506,
-        511,
-        513,
-        515
-      ],
-      "BadgeId": 33
-    },
-    {
-      "Name": "Lenora",
-      "PokemonIds": [
-        505,
-        507
-      ],
-      "BadgeId": 34
-    },
-    {
-      "Name": "Burgh",
-      "PokemonIds": [
-        542,
-        544,
-        557
-      ],
-      "BadgeId": 35
-    },
-    {
-      "Name": "Elesa",
-      "PokemonIds": [
-        523,
-        587
-      ],
-      "BadgeId": 36
-    },
-    {
-      "Name": "Clay",
-      "PokemonIds": [
-        530,
-        536,
-        552
-      ],
-      "BadgeId": 37
-    },
-    {
-      "Name": "Skyla",
-      "PokemonIds": [
-        521,
-        528,
-        581
-      ],
-      "BadgeId": 38
-    },
-    {
-      "Name": "Brycen",
-      "PokemonIds": [
-        583,
-        614,
-        615
-      ],
-      "BadgeId": 39
-    },
-    {
-      "Name": "Iris",
-      "PokemonIds": [
-        611,
-        612,
-        621
-      ],
-      "BadgeId": 40
-    },
-    {
-      "Name": "Viola",
-      "PokemonIds": [
-        283,
-        666
-      ],
-      "BadgeId": 41
-    },
-    {
-      "Name": "Grant",
-      "PokemonIds": [
-        696,
-        698
-      ],
-      "BadgeId": 42
-    },
-    {
-      "Name": "Korrina",
-      "PokemonIds": [
-        67,
-        619,
-        701
-      ],
-      "BadgeId": 43
-    },
-    {
-      "Name": "Ramos",
-      "PokemonIds": [
-        70,
-        189,
-        673
-      ],
-      "BadgeId": 44
-    },
-    {
-      "Name": "Clemont",
-      "PokemonIds": [
-        82,
-        587,
-        695
-      ],
-      "BadgeId": 45
-    },
-    {
-      "Name": "Valerie",
-      "PokemonIds": [
-        122,
-        303,
-        700
-      ],
-      "BadgeId": 46
-    },
-    {
-      "Name": "Olympia",
-      "PokemonIds": [
-        199,
-        561,
-        678
-      ],
-      "BadgeId": 47
-    },
-    {
-      "Name": "Wulfric",
-      "PokemonIds": [
-        460,
-        615,
-        713
-      ],
-      "BadgeId": 48
-    },
-    {
-      "Name": "Ilima",
-      "PokemonIds": [
-        235,
-        735
-      ],
-      "BadgeId": 49
-    },
-    {
-      "Name": "Lana",
-      "PokemonIds": [
-        90,
-        170,
-        752
-      ],
-      "BadgeId": 50
-    },
-    {
-      "Name": "Kiawe",
-      "PokemonIds": [
-        58,
-        662,
-        1110
-      ],
-      "BadgeId": 51
-    },
-    {
-      "Name": "Mallow",
-      "PokemonIds": [
-        708,
-        756,
-        762
-      ],
-      "BadgeId": 52
-    },
-    {
-      "Name": "Sophocles",
-      "PokemonIds": [
-        462,
-        466,
-        738,
-        777,
-        1106
-      ],
-      "BadgeId": 53
-    },
-    {
-      "Name": "Acerola",
-      "PokemonIds": [
-        302,
-        426,
-        478,
-        770,
-        781
-      ],
-      "BadgeId": 54
-    },
-    {
-      "Name": "Mina",
-      "PokemonIds": [
-        40,
-        210,
-        707,
-        743,
-        756
-      ],
-      "BadgeId": 55
-    },
-    {
-      "Name": "Milo",
-      "PokemonIds": [
-        829,
-        830
-      ],
-      "BadgeId": 56
-    },
-    {
-      "Name": "Nessa",
-      "PokemonIds": [
-        118,
-        834,
-        846
-      ],
-      "BadgeId": 57
-    },
-    {
-      "Name": "Kabu",
-      "PokemonIds": [
-        38,
-        59,
-        851
-      ],
-      "BadgeId": 58
-    },
-    {
-      "Name": "Bea",
-      "PokemonIds": [
-        68,
-        237,
-        675,
-        865
-      ],
-      "BadgeId": 59
-    },
-    {
-      "Name": "Allister",
-      "PokemonIds": [
-        94,
-        562,
-        778,
-        864
-      ],
-      "BadgeId": 60
-    },
-    {
-      "Name": "Opal",
-      "PokemonIds": [
-        303,
-        468,
-        869,
-        1167
-      ],
-      "BadgeId": 61
-    },
-    {
-      "Name": "Gordie",
-      "PokemonIds": [
-        213,
-        689,
-        839,
-        874
-      ],
-      "BadgeId": 62
-    },
-    {
-      "Name": "Melony",
-      "PokemonIds": [
-        131,
-        873,
-        875
-      ],
-      "BadgeId": 63
-    },
-    {
-      "Name": "Katy",
-      "PokemonIds": [
-        216,
-        915,
-        917
-      ],
-      "BadgeId": 64
-    },
-    {
-      "Name": "Brassius",
-      "PokemonIds": [
-        185,
-        548,
-        926
-      ],
-      "BadgeId": 65
-    },
-    {
-      "Name": "Iono",
-      "PokemonIds": [
-        404,
-        429,
-        937,
-        938
-      ],
-      "BadgeId": 66
-    },
-    {
-      "Name": "Kofu",
-      "PokemonIds": [
-        740,
-        959,
-        974
-      ],
-      "BadgeId": 67
-    },
-    {
-      "Name": "Larry",
-      "PokemonIds": [
-        398,
-        775,
-        980
-      ],
-      "BadgeId": 68
-    },
-    {
-      "Name": "Ryme",
-      "PokemonIds": [
-        354,
-        778,
-        849,
-        970
-      ],
-      "BadgeId": 69
-    },
-    {
-      "Name": "Tulip",
-      "PokemonIds": [
-        282,
-        671,
-        954,
-        979
-      ],
-      "BadgeId": 70
-    },
-    {
-      "Name": "Grusha",
-      "PokemonIds": [
-        334,
-        614,
-        873,
-        973
-      ],
-      "BadgeId": 71
-    }
-  ]
-}
+[
+  {
+    "Name": "Brock",
+    "Generation": 1,
+    "Sprite": "https://imgur.com/7CspCJP.png",
+    "Team": [
+      74,
+      95
+    ],
+    "BadgeId": 1,
+    "Reward": 200
+  },
+  {
+    "Name": "Misty",
+    "Generation": 1,
+    "Sprite": "https://imgur.com/lKXU56r.png",
+    "Team": [
+      120,
+      121
+    ],
+    "BadgeId": 2,
+    "Reward": 200
+  },
+  {
+    "Name": "Lt. Surge",
+    "Generation": 1,
+    "Sprite": "https://imgur.com/DkjvZ6M.png",
+    "Team": [
+      25,
+      26,
+      100
+    ],
+    "BadgeId": 3,
+    "Reward": 300
+  },
+  {
+    "Name": "Erika",
+    "Generation": 1,
+    "Sprite": "https://imgur.com/2yLQus2.png",
+    "Team": [
+      45,
+      71,
+      114
+    ],
+    "BadgeId": 4,
+    "Reward": 300
+  },
+  {
+    "Name": "Koga",
+    "Generation": 1,
+    "Sprite": "https://imgur.com/e1hReA9.png",
+    "Team": [
+      89,
+      109,
+      110,
+      109
+    ],
+    "BadgeId": 5,
+    "Reward": 400
+  },
+  {
+    "Name": "Sabrina",
+    "Generation": 1,
+    "Sprite": "https://imgur.com/EfJuyZI.png",
+    "Team": [
+      49,
+      64,
+      65,
+      122
+    ],
+    "BadgeId": 6,
+    "Reward": 400
+  },
+  {
+    "Name": "Blaine",
+    "Generation": 1,
+    "Sprite": "https://imgur.com/yGBKKzx.png",
+    "Team": [
+      58,
+      59,
+      77,
+      78
+    ],
+    "BadgeId": 7,
+    "Reward": 400
+  },
+  {
+    "Name": "Giovanni",
+    "Generation": 1,
+    "Sprite": "https://imgur.com/dOFTbdS.png",
+    "Team": [
+      31,
+      34,
+      51,
+      111,
+      112
+    ],
+    "BadgeId": 8,
+    "Reward": 500
+  },
+  {
+    "Name": "Falkner",
+    "Generation": 2,
+    "Sprite": "https://imgur.com/9TMEaoM.png",
+    "Team": [
+      16,
+      17
+    ],
+    "BadgeId": 9,
+    "Reward": 200
+  },
+  {
+    "Name": "Bugsy",
+    "Generation": 2,
+    "Sprite": "https://imgur.com/GvutJih.png",
+    "Team": [
+      11,
+      14,
+      123
+    ],
+    "BadgeId": 10,
+    "Reward": 300
+  },
+  {
+    "Name": "Whitney",
+    "Generation": 2,
+    "Sprite": "https://imgur.com/lUMcnOW.png",
+    "Team": [
+      35,
+      241
+    ],
+    "BadgeId": 11,
+    "Reward": 200
+  },
+  {
+    "Name": "Morty",
+    "Generation": 2,
+    "Sprite": "https://imgur.com/1FObR2u.png",
+    "Team": [
+      92,
+      93,
+      94,
+      93
+    ],
+    "BadgeId": 12,
+    "Reward": 400
+  },
+  {
+    "Name": "Chuck",
+    "Generation": 2,
+    "Sprite": "https://imgur.com/hGo0bJA.png",
+    "Team": [
+      57,
+      62
+    ],
+    "BadgeId": 13,
+    "Reward": 200
+  },
+  {
+    "Name": "Jasmine",
+    "Generation": 2,
+    "Sprite": "https://imgur.com/jHel83B.png",
+    "Team": [
+      81,
+      208,
+      81
+    ],
+    "BadgeId": 14,
+    "Reward": 300
+  },
+  {
+    "Name": "Pryce",
+    "Generation": 2,
+    "Sprite": "https://imgur.com/N8uwoFl.png",
+    "Team": [
+      86,
+      87,
+      221
+    ],
+    "BadgeId": 15,
+    "Reward": 300
+  },
+  {
+    "Name": "Clair",
+    "Generation": 2,
+    "Sprite": "https://imgur.com/S3kuW1D.png",
+    "Team": [
+      148,
+      230,
+      148,
+      148
+    ],
+    "BadgeId": 16,
+    "Reward": 200
+  },
+  {
+    "Name": "Roxanne",
+    "Generation": 3,
+    "Sprite": "https://imgur.com/PkAT2S2.png",
+    "Team": [
+      74,
+      299
+    ],
+    "BadgeId": 17,
+    "Reward": 200
+  },
+  {
+    "Name": "Brawly",
+    "Generation": 3,
+    "Sprite": "https://imgur.com/6rk03b9.png",
+    "Team": [
+      66,
+      296
+    ],
+    "BadgeId": 18,
+    "Reward": 200
+  },
+  {
+    "Name": "Wattson",
+    "Generation": 3,
+    "Sprite": "https://imgur.com/3kDIg8c.png",
+    "Team": [
+      81,
+      82,
+      100
+    ],
+    "BadgeId": 19,
+    "Reward": 300
+  },
+  {
+    "Name": "Flannery",
+    "Generation": 3,
+    "Sprite": "https://imgur.com/Z9xmB4G.png",
+    "Team": [
+      218,
+      324,
+      218
+    ],
+    "BadgeId": 20,
+    "Reward": 300
+  },
+  {
+    "Name": "Norman",
+    "Generation": 3,
+    "Sprite": "https://imgur.com/qHAdyEC.png",
+    "Team": [
+      288,
+      289,
+      289
+    ],
+    "BadgeId": 21,
+    "Reward": 300
+  },
+  {
+    "Name": "Winona",
+    "Generation": 3,
+    "Sprite": "https://imgur.com/VUQhtxA.png",
+    "Team": [
+      227,
+      277,
+      279,
+      334
+    ],
+    "BadgeId": 22,
+    "Reward": 400
+  },
+  {
+    "Name": "Tate & Liza",
+    "Generation": 3,
+    "Sprite": "https://imgur.com/ZMrt8ol.png",
+    "Team": [
+      337,
+      338
+    ],
+    "BadgeId": 23,
+    "Reward": 200
+  },
+  {
+    "Name": "Wallace",
+    "Generation": 3,
+    "Sprite": "https://imgur.com/vsHk8DX.png",
+    "Team": [
+      119,
+      340,
+      350,
+      364,
+      370
+    ],
+    "BadgeId": 24,
+    "Reward": 500
+  },
+  {
+    "Name": "Roark",
+    "Generation": 4,
+    "Sprite": "https://imgur.com/trWHQHF.png",
+    "Team": [
+      74,
+      95,
+      408
+    ],
+    "BadgeId": 25,
+    "Reward": 300
+  },
+  {
+    "Name": "Gardenia",
+    "Generation": 4,
+    "Sprite": "https://imgur.com/136ObJd.png",
+    "Team": [
+      387,
+      407,
+      420
+    ],
+    "BadgeId": 26,
+    "Reward": 300
+  },
+  {
+    "Name": "Maylene",
+    "Generation": 4,
+    "Sprite": "https://imgur.com/sMviNOM.png",
+    "Team": [
+      67,
+      307,
+      448
+    ],
+    "BadgeId": 27,
+    "Reward": 300
+  },
+  {
+    "Name": "Crasher Wake",
+    "Generation": 4,
+    "Sprite": "https://imgur.com/s1rENxq.png",
+    "Team": [
+      130,
+      195,
+      419
+    ],
+    "BadgeId": 28,
+    "Reward": 300
+  },
+  {
+    "Name": "Fantina",
+    "Generation": 4,
+    "Sprite": "https://imgur.com/iZjIH9L.png",
+    "Team": [
+      94,
+      426,
+      429
+    ],
+    "BadgeId": 29,
+    "Reward": 300
+  },
+  {
+    "Name": "Byron",
+    "Generation": 4,
+    "Sprite": "https://imgur.com/kQp2ZYp.png",
+    "Team": [
+      208,
+      411,
+      436
+    ],
+    "BadgeId": 30,
+    "Reward": 300
+  },
+  {
+    "Name": "Candice",
+    "Generation": 4,
+    "Sprite": "https://imgur.com/bt012wp.png",
+    "Team": [
+      215,
+      308,
+      459,
+      460
+    ],
+    "BadgeId": 31,
+    "Reward": 400
+  },
+  {
+    "Name": "Volkner",
+    "Generation": 4,
+    "Sprite": "https://imgur.com/uRFVrw8.png",
+    "Team": [
+      26,
+      224,
+      405,
+      424
+    ],
+    "BadgeId": 32,
+    "Reward": 400
+  },
+  {
+    "Name": "Chili, Cilan, Cress",
+    "Generation": 5,
+    "Sprite": "https://imgur.com/HYSAS3q.png",
+    "Team": [
+      506,
+      511,
+      513,
+      515
+    ],
+    "BadgeId": 33,
+    "Reward": 400
+  },
+  {
+    "Name": "Lenora",
+    "Generation": 5,
+    "Sprite": "https://imgur.com/XNSdadk.png",
+    "Team": [
+      505,
+      507
+    ],
+    "BadgeId": 34,
+    "Reward": 200
+  },
+  {
+    "Name": "Burgh",
+    "Generation": 5,
+    "Sprite": "https://imgur.com/of1eWxH.png",
+    "Team": [
+      542,
+      544,
+      557
+    ],
+    "BadgeId": 35,
+    "Reward": 300
+  },
+  {
+    "Name": "Elesa",
+    "Generation": 5,
+    "Sprite": "https://imgur.com/PB0kqgd.png",
+    "Team": [
+      523,
+      587,
+      587
+    ],
+    "BadgeId": 36,
+    "Reward": 200
+  },
+  {
+    "Name": "Clay",
+    "Generation": 5,
+    "Sprite": "https://imgur.com/nbLVZg3.png",
+    "Team": [
+      530,
+      536,
+      552
+    ],
+    "BadgeId": 37,
+    "Reward": 300
+  },
+  {
+    "Name": "Skyla",
+    "Generation": 5,
+    "Sprite": "https://imgur.com/PQnvl3G.png",
+    "Team": [
+      521,
+      528,
+      581
+    ],
+    "BadgeId": 38,
+    "Reward": 300
+  },
+  {
+    "Name": "Brycen",
+    "Generation": 5,
+    "Sprite": "https://imgur.com/hkvM2Ho.png",
+    "Team": [
+      583,
+      614,
+      615
+    ],
+    "BadgeId": 39,
+    "Reward": 300
+  },
+  {
+    "Name": "Iris",
+    "Generation": 5,
+    "Sprite": "https://imgur.com/WioOPnB.png",
+    "Team": [
+      611,
+      612,
+      621
+    ],
+    "BadgeId": 40,
+    "Reward": 300
+  },
+  {
+    "Name": "Viola",
+    "Generation": 6,
+    "Sprite": "https://imgur.com/TPKTWeR.png",
+    "Team": [
+      283,
+      666
+    ],
+    "BadgeId": 41,
+    "Reward": 200
+  },
+  {
+    "Name": "Grant",
+    "Generation": 6,
+    "Sprite": "https://imgur.com/qmvjtf3.png",
+    "Team": [
+      696,
+      698
+    ],
+    "BadgeId": 42,
+    "Reward": 200
+  },
+  {
+    "Name": "Korrina",
+    "Generation": 6,
+    "Sprite": "https://imgur.com/GigyhxJ.png",
+    "Team": [
+      67,
+      619,
+      701
+    ],
+    "BadgeId": 43,
+    "Reward": 300
+  },
+  {
+    "Name": "Ramos",
+    "Generation": 6,
+    "Sprite": "https://imgur.com/WqQlOFs.png",
+    "Team": [
+      70,
+      189,
+      673
+    ],
+    "BadgeId": 44,
+    "Reward": 300
+  },
+  {
+    "Name": "Clemont",
+    "Generation": 6,
+    "Sprite": "https://imgur.com/eIhMsEE.png",
+    "Team": [
+      82,
+      587,
+      695
+    ],
+    "BadgeId": 45,
+    "Reward": 300
+  },
+  {
+    "Name": "Valerie",
+    "Generation": 6,
+    "Sprite": "https://imgur.com/d9sYWoK.png",
+    "Team": [
+      122,
+      303,
+      700
+    ],
+    "BadgeId": 46,
+    "Reward": 300
+  },
+  {
+    "Name": "Olympia",
+    "Generation": 6,
+    "Sprite": "https://imgur.com/cyMoq3w.png",
+    "Team": [
+      199,
+      561,
+      678
+    ],
+    "BadgeId": 47,
+    "Reward": 300
+  },
+  {
+    "Name": "Wulfric",
+    "Generation": 6,
+    "Sprite": "https://imgur.com/4xqHKUB.png",
+    "Team": [
+      460,
+      615,
+      713
+    ],
+    "BadgeId": 48,
+    "Reward": 300
+  },
+  {
+    "Name": "Milo",
+    "Generation": 8,
+    "Sprite": "https://imgur.com/lug0mpC.png",
+    "Team": [
+      829,
+      830
+    ],
+    "BadgeId": 49,
+    "Reward": 200
+  },
+  {
+    "Name": "Nessa",
+    "Generation": 8,
+    "Sprite": "https://imgur.com/XeZpSAn.png",
+    "Team": [
+      118,
+      834,
+      846
+    ],
+    "BadgeId": 50,
+    "Reward": 300
+  },
+  {
+    "Name": "Kabu",
+    "Generation": 8,
+    "Sprite": "https://imgur.com/KHSsY5U.png",
+    "Team": [
+      38,
+      59,
+      851
+    ],
+    "BadgeId": 51,
+    "Reward": 300
+  },
+  {
+    "Name": "Bea",
+    "Generation": 8,
+    "Sprite": "https://imgur.com/eFNLrq9.png",
+    "Team": [
+      68,
+      237,
+      675,
+      865
+    ],
+    "BadgeId": 52,
+    "Reward": 400
+  },
+  {
+    "Name": "Allister",
+    "Generation": 8,
+    "Sprite": "https://imgur.com/Hfc33hn.png",
+    "Team": [
+      94,
+      562,
+      778,
+      864
+    ],
+    "BadgeId": 53,
+    "Reward": 400
+  },
+  {
+    "Name": "Opal",
+    "Generation": 8,
+    "Sprite": "https://imgur.com/TV0yquq.png",
+    "Team": [
+      303,
+      468,
+      869,
+      1167
+    ],
+    "BadgeId": 54,
+    "Reward": 400
+  },
+  {
+    "Name": "Gordie",
+    "Generation": 8,
+    "Sprite": "https://imgur.com/o2ARMHG.png",
+    "Team": [
+      213,
+      689,
+      839,
+      874
+    ],
+    "BadgeId": 55,
+    "Reward": 400
+  },
+  {
+    "Name": "Melony",
+    "Generation": 8,
+    "Sprite": "https://imgur.com/6iOUt3i.png",
+    "Team": [
+      131,
+      873,
+      875,
+      1177
+    ],
+    "BadgeId": 56,
+    "Reward": 400
+  },
+  {
+    "Name": "Marnie",
+    "Generation": 8,
+    "Sprite": "https://imgur.com/SVUtJiS.png",
+    "Team": [
+      454,
+      510,
+      560,
+      861,
+      877
+    ],
+    "BadgeId": 57,
+    "Reward": 500
+  },
+  {
+    "Name": "Raihan",
+    "Generation": 8,
+    "Sprite": "https://imgur.com/x0B60kt.png",
+    "Team": [
+      330,
+      526,
+      844,
+      884
+    ],
+    "BadgeId": 58,
+    "Reward": 400
+  },
+  {
+    "Name": "Katy",
+    "Generation": 9,
+    "Sprite": "https://imgur.com/BrUUmLq.png",
+    "Team": [
+      216,
+      915,
+      917
+    ],
+    "BadgeId": 59,
+    "Reward": 300
+  },
+  {
+    "Name": "Brassius",
+    "Generation": 9,
+    "Sprite": "https://imgur.com/qdzITwv.png",
+    "Team": [
+      185,
+      548,
+      926
+    ],
+    "BadgeId": 60,
+    "Reward": 300
+  },
+  {
+    "Name": "Iono",
+    "Generation": 9,
+    "Sprite": "https://imgur.com/6IkKQgZ.png",
+    "Team": [
+      404,
+      429,
+      937,
+      938
+    ],
+    "BadgeId": 61,
+    "Reward": 400
+  },
+  {
+    "Name": "Kofu",
+    "Generation": 9,
+    "Sprite": "https://imgur.com/xTqUlgM.png",
+    "Team": [
+      740,
+      959,
+      974
+    ],
+    "BadgeId": 62,
+    "Reward": 300
+  },
+  {
+    "Name": "Larry",
+    "Generation": 9,
+    "Sprite": "https://imgur.com/fG70ipA.png",
+    "Team": [
+      398,
+      775,
+      980
+    ],
+    "BadgeId": 63,
+    "Reward": 300
+  },
+  {
+    "Name": "Ryme",
+    "Generation": 9,
+    "Sprite": "https://imgur.com/d7EGjM0.png",
+    "Team": [
+      354,
+      778,
+      849,
+      970
+    ],
+    "BadgeId": 64,
+    "Reward": 400
+  },
+  {
+    "Name": "Tulip",
+    "Generation": 9,
+    "Sprite": "https://imgur.com/G5z68PN.png",
+    "Team": [
+      282,
+      671,
+      954,
+      979
+    ],
+    "BadgeId": 65,
+    "Reward": 400
+  },
+  {
+    "Name": "Grusha",
+    "Generation": 9,
+    "Sprite": "https://imgur.com/rAhq2ed.png",
+    "Team": [
+      334,
+      614,
+      873,
+      973
+    ],
+    "BadgeId": 66,
+    "Reward": 400
+  }
+]
