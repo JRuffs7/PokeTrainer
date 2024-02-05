@@ -40,8 +40,8 @@
   "Trainer": [
     {
       "name": "starter",
-      "shortstring": "Begin your PokeTrainer journey by selecting a region and Pokemon.",
-      "helpstring": "Proper command usage: **/starter *region* *pokemon***\nParameters:\n**region** - The region in which your starter Pokemon will be from.\n**pokemon** - The starter Pokemon of your choice.\n\nThis command will start the trainers journey, giving them the starter Pokemon of their choosing as well as $500 and 5 Pokeballs. Trainers will begin with 50 Health used for fights, but no Potions. Use **/trainer** and **/inventory** to view your stats and items as well as **/shop** to buy!",
+      "shortstring": "Begin your PokeTrainer journey by selecting a Pokemon.",
+      "helpstring": "Proper command usage: **/starter *pokemon***\nParameters:\n**pokemon** - The starter Pokemon of your choice.\n\nThis command will start the trainers journey, giving them the starter Pokemon of their choosing as well as $500 and 5 Pokeballs. Trainers will begin with 50 Health, but no Potions. Use **/trainer** and **/inventory** to view your stats and items as well as **/shop** to buy!",
       "requiresadmin": false
     },
     {

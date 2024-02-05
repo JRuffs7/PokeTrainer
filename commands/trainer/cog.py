@@ -240,58 +240,48 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
 
   #region STARTER
 
-  async def region_autocomplete(self, inter: Interaction, current: str) -> List[app_commands.Choice[str]]:
-    regions = ['Kanto','Johto','Hoenn','Sinnoh','Unova','Kalos','Alola','Galar','Paldea']
-    choices = []
-    for i in range(len(regions)):
-      if current.lower() in regions[i].lower():
-        choices.append(app_commands.Choice(name=regions[i],value=i+1))
-    return choices
-  
   async def starter_autocomplete(self, inter: Interaction, current: str) -> List[app_commands.Choice[int]]:
     starters = [ 
-      {'Region':1,'Name':'Bulbasaur','Value':1},
-      {'Region':1,'Name':'Charmander','Value':4},
-      {'Region':1,'Name':'Squirtle','Value':7},
-      {'Region':2,'Name':'Chikorita','Value':152},
-      {'Region':2,'Name':'Cyndaquil','Value':155},
-      {'Region':2,'Name':'Totodile','Value':158},
-      {'Region':3,'Name':'Treecko','Value':252},
-      {'Region':3,'Name':'Torchic','Value':255},
-      {'Region':3,'Name':'Mudkip','Value':258},
-      {'Region':4,'Name':'Turtwig','Value':387},
-      {'Region':4,'Name':'Chimchar','Value':390},
-      {'Region':4,'Name':'Piplup','Value':393},
-      {'Region':5,'Name':'Snivy','Value':495},
-      {'Region':5,'Name':'Tepig','Value':498},
-      {'Region':5,'Name':'Oshawott','Value':501},
-      {'Region':6,'Name':'Chespin','Value':650},
-      {'Region':6,'Name':'Fenniken','Value':653},
-      {'Region':6,'Name':'Froakie','Value':656},
-      {'Region':7,'Name':'Rowlet','Value':722},
-      {'Region':7,'Name':'Litten','Value':725},
-      {'Region':7,'Name':'Popplio','Value':728},
-      {'Region':8,'Name':'Grookey','Value':810},
-      {'Region':8,'Name':'Scorbunny','Value':813},
-      {'Region':8,'Name':'Sobble','Value':816},
-      {'Region':9,'Name':'Sprigatito','Value':906},
-      {'Region':9,'Name':'Fuecoco','Value':909},
-      {'Region':9,'Name':'Quaxly','Value':912}
+      {'Name':'Bulbasaur','Value':1},
+      {'Name':'Charmander','Value':4},
+      {'Name':'Squirtle','Value':7},
+      {'Name':'Chikorita','Value':152},
+      {'Name':'Cyndaquil','Value':155},
+      {'Name':'Totodile','Value':158},
+      {'Name':'Treecko','Value':252},
+      {'Name':'Torchic','Value':255},
+      {'Name':'Mudkip','Value':258},
+      {'Name':'Turtwig','Value':387},
+      {'Name':'Chimchar','Value':390},
+      {'Name':'Piplup','Value':393},
+      {'Name':'Snivy','Value':495},
+      {'Name':'Tepig','Value':498},
+      {'Name':'Oshawott','Value':501},
+      {'Name':'Chespin','Value':650},
+      {'Name':'Fenniken','Value':653},
+      {'Name':'Froakie','Value':656},
+      {'Name':'Rowlet','Value':722},
+      {'Name':'Litten','Value':725},
+      {'Name':'Popplio','Value':728},
+      {'Name':'Grookey','Value':810},
+      {'Name':'Scorbunny','Value':813},
+      {'Name':'Sobble','Value':816},
+      {'Name':'Sprigatito','Value':906},
+      {'Name':'Fuecoco','Value':909},
+      {'Name':'Quaxly','Value':912}
     ]
-    region = int(inter.namespace['region'])
     choices = []
-    if not region:
-      choices.append(app_commands.Choice(name='Choose a region',value=0))
-    else:
-      for st in starters:
-        if current.lower() in st['Name'].lower() and st['Region'] == region:
-          choices.append(app_commands.Choice(name=st['Name'],value=st['Value']))
+    for st in starters:
+      if current.lower() in st['Name'].lower():
+        choices.append(app_commands.Choice(name=st['Name'],value=st['Value']))
+      if len(choices) == 25:
+        break
     return choices
 
   @app_commands.command(name="starter",
-                        description="Choose a region and Pokemon to start your trainer!")
-  @app_commands.autocomplete(region=region_autocomplete,pokemon=starter_autocomplete)
-  async def starter(self, inter: Interaction, region: int, pokemon: int):
+                        description="Choose a Pokemon to start your trainer!")
+  @app_commands.autocomplete(pokemon=starter_autocomplete)
+  async def starter(self, inter: Interaction, pokemon: int):
     print("STARTER called")
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
     if trainer:
