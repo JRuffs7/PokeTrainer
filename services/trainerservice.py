@@ -22,7 +22,9 @@ def UpsertTrainer(trainer):
 def DeleteTrainer(trainer):
   return trainerda.DeleteTrainer(trainer)
 
-def StartTrainer(pokemonId, userId, serverId):
+def StartTrainer(pokemonId: int, userId: int, serverId: int):
+  if(GetTrainer(serverId, userId)):
+    return None
   pkmn = pokemonservice.GetPokemonById(pokemonId)
   if not pkmn:
     return None
@@ -254,7 +256,6 @@ def TryCapture(reaction: Reaction, server, trainer: Trainer, spawn):
     #TODO: IMPLEMENT CAPTURE RATE
     ModifyItemList(trainer.PokeballList, pokeballId, -1)
     trainer = AddNewOwnedPokemon(trainer, spawn)
-    trainer.TotalCaught += 1
     UpsertTrainer(trainer)
     return True
 
@@ -280,7 +281,6 @@ def TryWildFight(server, trainer: Trainer, spawnId):
     if healthLost > -10:
       next((p for p in trainer.OwnedPokemon if p.Id == pkmnId)).GainExp(pokemon.Rarity)
       trainer.Money += 50
-      trainer.Fights += 1
     UpsertTrainer(trainer)
 
 #endregion

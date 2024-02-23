@@ -3,19 +3,23 @@ import discord
 from table2ascii import table2ascii as t2a, PresetStyle, Alignment, Merge
 
 from globals import TrainerColor, FemaleSign, ShinySign
-from services import pokemonservice
+from services import pokemonservice, trainerservice
 from services.utility import discordservice
 
 
 class PokedexView(discord.ui.View):
 
-  def __init__(self, interaction: discord.Interaction, pageLength, user, title):
+  def __init__(self, interaction: discord.Interaction, pageLength, user, order, shiny):
     self.interaction = interaction
     self.pageLength = pageLength
     self.user = user
-    self.title = title
+    trainer = trainerservice.GetTrainer(interaction.guild_id, user.id)
+    numUnique = len(set([p.Pokemon.Pokemon_Id for p in trainer.OwnedPokemon]))
+    numPkmn = pokemonservice.GetPokemonCount()
+    self.title = f"{user.display_name}'s Pokedex ({numUnique}/{numPkmn})"
     self.currentPage = 1
     self.addition = 1 if self.pageLength > 1 else 0
+    self.data = trainerservice.GetPokedexList(trainer, order, shiny)
     super().__init__(timeout=300)
 
   def update_buttons(self):
