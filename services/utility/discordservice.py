@@ -1,10 +1,11 @@
 import discord
-from discord import Embed
+from discord import Embed, Interaction
 
 import discordbot
 from globals import (
     ErrorColor,
     FightReaction,
+    GetJson,
     GreatBallReaction,
     PokeballReaction,
     PokemonSpawnColor,
@@ -26,13 +27,13 @@ async def SendErrorMessage(interaction, command):
                                             ephemeral=True)
 
 
-async def SendMessage(interaction, title, desc, color, eph=True):
+async def SendMessage(interaction, title, desc, color, eph=False):
   return await interaction.response.send_message(embed=CreateEmbed(
       title, desc, color),
                                           ephemeral=eph)
 
 
-async def SendEmbed(interaction, embed, eph=True):
+async def SendEmbed(interaction, embed, eph=False):
   return await interaction.response.send_message(embed=embed, ephemeral=eph)
 
 
@@ -116,6 +117,12 @@ async def SendServerError(interaction):
       "This server has not been registered with PokeTrainer! To do so, have an administrator run the **/start *percent*** command. Please use **/help** for more explanation on how PokeTrainer is used.",
       ErrorColor),
                                           ephemeral=True)
+
+
+async def SendCommandResponse(interaction: Interaction, filename: str, command: str, responseInd: int, color, params: list=[], eph: bool=False):
+  response = GetJson(filename)[command][responseInd]
+  return await interaction.response.send_message(embed=CreateEmbed(
+      response["Title"], response["Body"].format(*params), color), ephemeral=eph)
 
 
 def CreateEmbed(title, desc, color):

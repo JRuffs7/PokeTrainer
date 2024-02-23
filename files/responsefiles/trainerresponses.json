@@ -1,0 +1,40 @@
+{
+	"badges": [
+		{
+			"Title": "No Badges",
+			"Body": "{0} does not own any gym badges. Fight gym leaders using **/gym** to obtain badges."
+		}
+	],
+	"modifyteam": [
+		{
+			"Title": "Invalid Pokemon",
+			"Body": "You do not own any Pokemon with the name {0}"
+		}
+	],
+	"release": [
+		{
+			"Title": "Invalid Pokemon",
+			"Body": "You do not own any Pokemon with the name {0}"
+		}
+	],
+	"starter": [
+		{
+			"Title": "Unable to Create Trainer",
+			"Body": "Maybe you're already adventuring? Maybe there weren't any of the Pokemon you chose? Nah, must have been something else..."
+		}
+	],
+	"usepotion": [
+		{
+			"Title": "No Healing",
+			"Body": "You do not own an {0}s. Please visit the **/shop** to stock up."
+		},
+		{
+			"Title": "Health Restored",
+			"Body": "{0} used to restore {1} trainer health."
+		},
+		{
+			"Title": "Health Full",
+			"Body": "{0} not used because health is already full."
+		}
+	]
+}

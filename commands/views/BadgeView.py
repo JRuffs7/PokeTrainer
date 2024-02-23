@@ -51,12 +51,9 @@ class BadgeView(discord.ui.View):
 		return self.data[from_item:until_item]
 
 	async def send(self):
-		if not self.data:
-			await self.interaction.response.send_message("You do not own any Badges.", ephemeral=True)
-		else:
-			await self.interaction.response.send_message(view=self, ephemeral=True)
-			self.message = await self.interaction.original_response()
-			await self.update_message(self.data[:self.pageLength])
+		await self.interaction.response.send_message(view=self)
+		self.message = await self.interaction.original_response()
+		await self.update_message(self.data[:self.pageLength])
 
 	async def update_message(self, data):
 		self.update_buttons()
