@@ -6,9 +6,8 @@ from commands.views.TeamSelectorView import TeamSelectorView
 from commands.views.ReleasePokemonView import ReleasePokemonView
 from commands.views.BadgeView import BadgeView
 
-from globals import ErrorColor, TrainerColor
 from middleware.permissionchecks import trainer_check
-from services import trainerservice, pokemonservice, itemservice
+from services import trainerservice, itemservice
 from services.utility import discordservice, discordservice_trainer
 
 
