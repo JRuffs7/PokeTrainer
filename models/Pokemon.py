@@ -78,6 +78,8 @@ class SpawnPokemon:
   Weight: float
   IsShiny: bool
   IsFemale: bool
+  Level: int
+  CurrentExp: int
 
   def __init__(self, dict: Dict | None):
     self.Id = dict.get('Id') or uuid.uuid4().hex if dict else uuid.uuid4().hex
@@ -86,6 +88,8 @@ class SpawnPokemon:
     self.Weight = dict.get('Weight') or 0.0 if dict else 0.0
     self.IsShiny = dict.get('IsShiny') or False if dict else False
     self.IsFemale = dict.get('IsFemale') or False if dict else False
+    self.Level = dict.get('Pokemon_Id') or 0 if dict else 0
+    self.CurrentExp = dict.get('Pokemon_Id') or 0 if dict else 0
 
   def GetNameEmojis(self):
     return f"{f' {FemaleSign} ' if self.IsFemale == True else f' {MaleSign} ' if self.IsFemale == False else ' '}{f'{ShinySign} ' if self.IsShiny else ' '}"
