@@ -5,6 +5,7 @@ from commands.views.PokedexView import PokedexView
 from commands.views.TeamSelectorView import TeamSelectorView
 from commands.views.ReleasePokemonView import ReleasePokemonView
 from commands.views.BadgeView import BadgeView
+from middleware.errormiddleware import exception_log
 
 from middleware.permissionchecks import trainer_check
 from services import trainerservice, itemservice
@@ -21,6 +22,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
   @app_commands.command(name="trainer",
                         description="Displays trainer info.")
   @trainer_check()
+  @exception_log
   async def trainer(self,
                         interaction: Interaction,
                         member: Member | None = None):

@@ -4,12 +4,22 @@ from typing import List
 
 from services import typeservice
 from dataaccess import pokemonda
-from globals import ShinyOdds, StarterDexIds, to_dict
-from models.Pokemon import Pokemon, SpawnPokemon, PokedexEntry
+from globals import FemaleSign, MaleSign, ShinyOdds, ShinySign, StarterDexIds
+from models.Pokemon import PokemonData, Pokemon
+
+def TestMethod(id: int):
+  return pokemonda.TestMethod(id)
 
 
 def GetAllPokemon():
   return pokemonda.GetAllPokemon()
+
+
+def GetPokemonById(id: int):
+  results = pokemonda.GetPokemonByProperty([id], 'Id')
+  if results:
+    return results.pop()
+  return None
 
 
 def GetPokemonCount():
@@ -20,9 +30,35 @@ def GetPokemonColors():
   return pokemonda.GetUniquePokemonProperty('Color')
 
 
-def GetPokemonTypes():
-  types = pokemonda.GetUniquePokemonProperty('Type')
+def GetPokemonDisplayName(pokemon: Pokemon):
+  pkmn = GetPokemonById(pokemon.Pokemon_Id)
+  return f"{pkmn.Name}{GetNameEmojis(pokemon)}"
 
+
+def GetOwnedPokemonDescription(pokemon: Pokemon):
+  pkmn = GetPokemonById(pokemon.Pokemon_Id)
+  return f"Lvl. {pokemon.Level}({pokemon.CurrentExp}/{(50 * pkmn.Rarity) if pkmn.Rarity <= 3 else 250}) | H:{pokemon.Height} | W:{pokemon.Weight} | Types: {'/'.join(pkmn.Types)}"
+
+
+def GetNameEmojis(pokemon: Pokemon):
+    return f"{f' {FemaleSign} ' if pokemon.IsFemale == True else f' {MaleSign} ' if pokemon.IsFemale == False else ' '}{f'{ShinySign} ' if pokemon.IsShiny else ' '}"
+
+
+def GetPokemonImage(pokemon: PokemonData, isShiny: bool, isFemale: bool):
+  if isShiny and isFemale:
+      return pokemon.ShinySpriteFemale or pokemon.ShinySprite
+  elif isShiny and not isFemale:
+    return pokemon.ShinySprite
+  elif not isShiny and isFemale:
+    return pokemon.SpriteFemale or pokemon.Sprite
+  return pokemon.Sprite
+
+
+def AddExperience(trainerPokemon: Pokemon, trainerRarity: int, exp: int):
+  trainerPokemon.CurrentExp += exp
+  if trainerPokemon.CurrentExp >= ((50 * trainerRarity) if trainerRarity <= 3 else 250):
+    trainerPokemon.Level += 1
+    trainerPokemon.CurrentExp -= ((50 * trainerRarity) if trainerRarity <= 3 else 250)
 
 def GetRandomSpawnPokemon():
   count = 0
@@ -48,7 +84,7 @@ def GetRandomSpawnPokemon():
   return GenerateSpawnPokemon(pokemon)
 
 
-def GenerateSpawnPokemon(pokemon: Pokemon):
+def GenerateSpawnPokemon(pokemon: PokemonData):
   shiny = random.randint(0, ShinyOdds) == int(ShinyOdds / 2)
   height = round(
       random.uniform(math.floor(
@@ -58,7 +94,7 @@ def GenerateSpawnPokemon(pokemon: Pokemon):
           (pokemon.Weight * 0.9)), math.ceil((pokemon.Weight * 1.1))) / 10, 2)
   female = random.randint(0, 100) < int(pokemon.FemaleChance / 8 *
                                         100) if pokemon.FemaleChance else None
-  return SpawnPokemon({
+  return Pokemon({
       'Pokemon_Id': pokemon.Id,
       'Height': height if height > 0.00 else 0.01,
       'Weight': weight if weight > 0.00 else 0.01,
@@ -69,11 +105,6 @@ def GenerateSpawnPokemon(pokemon: Pokemon):
   })
 
 
-def GetPokemonById(id: int):
-  results = pokemonda.GetPokemonByProperty([id], 'Id')
-  if results:
-    return results.pop()
-  return None
 
 
 def GetPokemonByRarity(rarity: int):
@@ -93,117 +124,101 @@ def GetPokemonByType(type: str):
   firstType.sort(key=lambda x: x.Name)
   secondType.sort(key=lambda x: x.Name)
 
-  return [PokedexEntry({ 'Name': f"{p.Name} ({','.join(p.Types)})"}) for p in singleType]+[PokedexEntry({ 'Name': f"{p.Name} ({','.join(p.Types)})"}) for p in firstType]+[PokedexEntry({ 'Name': f"{p.Name} ({','.join(p.Types)})"}) for p in secondType]
+  return singleType+firstType+secondType
 
 
-def ConvertSpawnPokemonToPokedexEntry(pokemon: SpawnPokemon):
-  pkmn = GetPokemonById(pokemon.Pokemon_Id)
-  return PokedexEntry({
-      'Id': pokemon.Id,
-      'Name': pkmn.Name,
-      'PokedexId': pkmn.PokedexId,
-      'Types': pkmn.Types,
-      'Sprite': pkmn.GetImage(pokemon.IsShiny, pokemon.IsFemale),
-      'Rarity': pkmn.Rarity,
-      'Level': 1 if pkmn.Rarity <= 2 else 20 if pkmn.Rarity == 3 else 30 if pkmn.Rarity == 4 else 35,
-      'CurrentExp': 0,
-      'Pokemon': pokemon.__dict__
-    })
-
-
-def ConvertSpawnPokemonToPokemon(pokeList: List[SpawnPokemon]):
+def ConvertSpawnPokemonToPokemon(pokeList: List[Pokemon]):
   return pokemonda.GetPokemonByIds([x.Pokemon_Id for x in pokeList])
 
 
-def CanTrainerPokemonEvolve(pkmn: PokedexEntry):
-  poke = GetPokemonById(pkmn.Pokemon.Pokemon_Id)
-  if pkmn.Rarity == 1 and len(poke.EvolvesInto) >= 1:
+def CanTrainerPokemonEvolve(pkmn: Pokemon):
+  poke = GetPokemonById(pkmn.Pokemon_Id)
+  if poke.Rarity == 1 and len(poke.EvolvesInto) >= 1:
     return pkmn.Level >= 20
-  elif pkmn.Rarity == 2 and len(poke.EvolvesInto) >= 1:
+  elif poke.Rarity == 2 and len(poke.EvolvesInto) >= 1:
     return pkmn.Level >= 30
-  elif pkmn.Rarity == 3 and len(poke.EvolvesInto) >= 1:
+  elif poke.Rarity == 3 and len(poke.EvolvesInto) >= 1:
     return pkmn.Level >= 35
   return False
 
 
 def SplitPokemonForSearch(pokemonId):
-  pkmn = GetPokemonById(pokemonId)
-  if not pkmn:
-    return None
+  # pkmn = GetPokemonById(pokemonId)
+  # if not pkmn:
+  #   return None
   pkmnList = []
-  pkmnList.append(PokedexEntry({
-      'Name': pkmn.Name,
-      'Types': pkmn.Types,
-      'Sprite': pkmn.GetImage(False, pkmn.FemaleChance == 8),
-      'Rarity': pkmn.Rarity,
-      'Pokemon': to_dict(SpawnPokemon({
-        'Height': pkmn.Height,
-        'Weight': pkmn.Weight,
-        'IsShiny': False,
-        'IsFemale': pkmn.FemaleChance == 8,
-      }))
-  }))
-  if pkmn.ShinySprite:
-    pkmnList.append(PokedexEntry({
-        'Name': pkmn.Name,
-        'Types': pkmn.Types,
-        'Sprite': pkmn.GetImage(True, pkmn.FemaleChance == 8),
-        'Rarity': pkmn.Rarity,
-        'Pokemon': to_dict(SpawnPokemon({
-          'Height': pkmn.Height,
-          'Weight': pkmn.Weight,
-          'IsShiny': True,
-          'IsFemale': pkmn.FemaleChance == 8,
-        }))
-    }))
-  if pkmn.SpriteFemale and pkmn.FemaleChance != 0:
-    pkmnList.append(PokedexEntry({
-        'Name': pkmn.Name,
-        'Types': pkmn.Types,
-        'Sprite': pkmn.GetImage(False, True),
-        'Rarity': pkmn.Rarity,
-        'Pokemon': to_dict(SpawnPokemon({
-          'Height': pkmn.Height,
-          'Weight': pkmn.Weight,
-          'IsShiny': False,
-          'IsFemale': True,
-        }))
-    }))
-  if pkmn.ShinySpriteFemale and pkmn.FemaleChance != 0:
-    pkmnList.append(PokedexEntry({
-        'Name': pkmn.Name,
-        'Types': pkmn.Types,
-        'Sprite': pkmn.GetImage(True, True),
-        'Rarity': pkmn.Rarity,
-        'Pokemon': to_dict(SpawnPokemon({
-          'Height': pkmn.Height,
-          'Weight': pkmn.Weight,
-          'IsShiny': True,
-          'IsFemale': True,
-        }))
-    }))
+  # pkmnList.append(PokedexEntry({
+  #     'Name': pkmn.Name,
+  #     'Types': pkmn.Types,
+  #     'Sprite': pkmn.GetImage(False, pkmn.FemaleChance == 8),
+  #     'Rarity': pkmn.Rarity,
+  #     'Pokemon': to_dict(Pokemon({
+  #       'Height': pkmn.Height,
+  #       'Weight': pkmn.Weight,
+  #       'IsShiny': False,
+  #       'IsFemale': pkmn.FemaleChance == 8,
+  #     }))
+  # }))
+  # if pkmn.ShinySprite:
+  #   pkmnList.append(PokedexEntry({
+  #       'Name': pkmn.Name,
+  #       'Types': pkmn.Types,
+  #       'Sprite': pkmn.GetImage(True, pkmn.FemaleChance == 8),
+  #       'Rarity': pkmn.Rarity,
+  #       'Pokemon': to_dict(Pokemon({
+  #         'Height': pkmn.Height,
+  #         'Weight': pkmn.Weight,
+  #         'IsShiny': True,
+  #         'IsFemale': pkmn.FemaleChance == 8,
+  #       }))
+  #   }))
+  # if pkmn.SpriteFemale and pkmn.FemaleChance != 0:
+  #   pkmnList.append(PokedexEntry({
+  #       'Name': pkmn.Name,
+  #       'Types': pkmn.Types,
+  #       'Sprite': pkmn.GetImage(False, True),
+  #       'Rarity': pkmn.Rarity,
+  #       'Pokemon': to_dict(Pokemon({
+  #         'Height': pkmn.Height,
+  #         'Weight': pkmn.Weight,
+  #         'IsShiny': False,
+  #         'IsFemale': True,
+  #       }))
+  #   }))
+  # if pkmn.ShinySpriteFemale and pkmn.FemaleChance != 0:
+  #   pkmnList.append(PokedexEntry({
+  #       'Name': pkmn.Name,
+  #       'Types': pkmn.Types,
+  #       'Sprite': pkmn.GetImage(True, True),
+  #       'Rarity': pkmn.Rarity,
+  #       'Pokemon': to_dict(Pokemon({
+  #         'Height': pkmn.Height,
+  #         'Weight': pkmn.Weight,
+  #         'IsShiny': True,
+  #         'IsFemale': True,
+  #       }))
+  #   }))
   return pkmnList
 
 
-def EvolvePokemon(initial: PokedexEntry, evolveId):
+def EvolvePokemon(initial: Pokemon, evolveId):
   pkmn = GetPokemonById(evolveId)
   spawn = GenerateSpawnPokemon(pkmn)
   spawn.IsFemale = initial.Pokemon.IsFemale
   spawn.IsShiny = initial.Pokemon.IsShiny
-  return PokedexEntry({
+  return Pokemon({
       'Id': initial.Id,
-      'Name': pkmn.Name,
-      'PokedexId': pkmn.PokedexId,
-      'Types': pkmn.Types,
-      'Sprite': pkmn.GetImage(spawn.IsShiny, spawn.IsFemale),
-      'Rarity': pkmn.Rarity,
+      'Pokemon_Id': pkmn.Id,
+      'Height': spawn.Height,
+      'Weight': spawn.Weight,
+      'IsShiny': initial.IsShiny,
+      'IsFemale': initial.IsFemale,
       'Level': initial.Level,
-      'CurrentExp': initial.CurrentExp,
-      'Pokemon': spawn.__dict__
+      'CurrentExp': initial.CurrentExp
     })
 
 
-def PokemonFight(attack: Pokemon, defend: Pokemon, gymBattle: bool = False):
+def PokemonFight(attack: PokemonData, defend: PokemonData, gymBattle: bool = False):
   try:
     fightTotal = typeservice.TypeWeakness(attack.Types[0].lower(), defend.Types[0].lower())
     fightTotal += typeservice.TypeWeakness(

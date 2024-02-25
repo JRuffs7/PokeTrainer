@@ -9,12 +9,12 @@ from globals import (
     PokeballReaction,
 )
 from models.Trainer import Trainer
-from models.Pokemon import SpawnPokemon, PokedexEntry
+from models.Pokemon import Pokemon
 from services import itemservice, pokemonservice, serverservice, gymservice
 
 
 def GetTrainer(serverId, userId):
-  return trainerda.GetTrainer(userId, serverId)
+  return trainerda.GetTrainer(serverId, userId)
 
 def UpsertTrainer(trainer):
   return trainerda.UpsertTrainer(trainer)
@@ -36,7 +36,7 @@ def StartTrainer(pokemonId: int, userId: int, serverId: int):
       'Money': 500,
       'PokeballList': [1,1,1,1,1]
   })
-  trainer = AddNewOwnedPokemon(trainer, pokemonservice.GenerateSpawnPokemon(pkmn))
+  trainer.OwnedPokemon.append(pokemonservice.GenerateSpawnPokemon(pkmn))
   trainer.OwnedPokemon[0].Level = 5
   trainer.Team[0] = trainer.OwnedPokemon[0].Id
   UpsertTrainer(trainer)
@@ -136,39 +136,35 @@ def ModifyItemList(listProperty: List, itemId, amount):
 
 #region Pokedex
 
-def AddNewOwnedPokemon(trainer: Trainer, pokemon: SpawnPokemon):
-  trainer.OwnedPokemon.append(pokemonservice.ConvertSpawnPokemonToPokedexEntry(pokemon))
-  return trainer
-
-def GetPokedexList(trainer: Trainer, orderString, shiny):
+def GetPokedexList(trainer: Trainer, orderString: str, shiny: bool):
   pokemonList = trainer.OwnedPokemon
   if shiny == 2:
-    pokemonList = [p for p in pokemonList if p.Pokemon.IsShiny]
+    pokemonList = [p for p in pokemonList if p.IsShiny]
 
   match orderString:
     case "height":
       if shiny == 3:
-        pokemonList.sort(key=lambda x: (-x.Pokemon.IsShiny,x.Pokemon.Height))
+        pokemonList.sort(key=lambda x: (-x.IsShiny,x.Height))
       else:
-        pokemonList.sort(key=lambda x: x.Pokemon.Height)
+        pokemonList.sort(key=lambda x: x.Height)
     case "dex":
       if shiny == 3:
-        pokemonList.sort(key=lambda x: (-x.Pokemon.IsShiny,x.PokedexId))
+        pokemonList.sort(key=lambda x: (-x.IsShiny,pokemonservice.GetPokemonById(x.Pokemon_Id).PokedexId))
       else:
-        pokemonList.sort(key=lambda x: x.PokedexId)
+        pokemonList.sort(key=lambda x: pokemonservice.GetPokemonById(x.Pokemon_Id).PokedexId)
     case "name":
       if shiny == 3:
-        pokemonList.sort(key=lambda x: (-x.Pokemon.IsShiny,x.Name))
+        pokemonList.sort(key=lambda x: (-x.IsShiny,pokemonservice.GetPokemonById(x.Pokemon_Id).Name))
       else:
-        pokemonList.sort(key=lambda x: x.Name)
+        pokemonList.sort(key=lambda x: pokemonservice.GetPokemonById(x.Pokemon_Id).Name)
     case "weight":
       if shiny == 3:
-        pokemonList.sort(key=lambda x: (-x.Pokemon.IsShiny,x.Pokemon.Weight))
+        pokemonList.sort(key=lambda x: (-x.IsShiny,x.Weight))
       else:
-        pokemonList.sort(key=lambda x: x.Pokemon.Weight)
+        pokemonList.sort(key=lambda x: x.Weight)
     case _:
       if shiny == 3:
-        pokemonList.sort(key=lambda x: -x.Pokemon.IsShiny)
+        pokemonList.sort(key=lambda x: -x.IsShiny)
   return pokemonList
 
 #endregion
@@ -176,28 +172,28 @@ def GetPokedexList(trainer: Trainer, orderString, shiny):
 #region Team
 
 def GetTeam(trainer: Trainer):
-  teamList: List[PokedexEntry | None] = []
+  teamList: List[Pokemon | None] = []
   for pokeId in trainer.Team:
     if pokeId:
       teamList.append(next((p for p in trainer.OwnedPokemon if p.Id == pokeId), None))
   return teamList
 
-def SetTeamSlot(trainer: Trainer, slotNum, pokemonId):
+def SetTeamSlot(trainer: Trainer, slotNum: int, pokemonId: str):
   trainer.Team[slotNum] = pokemonId
   UpsertTrainer(trainer)
 
-def Evolve(trainer: Trainer, initialPkmn, evolveId):
+def Evolve(trainer: Trainer, initialPkmn: Pokemon, evolveId: int):
   newPkmn = pokemonservice.EvolvePokemon(initialPkmn, evolveId)
   index = trainer.OwnedPokemon.index(initialPkmn)
   trainer.OwnedPokemon[index] = newPkmn
   UpsertTrainer(trainer)
   return newPkmn
 
-def ReleasePokemon(trainer: Trainer, pokemonIds):
-  released = next((p for p in trainer.OwnedPokemon if p.Id in pokemonIds), None)
+def ReleasePokemon(trainer: Trainer, pokemonIds: list[str]):
+  released = next(p for p in trainer.OwnedPokemon if p.Id in pokemonIds)
   trainer.OwnedPokemon = [p for p in trainer.OwnedPokemon if p.Id not in pokemonIds]
   UpsertTrainer(trainer)
-  return released.Name
+  return pokemonservice.GetPokemonById(released.Pokemon_Id).Name
 
 #endregion
 
@@ -246,7 +242,7 @@ async def ReationReceived(bot, user, reaction):
   await reaction.remove(user)
   return False
 
-def TryCapture(reaction: Reaction, server, trainer: Trainer, spawn):
+def TryCapture(reaction: Reaction, server, trainer: Trainer, spawn: Pokemon):
   #Update Server to prevent duplicate
   server.CaughtBy = trainer.UserId
   serverservice.UpsertServer(server)
@@ -255,7 +251,7 @@ def TryCapture(reaction: Reaction, server, trainer: Trainer, spawn):
   if pokeballId in trainer.PokeballList:
     #TODO: IMPLEMENT CAPTURE RATE
     ModifyItemList(trainer.PokeballList, pokeballId, -1)
-    trainer = AddNewOwnedPokemon(trainer, spawn)
+    trainer.OwnedPokemon.append(spawn)
     UpsertTrainer(trainer)
     return True
 
@@ -264,14 +260,15 @@ def TryCapture(reaction: Reaction, server, trainer: Trainer, spawn):
   serverservice.UpsertServer(server)
   return False
 
-def TryWildFight(server, trainer: Trainer, spawnId):
-    pokemon = pokemonservice.GetPokemonById(spawnId)
-    if not pokemon:
+def TryWildFight(server, trainer: Trainer, spawnPokemon_Id: int):
+    spawnPokemon = pokemonservice.GetPokemonById(spawnPokemon_Id)
+    trainerPokemon = next(p for p in trainer.OwnedPokemon if p.Id == pkmnId)
+    if not spawnPokemon:
       return
 
     pkmnId = next((p for p in trainer.Team if p))
-    battlePkmn = pokemonservice.GetPokemonById(next((p for p in trainer.OwnedPokemon if p.Id == pkmnId)).Pokemon.Pokemon_Id)
-    battleResult = pokemonservice.PokemonFight(battlePkmn, pokemon)
+    battlePkmn = pokemonservice.GetPokemonById(trainerPokemon.Pokemon_Id)
+    battleResult = pokemonservice.PokemonFight(battlePkmn, spawnPokemon)
     healthLost = battleResult - 6
 
     server.FoughtBy.append(trainer.UserId)
@@ -279,7 +276,7 @@ def TryWildFight(server, trainer: Trainer, spawnId):
     trainer.Health += healthLost
     trainer.Health = 0 if trainer.Health < 0 else trainer.Health
     if healthLost > -10:
-      next((p for p in trainer.OwnedPokemon if p.Id == pkmnId)).GainExp(pokemon.Rarity)
+      pokemonservice.AddExperience(trainerPokemon, battlePkmn.Rarity, spawnPokemon.Rarity)
       trainer.Money += 50
     UpsertTrainer(trainer)
 

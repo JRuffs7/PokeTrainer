@@ -1,8 +1,9 @@
 from discord import Member
 from discord.ext import commands
+from middleware.errormiddleware import exception_log
 
 from middleware.permissionchecks import is_bot_admin
-from services import serverservice, trainerservice
+from services import pokemonservice, serverservice, trainerservice
 from services.utility import discordservice
 
 class AdminCommands(commands.Cog, name="AdminCommands"):
@@ -30,12 +31,14 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 
 	@commands.command(name="deleteuser")
 	@is_bot_admin()
+	@exception_log
 	async def deleteuser(self, ctx: commands.Context, user: Member):
 		if not user or not ctx.guild:
 			return
 		trainer = trainerservice.GetTrainer(ctx.guild.id, user.id)
 		if trainer:
 			trainerservice.DeleteTrainer(trainer)
+		
 
 	@commands.command(name="addhealth")
 	@is_bot_admin()
@@ -90,7 +93,26 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 		if trainer and badge not in trainer.Badges:
 			trainer.Badges.append(badge)
 			trainerservice.UpsertTrainer(trainer)
+	
+	@commands.command(name="addpokemon")
+	@is_bot_admin()
+	async def addpokemon(self, ctx: commands.Context, user: Member, pokemonId: int):
+		if not user or not ctx.guild:
+			return
+		trainer = trainerservice.GetTrainer(ctx.guild.id, ctx.author.id)
+		pokemon = pokemonservice.GetPokemonById(pokemonId)
+		if trainer and pokemon:
+			trainer.OwnedPokemon.append(pokemonservice.GenerateSpawnPokemon(pokemon))
+			trainerservice.UpsertTrainer(trainer)
 
+	@commands.command(name="testpokemon")
+	@is_bot_admin()
+	async def testpokemon(self, ctx: commands.Context, pokemonId: int):
+		if not ctx.guild:
+			return
+		pokemon = pokemonservice.GetPokemonById(pokemonId)
+		if pokemon:
+			print(f"{pokemon.Name}: {pokemon.PokedexId}")
 
 
 

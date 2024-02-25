@@ -5,7 +5,6 @@ import discordbot
 
 from commands.views.PokedexView import PokedexView
 from commands.views.EvolveView import EvolveView
-from globals import PokemonColor
 from services import pokemonservice, typeservice, trainerservice
 from services.utility import discordservice
 
@@ -109,7 +108,7 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
       pokeList = [p for p in trainer.OwnedPokemon if pokemonservice.CanTrainerPokemonEvolve(p)]
       for pkmn in pokeList:
         if current.lower() in pkmn.Name.lower():
-          data.append(app_commands.Choice(name=pkmn.Name, value=pkmn.Name.lower()))
+          data.append(app_commands.Choice(name=pkmn.Name, value=pkmn.Id))
         if len(data) == 25:
           break
     return data
@@ -117,7 +116,7 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
   @app_commands.command(name="evolve",
                         description="Evolve your Pokemon.")
   @app_commands.autocomplete(pokemon=autofill_evolution)
-  async def evolve(self, inter: Interaction, pokemon: str | None):
+  async def evolve(self, inter: Interaction, pokemon: str):
     print("EVOLVE called")
     try:
       trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)

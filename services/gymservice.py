@@ -1,6 +1,6 @@
 from dataaccess import gymda
 from services import pokemonservice
-from models.Pokemon import Pokemon, PokedexEntry
+from models.Pokemon import PokemonData, Pokemon
 from models.Gym import GymLeader
 
 #region Gym Leaders
@@ -22,12 +22,12 @@ def GetGymLeaderTeam(leader: GymLeader):
 	return [p for p in [pokemonservice.GetPokemonById(id) for id in leader.Team] if p]
 
 
-def GymLeaderFight(trainerTeam: list[PokedexEntry], leaderTeam: list[Pokemon]):
+def GymLeaderFight(trainerTeam: list[Pokemon], leaderTeam: list[PokemonData]):
 	fightResults: list[int] = []
 	expList: dict[str, int] = {}
 	trainerInd = leaderInd = 0
 	while (trainerInd < len(trainerTeam)) and (leaderInd < len(leaderTeam)):
-		trainerFighter = pokemonservice.GetPokemonById(trainerTeam[trainerInd].Pokemon.Pokemon_Id)
+		trainerFighter = pokemonservice.GetPokemonById(trainerTeam[trainerInd].Pokemon_Id)
 		if not trainerFighter:
 			fightResults.append(-1)
 			break

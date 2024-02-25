@@ -3,13 +3,13 @@ import discord
 from typing import List
 
 from services import trainerservice
-from models.Pokemon import PokedexEntry
+from models.Pokemon import Pokemon
 from commands.views.selectors.OwnedSelector import OwnedSelector
 
 
 class ReleasePokemonView(discord.ui.View):
   
-	def __init__(self, interaction: discord.Interaction, pokeList: List[PokedexEntry]):
+	def __init__(self, interaction: discord.Interaction, pokeList: List[Pokemon]):
 		self.interaction = interaction
 		self.pokeList = pokeList
 		super().__init__(timeout=300)

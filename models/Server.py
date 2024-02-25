@@ -1,6 +1,6 @@
 from typing import Dict, List
 
-from models.Pokemon import SpawnPokemon
+from models.Pokemon import Pokemon
 
 
 class Server:
@@ -8,7 +8,7 @@ class Server:
   ChannelIds: List[int]
   ServerName: str
   SpawnChance: int
-  LastSpawned: SpawnPokemon | None
+  LastSpawned: Pokemon | None
   LastSpawnMessage: int
   LastSpawnChannel: int
   DeletePrevious: int
@@ -23,8 +23,8 @@ class Server:
     self.ServerName = dict.get('ServerName') or '' if dict else ''
     self.SpawnChance = dict.get('SpawnChance') or 0 if dict else 0
     spawned = dict.get('LastSpawned') if dict else None
-    self.LastSpawned = SpawnPokemon(spawned) or None if isinstance(
-        spawned, Dict) else SpawnPokemon(spawned.value) if spawned else None
+    self.LastSpawned = Pokemon(spawned) or None if isinstance(
+        spawned, Dict) else Pokemon(spawned.value) if spawned else None
     self.LastSpawnMessage = dict.get('LastSpawnMessage') or 0 if dict else 0
     self.LastSpawnChannel = dict.get('LastSpawnChannel') or 0 if dict else 0
     self.DeletePrevious = dict.get('DeletePrevious') if (dict and dict.get('DeletePrevious') is not None) else 1

@@ -9,11 +9,11 @@ responseFile = "files/responsefiles/trainerresponses.json"
 
 async def PrintTrainer(interaction: Interaction, trainer: Trainer, targetUser: Member):
 	#Stats Section
-	uniquePkmn = len(set([x.PokedexId for x in trainer.OwnedPokemon]))
+	uniquePkmn = len(set([pokemonservice.GetPokemonById(x.Pokemon_Id).PokedexId for x in trainer.OwnedPokemon]))
 	totalPkmn = pokemonservice.GetPokemonCount()
 	totalBadges = len(gymservice.GetAllBadges())
 
-	stats = f"__Trainer Stats__\nHP: {trainer.Health}\nPokedex: {uniquePkmn}/{totalPkmn} ({round((uniquePkmn*100)/totalPkmn)}%)\nPokemon Caught: {len(trainer.OwnedPokemon)}\nShiny Count: {len([x for x in trainer.OwnedPokemon if x.Pokemon.IsShiny])}\nGym Badges: {len(trainer.Badges)}/{totalBadges}"
+	stats = f"__Trainer Stats__\nHP: {trainer.Health}\nPokedex: {uniquePkmn}/{totalPkmn} ({round((uniquePkmn*100)/totalPkmn)}%)\nPokemon Caught: {len(trainer.OwnedPokemon)}\nShiny Count: {len([x for x in trainer.OwnedPokemon if x.IsShiny])}\nGym Badges: {len(trainer.Badges)}/{totalBadges}"
 
 	#Inventory Section
 	items = trainerservice.GetInventory(trainer)
@@ -56,9 +56,9 @@ async def PrintStarter(interaction: Interaction, trainer: Trainer):
 	if trainer:
 		embed = discordservice.CreateEmbed(
 				f"{interaction.user.display_name}'s Journey Begins!",
-				f"Starter: {trainer.OwnedPokemon[0].GetNameString()}\nStarting Money: ${trainer.Money}\nStarting Pokeballs: 5",
+				f"Starter: {pokemonservice.GetOwnedPokemonDisplayName(trainer.OwnedPokemon[0])}\nStarting Money: ${trainer.Money}\nStarting Pokeballs: 5",
 				TrainerColor)
-		embed.set_image(url=trainer.OwnedPokemon[0].Sprite)
+		embed.set_image(url=pokemonservice.GetPokemonById(trainer.OwnedPokemon[0].Pokemon_Id).Sprite)
 		return await discordservice.SendEmbed(interaction, embed)
 	return await discordservice.SendCommandResponse(
 		interaction=interaction, 

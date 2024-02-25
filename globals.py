@@ -49,3 +49,4 @@ def region_name(id):
 def GetJson(file: str):
   with open(file, encoding="utf8") as f:
     return json.load(f)
+  

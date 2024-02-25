@@ -1,9 +1,7 @@
 import discord
 
-from typing import List
-
 from services import trainerservice, pokemonservice
-from models.Pokemon import PokedexEntry, Pokemon
+from models.Pokemon import PokemonData, Pokemon
 from models.Trainer import Trainer
 from commands.views.selectors.OwnedSelector import OwnedSelector
 from commands.views.selectors.EvolveSelector import EvolveSelector
@@ -11,14 +9,14 @@ from commands.views.selectors.EvolveSelector import EvolveSelector
 
 class EvolveView(discord.ui.View):
   
-	def __init__(self, interaction: discord.Interaction, trainer: Trainer, evolveList: List[PokedexEntry]):
+	def __init__(self, interaction: discord.Interaction, trainer: Trainer, evolveMon: Pokemon):
 		self.interaction = interaction
 		self.trainer = trainer
-		self.evolvelist = evolveList
+		self.evolveMon = evolveMon
 		super().__init__(timeout=300)
-		self.ownlist = OwnedSelector(evolveList, 1)
+		self.ownlist = OwnedSelector([evolveMon], 1)
 		self.add_item(self.ownlist)
-		self.evlist = EvolveSelector([Pokemon({'Id':0,'Name':'N/A'})])
+		self.evlist = EvolveSelector([PokemonData({'Id':0,'Name':'N/A'})])
 		self.add_item(self.evlist)
 
 	async def EvolveSelection(self, inter: discord.Interaction, choice):
@@ -31,7 +29,7 @@ class EvolveView(discord.ui.View):
 			self.evolvechoice = None
 			self.remove_item(self.ownlist)
 			self.remove_item(self.evlist)
-			self.ownlist = OwnedSelector(self.evolvelist, 1, choice[0])
+			self.ownlist = OwnedSelector([self.evolveMon], 1, choice[0])
 			self.evlist = EvolveSelector([pokemonservice.GetPokemonById(p) for p in pokemonservice.GetPokemonById(self.pokemonchoice.Pokemon.Pokemon_Id).EvolvesInto])
 			self.add_item(self.ownlist)
 			self.add_item(self.evlist)

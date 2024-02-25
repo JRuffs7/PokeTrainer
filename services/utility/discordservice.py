@@ -11,7 +11,7 @@ from globals import (
     PokemonSpawnColor,
     UltraBallReaction,
 )
-from models.Pokemon import SpawnPokemon
+from models.Pokemon import Pokemon
 from services import helpservice, pokemonservice
 
 
@@ -75,7 +75,7 @@ async def SendMessageNoInteraction(serverId, channelId, message):
 
 async def SendPokemon(guildid,
                       channelid,
-                      pokemon: SpawnPokemon,
+                      pokemon: Pokemon,
                       test: bool = False):
   pkmn = pokemonservice.GetPokemonById(pokemon.Pokemon_Id)
   if not pkmn:
@@ -83,7 +83,7 @@ async def SendPokemon(guildid,
     return
 
   embed = CreateEmbed(
-      f"{pkmn.Name}{pokemon.GetNameEmojis()}",
+      pokemonservice.GetPokemonDisplayName(pokemon),
       f"Height: {pokemon.Height}\nWeight: {pokemon.Weight}", PokemonSpawnColor)
   embed.set_image(url=pkmn.GetImage(pokemon.IsShiny, pokemon.IsFemale))
   bot = discordbot.GetBot()
