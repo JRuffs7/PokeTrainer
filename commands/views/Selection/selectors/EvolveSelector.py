@@ -1,7 +1,9 @@
 import discord
 
+from models.Pokemon import PokemonData
+
 class EvolveSelector(discord.ui.Select):
-    def __init__(self, data):
+    def __init__(self, data: list[PokemonData]):
         if len(data) > 25:
             data = data[:25]
         options=[discord.SelectOption(

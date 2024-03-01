@@ -5,9 +5,8 @@ from commands.views.PokedexView import PokedexView
 from commands.views.TeamSelectorView import TeamSelectorView
 from commands.views.ReleasePokemonView import ReleasePokemonView
 from commands.views.BadgeView import BadgeView
-from middleware.errormiddleware import exception_log
 
-from middleware.permissionchecks import trainer_check
+from middleware.decorators import trainer_check
 from services import trainerservice, itemservice
 from services.utility import discordservice, discordservice_trainer
 
@@ -21,8 +20,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
 
   @app_commands.command(name="trainer",
                         description="Displays trainer info.")
-  @trainer_check()
-  @exception_log
+  @trainer_check
   async def trainer(self,
                         interaction: Interaction,
                         member: Member | None = None):
@@ -35,7 +33,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
     data = []
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
     if trainer:
-      ptnList = [itemservice.GetPotion(p) for p in trainer.PotionList]
+      ptnList = [itemservice.GetPotion(p) for p in trainer.PotionList.keys() if trainer.PotionList[p] > 0]
       ptnList.sort(key=lambda x: x.Id)
       for ptn in ptnList:
         if current.lower() in ptn.Name.lower() and ptn.Name not in [i.name for i in data]:
@@ -47,7 +45,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
   @app_commands.command(name="usepotion",
                         description="Use a potion to restore trainer health.")
   @app_commands.autocomplete(potion=autofill_usepotion)
-  @trainer_check()
+  @trainer_check
   async def usepotion(self, inter: Interaction, potion: int):
     print("USE POTION called")
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
@@ -77,7 +75,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
   @app_commands.command(name="modifyteam",
                         description="Add or substitute a Pokemon to a team slot.")
   @app_commands.autocomplete(pokemon=pokemon_autocomplete)
-  @trainer_check()
+  @trainer_check
   async def modifyteam(self, inter: Interaction, pokemon: str):
     print('MODIFY TEAM called')
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
@@ -93,7 +91,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
 
   @app_commands.command(name="myteam",
                         description="View your current team.")
-  @trainer_check()
+  @trainer_check
   async def myteam(self, inter: Interaction):
     print("MY TEAM called")
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
@@ -116,7 +114,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
       app_commands.Choice(name="Yes", value=1),
       app_commands.Choice(name="No", value=0)
   ])
-  @trainer_check()
+  @trainer_check
   async def badges(self, inter: Interaction, 
                    region: app_commands.Choice[int] | None, 
                    images: app_commands.Choice[int] | None,
@@ -150,7 +148,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
       app_commands.Choice(name="Shiny Only", value=2),
       app_commands.Choice(name="Shiny First", value=3)
   ])
-  @trainer_check()
+  @trainer_check
   async def pokedex(self, inter: Interaction,
                     images: app_commands.Choice[int] | None,
                     order: app_commands.Choice[str] | None,
@@ -170,7 +168,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
   @app_commands.command(name="release",
                         description="Choose a Pokemon to release.")
   @app_commands.autocomplete(pokemon=pokemon_autocomplete)
-  @trainer_check()
+  @trainer_check
   async def release(self, inter: Interaction,
                     pokemon: str):
     print('RELEASE called')

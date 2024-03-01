@@ -9,15 +9,12 @@ class OwnedSelector(discord.ui.Select):
             data = data[:25]
         if len(data) < max_select:
             max_select = len(data)
-        if len(data) == 1:
-            defaultId = data[0].Id
         options=[discord.SelectOption(
-            label=pokemonservice.GetOwnedPokemonDisplayName(d),
+            label=pokemonservice.GetPokemonDisplayName(d),
             description= pokemonservice.GetOwnedPokemonDescription(d),
             value=f'{d.Id}',
             default=(defaultId and d.Id == defaultId)
-        ) for d in data
-        ]
+        ) for d in data]
         super().__init__(options=options, max_values=max_select, min_values=1, placeholder='Select Pokemon')
     
     async def callback(self, inter: discord.Interaction):

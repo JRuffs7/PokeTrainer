@@ -1,0 +1,12 @@
+{
+	"gymbattle": [
+		{
+			"Title": "No Battles Left",
+			"Body": "Congratulations! You have beaten all the gym leaders! Check out your badges by using **/badges**."
+		},
+		{
+			"Title": "Battle Error",
+			"Body": "There was an error while performing the battle with {0}. Please try again."
+		}
+	]
+}

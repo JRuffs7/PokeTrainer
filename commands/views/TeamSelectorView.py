@@ -4,8 +4,8 @@ from typing import List
 
 from services import trainerservice
 #from models.Pokemon import PokedexEntry
-from commands.views.selectors.OwnedSelector import OwnedSelector
-from commands.views.selectors.TeamSelector import TeamSelector
+from commands.views.Selection.selectors.OwnedSelector import OwnedSelector
+from commands.views.Selection.selectors.TeamSelector import TeamSelector
 
 
 class TeamSelectorView(discord.ui.View):

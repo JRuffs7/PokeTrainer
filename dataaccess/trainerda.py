@@ -5,7 +5,7 @@ from globals import to_dict
 from models.Trainer import Trainer
 
 collection: str = 'Trainer'
-trainerCache = {}
+trainerCache: dict[str, Trainer] = {}
 
 
 def GetTrainer(serverId, userId):

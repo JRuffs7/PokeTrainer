@@ -1,3 +1,4 @@
+import datetime
 from typing import List
 
 from discord import Reaction
@@ -28,13 +29,18 @@ def StartTrainer(pokemonId: int, userId: int, serverId: int):
   pkmn = pokemonservice.GetPokemonById(pokemonId)
   if not pkmn:
     return None
+    
   trainer = Trainer({
       'UserId': userId,
       'ServerId': serverId,
       'Team': [None, None, None, None, None, None],
+      'OwnedPokemon': [],
+      'Badges': [],
       'Health': 50,
       'Money': 500,
-      'PokeballList': [1,1,1,1,1]
+      'PokeballList': { '1': 5, '2': 0, '3': 0, '4': 0 },
+      'PotionList': { '1': 0, '2': 0, '3': 0, '4': 0 },
+      'LastSpawnTime': None
   })
   trainer.OwnedPokemon.append(pokemonservice.GenerateSpawnPokemon(pkmn))
   trainer.OwnedPokemon[0].Level = 5
@@ -46,48 +52,47 @@ def StartTrainer(pokemonId: int, userId: int, serverId: int):
 
 def GetInventory(trainer: Trainer):
   pkblList = {
-      "Pokeball": trainer.PokeballList.count(1),
-      "Greatball": trainer.PokeballList.count(2),
-      "Ultraball": trainer.PokeballList.count(3),
-      "Masterball": trainer.PokeballList.count(4)
+      "Pokeball": trainer.Pokeballs['1'],
+      "Greatball": trainer.Pokeballs['2'],
+      "Ultraball": trainer.Pokeballs['3'],
+      "Masterball": trainer.Pokeballs['4']
   }
   ptnList = {
-      "Potion": trainer.PotionList.count(1),
-      "Super Potion": trainer.PotionList.count(2),
-      "Hyper Potion": trainer.PotionList.count(3),
-      "Max Potion": trainer.PotionList.count(4)
+      "Potion": trainer.Potions['1'],
+      "Super Potion": trainer.Potions['2'],
+      "Hyper Potion": trainer.Potions['3'],
+      "Max Potion": trainer.Potions['4']
   }
   return (trainer.Money, dict(filter(lambda x: x[1] != 0, pkblList.items())),
           dict(filter(lambda x: x[1] != 0, ptnList.items())))
 
-def TryBuyPokeball(trainer: Trainer, ballId, amount):
+def TryBuyPokeball(trainer: Trainer, ballId: int, amount: int):
   ball = itemservice.GetPokeball(ballId)
   if not ball or trainer.Money < (ball.BuyAmount * amount):
     return None
 
   trainer.Money -= (ball.BuyAmount * amount)
-  trainer.PokeballList = ModifyItemList(trainer.PokeballList, ballId, amount)
+  ModifyItemList(trainer.PokeballList, ballId, amount)
   trainerda.UpsertTrainer(trainer)
   return ball
 
-def TryBuyPotion(trainer: Trainer, potionId, amount):
+def TryBuyPotion(trainer: Trainer, potionId: int, amount: int):
   potion = itemservice.GetPotion(potionId)
   if not potion or trainer.Money < (potion.BuyAmount * amount):
     return None
 
   trainer.Money -= (potion.BuyAmount * amount)
-  trainer.PotionList = ModifyItemList(trainer.PotionList, potionId, amount)
+  ModifyItemList(trainer.PotionList, potionId, amount)
   trainerda.UpsertTrainer(trainer)
   return potion
 
-def TrySellPokeball(trainer: Trainer, ballId, amount):
+def TrySellPokeball(trainer: Trainer, ballId: int, amount: int):
   ball = itemservice.GetPokeball(ballId)
-  if not ball or ballId not in trainer.PokeballList:
+  if not ball or trainer.PokeballList[str(ballId)] == 0:
     return None
 
   currentNum = len(trainer.PokeballList)
-  trainer.PokeballList = ModifyItemList(trainer.PokeballList, ballId,
-                                        (0 - amount))
+  ModifyItemList(trainer.PokeballList, ballId, (0 - amount))
   postModNum = len(trainer.PokeballList)
   trainer.Money += (ball.SellAmount * (currentNum - postModNum))
   trainerda.UpsertTrainer(trainer)
@@ -95,7 +100,7 @@ def TrySellPokeball(trainer: Trainer, ballId, amount):
 
 def TrySellPotion(trainer: Trainer, potionId, amount):
   potion = itemservice.GetPotion(potionId)
-  if not potion or potionId not in trainer.PotionList:
+  if not potion or trainer.PotionList[str(potionId)] == 0:
     return None
 
   currentNum = len(trainer.PotionList)
@@ -121,16 +126,12 @@ def TryUsePotion(trainer: Trainer, potion):
   trainerda.UpsertTrainer(trainer)
   return (True, (trainer.Health - preHealth))
 
-def ModifyItemList(listProperty: List, itemId, amount):
-  adding = amount > 0
-  count = abs(amount)
-  while count > 0:
-    if adding:
-      listProperty.append(itemId)
-    elif itemId in listProperty:
-      listProperty.remove(itemId)
-    count -= 1
-  return listProperty
+def ModifyItemList(itemDict: dict[str, int], itemId: int, amount: int):
+  newAmount = itemDict[str(itemId)] + amount
+  if newAmount < 0:
+    newAmount = 0
+  itemDict.update({ str(itemId): newAmount if newAmount > 0 else 0 })
+  return (amount + newAmount) if newAmount < 0 else amount
 
 #endregion
 
@@ -248,7 +249,7 @@ def TryCapture(reaction: Reaction, server, trainer: Trainer, spawn: Pokemon):
   serverservice.UpsertServer(server)
 
   pokeballId = 1 if reaction.emoji == PokeballReaction else 2 if reaction.emoji == GreatBallReaction else 3
-  if pokeballId in trainer.PokeballList:
+  if trainer.PokeballList.get(pokeballId) > 0:
     #TODO: IMPLEMENT CAPTURE RATE
     ModifyItemList(trainer.PokeballList, pokeballId, -1)
     trainer.OwnedPokemon.append(spawn)

@@ -1,3 +1,4 @@
+
 class PokemonData:
   #Form Properties
   Id: int
@@ -30,22 +31,14 @@ class PokemonData:
 
 
 class Pokemon:
-  Id: str
-  Pokemon_Id: int
-  Height: float
-  Weight: float
-  IsShiny: bool
-  IsFemale: bool
-  Level: int
-  CurrentExp: int
+  Id: str = ''
+  Pokemon_Id: int = 0
+  Height: float = 0
+  Weight: float = 0
+  IsShiny: bool = False
+  IsFemale: bool = False
+  Level: int = 0
+  CurrentExp: int = 0
 
   def __init__(self, dict):
     vars(self).update(dict)
-    # self.Id = dict.get('Id') or uuid.uuid4().hex if dict else uuid.uuid4().hex
-    # self.Pokemon_Id = dict.get('Pokemon_Id') or 0 if dict else 0
-    # self.Height = dict.get('Height') or 0.0 if dict else 0.0
-    # self.Weight = dict.get('Weight') or 0.0 if dict else 0.0
-    # self.IsShiny = dict.get('IsShiny') or False if dict else False
-    # self.IsFemale = dict.get('IsFemale') or False if dict else False
-    # self.Level = dict.get('Pokemon_Id') or 0 if dict else 0
-    # self.CurrentExp = dict.get('Pokemon_Id') or 0 if dict else 0

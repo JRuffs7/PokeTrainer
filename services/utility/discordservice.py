@@ -104,19 +104,11 @@ async def SendPokemon(guildid,
 
 
 async def SendTrainerError(interaction):
-  return await interaction.response.send_message(embed=CreateEmbed(
-      "Trainer Missing!",
-      "You have not started your PokeTrainer journey yet! To do so, use one of the **/starter** commands. Please use **/help** for more explanation on how PokeTrainer is used.",
-      ErrorColor),
-                                          ephemeral=True)
+  SendCommandResponse(interaction, 'files/responsefiles/trainerresponses.json', 'error', 0, ErrorColor, eph=True)
 
 
 async def SendServerError(interaction):
-  return await interaction.response.send_message(embed=CreateEmbed(
-      "Server Not Registered",
-      "This server has not been registered with PokeTrainer! To do so, have an administrator run the **/start *percent*** command. Please use **/help** for more explanation on how PokeTrainer is used.",
-      ErrorColor),
-                                          ephemeral=True)
+  SendCommandResponse(interaction, 'files/responsefiles/serverresponses.json', 'error', 0, ErrorColor, eph=True)
 
 
 async def SendCommandResponse(interaction: Interaction, filename: str, command: str, responseInd: int, color, params: list=[], eph: bool=False):

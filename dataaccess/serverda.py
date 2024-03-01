@@ -40,7 +40,7 @@ def DeleteServer(serverId):
   del serverCache[serverId]
   thread = Thread(target=DeleteServerFromMongo, args=(serverId, ))
   thread.start()
-  return True
+  return
 
 
 def PushServerToMongo(server: Server):

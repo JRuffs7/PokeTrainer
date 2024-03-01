@@ -1,9 +1,11 @@
+import logging
 import os
 
 import discord
 from discord.ext import commands
 
 from globals import PokemonCaughtColor
+import logs.logsetup
 from services import trainerservice
 
 intents = discord.Intents.all()
@@ -11,13 +13,13 @@ discordBot = commands.Bot(command_prefix='~',
                           case_insensitive=True,
                           help_command=None,
                           intents=intents)
-
+logger = logging.getLogger('discord')
 
 async def StartBot():
 
   @discordBot.event
   async def on_ready():
-    print(f"{discordBot.user} up and running")
+    logger.info(f"{discordBot.user} up and running")
 
   @discordBot.event
   async def on_reaction_add(reaction, user):

@@ -3,68 +3,68 @@
     {
       "Id": 1,
       "Name": "Pokeball",
-      "Description": "A basic device for capturing pokemon",
+      "Description": "Standard ball for capturing Pokemon.",
       "BuyAmount": 100,
       "SellAmount": 50,
-      "CatchRateModifier": 1
+      "CaptureRate": 1
     },
     {
-      "Id":2,
+      "Id": 2,
       "Name": "Greatball",
-      "Description": "A good, high-performance Poke Ball that provides a higher success rate for catching Pokémon than a standard Poke Ball.",
+      "Description": "High-performance ball for catching Pokemon.",
       "BuyAmount": 300,
       "SellAmount": 150,
-      "CatchRateModifier": 1.5
+      "CaptureRate": 1.5
     },
     {
       "Id": 3,
       "Name": "Ultraball",
-      "Description": "An ultra-high-performance Poke Ball that provides a higher success rate for catching Pokémon than a Great Ball.",
+      "Description": "Ultra-high-performance ball for catching Pokemon.",
       "BuyAmount": 600,
       "SellAmount": 300,
-      "CatchRateModifier": 2
+      "CaptureRate": 2
     },
     {
       "Id": 4,
       "Name": "Masterball",
-      "Description": "The best Poke Ball with the ultimate level of performance. With it, you will catch any wild Pokemon without fail.",
+      "Description": "Guarenteed capture ball for catching Pokemon.",
       "BuyAmount": null,
       "SellAmount": null,
-      "CatchRateModifier": 2
+      "CaptureRate": 2
     }
   ],
   "Potion": [
     {
       "Id": 1,
       "Name": "Potion",
-      "Description": "Heals pokemon for 10 HP",
+      "Description": "Heals trainer for 10 HP.",
       "BuyAmount": 100,
       "SellAmount": 50,
       "HealingAmount": 10
     },
     {
       "Id": 2,
-      "Name" : "Super Potion",
-      "Description" : "Heals pokemon for 40 HP",
+      "Name": "Super Potion",
+      "Description": "Heals trainer for 40 HP.",
       "BuyAmount": 350,
       "SellAmount": 150,
       "HealingAmount": 40
     },
     {
       "Id": 3,
-      "Name" : "Hyper Potion",
-      "Description" : "Heals pokemon for 80 HP",
+      "Name": "Hyper Potion",
+      "Description": "Heals trainer for 80 HP.",
       "BuyAmount": 600,
       "SellAmount": 300,
-      "HealingAmount" : 80
+      "HealingAmount": 80
     },
     {
       "Id": 4,
-      "Name" : "Max Potion",
-      "Description" : "Heals pokemon for its maximum HP",
+      "Name": "Max Potion",
+      "Description": "Heals trainer for max HP.",
       "BuyAmount": 750,
       "SellAmount": 350,
-      "HealingAmount" : 100
+      "HealingAmount": 100
     }
   ]
 }

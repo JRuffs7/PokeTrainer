@@ -36,6 +36,8 @@ def BuildCommandHelp(command: str, isAdmin: bool):
     if helpCom:
       if not helpCom.RequiresAdmin or (helpCom.RequiresAdmin and isAdmin):
         return helpCom
+      else:
+        break
   return None
 
 

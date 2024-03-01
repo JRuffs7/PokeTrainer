@@ -2,7 +2,7 @@ import discord
 from flask import json
 
 ShinyOdds: int = 3000
-ServerDetailColor: discord.Colour = discord.Colour.blue()
+ServerColor: discord.Colour = discord.Colour.blue()
 ErrorColor: discord.Colour = discord.Colour.red()
 TrainerColor: discord.Colour = discord.Colour.purple()
 PokemonColor: discord.Colour = discord.Colour.pink()
@@ -21,6 +21,7 @@ FightReaction = "⚔️"
 MaleSign = "🟦"
 FemaleSign = "🟥"
 ShinySign = "✨"
+dateFormat = '%m/%d/%y %H:%M:%S'
 
 StarterDexIds = [
     range(1, 10),

@@ -4,7 +4,7 @@ from typing import List
 
 from services import trainerservice
 from models.Pokemon import Pokemon
-from commands.views.selectors.OwnedSelector import OwnedSelector
+from commands.views.Selection.selectors.OwnedSelector import OwnedSelector
 
 
 class ReleasePokemonView(discord.ui.View):

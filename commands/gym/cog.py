@@ -3,9 +3,9 @@ from discord import app_commands, Interaction
 from discord.ext import commands
 
 from commands.views.GymView import GymView
+from middleware.decorators import method_logger, trainer_check
 from services import trainerservice, gymservice
-from services.utility import discordservice
-from globals import BattleColor, ErrorColor
+from services.utility import discordservice_gym
 
 class GymCommands(commands.Cog, name="GymCommands"):
 
@@ -15,35 +15,22 @@ class GymCommands(commands.Cog, name="GymCommands"):
 
     @app_commands.command(name="gymbattle",
                         description="Battle each gym leader from every region.")
+    @method_logger
+    @trainer_check
     async def gymbattle(self, inter: Interaction):
         print("GYM BATTLE called")
         trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
-        if not trainer:
-            return await discordservice.SendTrainerError(inter)
-        
-        try:
-            gymleader = gymservice.GetNextTrainerGym(trainer.Badges)
-            if not gymleader:
-                return await discordservice.SendMessage(
-                    inter, 
-                    "No Battles Left",
-                    "Congratulations! You have beaten all the gym leaders! Check out your badges by using **/badges**.",
-                    BattleColor)
-            leaderTeam = gymservice.GetGymLeaderTeam(gymleader)
-            fightResults = gymservice.GymLeaderFight([t for t in trainerservice.GetTeam(trainer) if t], leaderTeam)
-            if -1 in fightResults:
-                return await discordservice.SendMessage(
-                    inter, 
-                    "Battle Error",
-                    f"There was an error while performing the battle with {gymleader.Name}. Please try again.",
-                    ErrorColor)
-            elif fightResults.count(1) == len(leaderTeam):
-                trainer.Money += gymleader.Reward
-                trainer.Badges.append(gymleader.BadgeId)
-                trainerservice.UpsertTrainer(trainer)
-            await GymView(inter, gymleader, [t.Name for t in trainerservice.GetTeam(trainer) if t], [l.Name for l in leaderTeam], fightResults).send()
-        except Exception as e:
-            print(f"{e}")
+        gymleader = gymservice.GetNextTrainerGym(trainer.Badges)
+        if not gymleader:
+            return await discordservice_gym.PrintGymBattleResponse(inter, 0, [])
+        fightResults = gymservice.GymLeaderFight(trainer, gymleader)
+        if -1 in fightResults:
+            return await discordservice_gym.PrintGymBattleResponse(inter, 0, [gymleader.Name])
+        elif fightResults.count(1) == len(gymleader.Team):
+            trainer.Money += gymleader.Reward
+            trainer.Badges.append(gymleader.BadgeId)
+            trainerservice.UpsertTrainer(trainer)
+        await GymView(inter, gymleader, trainer, fightResults).send()
 
 async def setup(bot: commands.Bot):
   await bot.add_cog(GymCommands(bot))

@@ -1,10 +1,11 @@
 from discord import app_commands, Interaction
 from discord.ext import commands
 from typing import List
+from commands.views.Pagination.PokemonSearchView import PokemonSearchView
 import discordbot
 
-from commands.views.PokedexView import PokedexView
 from commands.views.EvolveView import EvolveView
+from middleware.decorators import method_logger, trainer_check
 from services import pokemonservice, typeservice, trainerservice
 from services.utility import discordservice
 
@@ -49,13 +50,14 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
   #region PokeInfo
 
   @app_commands.command(name="pokeinfo",
-                        description="Lists all Pokemon for the given color alphabetically.")
+                        description="Gives information for a single, or list, of Pokemon.")
   @app_commands.choices(search=[
       app_commands.Choice(name="Single Pokemon", value='single'),
       app_commands.Choice(name="Color", value="color"),
       app_commands.Choice(name="Type", value="type")
   ])
   @app_commands.autocomplete(filter=filter_autocomplete)
+  @method_logger
   async def pokeinfo(self,
                       inter: Interaction,
                       search: app_commands.Choice[str],
@@ -69,31 +71,31 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
       await self.PokeInfoType(inter, filter)
     
 
-  async def PokeInfoSingle(inter, pokemonId):
-    pokemonList = pokemonservice.SplitPokemonForSearch(pokemonId)
+  async def PokeInfoSingle(self, inter: Interaction, pokemonId: int):
+    pokemonList = pokemonservice.GeneratePokemonSearchGroup(pokemonId)
     if not pokemonList:
       return await discordservice.SendErrorMessage(inter, 'pokeinfo')
-    dexViewer = PokedexView(inter, 1, None, 'Pokemon Search')
+    dexViewer = PokemonSearchView(inter, 1, pokemonList, 'Pokemon Search')
     dexViewer.data = pokemonList
     await dexViewer.send()
     
 
-  async def PokeInfoColor(inter, color):
+  async def PokeInfoColor(self, inter: Interaction, color: str):
     pokemonList = pokemonservice.GetPokemonByColor(color.lower())
+    print(len(pokemonList))
     if not pokemonList:
       return await discordservice.SendErrorMessage(inter, 'pokeinfo')
     pokemonList.sort(key=lambda x: x.Name)
-    dexViewer = PokedexView(inter, 10, None, f"List of {color} Pokemon")
-    dexViewer.data = pokemonList
+    dexViewer = PokemonSearchView(inter, 10, pokemonList, f"List of {color} Pokemon")
     await dexViewer.send()
 
 
-  async def PokeInfoType(inter, type):
+  async def PokeInfoType(self, inter: Interaction, type: str):
     pokemonList = pokemonservice.GetPokemonByType(type.lower())
+    print(len(pokemonList))
     if not pokemonList:
       return await discordservice.SendErrorMessage(inter, 'pokeinfo')
-    dexViewer = PokedexView(inter, 10, None, f"List of {type} type Pokemon")
-    dexViewer.data = pokemonList
+    dexViewer = PokemonSearchView(inter, 10, pokemonList, f"List of {type} type Pokemon")
     await dexViewer.send()
 
   #endregion
@@ -107,8 +109,9 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
     if trainer:
       pokeList = [p for p in trainer.OwnedPokemon if pokemonservice.CanTrainerPokemonEvolve(p)]
       for pkmn in pokeList:
-        if current.lower() in pkmn.Name.lower():
-          data.append(app_commands.Choice(name=pkmn.Name, value=pkmn.Id))
+        displayname = pokemonservice.GetPokemonDisplayName(pkmn)
+        if current.lower() in displayname.lower():
+          data.append(app_commands.Choice(name=displayname, value=pkmn.Id))
         if len(data) == 25:
           break
     return data
@@ -116,21 +119,20 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
   @app_commands.command(name="evolve",
                         description="Evolve your Pokemon.")
   @app_commands.autocomplete(pokemon=autofill_evolution)
-  async def evolve(self, inter: Interaction, pokemon: str):
+  @method_logger
+  @trainer_check
+  async def evolve(self, inter: Interaction, pokemon: str | None):
     print("EVOLVE called")
-    try:
-      trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
-      if not trainer:
-        return await discordservice.SendTrainerError(inter)
-      
-      pokeList = [p for p in trainer.OwnedPokemon if pokemonservice.CanTrainerPokemonEvolve(p)]
-      if pokemon:
-        pokeList = [p for p in pokeList if p.Name.lower() == pokemon]
+    trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
+    pokeList = [p for p in trainer.OwnedPokemon if pokemonservice.CanTrainerPokemonEvolve(p)]
+    if pokemon:
+      pokeList = [p for p in pokeList if p.Id == pokemon]
 
-      evolveView = EvolveView(inter, trainer, pokeList)
-      await evolveView.send()
-    except Exception as e:
-      print(f"{e}")
+    if not pokeList:
+      return await discordservice.SendErrorMessage(inter, 'evolve')
+
+    evolveView = EvolveView(inter, trainer, pokeList)
+    return await evolveView.send()
 
 
   #endregion
