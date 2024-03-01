@@ -1,4 +1,3 @@
-import datetime
 from typing import List
 
 from discord import Reaction
@@ -9,9 +8,10 @@ from globals import (
     GreatBallReaction,
     PokeballReaction,
 )
+from models.Item import Potion
 from models.Trainer import Trainer
 from models.Pokemon import Pokemon
-from services import itemservice, pokemonservice, serverservice, gymservice
+from services import pokemonservice, serverservice, gymservice
 
 
 def GetTrainer(serverId, userId):
@@ -35,6 +35,7 @@ def StartTrainer(pokemonId: int, userId: int, serverId: int):
       'ServerId': serverId,
       'Team': [None, None, None, None, None, None],
       'OwnedPokemon': [],
+      'Pokedex': [pkmn.PokedexId]
       'Badges': [],
       'Health': 50,
       'Money': 500,
@@ -66,53 +67,8 @@ def GetInventory(trainer: Trainer):
   return (trainer.Money, dict(filter(lambda x: x[1] != 0, pkblList.items())),
           dict(filter(lambda x: x[1] != 0, ptnList.items())))
 
-def TryBuyPokeball(trainer: Trainer, ballId: int, amount: int):
-  ball = itemservice.GetPokeball(ballId)
-  if not ball or trainer.Money < (ball.BuyAmount * amount):
-    return None
-
-  trainer.Money -= (ball.BuyAmount * amount)
-  ModifyItemList(trainer.PokeballList, ballId, amount)
-  trainerda.UpsertTrainer(trainer)
-  return ball
-
-def TryBuyPotion(trainer: Trainer, potionId: int, amount: int):
-  potion = itemservice.GetPotion(potionId)
-  if not potion or trainer.Money < (potion.BuyAmount * amount):
-    return None
-
-  trainer.Money -= (potion.BuyAmount * amount)
-  ModifyItemList(trainer.PotionList, potionId, amount)
-  trainerda.UpsertTrainer(trainer)
-  return potion
-
-def TrySellPokeball(trainer: Trainer, ballId: int, amount: int):
-  ball = itemservice.GetPokeball(ballId)
-  if not ball or trainer.PokeballList[str(ballId)] == 0:
-    return None
-
-  currentNum = len(trainer.PokeballList)
-  ModifyItemList(trainer.PokeballList, ballId, (0 - amount))
-  postModNum = len(trainer.PokeballList)
-  trainer.Money += (ball.SellAmount * (currentNum - postModNum))
-  trainerda.UpsertTrainer(trainer)
-  return { 'NumSold': currentNum - postModNum, 'Item': ball }
-
-def TrySellPotion(trainer: Trainer, potionId, amount):
-  potion = itemservice.GetPotion(potionId)
-  if not potion or trainer.PotionList[str(potionId)] == 0:
-    return None
-
-  currentNum = len(trainer.PotionList)
-  trainer.PotionList = ModifyItemList(trainer.PotionList, potionId,
-                                      (0 - amount))
-  postModNum = len(trainer.PotionList)
-  trainer.Money += (potion.SellAmount * (currentNum - postModNum))
-  trainerda.UpsertTrainer(trainer)
-  return { 'NumSold': (currentNum - postModNum), 'Item': potion }
-
-def TryUsePotion(trainer: Trainer, potion):
-  if potion.Id not in trainer.PotionList:
+def TryUsePotion(trainer: Trainer, potion: Potion):
+  if trainer.Potions[str(potion.Id)] == 0:
     return (False, 0)
 
   if trainer.Health == 100:
@@ -122,7 +78,7 @@ def TryUsePotion(trainer: Trainer, potion):
   trainer.Health += potion.HealingAmount
   if trainer.Health > 100:
     trainer.Health = 100
-  trainer.PotionList = ModifyItemList(trainer.PotionList, potion.Id, -1)
+  ModifyItemList(trainer.Potions, potion.Id, -1)
   trainerda.UpsertTrainer(trainer)
   return (True, (trainer.Health - preHealth))
 
@@ -168,6 +124,10 @@ def GetPokedexList(trainer: Trainer, orderString: str, shiny: bool):
         pokemonList.sort(key=lambda x: -x.IsShiny)
   return pokemonList
 
+def TryAddToPokedex(trainer: Trainer, pokedexId: int):
+  if pokedexId not in trainer.Pokedex:
+    trainer.Pokedex.append(pokedexId)
+
 #endregion
 
 #region Team
@@ -187,6 +147,7 @@ def Evolve(trainer: Trainer, initialPkmn: Pokemon, evolveId: int):
   newPkmn = pokemonservice.EvolvePokemon(initialPkmn, evolveId)
   index = trainer.OwnedPokemon.index(initialPkmn)
   trainer.OwnedPokemon[index] = newPkmn
+  TryAddToPokedex(trainer, pokemonservice.GetPokemonById(newPkmn.Pokemon_Id).PokedexId)
   UpsertTrainer(trainer)
   return newPkmn
 

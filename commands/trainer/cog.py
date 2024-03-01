@@ -6,7 +6,7 @@ from commands.views.TeamSelectorView import TeamSelectorView
 from commands.views.ReleasePokemonView import ReleasePokemonView
 from commands.views.BadgeView import BadgeView
 
-from middleware.decorators import trainer_check
+from middleware.decorators import method_logger, trainer_check
 from services import trainerservice, itemservice
 from services.utility import discordservice, discordservice_trainer
 
@@ -20,6 +20,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
 
   @app_commands.command(name="trainer",
                         description="Displays trainer info.")
+  @method_logger
   @trainer_check
   async def trainer(self,
                         interaction: Interaction,
@@ -33,10 +34,10 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
     data = []
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
     if trainer:
-      ptnList = [itemservice.GetPotion(p) for p in trainer.PotionList.keys() if trainer.PotionList[p] > 0]
+      ptnList = [itemservice.GetPotion(int(p)) for p in trainer.Potions if trainer.Potions[p] > 0]
       ptnList.sort(key=lambda x: x.Id)
       for ptn in ptnList:
-        if current.lower() in ptn.Name.lower() and ptn.Name not in [i.name for i in data]:
+        if current.lower() in ptn.Name.lower():
           data.append(app_commands.Choice(name=ptn.Name, value=ptn.Id))
         if len(data) == 25:
           break
@@ -45,9 +46,9 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
   @app_commands.command(name="usepotion",
                         description="Use a potion to restore trainer health.")
   @app_commands.autocomplete(potion=autofill_usepotion)
+  @method_logger
   @trainer_check
   async def usepotion(self, inter: Interaction, potion: int):
-    print("USE POTION called")
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
     ptn = itemservice.GetPotion(potion)
     result = trainerservice.TryUsePotion(trainer, ptn)

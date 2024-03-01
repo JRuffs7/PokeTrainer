@@ -1,8 +1,7 @@
 import discord
 from middleware.decorators import button_check
 
-from services import itemservice, trainerservice, pokemonservice
-from models.Pokemon import PokemonData, Pokemon
+from services import itemservice, trainerservice
 from models.Trainer import Trainer
 from commands.views.Selection.selectors.ShopSelectors import BuySell, ItemChoice, AmountChoice
 

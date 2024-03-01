@@ -8,6 +8,7 @@ class Trainer:
   Pokeballs: dict[str, int]
   Potions: dict[str, int]
   OwnedPokemon: list[Pokemon]
+  Pokedex: list[int]
   Team: list[str]
   Badges: list[int]
   LastSpawnTime: str | None

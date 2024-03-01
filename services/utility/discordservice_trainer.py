@@ -3,17 +3,16 @@ from models.Trainer import Trainer
 from services import pokemonservice, gymservice, trainerservice
 from services.utility import discordservice
 from discord import Interaction, Member
-from globals import ErrorColor, TrainerColor
+from globals import TrainerColor
 
 responseFile = "files/responsefiles/trainerresponses.json"
 
 async def PrintTrainer(interaction: Interaction, trainer: Trainer, targetUser: Member):
 	#Stats Section
-	uniquePkmn = len(set([pokemonservice.GetPokemonById(x.Pokemon_Id).PokedexId for x in trainer.OwnedPokemon]))
 	totalPkmn = pokemonservice.GetPokemonCount()
 	totalBadges = len(gymservice.GetAllBadges())
 
-	stats = f"__Trainer Stats__\nHP: {trainer.Health}\nPokedex: {uniquePkmn}/{totalPkmn} ({round((uniquePkmn*100)/totalPkmn)}%)\nPokemon Caught: {len(trainer.OwnedPokemon)}\nShiny Count: {len([x for x in trainer.OwnedPokemon if x.IsShiny])}\nGym Badges: {len(trainer.Badges)}/{totalBadges}"
+	stats = f"__Trainer Stats__\nHP: {trainer.Health}\nPokedex: {len(trainer.Pokedex)}/{totalPkmn} ({round((len(trainer.Pokedex)*100)/totalPkmn)}%)\nPokemon Caught: {len(trainer.OwnedPokemon)}\nShiny Count: {len([x for x in trainer.OwnedPokemon if x.IsShiny])}\nGym Badges: {len(trainer.Badges)}/{totalBadges}"
 
 	#Inventory Section
 	items = trainerservice.GetInventory(trainer)
