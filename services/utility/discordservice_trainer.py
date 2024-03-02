@@ -42,14 +42,14 @@ async def PrintUsePotion(interaction: Interaction, potion: Potion, result: tuple
 		params=[potion.Name, result[1]],
 		eph=True)
 
-async def PrintModifyTeam(interaction: Interaction, name: str):
+async def PrintModifyTeam(interaction: Interaction, response: int, pkmnId: str):
 	return await discordservice.SendCommandResponse(
 		interaction=interaction, 
 		filename=responseFile, 
 		command='modifyteam', 
-		responseInd=0, 
+		responseInd=response, 
 		color=TrainerColor, 
-		params=[name],
+		params=[pokemonservice.GetPokemonById(pkmnId).Name] if pkmnId else [],
 		eph=True)
 
 async def PrintStarter(interaction: Interaction, trainer: Trainer):
@@ -67,14 +67,15 @@ async def PrintStarter(interaction: Interaction, trainer: Trainer):
 		responseInd=0, 
 		color=TrainerColor)
 
-async def PrintBadges(interaction: Interaction, targetUser: Member):
+async def PrintBadges(interaction: Interaction, targetUser: Member, region: str = None):
 	return await discordservice.SendCommandResponse(
 		interaction=interaction, 
 		filename=responseFile, 
 		command='badges', 
-		responseInd=0, 
+		responseInd=0 if not region else 1, 
 		color=TrainerColor,
-		params=[targetUser.display_name])
+		params=[targetUser.display_name] if not region else [region],
+		eph=True)
 
 async def PrintRelease(interaction: Interaction, name: str):
 	return await discordservice.SendCommandResponse(

@@ -1,10 +1,14 @@
+from math import ceil
 import discord
+
+from middleware.decorators import button_check
 
 
 class BasePaginationView(discord.ui.View):
 
 	def __init__(self, interaction: discord.Interaction, pageLength: int, dataList: list):
 		self.interaction = interaction
+		self.user = interaction.user
 		self.pageLength = pageLength
 		self.data = dataList
 		self.currentPage = 1
@@ -22,7 +26,7 @@ class BasePaginationView(discord.ui.View):
 			self.first_page_button.style = discord.ButtonStyle.green
 			self.prev_button.style = discord.ButtonStyle.primary
 
-		if self.currentPage == int(len(self.data) / self.pageLength):
+		if self.currentPage == ceil(len(self.data)/self.pageLength):
 			self.next_button.disabled = True
 			self.last_page_button.disabled = True
 			self.last_page_button.style = discord.ButtonStyle.gray
@@ -36,10 +40,11 @@ class BasePaginationView(discord.ui.View):
 	def get_currentPage_data(self):
 		until_item = self.currentPage * self.pageLength
 		from_item = until_item - self.pageLength
-		if self.currentPage == int(len(self.data) / self.pageLength):
+		if self.currentPage == ceil(len(self.data)/self.pageLength):
 			until_item = len(self.data)
 		return self.data[from_item:until_item]
 
+	@button_check
 	async def button_click(self, interaction: discord.Interaction, custom_id: str):
 		await interaction.response.defer()
 		match custom_id:
@@ -48,6 +53,6 @@ class BasePaginationView(discord.ui.View):
 			case "previous":
 				self.currentPage -= 1
 			case "last":
-				self.currentPage = int(len(self.data) / self.pageLength)
+				self.currentPage = ceil(len(self.data)/self.pageLength)
 			case _:
 				self.currentPage = 1

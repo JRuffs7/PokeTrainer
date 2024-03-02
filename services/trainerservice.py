@@ -29,23 +29,21 @@ def StartTrainer(pokemonId: int, userId: int, serverId: int):
   pkmn = pokemonservice.GetPokemonById(pokemonId)
   if not pkmn:
     return None
-    
+  spawn = pokemonservice.GenerateSpawnPokemon(pkmn, 5)
   trainer = Trainer({
-      'UserId': userId,
-      'ServerId': serverId,
-      'Team': [None, None, None, None, None, None],
-      'OwnedPokemon': [],
-      'Pokedex': [pkmn.PokedexId]
-      'Badges': [],
-      'Health': 50,
-      'Money': 500,
-      'PokeballList': { '1': 5, '2': 0, '3': 0, '4': 0 },
-      'PotionList': { '1': 0, '2': 0, '3': 0, '4': 0 },
-      'LastSpawnTime': None
+    'UserId': userId,
+    'ServerId': serverId,
+    'Team': [spawn.Id],
+    'OwnedPokemon': [],
+    'Pokedex': [pkmn.PokedexId],
+    'Badges': [],
+    'Health': 50,
+    'Money': 500,
+    'PokeballList': { '1': 5, '2': 0, '3': 0, '4': 0 },
+    'PotionList': { '1': 0, '2': 0, '3': 0, '4': 0 },
+    'LastSpawnTime': None
   })
-  trainer.OwnedPokemon.append(pokemonservice.GenerateSpawnPokemon(pkmn))
-  trainer.OwnedPokemon[0].Level = 5
-  trainer.Team[0] = trainer.OwnedPokemon[0].Id
+  trainer.OwnedPokemon.append(spawn)
   UpsertTrainer(trainer)
   return trainer
 
@@ -133,14 +131,21 @@ def TryAddToPokedex(trainer: Trainer, pokedexId: int):
 #region Team
 
 def GetTeam(trainer: Trainer):
-  teamList: List[Pokemon | None] = []
-  for pokeId in trainer.Team:
-    if pokeId:
-      teamList.append(next((p for p in trainer.OwnedPokemon if p.Id == pokeId), None))
-  return teamList
+  return [next(p for p in trainer.OwnedPokemon if p.Id == pokeId) for pokeId in trainer.Team]
 
 def SetTeamSlot(trainer: Trainer, slotNum: int, pokemonId: str):
-  trainer.Team[slotNum] = pokemonId
+  #swapping
+  if pokemonId in trainer.Team:
+    currentSlot = trainer.Team.index(pokemonId)
+    currentPkmn = trainer.Team[slotNum]
+    trainer.Team[currentSlot] = currentPkmn
+    trainer.Team[slotNum] = pokemonId
+  #adding
+  elif slotNum == len(trainer.Team):
+    trainer.Team.append(pokemonId)
+  #replacing
+  else:
+    trainer.Team[slotNum] = pokemonId
   UpsertTrainer(trainer)
 
 def Evolve(trainer: Trainer, initialPkmn: Pokemon, evolveId: int):
@@ -162,10 +167,16 @@ def ReleasePokemon(trainer: Trainer, pokemonIds: list[str]):
 #region Gym Badges
 
 def GetGymBadges(trainer: Trainer, generation: int):
-  badgeList = [gymservice.GetBadgeById(b) for b in trainer.Badges]
+  badgeList = [ba for ba in [gymservice.GetBadgeById(b) for b in trainer.Badges] if ba]
   if generation:
     badgeList = [b for b in badgeList if b.Generation == generation]
+  badgeList.sort(key=lambda x: x.Id)
   return badgeList
+
+def GymCompletion(trainer: Trainer, generation: int = None):
+  allBadges = [b.Id for b in gymservice.GetAllBadges() if (b.Generation == generation if generation else True)]
+  obtained = list(filter(allBadges.__contains__, trainer.Badges))
+  return (len(obtained), len(allBadges))
 
 #endregion
 

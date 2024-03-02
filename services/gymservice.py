@@ -1,7 +1,6 @@
 from dataaccess import gymda
 from models.Trainer import Trainer
 from services import pokemonservice, trainerservice
-from models.Pokemon import PokemonData, Pokemon
 from models.Gym import GymLeader
 
 #region Gym Leaders
@@ -24,7 +23,7 @@ def GetBattleTeam(team: list[int]):
 
 
 def GymLeaderFight(trainer: Trainer, leader: GymLeader):
-	trainerTeam = [{ 'Pokemon': pokemonservice.GetPokemonById(t.Pokemon_Id), 'Id': t.Id } for t in trainerservice.GetTeam(trainer) if t]
+	trainerTeam = [{ 'Pokemon': pokemonservice.GetPokemonById(t.Pokemon_Id), 'Id': t.Id } for t in trainerservice.GetTeam(trainer)]
 	leaderTeam = GetBattleTeam(leader.Team)
 	fightResults: list[int] = []
 	expList: dict[str, int] = {}
@@ -45,6 +44,10 @@ def GymLeaderFight(trainer: Trainer, leader: GymLeader):
 		tData = next(d['Pokemon'] for d in trainerTeam if d['Id'] == tPokemon.Id)
 		pokemonservice.AddExperience(tPokemon, tData.Rarity, expList[pId])
 	return fightResults
+
+
+def GetGymLeaderByBadge(badgeId: int):
+	return next(l for l in GetAllGymLeaders() if l.BadgeId == badgeId)
 
 #endregion
 

@@ -39,9 +39,10 @@ def is_admin(function):
 def is_bot_admin(function):
   @functools.wraps(function)
   async def wrapper(self, *args, **kwargs):
-    if args[0].author.id in AdminList:
-      return await function(self, *args, **kwargs)
-    return
+    if args[0].author.id not in AdminList:
+      cmdLog.info(f'Sync Command attempted by {args[0].author.display_name} in server {args[0].guild.name}')
+      return
+    return await function(self, *args, **kwargs)
   return wrapper
 
 

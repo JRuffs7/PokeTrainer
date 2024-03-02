@@ -15,9 +15,13 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 	@commands.command(name="sync")
 	@method_logger
 	@is_bot_admin
-	async def sync(self, ctx: commands.Context):
-		self.logger.info(f'Sync Command called by {ctx.author.display_name} in server {ctx.guild.name}')
-		await ctx.bot.tree.sync()
+	async def sync(self, ctx: commands.Context, serverOnly: int | None):
+		if serverOnly:
+			self.logger.info(f'Local Sync Command called by {ctx.author.display_name} in server {ctx.guild.name}')
+			await ctx.bot.tree.sync(guild=ctx.guild)
+		else:
+			self.logger.info(f'Global Sync Command called by {ctx.author.display_name} in server {ctx.guild.name}')
+			await ctx.bot.tree.sync()
 		self.logger.info(f'Syncing complete.')
 
 	@commands.command(name="liveupdate")
@@ -34,7 +38,7 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 
 	@commands.command(name="deleteuser")
 	@is_bot_admin
-	async def deleteuser(self, ctx: commands.Context, user: Member):
+	async def deleteuser(self, ctx: commands.Context, user: Member = None):
 		if not user or not ctx.guild:
 			return
 		trainer = trainerservice.GetTrainer(ctx.guild.id, user.id if user else ctx.author.id)
@@ -45,10 +49,10 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 	@commands.command(name="addhealth")
 	@method_logger
 	@is_bot_admin
-	async def addhealth(self, ctx: commands.Context, user: Member, amount: int):
-		if not user or not ctx.guild:
+	async def addhealth(self, ctx: commands.Context, amount: int, user: Member = None):
+		if not ctx.guild:
 			return
-		trainer = trainerservice.GetTrainer(ctx.guild.id, user.id)
+		trainer = trainerservice.GetTrainer(ctx.guild.id, user.id if user else ctx.author.id)
 		if trainer:
 			trainer.Health += amount
 			trainer.Health = 100 if trainer.Health > 100 else 0 if trainer.Health < 0 else trainer.Health
@@ -57,8 +61,8 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 	@commands.command(name="givemoney")
 	@method_logger
 	@is_bot_admin
-	async def givemoney(self, ctx: commands.Context, user: Member, amount: int):
-		if not user or not ctx.guild:
+	async def givemoney(self, ctx: commands.Context, amount: int, user: Member = None):
+		if not ctx.guild:
 			return
 		trainer = trainerservice.GetTrainer(ctx.guild.id, user.id if user else ctx.author.id)
 		if trainer:
@@ -69,8 +73,8 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 	@commands.command(name="addball")
 	@method_logger
 	@is_bot_admin
-	async def addball(self, ctx: commands.Context, user: Member, type: int, amount: int):
-		if not user or not ctx.guild:
+	async def addball(self, ctx: commands.Context, type: int, amount: int, user: Member = None):
+		if not ctx.guild:
 			return
 		trainer = trainerservice.GetTrainer(ctx.guild.id, user.id if user else ctx.author.id)
 		if trainer:
@@ -80,8 +84,8 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 	@commands.command(name="addpotion")
 	@method_logger
 	@is_bot_admin
-	async def addpotion(self, ctx: commands.Context, user: Member, type: int, amount: int):
-		if not user or not ctx.guild:
+	async def addpotion(self, ctx: commands.Context, type: int, amount: int, user: Member = None):
+		if not ctx.guild:
 			return
 		trainer = trainerservice.GetTrainer(ctx.guild.id, user.id if user else ctx.author.id)
 		if trainer:
@@ -91,10 +95,10 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 	@commands.command(name="addbadge")
 	@method_logger
 	@is_bot_admin
-	async def addbadge(self, ctx: commands.Context, user: Member, badge: int):
-		if not user or not ctx.guild:
+	async def addbadge(self, ctx: commands.Context, badge: int, user: Member = None):
+		if not ctx.guild:
 			return
-		trainer = trainerservice.GetTrainer(ctx.guild.id, ctx.author.id)
+		trainer = trainerservice.GetTrainer(ctx.guild.id, user.id if user else ctx.author.id)
 		if trainer and badge not in trainer.Badges:
 			trainer.Badges.append(badge)
 			trainerservice.UpsertTrainer(trainer)
@@ -102,8 +106,8 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 	@commands.command(name="addpokemon")
 	@method_logger
 	@is_bot_admin
-	async def addpokemon(self, ctx: commands.Context, user: Member, pokemonId: int):
-		if not user or not ctx.guild:
+	async def addpokemon(self, ctx: commands.Context, pokemonId: int, user: Member = None):
+		if not ctx.guild:
 			return
 		trainer = trainerservice.GetTrainer(ctx.guild.id, user.id if user else ctx.author.id)
 		pokemon = pokemonservice.GetPokemonById(pokemonId)

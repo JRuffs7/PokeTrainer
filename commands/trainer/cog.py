@@ -1,13 +1,13 @@
 from typing import List
 from discord import Member, app_commands, Interaction
 from discord.ext import commands
-from commands.views.PokedexView import PokedexView
-from commands.views.TeamSelectorView import TeamSelectorView
+from commands.views.Pagination.PokedexView import PokedexView
+from commands.views.Selection.TeamSelectorView import TeamSelectorView
 from commands.views.ReleasePokemonView import ReleasePokemonView
-from commands.views.BadgeView import BadgeView
+from commands.views.Pagination.BadgeView import BadgeView
 
 from middleware.decorators import method_logger, trainer_check
-from services import trainerservice, itemservice
+from services import pokemonservice, trainerservice, itemservice
 from services.utility import discordservice, discordservice_trainer
 
 
@@ -25,13 +25,12 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
   async def trainer(self,
                         interaction: Interaction,
                         member: Member | None = None):
-    print("TRAINER called")
     targetUser = member if member else interaction.user
     trainer = trainerservice.GetTrainer(interaction.guild_id, targetUser.id)
     return await discordservice_trainer.PrintTrainer(interaction, trainer, targetUser)
 
   async def autofill_usepotion(self, inter: Interaction, current: str):
-    data = []
+    data: list[app_commands.Choice] = []
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
     if trainer:
       ptnList = [itemservice.GetPotion(int(p)) for p in trainer.Potions if trainer.Potions[p] > 0]
@@ -61,44 +60,50 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
   #region TEAM
 
   async def pokemon_autocomplete(self, inter: Interaction, current: str) -> List[app_commands.Choice[str]]:
-    data = []
-    trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
-    if trainer:
-      pkmnList = list(set([p.Name for p in trainer.OwnedPokemon if p.Id not in trainer.Team]))
-      pkmnList.sort()
-      for pkmn in pkmnList:
-        if current.lower() in pkmn.lower():
-          data.append(app_commands.Choice(name=pkmn, value=pkmn.lower()))
-        if len(data) == 25:
-          break
-    return data
+    try:
+      data = []
+      trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
+      if trainer:
+        pkmnList = [m for m in [pokemonservice.GetPokemonById(p.Pokemon_Id) for p in trainer.OwnedPokemon if p.Id not in trainer.Team] if m]
+        pkmnList.sort(key=lambda x: x.Name)
+        for pkmn in pkmnList:
+          if current.lower() in pkmn.Name.lower() and pkmn.Name not in [d.name for d in data]:
+            data.append(app_commands.Choice(name=pkmn.Name, value=pkmn.Id))
+          if len(data) == 25:
+            break
+      return data
+    except Exception as e:
+      print(f"{e}")
 
   @app_commands.command(name="modifyteam",
-                        description="Add or substitute a Pokemon to a team slot.")
+                        description="Add a specified Pokemon into a team slot or modify existing team.")
   @app_commands.autocomplete(pokemon=pokemon_autocomplete)
+  @method_logger
   @trainer_check
-  async def modifyteam(self, inter: Interaction, pokemon: str):
-    print('MODIFY TEAM called')
+  async def modifyteam(self, inter: Interaction, pokemon: int | None):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
-    result = [x for x in trainer.OwnedPokemon if x.Name.lower() == pokemon.lower()]
-    if not result:
-      return await discordservice_trainer.PrintModifyTeam(inter, pokemon)
-
-    teamSelect = TeamSelectorView(
-      inter,
-      [next((p for p in trainer.OwnedPokemon if t and p.Id == t), None) for t in trainer.Team],
-      result)
+    if len(trainer.OwnedPokemon) == 1:
+      return await discordservice_trainer.PrintModifyTeam(inter, 0, pokemon)
+    elif len(trainer.Team) == 1 and not pokemon:
+      return await discordservice_trainer.PrintModifyTeam(inter, 1, pokemon)
+    elif pokemon and pokemon not in [p.Pokemon_Id for p in trainer.OwnedPokemon]:
+      return await discordservice_trainer.PrintModifyTeam(inter, 2, str(pokemon))
+    teamSelect = TeamSelectorView(inter, trainer, pokemon)
     await teamSelect.send()
 
   @app_commands.command(name="myteam",
                         description="View your current team.")
+  @method_logger
   @trainer_check
   async def myteam(self, inter: Interaction):
-    print("MY TEAM called")
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
-    teamViewer = PokedexView(inter, 1, inter.user, f"{inter.user.display_name}'s Battle Team")
-    teamViewer.data = [t for t in trainerservice.GetTeam(trainer) if t]
-    await teamViewer.send() 
+    teamViewer = PokedexView(
+      inter,
+      trainer, 
+      1, 
+      trainerservice.GetTeam(trainer),
+      f"{inter.user.display_name}'s Battle Team")
+    await teamViewer.send(True) 
 
   @app_commands.command(name="badges",description="View your obtained badges")
   @app_commands.choices(region=[
@@ -115,6 +120,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
       app_commands.Choice(name="Yes", value=1),
       app_commands.Choice(name="No", value=0)
   ])
+  @method_logger
   @trainer_check
   async def badges(self, inter: Interaction, 
                    region: app_commands.Choice[int] | None, 
@@ -124,8 +130,15 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
     trainer = trainerservice.GetTrainer(inter.guild_id, user.id if user else inter.user.id)
     if len(trainer.Badges) == 0:
       return await discordservice_trainer.PrintBadges(inter, user if user else inter.user)
-    badgeView = BadgeView(inter, 1 if images else 10, f"{user.display_name if user else inter.user.display_name}'s Badges")
-    badgeView.data = trainerservice.GetGymBadges(trainer, region.value if region else 0)
+    data = trainerservice.GetGymBadges(trainer, region.value if region else 0)
+    if not data:
+      return await discordservice_trainer.PrintBadges(inter, user if user else inter.user, region.name if region else None)
+    usrBadges, totalBadges = trainerservice.GymCompletion(trainer, region.value if region else None)
+    badgeView = BadgeView(
+      inter, 
+      1 if images else 10, 
+      f"{user.display_name if user else inter.user.display_name}'s{f' {region.name}' if region else ''} Badges ({usrBadges}/{totalBadges})",
+      data)
     await badgeView.send()
   #endregion
 
@@ -162,7 +175,8 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
       1 if images and images.value else 10, 
       user if user else inter.user, 
       order.value if order else None,
-      shiny.value if shiny else None)
+      shiny.value if shiny else None,
+      f"{inter.user.display_name}'s Battle Team ({len(trainer.Pokedex)}/{pokemonservice.GetPokemonCount()})")
     await dexViewer.send()
       
 

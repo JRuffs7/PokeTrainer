@@ -2,10 +2,22 @@
 	"badges": [
 		{
 			"Title": "No Badges",
-			"Body": "{0} does not own any gym badges. Fight gym leaders using **/gym** to obtain badges."
+			"Body": "{0} does not own any gym badges. Fight gym leaders using **/gymbattle** to obtain badges."
+		},
+		{
+			"Title": "No Badges",
+			"Body": "No badges obtained for the {0} region. Fight gym leaders using **/gymbattle** to obtain badges."
 		}
 	],
 	"modifyteam": [
+		{
+			"Title": "Cannot Modify Team",
+			"Body": "You only have one Pokemon that is already in your team! Catch more by using the **/spawn** command and try again."
+		},
+		{
+			"Title": "Cannot Modify Team",
+			"Body": "You have the minimum of one Pokemon in your team with nothing else to swap with. Specify a Pokemon when calling the command to add more Pokemon to your team."
+		},
 		{
 			"Title": "Invalid Pokemon",
 			"Body": "You do not own any Pokemon with the name {0}"
