@@ -19,10 +19,6 @@ def GetServer(serverId):
   return serverda.GetServer(serverId)
 
 
-def GetAllServers():
-  return serverda.GetAllServers()
-
-
 def UpsertServer(server: Server):
   return serverda.UpsertServer(server)
 

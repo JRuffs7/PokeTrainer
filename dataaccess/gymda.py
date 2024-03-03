@@ -12,18 +12,12 @@ badgesFile = "collections/badges.json"
 def GetAllGymLeaders():
   return [GymLeader(g) for g in GetJson(leadersFile)]
 
-def GetGymLeaderByBadgeId(badgeId):
-  return next((GymLeader(g) for g in GetJson(leadersFile) if g['BadgeId'] == badgeId), None)
-
 #endregion
 
 #region Badges
 
 def GetAllBadges():
   return [Badge(b) for b in GetJson(badgesFile)]
-
-def GetBadgeById(badgeId):
-  return next((Badge(b) for b in GetJson(badgesFile) if b['Id'] == badgeId), None)
 
 #endregion
 

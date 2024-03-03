@@ -8,8 +8,8 @@ def GetFullShop():
 
 
 def GetPokeball(id: int):
-  return itemda.GetPokeballById(id)
+  return next(p for p in itemda.GetAllPokeballs() if p.Id == id)
 
 
 def GetPotion(id: int):
-  return itemda.GetPotionById(id)
+  return next(p for p in itemda.GetAllPotions() if p.Id == id)

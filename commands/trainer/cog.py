@@ -6,7 +6,7 @@ from commands.views.Selection.ReleaseView import ReleaseView
 from commands.views.Pagination.BadgeView import BadgeView
 
 from middleware.decorators import method_logger, trainer_check
-from services import pokemonservice, trainerservice, itemservice
+from services import gymservice, pokemonservice, trainerservice, itemservice
 from services.utility import discordservice, discordservice_trainer
 
 
@@ -126,10 +126,10 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
     trainer = trainerservice.GetTrainer(inter.guild_id, user.id if user else inter.user.id)
     if len(trainer.Badges) == 0:
       return await discordservice_trainer.PrintBadges(inter, user if user else inter.user)
-    data = trainerservice.GetGymBadges(trainer, region.value if region else 0)
+    data = gymservice.GetGymBadges(trainer, region.value if region else 0)
     if not data:
       return await discordservice_trainer.PrintBadges(inter, user if user else inter.user, region.name if region else None)
-    usrBadges, totalBadges = trainerservice.GymCompletion(trainer, region.value if region else None)
+    usrBadges, totalBadges = gymservice.GymCompletion(trainer, region.value if region else None)
     badgeView = BadgeView(
       inter, 
       user if user else inter.user,

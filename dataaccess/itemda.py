@@ -5,19 +5,9 @@ from models.Item import Pokeball, Potion
 itemFile = "collections/items.json"
 
 
-def GetPokeballById(id: int):
-  json = GetJson()
-  return next(Pokeball(p) for p in json["Pokeball"] if p['Id'] == id)
-
-
 def GetAllPokeballs():
   json = GetJson()
   return [Pokeball(p) for p in json["Pokeball"]]
-
-
-def GetPotionById(id: int):
-  json = GetJson()
-  return next(Potion(p) for p in json["Potion"] if p['Id'] == id)
 
 
 def GetAllPotions():

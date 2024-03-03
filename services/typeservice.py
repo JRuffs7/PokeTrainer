@@ -1,7 +1,8 @@
 from dataaccess import typeda
+from models.Type import Type
 
 def TypeWeakness(attacking, defending):
-    defenseType = typeda.GetTypeByName(defending)
+    defenseType = next(Type(t) for t in GetAllTypes() if t.Name.lower() == defending.lower())
 
     if attacking in defenseType.Weakness:
         return 1
@@ -12,4 +13,4 @@ def TypeWeakness(attacking, defending):
     return 0
 
 def GetAllTypes():
-    return typeda.GetTypes()
+    return typeda.GetAllTypes()

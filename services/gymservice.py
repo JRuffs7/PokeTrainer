@@ -14,7 +14,7 @@ def GetNextTrainerGym(trainerBadges: list[int]):
 	badges.sort(key=lambda b: b.Id)
 	for b in badges:
 		if b.Id not in trainerBadges:
-			return gymda.GetGymLeaderByBadgeId(b.Id)
+			return next((GymLeader(g) for g in gymda.GetAllGymLeaders() if g.BadgeId == b.Id), None)
 	return None
 
 
@@ -59,7 +59,16 @@ def GetAllBadges():
 def GetBadgeById(badgeId: int):
 	return next((b for b in GetAllBadges() if b.Id == badgeId),None)
 
-def GetBadgesByRegion(generation: int):
-	return [b for b in GetAllBadges() if b.Generation == generation]
+def GetGymBadges(trainer: Trainer, generation: int):
+  badgeList = [ba for ba in [GetBadgeById(b) for b in trainer.Badges] if ba]
+  if generation:
+    badgeList = [b for b in badgeList if b.Generation == generation]
+  badgeList.sort(key=lambda x: x.Id)
+  return badgeList
+
+def GymCompletion(trainer: Trainer, generation: int = None):
+  allBadges = [b.Id for b in GetAllBadges() if (b.Generation == generation if generation else True)]
+  obtained = list(filter(allBadges.__contains__, trainer.Badges))
+  return (len(obtained), len(allBadges))
 
 #endregion

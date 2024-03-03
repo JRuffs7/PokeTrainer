@@ -1,5 +1,3 @@
-from typing import List
-
 from discord import Reaction
 
 from dataaccess import trainerda
@@ -11,8 +9,10 @@ from globals import (
 from models.Item import Potion
 from models.Trainer import Trainer
 from models.Pokemon import Pokemon
-from services import pokemonservice, serverservice, gymservice
+from services import pokemonservice, serverservice
 
+
+#region Data
 
 def GetTrainer(serverId, userId):
   return trainerda.GetTrainer(serverId, userId)
@@ -46,6 +46,8 @@ def StartTrainer(pokemonId: int, userId: int, serverId: int):
   trainer.OwnedPokemon.append(spawn)
   UpsertTrainer(trainer)
   return trainer
+
+#endregion
 
 #region Inventory/Items
 
@@ -131,6 +133,20 @@ def TryAddToPokedex(trainer: Trainer, pokedexId: int):
   if pokedexId not in trainer.Pokedex:
     trainer.Pokedex.append(pokedexId)
 
+def Evolve(trainer: Trainer, initialPkmn: Pokemon, evolveId: int):
+  newPkmn = pokemonservice.EvolvePokemon(initialPkmn, evolveId)
+  index = trainer.OwnedPokemon.index(initialPkmn)
+  trainer.OwnedPokemon[index] = newPkmn
+  TryAddToPokedex(trainer, pokemonservice.GetPokemonById(newPkmn.Pokemon_Id).PokedexId)
+  UpsertTrainer(trainer)
+  return newPkmn
+
+def ReleasePokemon(trainer: Trainer, pokemonIds: list[str]):
+  released = next(p for p in trainer.OwnedPokemon if p.Id in pokemonIds)
+  trainer.OwnedPokemon = [p for p in trainer.OwnedPokemon if p.Id not in pokemonIds]
+  UpsertTrainer(trainer)
+  return pokemonservice.GetPokemonById(released.Pokemon_Id).Name
+
 #endregion
 
 #region Team
@@ -152,36 +168,6 @@ def SetTeamSlot(trainer: Trainer, slotNum: int, pokemonId: str):
   else:
     trainer.Team[slotNum] = pokemonId
   UpsertTrainer(trainer)
-
-def Evolve(trainer: Trainer, initialPkmn: Pokemon, evolveId: int):
-  newPkmn = pokemonservice.EvolvePokemon(initialPkmn, evolveId)
-  index = trainer.OwnedPokemon.index(initialPkmn)
-  trainer.OwnedPokemon[index] = newPkmn
-  TryAddToPokedex(trainer, pokemonservice.GetPokemonById(newPkmn.Pokemon_Id).PokedexId)
-  UpsertTrainer(trainer)
-  return newPkmn
-
-def ReleasePokemon(trainer: Trainer, pokemonIds: list[str]):
-  released = next(p for p in trainer.OwnedPokemon if p.Id in pokemonIds)
-  trainer.OwnedPokemon = [p for p in trainer.OwnedPokemon if p.Id not in pokemonIds]
-  UpsertTrainer(trainer)
-  return pokemonservice.GetPokemonById(released.Pokemon_Id).Name
-
-#endregion
-
-#region Gym Badges
-
-def GetGymBadges(trainer: Trainer, generation: int):
-  badgeList = [ba for ba in [gymservice.GetBadgeById(b) for b in trainer.Badges] if ba]
-  if generation:
-    badgeList = [b for b in badgeList if b.Generation == generation]
-  badgeList.sort(key=lambda x: x.Id)
-  return badgeList
-
-def GymCompletion(trainer: Trainer, generation: int = None):
-  allBadges = [b.Id for b in gymservice.GetAllBadges() if (b.Generation == generation if generation else True)]
-  obtained = list(filter(allBadges.__contains__, trainer.Badges))
-  return (len(obtained), len(allBadges))
 
 #endregion
 

@@ -8,9 +8,7 @@ from dataaccess import pokemonda
 from globals import FemaleSign, MaleSign, ShinyOdds, ShinySign, StarterDexIds
 from models.Pokemon import PokemonData, Pokemon
 
-def TestMethod(id: int):
-  return pokemonda.TestMethod(id)
-
+#region Data
 
 def GetAllPokemon():
   return pokemonda.GetAllPokemon()
@@ -24,12 +22,31 @@ def GetPokemonById(id: int):
 
 
 def GetPokemonCount():
-  return pokemonda.GetPokemonCount()
+  return len(set(p.PokedexId for p in GetAllPokemon()))
 
 
 def GetPokemonColors():
   return pokemonda.GetUniquePokemonProperty('Color')
 
+
+def GetPokemonByColor(color: str):
+  return pokemonda.GetPokemonByProperty([color], 'Color')
+
+
+def GetPokemonByType(type: str):
+  pokeList = pokemonda.GetPokemonByType(type)
+  singleType = [x for x in pokeList if len(x.Types) == 1]
+  firstType = [x for x in pokeList if len(x.Types) == 2 and x.Types[0].lower() == type]
+  secondType = [x for x in pokeList if len(x.Types) == 2 and x.Types[1].lower() == type]
+  singleType.sort(key=lambda x: x.Name)
+  firstType.sort(key=lambda x: x.Name)
+  secondType.sort(key=lambda x: x.Name)
+
+  return singleType+firstType+secondType
+
+#endregion
+
+#region Display
 
 def GetPokemonDisplayName(pokemon: Pokemon, showGender: bool = True, showShiny: bool = True):
   pkmn = GetPokemonById(pokemon.Pokemon_Id)
@@ -57,36 +74,9 @@ def GetPokemonImage(pokemon: Pokemon):
     return pkmn.SpriteFemale or pkmn.Sprite
   return pkmn.Sprite
 
+#endregion
 
-def AddExperience(trainerPokemon: Pokemon, trainerRarity: int, exp: int):
-  trainerPokemon.CurrentExp += exp
-  if trainerPokemon.CurrentExp >= ((50 * trainerRarity) if trainerRarity <= 3 else 250):
-    trainerPokemon.Level += 1
-    trainerPokemon.CurrentExp -= ((50 * trainerRarity) if trainerRarity <= 3 else 250)
-
-def GetRandomSpawnPokemon():
-  count = 0
-  pokemon = None
-  encounter = random.randint(1, 100)
-  while not pokemon:
-    pokemonList = GetPokemonByRarity(
-        1 if 1 <= encounter <= 60 else 2 if 61 <= encounter <= 85 else
-        3 if 86 <= encounter <= 95 else 4 if 96 <= encounter <= 98 else 5)
-    pokemon = random.choice(pokemonList)
-    if pokemon.IsMega or pokemon.IsBattleOnly or pokemon.IsLegendary or pokemon.IsMythical or not pokemon.Sprite or not pokemon.ShinySprite:
-      pokemon = None
-
-    for range in StarterDexIds:
-      if pokemon and pokemon.PokedexId in range:
-        pokemon = None
-        break
-
-    count += 1
-    if count == 21:
-      raise Exception("Too many pokemon tries")
-
-  return GenerateSpawnPokemon(pokemon)
-
+#region Spawns
 
 def GenerateSpawnPokemon(pokemon: PokemonData, level: int | None = None):
   shiny = random.randint(0, ShinyOdds) == int(ShinyOdds / 2)
@@ -109,23 +99,42 @@ def GenerateSpawnPokemon(pokemon: PokemonData, level: int | None = None):
       'CurrentExp': 0
   })
 
+#endregion
+
+#region Trainer Pokemon
+
+def AddExperience(trainerPokemon: Pokemon, trainerRarity: int, exp: int):
+  trainerPokemon.CurrentExp += exp
+  if trainerPokemon.CurrentExp >= ((50 * trainerRarity) if trainerRarity <= 3 else 250):
+    trainerPokemon.Level += 1
+    trainerPokemon.CurrentExp -= ((50 * trainerRarity) if trainerRarity <= 3 else 250)
 
 
-def GetPokemonByColor(color: str):
-  return pokemonda.GetPokemonByProperty([color], 'Color')
+def CanTrainerPokemonEvolve(pkmn: Pokemon):
+  pkmnData = GetPokemonById(pkmn.Pokemon_Id)
+  if pkmnData.Rarity == 1 and len(pkmnData.EvolvesInto) >= 1:
+    return pkmn.Level >= 20
+  elif pkmnData.Rarity == 2 and len(pkmnData.EvolvesInto) >= 1:
+    return pkmn.Level >= 30
+  elif pkmnData.Rarity == 3 and len(pkmnData.EvolvesInto) >= 1:
+    return pkmn.Level >= 35
+  return False
 
 
-def GetPokemonByType(type: str):
-  pokeList = pokemonda.GetPokemonByType(type)
-  singleType = [x for x in pokeList if len(x.Types) == 1]
-  firstType = [x for x in pokeList if len(x.Types) == 2 and x.Types[0].lower() == type]
-  secondType = [x for x in pokeList if len(x.Types) == 2 and x.Types[1].lower() == type]
-  singleType.sort(key=lambda x: x.Name)
-  firstType.sort(key=lambda x: x.Name)
-  secondType.sort(key=lambda x: x.Name)
+def EvolvePokemon(initial: Pokemon, evolveId: int):
+  spawn = GenerateSpawnPokemon(GetPokemonById(evolveId))
+  return Pokemon({
+      'Id': initial.Id,
+      'Pokemon_Id': evolveId,
+      'Height': spawn.Height,
+      'Weight': spawn.Weight,
+      'IsShiny': initial.IsShiny,
+      'IsFemale': initial.IsFemale,
+      'Level': initial.Level,
+      'CurrentExp': initial.CurrentExp
+    })
 
-  return singleType+firstType+secondType
-
+#endregion
 
 def GeneratePokemonSearchGroup(pokemonId):
   pkmn = GetPokemonById(pokemonId)
@@ -164,40 +173,6 @@ def GeneratePokemonSearchGroup(pokemonId):
   return pkmnList
 
 
-
-def GetPokemonByRarity(rarity: int):
-  return pokemonda.GetPokemonByProperty([rarity], 'Rarity')
-
-
-def ConvertSpawnPokemonToPokemon(pokeList: List[Pokemon]):
-  return pokemonda.GetPokemonByIds([x.Pokemon_Id for x in pokeList])
-
-
-def CanTrainerPokemonEvolve(pkmn: Pokemon):
-  pkmnData = GetPokemonById(pkmn.Pokemon_Id)
-  if pkmnData.Rarity == 1 and len(pkmnData.EvolvesInto) >= 1:
-    return pkmn.Level >= 20
-  elif pkmnData.Rarity == 2 and len(pkmnData.EvolvesInto) >= 1:
-    return pkmn.Level >= 30
-  elif pkmnData.Rarity == 3 and len(pkmnData.EvolvesInto) >= 1:
-    return pkmn.Level >= 35
-  return False
-
-
-def EvolvePokemon(initial: Pokemon, evolveId: int):
-  spawn = GenerateSpawnPokemon(GetPokemonById(evolveId))
-  return Pokemon({
-      'Id': initial.Id,
-      'Pokemon_Id': evolveId,
-      'Height': spawn.Height,
-      'Weight': spawn.Weight,
-      'IsShiny': initial.IsShiny,
-      'IsFemale': initial.IsFemale,
-      'Level': initial.Level,
-      'CurrentExp': initial.CurrentExp
-    })
-
-
 def PokemonFight(attack: PokemonData, defend: PokemonData, gymBattle: bool = False):
   fightTotal = typeservice.TypeWeakness(attack.Types[0].lower(), defend.Types[0].lower())
   fightTotal += typeservice.TypeWeakness(
@@ -220,3 +195,34 @@ def PokemonFight(attack: PokemonData, defend: PokemonData, gymBattle: bool = Fal
     fightTotal += (2 * (attack.Rarity - defend.Rarity))
 
   return fightTotal
+
+
+
+
+
+def GetRandomSpawnPokemon():
+  count = 0
+  pokemon = None
+  encounter = random.randint(1, 100)
+  while not pokemon:
+    pokemonList = GetPokemonByRarity(
+        1 if 1 <= encounter <= 60 else 2 if 61 <= encounter <= 85 else
+        3 if 86 <= encounter <= 95 else 4 if 96 <= encounter <= 98 else 5)
+    pokemon = random.choice(pokemonList)
+    if pokemon.IsMega or pokemon.IsBattleOnly or pokemon.IsLegendary or pokemon.IsMythical or not pokemon.Sprite or not pokemon.ShinySprite:
+      pokemon = None
+
+    for range in StarterDexIds:
+      if pokemon and pokemon.PokedexId in range:
+        pokemon = None
+        break
+
+    count += 1
+    if count == 21:
+      raise Exception("Too many pokemon tries")
+
+  return GenerateSpawnPokemon(pokemon)
+
+def GetPokemonByRarity(rarity: int):
+  return pokemonda.GetPokemonByProperty([rarity], 'Rarity')
+
