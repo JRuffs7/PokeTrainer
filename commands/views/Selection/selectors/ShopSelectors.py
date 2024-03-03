@@ -61,7 +61,7 @@ class AmountChoice(discord.ui.Select):
 						value=f'{num}'
 					) for num in range(1, maximum)
 			]
-			super().__init__(options=options, max_values=1, min_values=1, placeholder='Choose Item')
+			super().__init__(options=options, max_values=1, min_values=1, placeholder='Choose Amount')
 	
 	async def callback(self, inter: discord.Interaction):
 		await self.view.AmountSelection(inter, self.values[0])

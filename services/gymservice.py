@@ -14,7 +14,7 @@ def GetNextTrainerGym(trainerBadges: list[int]):
 	badges.sort(key=lambda b: b.Id)
 	for b in badges:
 		if b.Id not in trainerBadges:
-			return next((GymLeader(g) for g in gymda.GetAllGymLeaders() if g.BadgeId == b.Id), None)
+			return next((g for g in gymda.GetAllGymLeaders() if g.BadgeId == b.Id), None)
 	return None
 
 

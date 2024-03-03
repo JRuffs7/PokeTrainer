@@ -62,7 +62,6 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
                       inter: Interaction,
                       search: app_commands.Choice[str],
                       filter: str):
-    print("POKEMON INFO called")
     if search.value == 'single':
       await self.PokeInfoSingle(inter, int(filter))
     elif search.value == 'color':
@@ -82,7 +81,6 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
 
   async def PokeInfoColor(self, inter: Interaction, color: str):
     pokemonList = pokemonservice.GetPokemonByColor(color.lower())
-    print(len(pokemonList))
     if not pokemonList:
       return await discordservice_pokemon.PrintPokeInfoResponse(inter, 1, [color])
     pokemonList.sort(key=lambda x: x.Name)
@@ -92,7 +90,6 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
 
   async def PokeInfoType(self, inter: Interaction, type: str):
     pokemonList = pokemonservice.GetPokemonByType(type.lower())
-    print(len(pokemonList))
     if not pokemonList:
       return await discordservice_pokemon.PrintPokeInfoResponse(inter, 2, [type])
     dexViewer = PokemonSearchView(inter, 10, pokemonList, f"List of {type} type Pokemon")

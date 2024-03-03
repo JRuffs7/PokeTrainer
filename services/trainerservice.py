@@ -39,8 +39,8 @@ def StartTrainer(pokemonId: int, userId: int, serverId: int):
     'Badges': [],
     'Health': 50,
     'Money': 500,
-    'PokeballList': { '1': 5, '2': 0, '3': 0, '4': 0 },
-    'PotionList': { '1': 0, '2': 0, '3': 0, '4': 0 },
+    'Pokeballs': { '1': 5, '2': 0, '3': 0, '4': 0 },
+    'Potions': { '1': 0, '2': 0, '3': 0, '4': 0 },
     'LastSpawnTime': None
   })
   trainer.OwnedPokemon.append(spawn)

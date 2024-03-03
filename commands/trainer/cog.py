@@ -122,7 +122,6 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
                    region: app_commands.Choice[int] | None, 
                    images: app_commands.Choice[int] | None,
                    user: Member | None):
-    print("BADGES called")
     trainer = trainerservice.GetTrainer(inter.guild_id, user.id if user else inter.user.id)
     if len(trainer.Badges) == 0:
       return await discordservice_trainer.PrintBadges(inter, user if user else inter.user)
@@ -241,7 +240,6 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
                         description="Choose a Pokemon to start your trainer!")
   @app_commands.autocomplete(pokemon=starter_autocomplete)
   async def starter(self, inter: Interaction, pokemon: int):
-    print("STARTER called")
     if pokemon not in [s['Value'] for s in self.starters]:
       return await discordservice_trainer.PrintStarter(inter, None)
     trainer = trainerservice.StartTrainer(pokemon, inter.user.id, inter.guild_id)
