@@ -91,34 +91,39 @@ def ModifyItemList(itemDict: dict[str, int], itemId: int, amount: int):
 
 #region Pokedex
 
-def GetPokedexList(trainer: Trainer, orderString: str, shiny: bool):
-  pokemonList = trainer.OwnedPokemon
-  if shiny == 2:
+def GetPokedexList(trainer: Trainer, orderString: str, shiny: int):
+  pokemonList = [p for p in trainer.OwnedPokemon]
+  if shiny == 1:
     pokemonList = [p for p in pokemonList if p.IsShiny]
 
   match orderString:
     case "height":
-      if shiny == 3:
+      if shiny == 2:
         pokemonList.sort(key=lambda x: (-x.IsShiny,x.Height))
       else:
         pokemonList.sort(key=lambda x: x.Height)
     case "dex":
-      if shiny == 3:
-        pokemonList.sort(key=lambda x: (-x.IsShiny,pokemonservice.GetPokemonById(x.Pokemon_Id).PokedexId))
+      if shiny == 2:
+        pokemonList.sort(key=lambda x: (-x.IsShiny,pokemonservice.GetPokemonById(x.Pokemon_Id).PokedexId,x.Pokemon_Id))
       else:
-        pokemonList.sort(key=lambda x: pokemonservice.GetPokemonById(x.Pokemon_Id).PokedexId)
+        pokemonList.sort(key=lambda x: (pokemonservice.GetPokemonById(x.Pokemon_Id).PokedexId,x.Pokemon_Id))
     case "name":
-      if shiny == 3:
+      if shiny == 2:
         pokemonList.sort(key=lambda x: (-x.IsShiny,pokemonservice.GetPokemonById(x.Pokemon_Id).Name))
       else:
         pokemonList.sort(key=lambda x: pokemonservice.GetPokemonById(x.Pokemon_Id).Name)
     case "weight":
-      if shiny == 3:
+      if shiny == 2:
         pokemonList.sort(key=lambda x: (-x.IsShiny,x.Weight))
       else:
         pokemonList.sort(key=lambda x: x.Weight)
+    case "level":
+      if shiny == 2:
+        pokemonList.sort(key=lambda x: (-x.IsShiny,-x.Level,x.Pokemon_Id))
+      else:
+        pokemonList.sort(key=lambda x: (-x.Level,x.Pokemon_Id))
     case _:
-      if shiny == 3:
+      if shiny == 2:
         pokemonList.sort(key=lambda x: -x.IsShiny)
   return pokemonList
 

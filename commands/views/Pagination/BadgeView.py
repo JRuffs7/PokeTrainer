@@ -10,8 +10,9 @@ from services.utility import discordservice
 
 class BadgeView(BasePaginationView):
 
-	def __init__(self, interaction: discord.Interaction, pageLength: int, title: str, data: list):
+	def __init__(self, interaction: discord.Interaction, targetUser: discord.Member, pageLength: int, title: str, data: list):
 		self.title = title
+		self.targetuser = targetUser
 		super(BadgeView, self).__init__(interaction, pageLength, data)
 
 	async def send(self):
@@ -28,7 +29,7 @@ class BadgeView(BasePaginationView):
 		if self.pageLength == 1:
 			embed.set_image(url=data[0].Sprite)
 		else:
-			embed.set_thumbnail(url=self.user.display_avatar.url)
+			embed.set_thumbnail(url=self.targetuser.display_avatar.url)
 		embed.set_footer(text=f"{self.currentPage}/{ceil(len(self.data)/self.pageLength)}")
 		await self.message.edit(embed=embed, view=self)
 

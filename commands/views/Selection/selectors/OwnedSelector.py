@@ -4,7 +4,7 @@ from models.Pokemon import Pokemon
 from services import pokemonservice
 
 class OwnedSelector(discord.ui.Select):
-    def __init__(self, data: list[Pokemon], max_select, defaultId = None):
+    def __init__(self, data: list[Pokemon], max_select: int = 25, defaultId = None):
         if len(data) > 25:
             data = data[:25]
         if len(data) < max_select:

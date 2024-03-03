@@ -16,13 +16,16 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 	@method_logger
 	@is_bot_admin
 	async def sync(self, ctx: commands.Context, serverOnly: int | None):
-		if serverOnly:
-			self.logger.info(f'Local Sync Command called by {ctx.author.display_name} in server {ctx.guild.name}')
-			await ctx.bot.tree.sync(guild=ctx.guild)
-		else:
-			self.logger.info(f'Global Sync Command called by {ctx.author.display_name} in server {ctx.guild.name}')
-			await ctx.bot.tree.sync()
-		self.logger.info(f'Syncing complete.')
+		try:
+			if serverOnly:
+				self.logger.info(f'Local Sync Command called by {ctx.author.display_name} in server {ctx.guild.name}')
+				await ctx.bot.tree.sync(guild=ctx.guild)
+			else:
+				self.logger.info(f'Global Sync Command called by {ctx.author.display_name} in server {ctx.guild.name}')
+				await ctx.bot.tree.sync()
+			self.logger.info(f'Syncing complete.')
+		except Exception as e:
+			self.logger.critical(f"{e}")
 
 	@commands.command(name="liveupdate")
 	@method_logger

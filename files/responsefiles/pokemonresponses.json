@@ -1,0 +1,22 @@
+{
+	"evolve": [
+		{
+			"Title": "Cannot Evolve",
+			"Body": "You have no Pokemon currently able to evolve. Level your Pokemon up by fighting gym leaders using **/gymbattle** and wild Pokemon using **/spawn**."
+		}
+	],
+	"pokeinfo": [
+		{
+			"Title": "No Results",
+			"Body": "The Pokemon you are trying to search for does not seem to exist. Try again using the given prompts and filters."
+		},
+		{
+			"Title": "No Results",
+			"Body": "There seem to be no Pokemon categorized under the color {0}. Try again using the given prompts and filters."
+		},
+		{
+			"Title": "No Results",
+			"Body": "There seem to be no Pokemon categorized under the type {0}. Try again using the given prompts and filters."
+		}
+	]
+}

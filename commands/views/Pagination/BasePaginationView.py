@@ -13,6 +13,14 @@ class BasePaginationView(discord.ui.View):
 		self.data = dataList
 		self.currentPage = 1
 		super().__init__(timeout=300)
+		if pageLength*2 == len(dataList):
+			self.first_page_button.disabled = True
+			self.last_page_button.disabled = True
+		elif pageLength >= len(dataList):
+			self.first_page_button.disabled = True
+			self.prev_button.disabled = True
+			self.next_button.disabled = True
+			self.last_page_button.disabled = True
 
 	def update_buttons(self):
 		if self.currentPage == 1:

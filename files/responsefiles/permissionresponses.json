@@ -11,7 +11,7 @@
 			"Body": "This server has not been registered with PokeTrainer! To do so, have an administrator run the **/register** command. Type **/help** for more explanation on how PokeTrainer is used."
 		}
 	],
-	"user": [
+	"trainer": [
 		{
 			"Title": "Trainer Missing!",
 			"Body": "You or the target user have not started a PokeTrainer journey yet! To do so, use the **/starter** command. Type **/help** for more explanation on how PokeTrainer is used."

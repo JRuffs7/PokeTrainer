@@ -394,5 +394,113 @@
 		"Name": "Ice",
 		"Generation": 9,
 		"Sprite": "https://imgur.com/EIF0Ikg.png"
+	},
+	{
+		"Id": 1000,
+		"Name": "Miku Psychic",
+		"Generation": 1000,
+		"Sprite": "https://imgur.com/anhGRsb.png"
+	},
+	{
+		"Id": 1001,
+		"Name": "Miku Grass",
+		"Generation": 1000,
+		"Sprite": "https://imgur.com/R4xu4bO.png"
+	},
+	{
+		"Id": 1002,
+		"Name": "Miku Fire",
+		"Generation": 1000,
+		"Sprite": "https://imgur.com/5ZBvOjM.png"
+	},
+	{
+		"Id": 1003,
+		"Name": "Miku Water",
+		"Generation": 1000,
+		"Sprite": "https://imgur.com/JacNIJF.png"
+	},
+	{
+		"Id": 1004,
+		"Name": "Miku Electric",
+		"Generation": 1000,
+		"Sprite": "https://imgur.com/XBbgeiX.png"
+	},
+	{
+		"Id": 1005,
+		"Name": "Miku Normal",
+		"Generation": 1000,
+		"Sprite": "https://imgur.com/JcaPmZv.png"
+	},
+	{
+		"Id": 1006,
+		"Name": "Miku Ice",
+		"Generation": 1000,
+		"Sprite": "https://imgur.com/FWXF8zZ.png"
+	},
+	{
+		"Id": 1007,
+		"Name": "Miku Rock",
+		"Generation": 1000,
+		"Sprite": "https://imgur.com/w0HxbBK.png"
+	},
+	{
+		"Id": 1008,
+		"Name": "Miku Ground",
+		"Generation": 1000,
+		"Sprite": "https://imgur.com/sR5iULy.png"
+	},
+	{
+		"Id": 1009,
+		"Name": "Miku Flying",
+		"Generation": 1000,
+		"Sprite": "https://imgur.com/UBUffpo.png"
+	},
+	{
+		"Id": 1010,
+		"Name": "Miku Fairy",
+		"Generation": 1000,
+		"Sprite": "https://imgur.com/7aApAdz.png"
+	},
+	{
+		"Id": 1011,
+		"Name": "Miku Bug",
+		"Generation": 1000,
+		"Sprite": "https://imgur.com/umdb03A.png"
+	},
+	{
+		"Id": 1012,
+		"Name": "Miku Poison",
+		"Generation": 1000,
+		"Sprite": "https://imgur.com/MyNkZuY.png"
+	},
+	{
+		"Id": 1013,
+		"Name": "Miku Ghost",
+		"Generation": 1000,
+		"Sprite": "https://imgur.com/1z4Cf5R.png"
+	},
+	{
+		"Id": 1014,
+		"Name": "Miku Dark",
+		"Generation": 1000,
+		"Sprite": "https://imgur.com/o2WqF1i.png"
+	},
+	{
+		"Id": 1015,
+		"Name": "Miku Steel",
+		"Generation": 1000,
+		"Sprite": "https://imgur.com/kZJ1kJh.png"
+	},
+	{
+		"Id": 1016,
+		"Name": "Miku Fighting",
+		"Generation": 1000,
+		"Sprite": "https://imgur.com/CDx1rJX.png"
+	},
+	{
+		"Id": 1017,
+		"Name": "Miku Dragon",
+		"Generation": 1000,
+		"Sprite": "https://imgur.com/WZMaDuu.png"
 	}
 ]

@@ -2,7 +2,7 @@ import discord
 from middleware.decorators import button_check
 
 from services import trainerservice, pokemonservice
-from models.Pokemon import PokemonData, Pokemon
+from models.Pokemon import Pokemon
 from models.Trainer import Trainer
 from commands.views.Selection.selectors.OwnedSelector import OwnedSelector
 from commands.views.Selection.selectors.EvolveSelector import EvolveSelector

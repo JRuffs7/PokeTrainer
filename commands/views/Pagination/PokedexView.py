@@ -1,3 +1,4 @@
+from math import ceil
 import discord
 
 from commands.views.Pagination.BasePaginationView import BasePaginationView
@@ -35,7 +36,7 @@ class PokedexView(BasePaginationView):
       embed.set_image(url=pokemonservice.GetPokemonImage(data[0]))
     else:
       embed.set_thumbnail(url=self.user.display_avatar.url)
-    embed.set_footer(text=f"{self.currentPage}/{int(len(self.data)/self.pageLength)}")
+    embed.set_footer(text=f"{self.currentPage}/{ceil(len(self.data)/self.pageLength)}")
     await self.message.edit(embed=embed, view=self)
 
   @discord.ui.button(label="|<", style=discord.ButtonStyle.green, custom_id="first")
@@ -71,4 +72,4 @@ class PokedexView(BasePaginationView):
 
   def ListEmbedDesc(self, data):
     newline = '\n'
-    return f"{newline.join([x.GetNameString() + f'(Lvl. {x.Level})' for x in data])}"
+    return f"{newline.join([pokemonservice.GetPokemonDisplayName(x) + f' (Lvl. {x.Level})' for x in data])}"

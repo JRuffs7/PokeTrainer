@@ -4,10 +4,10 @@ from typing import List
 from commands.views.Pagination.PokemonSearchView import PokemonSearchView
 import discordbot
 
-from commands.views.EvolveView import EvolveView
+from commands.views.Selection.EvolveView import EvolveView
 from middleware.decorators import method_logger, trainer_check
 from services import pokemonservice, typeservice, trainerservice
-from services.utility import discordservice
+from services.utility import discordservice_pokemon
 
 
 class PokemonCommands(commands.Cog, name="PokemonCommands"):
@@ -74,7 +74,7 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
   async def PokeInfoSingle(self, inter: Interaction, pokemonId: int):
     pokemonList = pokemonservice.GeneratePokemonSearchGroup(pokemonId)
     if not pokemonList:
-      return await discordservice.SendErrorMessage(inter, 'pokeinfo')
+      return await discordservice_pokemon.PrintPokeInfoResponse(inter, 0, [])
     dexViewer = PokemonSearchView(inter, 1, pokemonList, 'Pokemon Search')
     dexViewer.data = pokemonList
     await dexViewer.send()
@@ -84,7 +84,7 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
     pokemonList = pokemonservice.GetPokemonByColor(color.lower())
     print(len(pokemonList))
     if not pokemonList:
-      return await discordservice.SendErrorMessage(inter, 'pokeinfo')
+      return await discordservice_pokemon.PrintPokeInfoResponse(inter, 1, [color])
     pokemonList.sort(key=lambda x: x.Name)
     dexViewer = PokemonSearchView(inter, 10, pokemonList, f"List of {color} Pokemon")
     await dexViewer.send()
@@ -94,7 +94,7 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
     pokemonList = pokemonservice.GetPokemonByType(type.lower())
     print(len(pokemonList))
     if not pokemonList:
-      return await discordservice.SendErrorMessage(inter, 'pokeinfo')
+      return await discordservice_pokemon.PrintPokeInfoResponse(inter, 2, [type])
     dexViewer = PokemonSearchView(inter, 10, pokemonList, f"List of {type} type Pokemon")
     await dexViewer.send()
 
@@ -129,7 +129,7 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
       pokeList = [p for p in pokeList if p.Id == pokemon]
 
     if not pokeList:
-      return await discordservice.SendErrorMessage(inter, 'evolve')
+      return await discordservice_pokemon.PrintEvolveResponse(inter, 0)
 
     evolveView = EvolveView(inter, trainer, pokeList)
     return await evolveView.send()
