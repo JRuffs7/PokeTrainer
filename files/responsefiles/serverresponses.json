@@ -1,0 +1,34 @@
+{
+	"register": [
+		{
+			"Title": "Server Registered",
+			"Body": "Server Name: {0}\nEvent/Announcement Channel: <#{1}>\nCurrent Event: {2}"
+		},
+		{
+			"Title": "Register Error",
+			"Body": "There was an error while registering your server with PokeTrainer. Please try again or contact us."
+		}
+	],
+	"server": [
+		{
+			"Title": "Server Details",
+			"Body": "Server Name: {0}\nEvent/Announcement Channel: <#{1}>\nCurrent Event: {2}"
+		},
+		{
+			"Title": "Server Details",
+			"Body": "Server is not registered. Use **/register** command. Use **/help register** for more information."
+		}
+	],
+	"swapchannel": [
+		{
+			"Title": "Channel Changed",
+			"Body": "Any events or public messages from PokeTrainer will now show up in this channel."
+		}
+	],
+	"unregister": [
+		{
+			"Title": "Server Unregistered",
+			"Body": "Events and announcements will now be stop being sent to your server. To begin again, use the **/register** command.\n\nUsers may still interact with PokeTrainer while it is present in the server."
+		}
+	]
+}

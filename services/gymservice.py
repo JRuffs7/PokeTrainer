@@ -1,6 +1,6 @@
 from dataaccess import gymda
-from services import pokemonservice
-from models.Pokemon import Pokemon, PokedexEntry
+from models.Trainer import Trainer
+from services import pokemonservice, trainerservice
 from models.Gym import GymLeader
 
 #region Gym Leaders
@@ -14,36 +14,40 @@ def GetNextTrainerGym(trainerBadges: list[int]):
 	badges.sort(key=lambda b: b.Id)
 	for b in badges:
 		if b.Id not in trainerBadges:
-			return next((g for g in GetAllGymLeaders() if g.BadgeId == b.Id),None)
+			return gymda.GetGymLeaderByBadgeId(b.Id)
 	return None
 
 
-def GetGymLeaderTeam(leader: GymLeader):
-	return [p for p in [pokemonservice.GetPokemonById(id) for id in leader.Team] if p]
+def GetBattleTeam(team: list[int]):
+	return [p for p in [pokemonservice.GetPokemonById(id) for id in team] if p]
 
 
-def GymLeaderFight(trainerTeam: list[PokedexEntry], leaderTeam: list[Pokemon]):
+def GymLeaderFight(trainer: Trainer, leader: GymLeader):
+	trainerTeam = [{ 'Pokemon': pokemonservice.GetPokemonById(t.Pokemon_Id), 'Id': t.Id } for t in trainerservice.GetTeam(trainer)]
+	leaderTeam = GetBattleTeam(leader.Team)
 	fightResults: list[int] = []
 	expList: dict[str, int] = {}
 	trainerInd = leaderInd = 0
-	while (trainerInd < len(trainerTeam)) and (leaderInd < len(leaderTeam)):
-		trainerFighter = pokemonservice.GetPokemonById(trainerTeam[trainerInd].Pokemon.Pokemon_Id)
-		if not trainerFighter:
-			fightResults.append(-1)
-			break
+	while trainerInd < len(trainerTeam) and leaderInd < len(leaderTeam):
+		trainerFighter = trainerTeam[trainerInd]
+		leaderFighter = leaderTeam[leaderInd]
+		fight = pokemonservice.PokemonFight(trainerFighter['Pokemon'], leaderFighter, True)
+		fightResults.append(fight)
+		if fight == 1:
+			expList[trainerTeam[trainerInd]['Id']] = 10*leaderTeam[leaderInd].Rarity
+			leaderInd += 1
 		else:
-			fight = pokemonservice.PokemonFight(trainerFighter, leaderTeam[leaderInd], True)
-			fightResults.append(fight)
-			if fight == 1:
-				expList[trainerTeam[trainerInd].Id] = 10*leaderTeam[leaderInd].Rarity
-				leaderInd += 1
-			else:
-				trainerInd += 1
+			trainerInd += 1
 
-	if -1 not in fightResults:
-		for i in expList:
-			next(t for t in trainerTeam if t.Id == i).GainExp(expList[i])
+	for pId in expList:
+		tPokemon = next(p for p in trainer.OwnedPokemon if pId == p.Id)
+		tData = next(d['Pokemon'] for d in trainerTeam if d['Id'] == tPokemon.Id)
+		pokemonservice.AddExperience(tPokemon, tData.Rarity, expList[pId])
 	return fightResults
+
+
+def GetGymLeaderByBadge(badgeId: int):
+	return next(l for l in GetAllGymLeaders() if l.BadgeId == badgeId)
 
 #endregion
 

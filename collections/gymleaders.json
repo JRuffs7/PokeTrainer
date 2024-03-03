@@ -2,6 +2,7 @@
   {
     "Name": "Brock",
     "Generation": 1,
+    "MainType": "Rock",
     "Sprite": "https://imgur.com/7CspCJP.png",
     "Team": [
       74,
@@ -13,6 +14,7 @@
   {
     "Name": "Misty",
     "Generation": 1,
+    "MainType": "Water",
     "Sprite": "https://imgur.com/lKXU56r.png",
     "Team": [
       120,
@@ -24,6 +26,7 @@
   {
     "Name": "Lt. Surge",
     "Generation": 1,
+    "MainType": "Electric",
     "Sprite": "https://imgur.com/DkjvZ6M.png",
     "Team": [
       25,
@@ -36,6 +39,7 @@
   {
     "Name": "Erika",
     "Generation": 1,
+    "MainType": "Grass",
     "Sprite": "https://imgur.com/2yLQus2.png",
     "Team": [
       45,
@@ -48,6 +52,7 @@
   {
     "Name": "Koga",
     "Generation": 1,
+    "MainType": "Poison",
     "Sprite": "https://imgur.com/e1hReA9.png",
     "Team": [
       89,
@@ -61,6 +66,7 @@
   {
     "Name": "Sabrina",
     "Generation": 1,
+    "MainType": "Psychic",
     "Sprite": "https://imgur.com/EfJuyZI.png",
     "Team": [
       49,
@@ -74,6 +80,7 @@
   {
     "Name": "Blaine",
     "Generation": 1,
+    "MainType": "Fire",
     "Sprite": "https://imgur.com/yGBKKzx.png",
     "Team": [
       58,
@@ -87,6 +94,7 @@
   {
     "Name": "Giovanni",
     "Generation": 1,
+    "MainType": "Ground",
     "Sprite": "https://imgur.com/dOFTbdS.png",
     "Team": [
       31,
@@ -101,6 +109,7 @@
   {
     "Name": "Falkner",
     "Generation": 2,
+    "MainType": "Flying",
     "Sprite": "https://imgur.com/9TMEaoM.png",
     "Team": [
       16,
@@ -112,6 +121,7 @@
   {
     "Name": "Bugsy",
     "Generation": 2,
+    "MainType": "Bug",
     "Sprite": "https://imgur.com/GvutJih.png",
     "Team": [
       11,
@@ -124,6 +134,7 @@
   {
     "Name": "Whitney",
     "Generation": 2,
+    "MainType": "Normal",
     "Sprite": "https://imgur.com/lUMcnOW.png",
     "Team": [
       35,
@@ -135,6 +146,7 @@
   {
     "Name": "Morty",
     "Generation": 2,
+    "MainType": "Ghost",
     "Sprite": "https://imgur.com/1FObR2u.png",
     "Team": [
       92,
@@ -148,6 +160,7 @@
   {
     "Name": "Chuck",
     "Generation": 2,
+    "MainType": "Fighting",
     "Sprite": "https://imgur.com/hGo0bJA.png",
     "Team": [
       57,
@@ -159,6 +172,7 @@
   {
     "Name": "Jasmine",
     "Generation": 2,
+    "MainType": "Steel",
     "Sprite": "https://imgur.com/jHel83B.png",
     "Team": [
       81,
@@ -171,6 +185,7 @@
   {
     "Name": "Pryce",
     "Generation": 2,
+    "MainType": "Ice",
     "Sprite": "https://imgur.com/N8uwoFl.png",
     "Team": [
       86,
@@ -183,11 +198,12 @@
   {
     "Name": "Clair",
     "Generation": 2,
+    "MainType": "Dragon",
     "Sprite": "https://imgur.com/S3kuW1D.png",
     "Team": [
       148,
-      230,
       148,
+      230,
       148
     ],
     "BadgeId": 16,
@@ -196,6 +212,7 @@
   {
     "Name": "Roxanne",
     "Generation": 3,
+    "MainType": "Rock",
     "Sprite": "https://imgur.com/PkAT2S2.png",
     "Team": [
       74,
@@ -207,6 +224,7 @@
   {
     "Name": "Brawly",
     "Generation": 3,
+    "MainType": "Fighting",
     "Sprite": "https://imgur.com/6rk03b9.png",
     "Team": [
       66,
@@ -218,6 +236,7 @@
   {
     "Name": "Wattson",
     "Generation": 3,
+    "MainType": "Electric",
     "Sprite": "https://imgur.com/3kDIg8c.png",
     "Team": [
       81,
@@ -230,6 +249,7 @@
   {
     "Name": "Flannery",
     "Generation": 3,
+    "MainType": "Fire",
     "Sprite": "https://imgur.com/Z9xmB4G.png",
     "Team": [
       218,
@@ -242,6 +262,7 @@
   {
     "Name": "Norman",
     "Generation": 3,
+    "MainType": "Normal",
     "Sprite": "https://imgur.com/qHAdyEC.png",
     "Team": [
       288,
@@ -254,6 +275,7 @@
   {
     "Name": "Winona",
     "Generation": 3,
+    "MainType": "Flying",
     "Sprite": "https://imgur.com/VUQhtxA.png",
     "Team": [
       227,
@@ -267,6 +289,7 @@
   {
     "Name": "Tate & Liza",
     "Generation": 3,
+    "MainType": "Psychic",
     "Sprite": "https://imgur.com/ZMrt8ol.png",
     "Team": [
       337,
@@ -278,6 +301,7 @@
   {
     "Name": "Wallace",
     "Generation": 3,
+    "MainType": "Water",
     "Sprite": "https://imgur.com/vsHk8DX.png",
     "Team": [
       119,
@@ -292,6 +316,7 @@
   {
     "Name": "Roark",
     "Generation": 4,
+    "MainType": "Rock",
     "Sprite": "https://imgur.com/trWHQHF.png",
     "Team": [
       74,
@@ -304,6 +329,7 @@
   {
     "Name": "Gardenia",
     "Generation": 4,
+    "MainType": "Grass",
     "Sprite": "https://imgur.com/136ObJd.png",
     "Team": [
       387,
@@ -316,6 +342,7 @@
   {
     "Name": "Maylene",
     "Generation": 4,
+    "MainType": "Fighting",
     "Sprite": "https://imgur.com/sMviNOM.png",
     "Team": [
       67,
@@ -328,6 +355,7 @@
   {
     "Name": "Crasher Wake",
     "Generation": 4,
+    "MainType": "Water",
     "Sprite": "https://imgur.com/s1rENxq.png",
     "Team": [
       130,
@@ -340,6 +368,7 @@
   {
     "Name": "Fantina",
     "Generation": 4,
+    "MainType": "Ghost",
     "Sprite": "https://imgur.com/iZjIH9L.png",
     "Team": [
       94,
@@ -352,6 +381,7 @@
   {
     "Name": "Byron",
     "Generation": 4,
+    "MainType": "Steel",
     "Sprite": "https://imgur.com/kQp2ZYp.png",
     "Team": [
       208,
@@ -364,6 +394,7 @@
   {
     "Name": "Candice",
     "Generation": 4,
+    "MainType": "Ice",
     "Sprite": "https://imgur.com/bt012wp.png",
     "Team": [
       215,
@@ -377,6 +408,7 @@
   {
     "Name": "Volkner",
     "Generation": 4,
+    "MainType": "Electric",
     "Sprite": "https://imgur.com/uRFVrw8.png",
     "Team": [
       26,
@@ -390,6 +422,7 @@
   {
     "Name": "Chili, Cilan, Cress",
     "Generation": 5,
+    "MainType": "Fire/Grass/Water",
     "Sprite": "https://imgur.com/HYSAS3q.png",
     "Team": [
       506,
@@ -403,6 +436,7 @@
   {
     "Name": "Lenora",
     "Generation": 5,
+    "MainType": "Normal",
     "Sprite": "https://imgur.com/XNSdadk.png",
     "Team": [
       505,
@@ -414,6 +448,7 @@
   {
     "Name": "Burgh",
     "Generation": 5,
+    "MainType": "Bug",
     "Sprite": "https://imgur.com/of1eWxH.png",
     "Team": [
       542,
@@ -426,6 +461,7 @@
   {
     "Name": "Elesa",
     "Generation": 5,
+    "MainType": "Electric",
     "Sprite": "https://imgur.com/PB0kqgd.png",
     "Team": [
       523,
@@ -438,6 +474,7 @@
   {
     "Name": "Clay",
     "Generation": 5,
+    "MainType": "Ground",
     "Sprite": "https://imgur.com/nbLVZg3.png",
     "Team": [
       530,
@@ -450,6 +487,7 @@
   {
     "Name": "Skyla",
     "Generation": 5,
+    "MainType": "Flying",
     "Sprite": "https://imgur.com/PQnvl3G.png",
     "Team": [
       521,
@@ -462,6 +500,7 @@
   {
     "Name": "Brycen",
     "Generation": 5,
+    "MainType": "Ice",
     "Sprite": "https://imgur.com/hkvM2Ho.png",
     "Team": [
       583,
@@ -474,6 +513,7 @@
   {
     "Name": "Iris",
     "Generation": 5,
+    "MainType": "Dragon",
     "Sprite": "https://imgur.com/WioOPnB.png",
     "Team": [
       611,
@@ -486,6 +526,7 @@
   {
     "Name": "Viola",
     "Generation": 6,
+    "MainType": "Bug",
     "Sprite": "https://imgur.com/TPKTWeR.png",
     "Team": [
       283,
@@ -497,6 +538,7 @@
   {
     "Name": "Grant",
     "Generation": 6,
+    "MainType": "Rock",
     "Sprite": "https://imgur.com/qmvjtf3.png",
     "Team": [
       696,
@@ -508,6 +550,7 @@
   {
     "Name": "Korrina",
     "Generation": 6,
+    "MainType": "Fighting",
     "Sprite": "https://imgur.com/GigyhxJ.png",
     "Team": [
       67,
@@ -520,6 +563,7 @@
   {
     "Name": "Ramos",
     "Generation": 6,
+    "MainType": "Grass",
     "Sprite": "https://imgur.com/WqQlOFs.png",
     "Team": [
       70,
@@ -532,6 +576,7 @@
   {
     "Name": "Clemont",
     "Generation": 6,
+    "MainType": "Electric",
     "Sprite": "https://imgur.com/eIhMsEE.png",
     "Team": [
       82,
@@ -544,6 +589,7 @@
   {
     "Name": "Valerie",
     "Generation": 6,
+    "MainType": "Fairy",
     "Sprite": "https://imgur.com/d9sYWoK.png",
     "Team": [
       122,
@@ -556,6 +602,7 @@
   {
     "Name": "Olympia",
     "Generation": 6,
+    "MainType": "Psychic",
     "Sprite": "https://imgur.com/cyMoq3w.png",
     "Team": [
       199,
@@ -568,6 +615,7 @@
   {
     "Name": "Wulfric",
     "Generation": 6,
+    "MainType": "Ice",
     "Sprite": "https://imgur.com/4xqHKUB.png",
     "Team": [
       460,
@@ -580,6 +628,7 @@
   {
     "Name": "Milo",
     "Generation": 8,
+    "MainType": "Grass",
     "Sprite": "https://imgur.com/lug0mpC.png",
     "Team": [
       829,
@@ -591,6 +640,7 @@
   {
     "Name": "Nessa",
     "Generation": 8,
+    "MainType": "Water",
     "Sprite": "https://imgur.com/XeZpSAn.png",
     "Team": [
       118,
@@ -603,6 +653,7 @@
   {
     "Name": "Kabu",
     "Generation": 8,
+    "MainType": "Fire",
     "Sprite": "https://imgur.com/KHSsY5U.png",
     "Team": [
       38,
@@ -615,6 +666,7 @@
   {
     "Name": "Bea",
     "Generation": 8,
+    "MainType": "Fighting",
     "Sprite": "https://imgur.com/eFNLrq9.png",
     "Team": [
       68,
@@ -628,6 +680,7 @@
   {
     "Name": "Allister",
     "Generation": 8,
+    "MainType": "Ghost",
     "Sprite": "https://imgur.com/Hfc33hn.png",
     "Team": [
       94,
@@ -641,12 +694,13 @@
   {
     "Name": "Opal",
     "Generation": 8,
+    "MainType": "Fairy",
     "Sprite": "https://imgur.com/TV0yquq.png",
     "Team": [
       303,
       468,
       869,
-      1167
+      1203
     ],
     "BadgeId": 54,
     "Reward": 400
@@ -654,6 +708,7 @@
   {
     "Name": "Gordie",
     "Generation": 8,
+    "MainType": "Rock",
     "Sprite": "https://imgur.com/o2ARMHG.png",
     "Team": [
       213,
@@ -667,12 +722,13 @@
   {
     "Name": "Melony",
     "Generation": 8,
+    "MainType": "Ice",
     "Sprite": "https://imgur.com/6iOUt3i.png",
     "Team": [
       131,
       873,
       875,
-      1177
+      1213
     ],
     "BadgeId": 56,
     "Reward": 400
@@ -680,6 +736,7 @@
   {
     "Name": "Marnie",
     "Generation": 8,
+    "MainType": "Dark",
     "Sprite": "https://imgur.com/SVUtJiS.png",
     "Team": [
       454,
@@ -694,6 +751,7 @@
   {
     "Name": "Raihan",
     "Generation": 8,
+    "MainType": "Dragon",
     "Sprite": "https://imgur.com/x0B60kt.png",
     "Team": [
       330,
@@ -707,6 +765,7 @@
   {
     "Name": "Katy",
     "Generation": 9,
+    "MainType": "Bug",
     "Sprite": "https://imgur.com/BrUUmLq.png",
     "Team": [
       216,
@@ -719,6 +778,7 @@
   {
     "Name": "Brassius",
     "Generation": 9,
+    "MainType": "Grass",
     "Sprite": "https://imgur.com/qdzITwv.png",
     "Team": [
       185,
@@ -731,6 +791,7 @@
   {
     "Name": "Iono",
     "Generation": 9,
+    "MainType": "Electric",
     "Sprite": "https://imgur.com/6IkKQgZ.png",
     "Team": [
       404,
@@ -744,6 +805,7 @@
   {
     "Name": "Kofu",
     "Generation": 9,
+    "MainType": "Water",
     "Sprite": "https://imgur.com/xTqUlgM.png",
     "Team": [
       740,
@@ -756,6 +818,7 @@
   {
     "Name": "Larry",
     "Generation": 9,
+    "MainType": "Normal",
     "Sprite": "https://imgur.com/fG70ipA.png",
     "Team": [
       398,
@@ -768,6 +831,7 @@
   {
     "Name": "Ryme",
     "Generation": 9,
+    "MainType": "Ghost",
     "Sprite": "https://imgur.com/d7EGjM0.png",
     "Team": [
       354,
@@ -781,6 +845,7 @@
   {
     "Name": "Tulip",
     "Generation": 9,
+    "MainType": "Psychic",
     "Sprite": "https://imgur.com/G5z68PN.png",
     "Team": [
       282,
@@ -794,6 +859,7 @@
   {
     "Name": "Grusha",
     "Generation": 9,
+    "MainType": "Ice",
     "Sprite": "https://imgur.com/rAhq2ed.png",
     "Team": [
       334,
@@ -803,5 +869,290 @@
     ],
     "BadgeId": 66,
     "Reward": 400
+  },
+  {
+    "Name": "Miku Psychic",
+    "Generation": 1000,
+    "MainType": "Psychic",
+    "Sprite": "https://imgur.com/qAat2ZF.png",
+    "Team": [
+      178,
+      376,
+      454,
+      475,
+      648,
+      1201
+    ],
+    "BadgeId": 1000,
+    "Reward": 1000
+  },
+  {
+    "Name": "Miku Grass",
+    "Generation": 1000,
+    "MainType": "Grass",
+    "Sprite": "https://imgur.com/OEFCL75.png",
+    "Team": [
+      272,
+      407,
+      709,
+      787,
+      812,
+      842
+    ],
+    "BadgeId": 1001,
+    "Reward": 1000
+  },
+  {
+    "Name": "Miku Fire",
+    "Generation": 1000,
+    "MainType": "Fire",
+    "Sprite": "https://imgur.com/qAat2ZF.png",
+    "Team": [
+      229,
+      244,
+      392,
+      758,
+      776,
+      909
+    ],
+    "BadgeId": 1002,
+    "Reward": 1000
+  },
+  {
+    "Name": "Miku Water",
+    "Generation": 1000,
+    "MainType": "Water",
+    "Sprite": "https://imgur.com/g8BH7aa.png",
+    "Team": [
+      171,
+      365,
+      484,
+      730,
+      748,
+      768
+    ],
+    "BadgeId": 1003,
+    "Reward": 1000
+  },
+  {
+    "Name": "Miku Electric",
+    "Generation": 1000,
+    "MainType": "Electric",
+    "Sprite": "https://imgur.com/u239T4L.png",
+    "Team": [
+      462,
+      479,
+      644,
+      695,
+      738,
+      1142
+    ],
+    "BadgeId": 1004,
+    "Reward": 1000
+  },
+  {
+    "Name": "Miku Normal",
+    "Generation": 1000,
+    "MainType": "Normal",
+    "Sprite": "https://imgur.com/YMMQZlx.png",
+    "Team": [
+      40,
+      441,
+      660,
+      668
+    ],
+    "BadgeId": 1005,
+    "Reward": 1000
+  },
+  {
+    "Name": "Miku Ice",
+    "Generation": 1000,
+    "MainType": "Ice",
+    "Sprite": "https://imgur.com/ifafGHC.png",
+    "Team": [
+      124,
+      131,
+      473,
+      478,
+      646,
+      740
+    ],
+    "BadgeId": 1006,
+    "Reward": 1000
+  },
+  {
+    "Name": "Miku Rock",
+    "Generation": 1000,
+    "MainType": "Rock",
+    "Sprite": "https://imgur.com/4FVD8ez.png",
+    "Team": [
+      142,
+      213,
+      306,
+      337,
+      639,
+      699
+    ],
+    "BadgeId": 1007,
+    "Reward": 1000
+  },
+  {
+    "Name": "Miku Ground",
+    "Generation": 1000,
+    "MainType": "Ground",
+    "Sprite": "https://imgur.com/sMLAobn.png",
+    "Team": [
+      31,
+      208,
+      330,
+      389,
+      645,
+      770
+    ],
+    "BadgeId": 1008,
+    "Reward": 1000
+  },
+  {
+    "Name": "Miku Flying",
+    "Generation": 1000,
+    "MainType": "Flying",
+    "Sprite": "https://imgur.com/yoSTnFI.png",
+    "Team": [
+      18,
+      334,
+      823,
+      960,
+      971,
+      1082
+    ],
+    "BadgeId": 1009,
+    "Reward": 1000
+  },
+  {
+    "Name": "Miku Fairy",
+    "Generation": 1000,
+    "MainType": "Fairy",
+    "Sprite": "https://imgur.com/MRS6bye.png",
+    "Team": [
+      39,
+      716,
+      861,
+      957,
+      1004,
+      1135
+    ],
+    "BadgeId": 1010,
+    "Reward": 1000
+  },
+  {
+    "Name": "Miku Bug",
+    "Generation": 1000,
+    "MainType": "Bug",
+    "Sprite": "https://imgur.com/SuZrlKd.png",
+    "Team": [
+      348,
+      402,
+      596,
+      649,
+      752,
+      851
+    ],
+    "BadgeId": 1011,
+    "Reward": 1000
+  },
+  {
+    "Name": "Miku Poison",
+    "Generation": 1000,
+    "MainType": "Poison",
+    "Sprite": "https://imgur.com/PgDuCzm.png",
+    "Team": [
+      34,
+      45,
+      169,
+      435,
+      849,
+      1023
+    ],
+    "BadgeId": 1012,
+    "Reward": 1000
+  },
+  {
+    "Name": "Miku Ghost",
+    "Generation": 1000,
+    "MainType": "Ghost",
+    "Sprite": "https://imgur.com/CZPmEkZ.png",
+    "Team": [
+      429,
+      487,
+      609,
+      681,
+      778,
+      935
+    ],
+    "BadgeId": 1013,
+    "Reward": 1000
+  },
+  {
+    "Name": "Miku Dark",
+    "Generation": 1000,
+    "MainType": "Dark",
+    "Sprite": "https://imgur.com/fB4eWfB.png",
+    "Team": [
+      430,
+      491,
+      553,
+      658,
+      862,
+      1144
+    ],
+    "BadgeId": 1014,
+    "Reward": 1000
+  },
+  {
+    "Name": "Miku Steel",
+    "Generation": 1000,
+    "MainType": "Steel",
+    "Sprite": "https://imgur.com/vx8GJbf.png",
+    "Team": [
+      385,
+      395,
+      437,
+      448,
+      998
+    ],
+    "BadgeId": 1015,
+    "Reward": 1000
+  },
+  {
+    "Name": "Miku Fighting",
+    "Generation": 1000,
+    "MainType": "Fighting",
+    "Sprite": "https://imgur.com/HJhtXOX.png",
+    "Team": [
+      62,
+      286,
+      760,
+      865,
+      977,
+      1228
+    ],
+    "BadgeId": 1016,
+    "Reward": 1000
+  },
+  {
+    "Name": "Miku Dragon",
+    "Generation": 1000,
+    "MainType": "Dragon",
+    "Sprite": "https://imgur.com/X9AUIiG.png",
+    "Team": [
+      384,
+      483,
+      643,
+      888,
+      893,
+      1006
+    ],
+    "BadgeId": 1017,
+    "Reward": 1000
   }
 ]

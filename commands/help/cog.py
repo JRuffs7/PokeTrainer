@@ -1,9 +1,10 @@
 from discord import app_commands, Interaction
 from discord.ext import commands
 
-from globals import ErrorColor, HelpColor
+from globals import HelpColor
+from middleware.decorators import method_logger
 from services import helpservice
-from services.utility import discordservice
+from services.utility import discordservice, discordservice_help
 
 
 class HelpCommands(commands.Cog, name="HelpCommands"):
@@ -32,35 +33,27 @@ class HelpCommands(commands.Cog, name="HelpCommands"):
       name="help",
       description="Sends a full help doc as a DM, or single command in the channel")
   @app_commands.autocomplete(command=command_autofill)
+  @method_logger
   async def help(self, 
                  inter: Interaction, 
                  command: str | None):
     print("HELP called")
-    try:
-      if not command:
-        helpList = helpservice.BuildFullHelp()
+    if not command:
+      helpList = helpservice.BuildFullHelp()
 
-        su = discordservice.CreateEmbed("PokeTrainer Help", helpList[0], HelpColor)
-        sp = discordservice.CreateEmbed("", helpList[1], HelpColor)
-        tr = discordservice.CreateEmbed("", helpList[2], HelpColor)
-        cm = discordservice.CreateEmbed("", helpList[3], HelpColor)
+      su = discordservice.CreateEmbed("PokeTrainer Help", helpList[0], HelpColor)
+      sp = discordservice.CreateEmbed("", helpList[1], HelpColor)
+      tr = discordservice.CreateEmbed("", helpList[2], HelpColor)
+      cm = discordservice.CreateEmbed("", helpList[3], HelpColor)
 
-        await discordservice.SendDMs(inter, [su, sp])
-        await discordservice.SendDMs(inter, [tr, cm])
-        return await discordservice.SendMessage(
-            inter, "Help DM sent.",
-            "For more information on specific commands, use **/help** and specify a command",
-            HelpColor, True)
-      else:
-        helpComm = helpservice.BuildCommandHelp(command, inter.user.guild_permissions.administrator)
-        if not helpComm:
-          return await discordservice.SendMessage(
-            inter, "Invalid Command",
-            f"The {command.lower()} command either does not exist or is restricted to administrators only. To find commands you may have access to, use **/help** for a full list.",
-            ErrorColor, True)
-        return await discordservice.SendMessage(inter, f"{command.lower()}", helpComm.HelpString, HelpColor, True)
-    except Exception as e:
-      print(f"{e}")
+      await discordservice.SendDMs(inter, [su, sp])
+      await discordservice.SendDMs(inter, [tr, cm])
+      return await discordservice_help.PrintHelpResponse(inter, None)
+    else:
+      helpComm = helpservice.BuildCommandHelp(command, inter.user.guild_permissions.administrator)
+      if not helpComm:
+        return await discordservice_help.PrintHelpResponse(inter, command.lower())
+      return await discordservice.SendMessage(inter, f"{command.lower()}", helpComm.HelpString, HelpColor, True)
       
 
 

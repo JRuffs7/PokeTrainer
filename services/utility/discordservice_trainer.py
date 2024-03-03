@@ -9,20 +9,20 @@ responseFile = "files/responsefiles/trainerresponses.json"
 
 async def PrintTrainer(interaction: Interaction, trainer: Trainer, targetUser: Member):
 	#Stats Section
-	uniquePkmn = len(set([x.PokedexId for x in trainer.OwnedPokemon]))
 	totalPkmn = pokemonservice.GetPokemonCount()
 	totalBadges = len(gymservice.GetAllBadges())
 
-	stats = f"__Trainer Stats__\nHP: {trainer.Health}\nPokedex: {uniquePkmn}/{totalPkmn} ({round((uniquePkmn*100)/totalPkmn)}%)\nPokemon Caught: {len(trainer.OwnedPokemon)}\nShiny Count: {len([x for x in trainer.OwnedPokemon if x.Pokemon.IsShiny])}\nGym Badges: {len(trainer.Badges)}/{totalBadges}"
+	stats = f"__Trainer Stats__\nHP: {trainer.Health}\nPokedex: {len(trainer.Pokedex)}/{totalPkmn} ({round((len(trainer.Pokedex)*100)/totalPkmn)}%)\nPokemon Caught: {len(trainer.OwnedPokemon)}\nShiny Count: {len([x for x in trainer.OwnedPokemon if x.IsShiny])}\nGym Badges: {len(trainer.Badges)}/{totalBadges}"
 
 	#Inventory Section
 	items = trainerservice.GetInventory(trainer)
 	pkblList = items[1]
 	ptnList = items[2]
 	newline = '\n'
-	pokeballString = f"\n{newline.join([f'{i}: {pkblList[i]}' for i in pkblList])}" if len(pkblList) > 0 else ""
-	potionString = f"\n{newline.join([f'{i}: {ptnList[i]}' for i in ptnList])}" if len(ptnList) > 0 else ""
-	inventory = f"__Inventory__{pokeballString}{potionString}\n\n${trainer.Money}" if interaction.user.id == targetUser.id else ""
+	pokeballString = f"\n{newline.join([f'{i}: {pkblList[i]}' for i in pkblList])}" if len(pkblList) else ""
+	breakStr = f"\n" if len(pkblList) and len(ptnList) else ""
+	potionString = f"\n{newline.join([f'{i}: {ptnList[i]}' for i in ptnList])}" if len(ptnList) else ""
+	inventory = f"__Inventory__{pokeballString}{breakStr}{potionString}\n\n${trainer.Money}" if interaction.user.id == targetUser.id else ""
 
 	embed = discordservice.CreateEmbed(
 			f"{targetUser.display_name}'s Trainer Info", 
@@ -42,23 +42,23 @@ async def PrintUsePotion(interaction: Interaction, potion: Potion, result: tuple
 		params=[potion.Name, result[1]],
 		eph=True)
 
-async def PrintModifyTeam(interaction: Interaction, name: str):
+async def PrintModifyTeam(interaction: Interaction, response: int, pkmnId: str):
 	return await discordservice.SendCommandResponse(
 		interaction=interaction, 
 		filename=responseFile, 
 		command='modifyteam', 
-		responseInd=0, 
+		responseInd=response, 
 		color=TrainerColor, 
-		params=[name],
+		params=[pokemonservice.GetPokemonById(pkmnId).Name] if pkmnId else [],
 		eph=True)
 
 async def PrintStarter(interaction: Interaction, trainer: Trainer):
 	if trainer:
 		embed = discordservice.CreateEmbed(
 				f"{interaction.user.display_name}'s Journey Begins!",
-				f"Starter: {trainer.OwnedPokemon[0].GetNameString()}\nStarting Money: ${trainer.Money}\nStarting Pokeballs: 5",
+				f"Starter: {pokemonservice.GetPokemonDisplayName(trainer.OwnedPokemon[0])}\nStarting Money: ${trainer.Money}\nStarting Pokeballs: 5",
 				TrainerColor)
-		embed.set_image(url=trainer.OwnedPokemon[0].Sprite)
+		embed.set_image(url=pokemonservice.GetPokemonImage(trainer.OwnedPokemon[0]))
 		return await discordservice.SendEmbed(interaction, embed)
 	return await discordservice.SendCommandResponse(
 		interaction=interaction, 
@@ -67,14 +67,15 @@ async def PrintStarter(interaction: Interaction, trainer: Trainer):
 		responseInd=0, 
 		color=TrainerColor)
 
-async def PrintBadges(interaction: Interaction, targetUser: Member):
+async def PrintBadges(interaction: Interaction, targetUser: Member, region: str = None):
 	return await discordservice.SendCommandResponse(
 		interaction=interaction, 
 		filename=responseFile, 
 		command='badges', 
-		responseInd=0, 
+		responseInd=0 if not region else 1, 
 		color=TrainerColor,
-		params=[targetUser.display_name])
+		params=[targetUser.display_name] if not region else [region],
+		eph=True)
 
 async def PrintRelease(interaction: Interaction, name: str):
 	return await discordservice.SendCommandResponse(

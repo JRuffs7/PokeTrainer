@@ -1,0 +1,12 @@
+{
+	"help": [
+		{
+			"Title": "Help DM Sent",
+			"Body": "For more information on specific commands, use **/help** and specify a command or action."
+		},
+		{
+			"Title": "Invalid Command",
+			"Body": "The {0} command either does not exist or is restricted to administrators only. To find commands you may have access to, use **/help** for a full list."
+		}
+	]
+}

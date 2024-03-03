@@ -1,7 +1,11 @@
 import discord
 
+from models.Pokemon import Pokemon
+
 class TeamSelector(discord.ui.Select):
-    def __init__(self, data):
+    def __init__(self, data: list[Pokemon | None]):
+        if len(data) > 6:
+            data = data[:6]
         options = [discord.SelectOption(
             label=f'Slot {i+1}',
             description=f"{data[i].GetNameString()} (Lvl. {data[i].Level})" if data[i] else 'Empty',

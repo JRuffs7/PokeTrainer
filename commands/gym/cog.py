@@ -1,11 +1,12 @@
 
 from discord import app_commands, Interaction
 from discord.ext import commands
+from commands.views.GymLeaderView import GymLeaderView
 
 from commands.views.GymView import GymView
+from middleware.decorators import method_logger, trainer_check
 from services import trainerservice, gymservice
-from services.utility import discordservice
-from globals import BattleColor, ErrorColor
+from services.utility import discordservice_gym
 
 class GymCommands(commands.Cog, name="GymCommands"):
 
@@ -15,35 +16,44 @@ class GymCommands(commands.Cog, name="GymCommands"):
 
     @app_commands.command(name="gymbattle",
                         description="Battle each gym leader from every region.")
+    @method_logger
+    @trainer_check
     async def gymbattle(self, inter: Interaction):
-        print("GYM BATTLE called")
         trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
-        if not trainer:
-            return await discordservice.SendTrainerError(inter)
-        
-        try:
-            gymleader = gymservice.GetNextTrainerGym(trainer.Badges)
-            if not gymleader:
-                return await discordservice.SendMessage(
-                    inter, 
-                    "No Battles Left",
-                    "Congratulations! You have beaten all the gym leaders! Check out your badges by using **/badges**.",
-                    BattleColor)
-            leaderTeam = gymservice.GetGymLeaderTeam(gymleader)
-            fightResults = gymservice.GymLeaderFight([t for t in trainerservice.GetTeam(trainer) if t], leaderTeam)
-            if -1 in fightResults:
-                return await discordservice.SendMessage(
-                    inter, 
-                    "Battle Error",
-                    f"There was an error while performing the battle with {gymleader.Name}. Please try again.",
-                    ErrorColor)
-            elif fightResults.count(1) == len(leaderTeam):
-                trainer.Money += gymleader.Reward
-                trainer.Badges.append(gymleader.BadgeId)
-                trainerservice.UpsertTrainer(trainer)
-            await GymView(inter, gymleader, [t.Name for t in trainerservice.GetTeam(trainer) if t], [l.Name for l in leaderTeam], fightResults).send()
-        except Exception as e:
-            print(f"{e}")
+        gymleader = gymservice.GetNextTrainerGym(trainer.Badges)
+        if not gymleader:
+            return await discordservice_gym.PrintGymBattleResponse(inter, 0, [])
+        fightResults = gymservice.GymLeaderFight(trainer, gymleader)
+        if -1 in fightResults:
+            return await discordservice_gym.PrintGymBattleResponse(inter, 0, [gymleader.Name])
+        elif fightResults.count(1) == len(gymleader.Team):
+            trainer.Money += gymleader.Reward
+            trainer.Badges.append(gymleader.BadgeId)
+            trainerservice.UpsertTrainer(trainer)
+        await GymView(inter, gymleader, trainer, fightResults).send()
+
+    
+    async def gymleader_autocomplete(self, inter: Interaction, current: str) -> list[app_commands.Choice[str]]:
+        data = []
+        trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
+        leaderList = [l for l in gymservice.GetAllGymLeaders()]
+        leaderList.sort(key=lambda x: x.BadgeId)
+        for ldr in leaderList:
+            nextGym = trainer is not None and ldr.BadgeId == (max(trainer.Badges, default=0) + 1)
+            if current.lower() in ldr.Name.lower():
+                data.append(app_commands.Choice(name=f'{ldr.Name} (Your Next)' if nextGym else ldr.Name, value=ldr.BadgeId))
+                if len(data) == 25:
+                    break
+        return data
+
+    @app_commands.command(name="gyminfo",
+                        description="Get information about a specific gym leader.")
+    @app_commands.autocomplete(gymleader=gymleader_autocomplete)
+    @method_logger
+    async def gyminfo(self, inter: Interaction, gymleader: int):
+        leader = gymservice.GetGymLeaderByBadge(gymleader)
+        trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
+        await GymLeaderView(inter, leader, leader.BadgeId in trainer.Badges).send()
 
 async def setup(bot: commands.Bot):
   await bot.add_cog(GymCommands(bot))
