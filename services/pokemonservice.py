@@ -1,3 +1,4 @@
+from itertools import chain
 import math
 import random
 from typing import List
@@ -64,7 +65,7 @@ def GetOwnedPokemonDescription(pokemon: Pokemon):
   return f"Lvl. {pokemon.Level} ({pokemon.CurrentExp}/{(50 * pkmn.Rarity) if pkmn.Rarity <= 3 else 250}xp) | H:{pokemon.Height} | W:{pokemon.Weight} | Types: {'/'.join(pkmn.Types)}"
 
 
-def GetPokemonImage(pokemon: Pokemon):
+def GetPokemonImage(pokemon: Pokemon | PokemonData):
   pkmn = GetPokemonById(pokemon.Pokemon_Id)
   if pokemon.IsShiny and pokemon.IsFemale:
       return pkmn.ShinySpriteFemale or pkmn.ShinySprite
@@ -77,6 +78,27 @@ def GetPokemonImage(pokemon: Pokemon):
 #endregion
 
 #region Spawns
+
+def SpawnPokemon():
+  pokemonList = pokemonda.GetPokemonByProperty([1, 2, 3], 'Rarity')
+  pokemon = None
+  while not pokemon:
+    pokemon = random.choice(pokemonList)
+    # No Megas
+    # No Legendaries/Mythicals
+    # No Starters
+    # First Stage/No Evolution Spawns Only
+    # Must Have a Sprite
+    if pokemon.IsMega or (pokemon.Rarity == 3 and pokemon.EvolvesInto) or not pokemon.Sprite or not pokemon.ShinySprite:
+      pokemon = None
+
+    if pokemon:
+      for range in StarterDexIds:
+        if pokemon.PokedexId in range:
+          pokemon = None
+          break
+
+  return GenerateSpawnPokemon(pokemon)
 
 def GenerateSpawnPokemon(pokemon: PokemonData, level: int | None = None):
   shiny = random.randint(0, ShinyOdds) == int(ShinyOdds / 2)
@@ -95,9 +117,14 @@ def GenerateSpawnPokemon(pokemon: PokemonData, level: int | None = None):
       'Weight': weight if weight > 0.00 else 0.01,
       'IsShiny': shiny,
       'IsFemale': female,
-      'Level': level if level else 1 if pokemon.Rarity <= 2 else 20 if pokemon.Rarity == 3 else 30 if pokemon.Rarity == 4 else 35,
+      'Level': level if level else random.choice(range(1,6)) if pokemon.Rarity <= 2 else random.choice(range(20,26)) if pokemon.Rarity == 3 else random.choice(range(30,36)),
       'CurrentExp': 0
   })
+
+def GetSpawnList():
+  initList = pokemonda.GetPokemonByProperty([1, 2, 3], 'Rarity')
+  trimList = [p for p in initList if not p.IsMega or not (p.Rarity == 3 and p.EvolvesInto) or p.Sprite or p.ShinySprite]
+  return [p for p in trimList if p.PokedexId not in chain(StarterDexIds)]
 
 #endregion
 
@@ -136,6 +163,62 @@ def EvolvePokemon(initial: Pokemon, evolveId: int):
 
 #endregion
 
+#region Fights
+
+def WildFight(attack: PokemonData, defend: PokemonData):
+  battleResult = TypeMatch(attack.Types, defend.Types)
+  doubleAdv = battleResult == 2
+  doubleDis = battleResult <= -3
+  attackGroup = RarityGroup(attack.Rarity, attack.IsLegendary or attack.IsMythical)
+  defendGroup = RarityGroup(defend.Rarity, defend.IsLegendary or defend.IsMythical)
+
+  #legendary
+  if attackGroup >= 8:
+    if defendGroup == 3:
+      return 5 if attackGroup == 10 else 10 if attackGroup == 9 else 15
+    elif defendGroup == 2:
+      return 3 if attackGroup == 10 else 5 if attackGroup == 9 else 10
+    else:
+      return 1 if attackGroup == 10 else 3 if attackGroup == 9 else 5
+  # 1v1 2v2 3v3
+  elif attackGroup - defendGroup == 0:
+    return 5 if doubleAdv else 15 if doubleDis else 10
+  # 3v2 2v1
+  elif attackGroup - defendGroup == 1:
+    return 3 if doubleAdv else 10 if doubleDis else 5
+  # 3v1
+  elif attackGroup - defendGroup == 2:
+    return 1 if doubleAdv else 5 if doubleDis else 3
+  # 1v2 2v3
+  elif attackGroup - defendGroup == -1:
+    return 10 if doubleAdv else 20 if doubleDis else 15
+  # 1v3
+  else:
+    return 15 if doubleAdv else 25 if doubleDis else 20
+
+def GymFight(attack: PokemonData, defend: PokemonData):
+  battleResult = TypeMatch(attack.Types, defend.Types)
+  doubleAdv = battleResult == 2
+  attackGroup = RarityGroup(attack.Rarity, attack.IsLegendary or attack.IsMythical)
+  defendGroup = RarityGroup(defend.Rarity, defend.IsLegendary or defend.IsMythical)
+
+  return doubleAdv and (attackGroup >= defendGroup)
+
+def TypeMatch(attackTypes: list[str], defendTypes: list[str]):
+  fightTotal = typeservice.TypeWeakness(attackTypes[0].lower(), defendTypes[0].lower())
+  fightTotal += typeservice.TypeWeakness(
+    attackTypes[1].lower() if len(attackTypes) > 1 else attackTypes[0].lower(),
+    defendTypes[1].lower() if len(defendTypes) > 1 else defendTypes[0].lower())
+  return fightTotal
+
+def RarityGroup(rarity: int, isLegendary: bool):
+  rarityGroup = 1 if rarity <= 2 else 2 if rarity == 3 else 3
+  if isLegendary:
+    rarityGroup = rarity
+  return rarityGroup
+
+#endregion
+
 def GeneratePokemonSearchGroup(pokemonId):
   pkmn = GetPokemonById(pokemonId)
   if not pkmn:
@@ -171,58 +254,4 @@ def GeneratePokemonSearchGroup(pokemonId):
       'IsFemale': True,
     }))
   return pkmnList
-
-
-def PokemonFight(attack: PokemonData, defend: PokemonData, gymBattle: bool = False):
-  fightTotal = typeservice.TypeWeakness(attack.Types[0].lower(), defend.Types[0].lower())
-  fightTotal += typeservice.TypeWeakness(
-    attack.Types[1].lower() if len(attack.Types) > 1 else attack.Types[0].lower(),
-    defend.Types[1].lower() if len(defend.Types) > 1 else defend.Types[0].lower())
-  doubleAdv = fightTotal == 2
-  doubleDis = fightTotal <= -2
-  attackGroup = 1 if attack.Rarity <= 2 else 2 if attack.Rarity == 3 else 3
-  defendGroup = 1 if defend.Rarity <= 2 else 2 if defend.Rarity == 3 else 3
-
-  if gymBattle:
-    return 1 if doubleAdv and attackGroup >= defendGroup else 0
-
-  # 1v2 2v3
-  if abs(attackGroup - defendGroup) == 1:
-    if (attackGroup < defendGroup and not doubleAdv) or not doubleDis:
-      fightTotal += (2 * (attack.Rarity - defend.Rarity))
-  # 1v3
-  elif abs(attackGroup - defendGroup) == 2:
-    fightTotal += (2 * (attack.Rarity - defend.Rarity))
-
-  return fightTotal
-
-
-
-
-
-def GetRandomSpawnPokemon():
-  count = 0
-  pokemon = None
-  encounter = random.randint(1, 100)
-  while not pokemon:
-    pokemonList = GetPokemonByRarity(
-        1 if 1 <= encounter <= 60 else 2 if 61 <= encounter <= 85 else
-        3 if 86 <= encounter <= 95 else 4 if 96 <= encounter <= 98 else 5)
-    pokemon = random.choice(pokemonList)
-    if pokemon.IsMega or pokemon.IsBattleOnly or pokemon.IsLegendary or pokemon.IsMythical or not pokemon.Sprite or not pokemon.ShinySprite:
-      pokemon = None
-
-    for range in StarterDexIds:
-      if pokemon and pokemon.PokedexId in range:
-        pokemon = None
-        break
-
-    count += 1
-    if count == 21:
-      raise Exception("Too many pokemon tries")
-
-  return GenerateSpawnPokemon(pokemon)
-
-def GetPokemonByRarity(rarity: int):
-  return pokemonda.GetPokemonByProperty([rarity], 'Rarity')
 

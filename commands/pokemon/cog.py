@@ -2,6 +2,7 @@ from discord import app_commands, Interaction
 from discord.ext import commands
 from typing import List
 from commands.views.Pagination.PokemonSearchView import PokemonSearchView
+from commands.views.SpawnPokemonView import SpawnPokemonView
 import discordbot
 
 from commands.views.Selection.EvolveView import EvolveView
@@ -17,6 +18,22 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
   def __init__(self, bot: commands.Bot):
     self.bot = bot
     
+
+  #region Spawn
+    
+  @app_commands.command(name="spawn",
+                        description="Spawn an Pokemon to capture or fight.")
+  @method_logger
+  @trainer_check
+  async def spawn(self, inter: Interaction):
+    pokemon = pokemonservice.SpawnPokemon()
+    trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
+    await SpawnPokemonView(inter, trainer, pokemon).send(True)
+
+  #endregion
+
+
+  #region PokeInfo
 
   async def filter_autocomplete(self, inter: Interaction, current: str) -> List[app_commands.Choice[str]]:
     search = inter.namespace['search']
@@ -46,8 +63,6 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
             if len(choiceList) == 25:
               break
     return choiceList
-
-  #region PokeInfo
 
   @app_commands.command(name="pokeinfo",
                         description="Gives information for a single, or list, of Pokemon.")
@@ -119,7 +134,6 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
   @method_logger
   @trainer_check
   async def evolve(self, inter: Interaction, pokemon: str | None):
-    print("EVOLVE called")
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
     pokeList = [p for p in trainer.OwnedPokemon if pokemonservice.CanTrainerPokemonEvolve(p)]
     if pokemon:
@@ -130,7 +144,6 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
 
     evolveView = EvolveView(inter, trainer, pokeList)
     return await evolveView.send()
-
 
   #endregion
 

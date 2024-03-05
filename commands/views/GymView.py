@@ -13,7 +13,7 @@ from services.utility import discordservice
 class GymView(discord.ui.View):
 
 	def __init__(self, interaction: discord.Interaction, leader: GymLeader,
-							 trainer: Trainer, battleResults: list[int]):
+							 trainer: Trainer, battleResults: list[bool]):
 		self.interaction = interaction
 		self.user = interaction.user
 		self.leader = leader
@@ -48,7 +48,7 @@ class GymView(discord.ui.View):
 		battleArr = []
 		for res in self.battleresults:
 			#Team One Wins
-			if res == 1:
+			if res:
 				battleArr.append([f"\u001b[0;37m{self.trainerTeam[first].Name}\u001b[0m",f"\u001b[0;31m{self.leaderTeam[second].Name}\u001b[0m"])
 				second += 1
 			#Team Two Wins

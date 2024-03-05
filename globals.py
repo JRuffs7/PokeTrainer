@@ -21,6 +21,7 @@ FightReaction = "⚔️"
 MaleSign = "🟦"
 FemaleSign = "🟥"
 ShinySign = "✨"
+Checkmark = "✅"
 dateFormat = '%m/%d/%y %H:%M:%S'
 
 StarterDexIds = [

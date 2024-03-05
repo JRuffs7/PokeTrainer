@@ -1,0 +1,85 @@
+from math import ceil
+import discord
+
+from commands.views.Pagination.BasePaginationView import BasePaginationView
+from table2ascii import table2ascii as t2a, PresetStyle, Alignment, Merge
+
+from globals import Checkmark, FightReaction, GreatBallReaction, PokeballReaction, PokemonColor, TrainerColor, UltraBallReaction
+from models.Pokemon import Pokemon
+from models.Trainer import Trainer
+from services import pokemonservice, trainerservice
+from services.utility import discordservice
+
+
+class SpawnPokemonView(discord.ui.View):
+
+	def __init__(
+			self, interaction: discord.Interaction, trainer: Trainer, pokemon: Pokemon):
+		self.interaction = interaction
+		self.trainer = trainer
+		self.pokemon = pokemon
+		self.pkmndata = pokemonservice.GetPokemonById(pokemon.Pokemon_Id)
+		super().__init__(timeout=60)
+
+	async def send(self, ephemeral: bool = False):
+		if not self.pokemon:
+			await self.interaction.response.send_message("Failed to spawn a Pokemon. Please try again.", ephemeral=True)
+		await self.interaction.response.send_message(view=self, ephemeral=ephemeral)
+		self.message = await self.interaction.original_response()
+		await self.update_message()
+
+	async def update_message(self):
+		embed = discordservice.CreateEmbed(
+				self.GetTitle(),
+				self.PokemonDesc(),
+				PokemonColor)
+		embed.set_image(url=pokemonservice.GetPokemonImage(self.pokemon))
+		await self.message.edit(embed=embed, view=self)
+
+	@discord.ui.button(label=PokeballReaction)
+	async def pokeball_button(self, interaction: discord.Interaction, button: discord.ui.Button):
+		await self.TryCapture(interaction, button.label, "Pokeballs")
+
+	@discord.ui.button(label=GreatBallReaction, custom_id="Greatball")
+	async def greatball_button(self, interaction: discord.Interaction, button: discord.ui.Button):
+		await self.TryCapture(interaction, button.label, "Greatballs")
+
+	@discord.ui.button(label=UltraBallReaction, custom_id="Ultraball")
+	async def ultraball_button(self, interaction: discord.Interaction, button: discord.ui.Button):
+		await self.TryCapture(interaction, button.label, "Ultraballs")
+
+	@discord.ui.button(label=FightReaction, custom_id="fight")
+	async def fight_button(self, interaction: discord.Interaction, button: discord.ui.Button):
+		fight = trainerservice.TryWildFight(self.trainer, self.pokemon)
+		if fight is None:
+			await self.message.edit(content=f"You do not have any health! Restore with **/usepotion**. You can buy potions from the **/shop**", view=self)
+			await interaction.response.defer()
+		elif fight > 10:
+			await self.message.delete()
+			await interaction.response.send_message(content=f'You were beaten by {pokemonservice.GetPokemonDisplayName(self.pokemon, False, False)} and lost {fight}HP.',ephemeral=True)
+		else:
+			await self.message.delete()
+			await interaction.response.send_message(content=f'You defeated {pokemonservice.GetPokemonDisplayName(self.pokemon, False, False)}! Gained exp and $50.',ephemeral=True)
+
+	async def TryCapture(self, interaction: discord.Interaction, label: str, ball: str):
+		if trainerservice.TryCapture(label, self.trainer, self.pokemon):
+			await self.message.delete()
+			await interaction.response.send_message(content=f'Congratulations! You have captured {pokemonservice.GetPokemonDisplayName(self.pokemon)}',ephemeral=True)
+		else:
+			await self.message.edit(content=f"You do not have any {ball}. Buy some from the **/shop** or try another ball!", view=self)
+			await interaction.response.defer()
+
+	def GetTitle(self):
+		return f'{f"{Checkmark} " if self.pkmndata.PokedexId in self.trainer.Pokedex else ""}{pokemonservice.GetPokemonDisplayName(self.pokemon)} (Lvl. {self.pokemon.Level})'
+
+	def PokemonDesc(self):
+		pkmnData = t2a(
+			body=[
+				['Rarity:', f"{self.pkmndata.Rarity}", '|', 'Height:', self.pokemon.Height],
+				['Color:',f"{self.pkmndata.Color}", '|','Weight:', self.pokemon.Weight], 
+				['Types:', f"{self.pkmndata.Types[0]}"f"{'/' + self.pkmndata.Types[1] if len(self.pkmndata.Types) > 1 else ''}", Merge.LEFT, Merge.LEFT, Merge.LEFT]], 
+			first_col_heading=False,
+			alignments=[Alignment.LEFT,Alignment.LEFT,Alignment.CENTER,Alignment.LEFT,Alignment.LEFT],
+			style=PresetStyle.plain,
+			cell_padding=0)
+		return f"```{pkmnData}```"

@@ -8,6 +8,7 @@ from services.utility import discordservice
 class AdminCommands(commands.Cog, name="AdminCommands"):
 
 	logger = logging.getLogger('discord')
+	err = logging.getLogger('error')
 
 	def __init__(self, bot: commands.Bot):
 		self.bot = bot
@@ -81,7 +82,7 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 			return
 		trainer = trainerservice.GetTrainer(ctx.guild.id, user.id if user else ctx.author.id)
 		if trainer:
-			trainerservice.ModifyItemList(trainer.PokeballList, type if type == 1 or type == 2 or type == 3 else 1, amount)
+			trainerservice.ModifyItemList(trainer.PokeballList, str(type) if type == 1 or type == 2 or type == 3 else '1', amount)
 			trainerservice.UpsertTrainer(trainer)
 			
 	@commands.command(name="addpotion")
@@ -92,7 +93,7 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 			return
 		trainer = trainerservice.GetTrainer(ctx.guild.id, user.id if user else ctx.author.id)
 		if trainer:
-			trainerservice.ModifyItemList(trainer.PotionList, type if type == 1 or type == 2 or type == 3 else 1, amount)
+			trainerservice.ModifyItemList(trainer.PotionList, str(type) if type == 1 or type == 2 or type == 3 else '1', amount)
 			trainerservice.UpsertTrainer(trainer)
 			
 	@commands.command(name="addbadge")
@@ -129,6 +130,15 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 		pokemon = pokemonservice.GetPokemonById(pokemonId)
 		if pokemon:
 			print(f"{pokemon.Name}: {pokemon.PokedexId}")
+
+
+	@commands.command(name="testspawnlist")
+	@method_logger
+	@is_bot_admin
+	async def testspawnlist(self, ctx: commands.Context):
+		if not ctx.guild:
+			return
+		self.err.error([p.__dict__ for p in pokemonservice.GetSpawnList()])
 
 
 

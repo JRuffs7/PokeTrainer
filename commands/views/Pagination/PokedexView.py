@@ -70,6 +70,6 @@ class PokedexView(BasePaginationView):
                       cell_padding=0)
     return f"**__{pokemonservice.GetPokemonDisplayName(pokemon)} (Lvl. {pokemon.Level})__**\n```{pkmnData}```"
 
-  def ListEmbedDesc(self, data):
+  def ListEmbedDesc(self, data: list[Pokemon]):
     newline = '\n'
     return f"{newline.join([pokemonservice.GetPokemonDisplayName(x) + f' (Lvl. {x.Level})' for x in data])}"

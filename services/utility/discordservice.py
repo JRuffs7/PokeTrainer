@@ -72,45 +72,6 @@ async def SendMessageNoInteraction(serverId, channelId, message):
                                       channel, discord.CategoryChannel):
       await channel.send(message)
 
-
-async def SendPokemon(guildid,
-                      channelid,
-                      pokemon: Pokemon,
-                      test: bool = False):
-  pkmn = pokemonservice.GetPokemonById(pokemon.Pokemon_Id)
-  if not pkmn:
-    print(f'Error spawning Pokemon with ID: {pokemon.Pokemon_Id}')
-    return
-
-  embed = CreateEmbed(
-      pokemonservice.GetPokemonDisplayName(pokemon),
-      f"Height: {pokemon.Height}\nWeight: {pokemon.Weight}", PokemonSpawnColor)
-  embed.set_image(url=pkmn.GetImage(pokemon.IsShiny, pokemon.IsFemale))
-  bot = discordbot.GetBot()
-  guild = bot.get_guild(guildid)
-  if guild:
-    channel = guild.get_channel(channelid)
-    if channel and not isinstance(channel,
-                                  discord.ForumChannel) and not isinstance(
-                                      channel, discord.CategoryChannel):
-      message = await channel.send(embed=embed)
-      if not test:
-        await message.add_reaction(PokeballReaction)
-        await message.add_reaction(GreatBallReaction)
-        await message.add_reaction(UltraBallReaction)
-        await message.add_reaction(FightReaction)
-      return message
-  return None
-
-
-async def SendTrainerError(interaction):
-  SendCommandResponse(interaction, 'files/responsefiles/trainerresponses.json', 'error', 0, ErrorColor, eph=True)
-
-
-async def SendServerError(interaction):
-  SendCommandResponse(interaction, 'files/responsefiles/serverresponses.json', 'error', 0, ErrorColor, eph=True)
-
-
 async def SendCommandResponse(interaction: Interaction, filename: str, command: str, responseInd: int, color, params: list=[], eph: bool=False):
   response = GetJson(filename)[command][responseInd]
   return await interaction.response.send_message(embed=CreateEmbed(

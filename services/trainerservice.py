@@ -1,4 +1,4 @@
-from discord import Reaction
+from discord import Member, Reaction, User
 
 from dataaccess import trainerda
 from globals import (
@@ -78,15 +78,15 @@ def TryUsePotion(trainer: Trainer, potion: Potion):
   trainer.Health += potion.HealingAmount
   if trainer.Health > 100:
     trainer.Health = 100
-  ModifyItemList(trainer.Potions, potion.Id, -1)
+  ModifyItemList(trainer.Potions, str(potion.Id), -1)
   trainerda.UpsertTrainer(trainer)
   return (True, (trainer.Health - preHealth))
 
-def ModifyItemList(itemDict: dict[str, int], itemId: int, amount: int):
-  newAmount = itemDict[str(itemId)] + amount
+def ModifyItemList(itemDict: dict[str, int], itemId: str, amount: int):
+  newAmount = itemDict[itemId] + amount
   if newAmount < 0:
     newAmount = 0
-  itemDict.update({ str(itemId): newAmount if newAmount > 0 else 0 })
+  itemDict.update({ itemId: newAmount if newAmount > 0 else 0 })
   return (amount + newAmount) if newAmount < 0 else amount
 
 #endregion
@@ -171,77 +171,34 @@ def SetTeamSlot(trainer: Trainer, slotNum: int, pokemonId: str):
 
 #endregion
 
-#region REACTION
+#region Spawn
 
-async def ReationReceived(bot, user, reaction):
-  message = reaction.message
-  server = serverservice.GetServer(message.guild.id)
-  users = [user async for user in reaction.users()]
-  #Not a supported reaction
-  if not users.__contains__(bot.user) or server is None:
-    await reaction.remove(user)
-    return False
-
-  #Not a reaction on the last spawn pokemon or no spawn at all
-  if reaction.message.id != server.LastSpawnMessage or not server.LastSpawned:
-    await reaction.remove(user)
-    return False
-
-  spawn = server.LastSpawned
-  trainer = GetTrainer(server.ServerId, user.id)
-  if not trainer:
-    await reaction.remove(user)
-    return False
-
-  fighting = reaction.emoji == FightReaction
-
-  if fighting and trainer.Health > 0 and trainer.UserId not in server.FoughtBy:
-    TryWildFight(server, trainer, spawn.Pokemon_Id)
-    return False
-  elif not fighting and server.CaughtBy == 0:
-    if not TryCapture(reaction, server, trainer, spawn):
-      await reaction.remove(user)
-      return False
-    return True
-  await reaction.remove(user)
-  return False
-
-def TryCapture(reaction: Reaction, server, trainer: Trainer, spawn: Pokemon):
-  #Update Server to prevent duplicate
-  server.CaughtBy = trainer.UserId
-  serverservice.UpsertServer(server)
-
-  pokeballId = 1 if reaction.emoji == PokeballReaction else 2 if reaction.emoji == GreatBallReaction else 3
-  if trainer.PokeballList.get(pokeballId) > 0:
+def TryCapture(reaction: str, trainer: Trainer, spawn: Pokemon):
+  pokeballId = '1' if reaction == PokeballReaction else '2' if reaction == GreatBallReaction else '3'
+  if trainer.Pokeballs[pokeballId] > 0:
     #TODO: IMPLEMENT CAPTURE RATE
-    ModifyItemList(trainer.PokeballList, pokeballId, -1)
+    ModifyItemList(trainer.Pokeballs, pokeballId, -1)
     trainer.OwnedPokemon.append(spawn)
+    TryAddToPokedex(trainer, pokemonservice.GetPokemonById(spawn.Pokemon_Id).PokedexId)
     UpsertTrainer(trainer)
     return True
-
-  #Update Server back to allow capture again
-  server.CaughtBy = 0
-  serverservice.UpsertServer(server)
   return False
 
-def TryWildFight(server, trainer: Trainer, spawnPokemon_Id: int):
-    spawnPokemon = pokemonservice.GetPokemonById(spawnPokemon_Id)
-    trainerPokemon = next(p for p in trainer.OwnedPokemon if p.Id == pkmnId)
-    if not spawnPokemon:
-      return
+def TryWildFight(trainer: Trainer, wild: Pokemon):
+    if trainer.Health <= 0:
+      return None
+    
+    trainerPokemon = next(p for p in trainer.OwnedPokemon if p.Id == trainer.Team[0])
+    trainerPkmn = pokemonservice.GetPokemonById(trainerPokemon.Pokemon_Id)
+    wildPkmn = pokemonservice.GetPokemonById(wild.Pokemon_Id)
+    healthLost = pokemonservice.WildFight(trainerPkmn, wildPkmn)
 
-    pkmnId = next((p for p in trainer.Team if p))
-    battlePkmn = pokemonservice.GetPokemonById(trainerPokemon.Pokemon_Id)
-    battleResult = pokemonservice.PokemonFight(battlePkmn, spawnPokemon)
-    healthLost = battleResult - 6
-
-    server.FoughtBy.append(trainer.UserId)
-    serverservice.UpsertServer(server)
-    trainer.Health += healthLost
+    trainer.Health -= healthLost
     trainer.Health = 0 if trainer.Health < 0 else trainer.Health
-    if healthLost > -10:
-      pokemonservice.AddExperience(trainerPokemon, battlePkmn.Rarity, spawnPokemon.Rarity)
+    if healthLost <= 10:
+      pokemonservice.AddExperience(trainerPokemon, trainerPkmn.Rarity, wildPkmn.Rarity)
       trainer.Money += 50
     UpsertTrainer(trainer)
+    return healthLost
 
 #endregion

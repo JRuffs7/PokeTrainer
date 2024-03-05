@@ -2,6 +2,7 @@
     {
         "Name": "normal",
         "Weakness": [
+            "unknown",
             "fighting"
         ],
         "Resistant": [],
@@ -12,47 +13,75 @@
     {
         "Name": "fire",
         "Weakness": [
-            "water", "ground", "rock"
+            "unknown",
+            "water",
+            "ground",
+            "rock"
         ],
         "Resistant": [
-            "fire", "grass", "ice", "bug", "steel", "fairy"
+            "fire",
+            "grass",
+            "ice",
+            "bug",
+            "steel",
+            "fairy"
         ],
         "Immune": []
     },
     {
         "Name": "water",
         "Weakness": [
-            "grass", "electric"
+            "unknown",
+            "grass",
+            "electric"
         ],
         "Resistant": [
-            "fire", "water", "ice", "steel"
+            "fire",
+            "water",
+            "ice",
+            "steel"
         ],
         "Immune": []
     },
     {
         "Name": "grass",
         "Weakness": [
-            "fire", "ice", "poison", "flying", "bug"
+            "unknown",
+            "fire",
+            "ice",
+            "poison",
+            "flying",
+            "bug"
         ],
         "Resistant": [
-            "water", "grass", "electric", "ground"
+            "water",
+            "grass",
+            "electric",
+            "ground"
         ],
         "Immune": []
     },
     {
         "Name": "electric",
         "Weakness": [
+            "unknown",
             "ground"
         ],
         "Resistant": [
-            "electric", "flying", "steel"
+            "electric",
+            "flying",
+            "steel"
         ],
         "Immune": []
     },
     {
         "Name": "ice",
         "Weakness": [
-            "fire", "fighting", "rock", "steel"
+            "unknown",
+            "fire",
+            "fighting",
+            "rock",
+            "steel"
         ],
         "Resistant": [
             "ice"
@@ -62,30 +91,45 @@
     {
         "Name": "fighting",
         "Weakness": [
-            "flying", "psychic", "fairy"
+            "unknown",
+            "flying",
+            "psychic",
+            "fairy"
         ],
         "Resistant": [
-            "bug", "rock", "dark"
+            "bug",
+            "rock",
+            "dark"
         ],
         "Immune": []
     },
     {
         "Name": "poison",
         "Weakness": [
-            "ground", "psychic"
+            "unknown",
+            "ground",
+            "psychic"
         ],
         "Resistant": [
-            "grass", "fighting", "poison", "bug", "fairy"
+            "grass",
+            "fighting",
+            "poison",
+            "bug",
+            "fairy"
         ],
         "Immune": []
     },
     {
         "Name": "ground",
         "Weakness": [
-            "water", "grass", "ice"
+            "unknown",
+            "water",
+            "grass",
+            "ice"
         ],
         "Resistant": [
-            "poison", "rock"
+            "poison",
+            "rock"
         ],
         "Immune": [
             "electric"
@@ -94,10 +138,15 @@
     {
         "Name": "flying",
         "Weakness": [
-            "electric", "ice", "rock"
+            "unknown",
+            "electric",
+            "ice",
+            "rock"
         ],
         "Resistant": [
-            "grass", "fighting", "bug"
+            "grass",
+            "fighting",
+            "bug"
         ],
         "Immune": [
             "ground"
@@ -106,52 +155,79 @@
     {
         "Name": "psychic",
         "Weakness": [
-            "bug", "ghost", "dark"
+            "unknown",
+            "bug",
+            "ghost",
+            "dark"
         ],
         "Resistant": [
-            "fighting", "psychic"
+            "fighting",
+            "psychic"
         ],
         "Immune": []
     },
     {
         "Name": "bug",
         "Weakness": [
-            "fire", "flying", "rock"
+            "unknown",
+            "fire",
+            "flying",
+            "rock"
         ],
         "Resistant": [
-            "grass", "fighting", "ground"
+            "grass",
+            "fighting",
+            "ground"
         ],
         "Immune": []
     },
     {
         "Name": "rock",
         "Weakness": [
-            "water", "grass", "fighting", "ground", "steel"
+            "unknown",
+            "water",
+            "grass",
+            "fighting",
+            "ground",
+            "steel"
         ],
         "Resistant": [
-            "normal", "fire", "poison", "flying"
+            "normal",
+            "fire",
+            "poison",
+            "flying"
         ],
         "Immune": []
     },
     {
         "Name": "ghost",
         "Weakness": [
-            "ghost", "dark"
+            "unknown",
+            "ghost",
+            "dark"
         ],
         "Resistant": [
-            "poison", "bug"
+            "poison",
+            "bug"
         ],
         "Immune": [
-            "normal", "fighting"
+            "normal",
+            "fighting"
         ]
     },
     {
         "Name": "dragon",
         "Weakness": [
-            "ice", "dragon", "fairy"
+            "unknown",
+            "ice",
+            "dragon",
+            "fairy"
         ],
         "Resistant": [
-            "fire", "water", "grass", "electric"
+            "fire",
+            "water",
+            "grass",
+            "electric"
         ],
         "Immune": [
             "ghost"
@@ -160,10 +236,14 @@
     {
         "Name": "dark",
         "Weakness": [
-            "fighting", "bug", "fairy"
+            "unknown",
+            "fighting",
+            "bug",
+            "fairy"
         ],
         "Resistant": [
-            "ghost", "dark"
+            "ghost",
+            "dark"
         ],
         "Immune": [
             "psychic"
@@ -172,10 +252,22 @@
     {
         "Name": "steel",
         "Weakness": [
-            "fire", "fighting", "ground"
+            "unknown",
+            "fire",
+            "fighting",
+            "ground"
         ],
         "Resistant": [
-            "normal", "grass", "ice", "flying", "psychic", "bug", "rock", "dragon", "steel", "fairy"
+            "normal",
+            "grass",
+            "ice",
+            "flying",
+            "psychic",
+            "bug",
+            "rock",
+            "dragon",
+            "steel",
+            "fairy"
         ],
         "Immune": [
             "poison"
@@ -184,10 +276,14 @@
     {
         "Name": "fairy",
         "Weakness": [
-            "poison", "steel"
+            "unknown",
+            "poison",
+            "steel"
         ],
         "Resistant": [
-            "fighting", "bug", "dark"
+            "fighting",
+            "bug",
+            "dark"
         ],
         "Immune": [
             "dragon"

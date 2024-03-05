@@ -87,7 +87,7 @@ class ShopView(discord.ui.View):
 			buying = self.buysellchoice == 'buy'
 			trainerservice.ModifyItemList(
 				self.trainer.Pokeballs if self.itemchoice.startswith('b') else self.trainer.Potions, 
-				int(self.itemchoice[1:]), 
+				self.itemchoice[1:], 
 				self.amountchoice if buying else (0 - self.amountchoice),
 				)
 			self.trainer.Money += (0 - (self.amountchoice)*item.BuyAmount) if buying else ((self.amountchoice)*item.SellAmount)
