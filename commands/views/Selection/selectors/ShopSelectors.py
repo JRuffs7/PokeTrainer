@@ -1,6 +1,6 @@
 import discord
 
-from models.Item import Item, Pokeball, Potion
+from models.Item import Pokeball, Potion
 
 
 class BuySell(discord.ui.Select):

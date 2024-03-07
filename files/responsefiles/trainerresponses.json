@@ -20,13 +20,13 @@
 		},
 		{
 			"Title": "Invalid Pokemon",
-			"Body": "You do not own any Pokemon with the name {0}"
+			"Body": "You do not own any Pokemon with the name {0}."
 		}
 	],
 	"release": [
 		{
 			"Title": "Invalid Pokemon",
-			"Body": "You do not own any Pokemon with the name {0}"
+			"Body": "You do not own any Pokemon with the name {0} or this Pokemon is currently in your team."
 		}
 	],
 	"starter": [
@@ -38,7 +38,7 @@
 	"usepotion": [
 		{
 			"Title": "No Healing",
-			"Body": "You do not own an {0}s. Please visit the **/shop** to stock up."
+			"Body": "You do not own any {0}s. Please visit the **/shop** to stock up."
 		},
 		{
 			"Title": "Health Restored",
@@ -47,6 +47,10 @@
 		{
 			"Title": "Health Full",
 			"Body": "{0} not used because health is already full."
+		},
+		{
+			"Title": "Invalid Command",
+			"Body": "Please select a potion from the provided list when executing the command. If no potions show up, you must first purchase one by using **/shop**."
 		}
 	]
 }

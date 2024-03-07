@@ -23,6 +23,10 @@
 		{
 			"Title": "Channel Changed",
 			"Body": "Any events or public messages from PokeTrainer will now show up in this channel."
+		},
+		{
+			"Title": "Channel Not Changed",
+			"Body": "This is already your registered channel. If you wish to change where events and notifications are sent, run this command in the new channel."
 		}
 	],
 	"unregister": [

@@ -2,7 +2,6 @@ import discord
 
 from commands.views.Pagination.BasePaginationView import BasePaginationView
 from globals import PokemonColor
-from middleware.decorators import button_check
 from models.Pokemon import Pokemon, PokemonData
 from services import pokemonservice
 from services.utility import discordservice

@@ -1,8 +1,8 @@
-
 class PokemonData:
   #Form Properties
   Id: int
   IsMega: bool
+  IsUltraBeast: bool
   IsBattleOnly: bool
   IsDefault: bool
   #Species Properties

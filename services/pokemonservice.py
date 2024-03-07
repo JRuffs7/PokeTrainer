@@ -1,7 +1,6 @@
 from itertools import chain
 import math
 import random
-from typing import List
 import uuid
 
 from services import typeservice
@@ -89,7 +88,7 @@ def SpawnPokemon():
     # No Starters
     # First Stage/No Evolution Spawns Only
     # Must Have a Sprite
-    if pokemon.IsMega or (pokemon.Rarity == 3 and pokemon.EvolvesInto) or not pokemon.Sprite or not pokemon.ShinySprite:
+    if pokemon.IsMega or pokemon.IsUltraBeast or (pokemon.Rarity == 3 and pokemon.EvolvesInto) or not pokemon.Sprite or not pokemon.ShinySprite:
       pokemon = None
 
     if pokemon:
@@ -123,7 +122,7 @@ def GenerateSpawnPokemon(pokemon: PokemonData, level: int | None = None):
 
 def GetSpawnList():
   initList = pokemonda.GetPokemonByProperty([1, 2, 3], 'Rarity')
-  trimList = [p for p in initList if not p.IsMega or not (p.Rarity == 3 and p.EvolvesInto) or p.Sprite or p.ShinySprite]
+  trimList = [p for p in initList if not p.IsMega or not p.IsUltraBeast or not (p.Rarity == 3 and p.EvolvesInto) or p.Sprite or p.ShinySprite]
   return [p for p in trimList if p.PokedexId not in chain(StarterDexIds)]
 
 #endregion
@@ -180,21 +179,23 @@ def WildFight(attack: PokemonData, defend: PokemonData):
       return 3 if attackGroup == 10 else 5 if attackGroup == 9 else 10
     else:
       return 1 if attackGroup == 10 else 3 if attackGroup == 9 else 5
+    
   # 1v1 2v2 3v3
-  elif attackGroup - defendGroup == 0:
-    return 5 if doubleAdv else 15 if doubleDis else 10
+  if attackGroup - defendGroup == 0:
+    groupRes = 5 if doubleAdv else 15 if doubleDis else 10 - battleResult
   # 3v2 2v1
   elif attackGroup - defendGroup == 1:
-    return 3 if doubleAdv else 10 if doubleDis else 5
+    groupRes = 3 if doubleAdv else 10 if doubleDis else 5 - battleResult
   # 3v1
   elif attackGroup - defendGroup == 2:
-    return 1 if doubleAdv else 5 if doubleDis else 3
+    groupRes = 1 if doubleAdv else 5 if doubleDis else 3
   # 1v2 2v3
   elif attackGroup - defendGroup == -1:
-    return 10 if doubleAdv else 20 if doubleDis else 15
+    groupRes = 10 if doubleAdv else 20 if doubleDis else 15 - battleResult
   # 1v3
   else:
-    return 15 if doubleAdv else 25 if doubleDis else 20
+    groupRes = 15 if doubleAdv else 25 if doubleDis else 20
+  return groupRes
 
 def GymFight(attack: PokemonData, defend: PokemonData):
   battleResult = TypeMatch(attack.Types, defend.Types)

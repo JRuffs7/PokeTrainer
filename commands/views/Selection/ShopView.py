@@ -100,5 +100,5 @@ class ShopView(discord.ui.View):
 
 
 	async def send(self):
-		await self.interaction.response.send_message(content=f"Money: {self.trainer.Money}", view=self, ephemeral=True)
+		await self.interaction.response.send_message(content=f"Money: ${self.trainer.Money}", view=self, ephemeral=True)
 		self.message = await self.interaction.original_response()

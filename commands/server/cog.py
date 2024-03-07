@@ -39,9 +39,7 @@ class ServerCommands(commands.Cog, name="ServerCommands"):
   async def swapchannel(self, inter: Interaction):
     serv = serverservice.GetServer(inter.guild_id)
     serv = serverservice.SwapChannel(serv, inter.channel_id)
-    if serv is None:
-      return await discordservice.SendErrorMessage(inter, "ToggleChannel")
-    return await discordservice_server.PrintSwapChannelResponse(inter)
+    return await discordservice_server.PrintSwapChannelResponse(inter, serv is not None)
       
 
   @app_commands.command(

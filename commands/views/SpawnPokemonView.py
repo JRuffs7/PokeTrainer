@@ -1,10 +1,8 @@
-from math import ceil
 import discord
 
-from commands.views.Pagination.BasePaginationView import BasePaginationView
 from table2ascii import table2ascii as t2a, PresetStyle, Alignment, Merge
 
-from globals import Checkmark, FightReaction, GreatBallReaction, PokeballReaction, PokemonColor, TrainerColor, UltraBallReaction
+from globals import Checkmark, FightReaction, GreatBallReaction, PokeballReaction, PokemonColor, UltraBallReaction
 from models.Pokemon import Pokemon
 from models.Trainer import Trainer
 from services import pokemonservice, trainerservice
@@ -54,12 +52,13 @@ class SpawnPokemonView(discord.ui.View):
 		if fight is None:
 			await self.message.edit(content=f"You do not have any health! Restore with **/usepotion**. You can buy potions from the **/shop**", view=self)
 			await interaction.response.defer()
-		elif fight > 10:
+		elif fight > 10 or self.trainer.Health == 0:
 			await self.message.delete()
-			await interaction.response.send_message(content=f'You were beaten by {pokemonservice.GetPokemonDisplayName(self.pokemon, False, False)} and lost {fight}HP.',ephemeral=True)
+			await interaction.response.send_message(content=f'You were beaten by {pokemonservice.GetPokemonDisplayName(self.pokemon, False, False)} and lost {fight}hp.\nNo experience or money gained.',ephemeral=True)
 		else:
+			trainerPoke = next(p for p in self.trainer.OwnedPokemon if p.Id == self.trainer.Team[0])
 			await self.message.delete()
-			await interaction.response.send_message(content=f'You defeated {pokemonservice.GetPokemonDisplayName(self.pokemon, False, False)}! Gained exp and $50.',ephemeral=True)
+			await interaction.response.send_message(content=f'You defeated {pokemonservice.GetPokemonDisplayName(self.pokemon, False, False)}!\n{pokemonservice.GetPokemonDisplayName(trainerPoke)} gained {self.pkmndata.Rarity}xp\nTrainer lost {fight}hp and gained $50.',ephemeral=True)
 
 	async def TryCapture(self, interaction: discord.Interaction, label: str, ball: str):
 		if trainerservice.TryCapture(label, self.trainer, self.pokemon):

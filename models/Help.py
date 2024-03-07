@@ -1,4 +1,3 @@
-
 class Help:
 	Name: str
 	ShortString: str

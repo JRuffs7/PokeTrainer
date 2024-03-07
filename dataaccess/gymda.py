@@ -1,6 +1,4 @@
-from typing import List
-
-from flask import json
+from dataaccess.utility.jsonreader import GetJson
 
 from models.Gym import GymLeader, Badge
 
@@ -20,7 +18,3 @@ def GetAllBadges():
   return [Badge(b) for b in GetJson(badgesFile)]
 
 #endregion
-
-def GetJson(file):
-  with open(file, encoding="utf-8") as f:
-    return json.load(f)

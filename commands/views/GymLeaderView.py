@@ -1,4 +1,3 @@
-from math import ceil
 import discord
 
 from table2ascii import table2ascii as t2a, PresetStyle, Alignment, Merge

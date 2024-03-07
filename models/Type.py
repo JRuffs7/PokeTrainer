@@ -1,4 +1,3 @@
-
 class Type:
   Name: str
   Weakness: list[str]

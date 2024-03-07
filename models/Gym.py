@@ -1,4 +1,3 @@
-
 class GymLeader:
 	Name: str
 	Generation: int

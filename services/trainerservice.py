@@ -1,15 +1,10 @@
-from discord import Member, Reaction, User
 
 from dataaccess import trainerda
-from globals import (
-    FightReaction,
-    GreatBallReaction,
-    PokeballReaction,
-)
+from globals import GreatBallReaction, PokeballReaction, UltraBallReaction
 from models.Item import Potion
 from models.Trainer import Trainer
 from models.Pokemon import Pokemon
-from services import pokemonservice, serverservice
+from services import pokemonservice
 
 
 #region Data
@@ -174,7 +169,7 @@ def SetTeamSlot(trainer: Trainer, slotNum: int, pokemonId: str):
 #region Spawn
 
 def TryCapture(reaction: str, trainer: Trainer, spawn: Pokemon):
-  pokeballId = '1' if reaction == PokeballReaction else '2' if reaction == GreatBallReaction else '3'
+  pokeballId = '1' if reaction == PokeballReaction else '2' if reaction == GreatBallReaction else '3' if reaction == UltraBallReaction else '4'
   if trainer.Pokeballs[pokeballId] > 0:
     #TODO: IMPLEMENT CAPTURE RATE
     ModifyItemList(trainer.Pokeballs, pokeballId, -1)
@@ -192,10 +187,11 @@ def TryWildFight(trainer: Trainer, wild: Pokemon):
     trainerPkmn = pokemonservice.GetPokemonById(trainerPokemon.Pokemon_Id)
     wildPkmn = pokemonservice.GetPokemonById(wild.Pokemon_Id)
     healthLost = pokemonservice.WildFight(trainerPkmn, wildPkmn)
-
+    if healthLost > trainer.Health:
+      healthLost = trainer.Health
     trainer.Health -= healthLost
     trainer.Health = 0 if trainer.Health < 0 else trainer.Health
-    if healthLost <= 10:
+    if healthLost <= 10 and trainer.Health > 0:
       pokemonservice.AddExperience(trainerPokemon, trainerPkmn.Rarity, wildPkmn.Rarity)
       trainer.Money += 50
     UpsertTrainer(trainer)

@@ -1,7 +1,4 @@
-from table2ascii import Merge, table2ascii as t2a, Alignment, PresetStyle
-from globals import Checkmark, PokemonColor
-from models.Pokemon import Pokemon
-from services import pokemonservice
+from globals import PokemonColor
 from services.utility import discordservice
 from discord import Interaction
 

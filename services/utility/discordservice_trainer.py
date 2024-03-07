@@ -32,14 +32,14 @@ async def PrintTrainer(interaction: Interaction, trainer: Trainer, targetUser: M
 
 	return await interaction.response.send_message(embed=embed)
 
-async def PrintUsePotion(interaction: Interaction, potion: Potion, result: tuple[bool, int]):
+async def PrintUsePotion(interaction: Interaction, potion: Potion | None, result: tuple[bool, int]):
 	return await discordservice.SendCommandResponse(
 		interaction=interaction, 
 		filename=responseFile, 
 		command='usepotion', 
-		responseInd=0 if not result[0] else 1 if result[1] > 0 else 2, 
+		responseInd=(0 if not result[0] else 1 if result[1] > 0 else 2) if potion else 3, 
 		color=TrainerColor, 
-		params=[potion.Name, result[1]],
+		params=[potion.Name if potion else '', result[1]],
 		eph=True)
 
 async def PrintModifyTeam(interaction: Interaction, response: int, pkmnId: str):
@@ -81,7 +81,7 @@ async def PrintRelease(interaction: Interaction, name: str):
 	return await discordservice.SendCommandResponse(
 		interaction=interaction, 
 		filename=responseFile, 
-		command='modifyteam', 
+		command='release', 
 		responseInd=0, 
 		color=TrainerColor, 
 		params=[name],

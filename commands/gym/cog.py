@@ -51,7 +51,7 @@ class GymCommands(commands.Cog, name="GymCommands"):
     async def gyminfo(self, inter: Interaction, gymleader: int):
         leader = gymservice.GetGymLeaderByBadge(gymleader)
         trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
-        await GymLeaderView(inter, leader, leader.BadgeId in trainer.Badges).send()
+        await GymLeaderView(inter, leader, leader.BadgeId in trainer.Badges if trainer else False).send()
 
 async def setup(bot: commands.Bot):
   await bot.add_cog(GymCommands(bot))

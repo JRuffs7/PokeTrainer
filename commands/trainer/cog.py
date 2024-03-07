@@ -7,7 +7,7 @@ from commands.views.Pagination.BadgeView import BadgeView
 
 from middleware.decorators import method_logger, trainer_check
 from services import gymservice, pokemonservice, trainerservice, itemservice
-from services.utility import discordservice, discordservice_trainer
+from services.utility import discordservice_trainer
 
 
 class TrainerCommands(commands.Cog, name="TrainerCommands"):
@@ -61,10 +61,10 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
   @trainer_check
   async def usepotion(self, inter: Interaction, potion: int):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
+    if str(potion) not in trainer.Potions:
+      return await discordservice_trainer.PrintUsePotion(inter, None, (False, 0))
     ptn = itemservice.GetPotion(potion)
     result = trainerservice.TryUsePotion(trainer, ptn)
-    if result is None:
-      return await discordservice.SendErrorMessage(inter, 'usepotion')
     return await discordservice_trainer.PrintUsePotion(inter, ptn, result)
 
   #endregion
