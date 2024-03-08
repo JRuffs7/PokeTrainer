@@ -5,8 +5,8 @@
 			"Body": "Congratulations! You have beaten all the gym leaders! Check out your badges by using **/badges**."
 		},
 		{
-			"Title": "Battle Error",
-			"Body": "There was an error while performing the battle with {0}. Please try again."
+			"Title": "Not Enough Money",
+			"Body": "This gym would cost ${0} if you were to be defeated. You only have ${1} available. Fight wild Pokemon using **/spawn** or sell items to gain more money and try again."
 		}
 	]
 }

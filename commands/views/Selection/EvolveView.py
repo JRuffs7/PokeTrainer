@@ -20,8 +20,8 @@ class EvolveView(discord.ui.View):
 		self.add_item(self.ownlist)
 
 	@button_check
-	async def EvolveSelection(self, inter: discord.Interaction, choice):
-		self.evolvechoice = choice[0]
+	async def EvolveSelection(self, inter: discord.Interaction, choice: str):
+		self.evolvechoice = choice
 		await inter.response.defer()
 
 	@button_check

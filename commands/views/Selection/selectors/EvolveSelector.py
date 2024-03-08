@@ -15,4 +15,4 @@ class EvolveSelector(discord.ui.Select):
         super().__init__(options=options, max_values=1, min_values=1, placeholder='Evolve Into...')
     
     async def callback(self, inter: discord.Interaction):
-        await self.view.EvolveSelection(inter, self.values)
+        await self.view.EvolveSelection(inter, self.values[0])

@@ -1,4 +1,3 @@
-
 class PokemonData:
   #Form Properties
   Id: int
@@ -14,6 +13,8 @@ class PokemonData:
   Name: str
   PokedexId: int
   IsBaby: bool
+  IsFossil: bool
+  IsUltraBeast: bool
   IsLegendary: bool
   IsMythical: bool
   #Pokemon Properties

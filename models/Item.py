@@ -1,4 +1,3 @@
-
 class Item:
   Id: int
   Name: str

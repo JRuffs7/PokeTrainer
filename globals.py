@@ -21,6 +21,7 @@ FightReaction = "⚔️"
 MaleSign = "🟦"
 FemaleSign = "🟥"
 ShinySign = "✨"
+Checkmark = "✅"
 dateFormat = '%m/%d/%y %H:%M:%S'
 
 StarterDexIds = [
@@ -46,8 +47,3 @@ def to_dict(obj):
 
 def region_name(id):
   return "Kanto" if id == 1 else "Johto" if id == 2 else "Hoenn" if id == 3 else "Sinnoh" if id == 4 else "Unova" if id == 5 else "Kalos" if id == 6 else "Alola" if id == 7 else "Galar" if id == 8 else "Paldea" if id == 9 else "Voltage"
-
-def GetJson(file: str):
-  with open(file, encoding="utf8") as f:
-    return json.load(f)
-  

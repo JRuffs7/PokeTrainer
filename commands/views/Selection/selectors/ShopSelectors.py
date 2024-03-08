@@ -1,6 +1,6 @@
 import discord
 
-from models.Item import Item, Pokeball, Potion
+from models.Item import Pokeball, Potion
 
 
 class BuySell(discord.ui.Select):
@@ -14,7 +14,7 @@ class BuySell(discord.ui.Select):
 				),
 				discord.SelectOption(
 					label='Sell',
-					description= 'Sell items to the shop.',
+					description= 'Sell items from your inventory.',
 					value='sell',
 					default=(default == 'sell')
 				),
@@ -61,7 +61,7 @@ class AmountChoice(discord.ui.Select):
 						value=f'{num}'
 					) for num in range(1, maximum)
 			]
-			super().__init__(options=options, max_values=1, min_values=1, placeholder='Choose Item')
+			super().__init__(options=options, max_values=1, min_values=1, placeholder='Choose Amount')
 	
 	async def callback(self, inter: discord.Interaction):
 		await self.view.AmountSelection(inter, self.values[0])

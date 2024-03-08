@@ -26,12 +26,12 @@ async def PrintServerResponse(interaction: Interaction, serv: Server):
 		params=[serv.ServerName, serv.ChannelId, eventservice.GetEventName(serv.CurrentEventId) if serv else ''],
 		eph=True)
 
-async def PrintSwapChannelResponse(interaction: Interaction):
+async def PrintSwapChannelResponse(interaction: Interaction, response: bool):
 	return await discordservice.SendCommandResponse(
 		interaction=interaction, 
 		filename=responseFile, 
 		command='swapchannel', 
-		responseInd=0, 
+		responseInd=0 if response else 1, 
 		color=ServerColor, 
 		params=[],
 		eph=True)

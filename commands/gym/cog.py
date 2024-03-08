@@ -23,10 +23,10 @@ class GymCommands(commands.Cog, name="GymCommands"):
         gymleader = gymservice.GetNextTrainerGym(trainer.Badges)
         if not gymleader:
             return await discordservice_gym.PrintGymBattleResponse(inter, 0, [])
+        if trainer.Money < int(gymleader.Reward/2):
+            return await discordservice_gym.PrintGymBattleResponse(inter, 1, [int(gymleader.Reward/2), trainer.Money])
         fightResults = gymservice.GymLeaderFight(trainer, gymleader)
-        if -1 in fightResults:
-            return await discordservice_gym.PrintGymBattleResponse(inter, 0, [gymleader.Name])
-        elif fightResults.count(1) == len(gymleader.Team):
+        if fightResults.count(True) == len(gymleader.Team):
             trainer.Money += gymleader.Reward
             trainer.Badges.append(gymleader.BadgeId)
             trainerservice.UpsertTrainer(trainer)
@@ -53,7 +53,7 @@ class GymCommands(commands.Cog, name="GymCommands"):
     async def gyminfo(self, inter: Interaction, gymleader: int):
         leader = gymservice.GetGymLeaderByBadge(gymleader)
         trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
-        await GymLeaderView(inter, leader, leader.BadgeId in trainer.Badges).send()
+        await GymLeaderView(inter, leader, leader.BadgeId in trainer.Badges if trainer else False).send()
 
 async def setup(bot: commands.Bot):
   await bot.add_cog(GymCommands(bot))

@@ -1,12 +1,9 @@
 from discord import app_commands, Interaction
 from discord.ext import commands
-from typing import List
 from commands.views.Selection.ShopView import ShopView
 
-from globals import ShopFailColor, ShopSuccessColor
 from middleware.decorators import method_logger, trainer_check
-from services import itemservice, trainerservice
-from services.utility import discordservice
+from services import trainerservice
 
 
 class ShopCommands(commands.Cog, name="ShopCommands"):

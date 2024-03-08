@@ -37,9 +37,8 @@ class HelpCommands(commands.Cog, name="HelpCommands"):
   async def help(self, 
                  inter: Interaction, 
                  command: str | None):
-    print("HELP called")
     if not command:
-      helpList = helpservice.BuildFullHelp()
+      helpList = helpservice.BuildFullHelp(inter.user.guild_permissions.administrator)
 
       su = discordservice.CreateEmbed("PokeTrainer Help", helpList[0], HelpColor)
       sp = discordservice.CreateEmbed("", helpList[1], HelpColor)
@@ -48,12 +47,12 @@ class HelpCommands(commands.Cog, name="HelpCommands"):
 
       await discordservice.SendDMs(inter, [su, sp])
       await discordservice.SendDMs(inter, [tr, cm])
-      return await discordservice_help.PrintHelpResponse(inter, None)
+      return await discordservice_help.PrintHelpResponse(inter, 0)
     else:
       helpComm = helpservice.BuildCommandHelp(command, inter.user.guild_permissions.administrator)
       if not helpComm:
-        return await discordservice_help.PrintHelpResponse(inter, command.lower())
-      return await discordservice.SendMessage(inter, f"{command.lower()}", helpComm.HelpString, HelpColor, True)
+        return await discordservice_help.PrintHelpResponse(inter, 1, command.lower())
+      return await discordservice_help.PrintCommandHelp(inter, helpComm)
       
 
 

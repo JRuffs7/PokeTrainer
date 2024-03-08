@@ -1,19 +1,8 @@
-from typing import List, Dict
-
 class Type:
   Name: str
-  Weakness: List[str]
-  Resistant: List[str]
-  Immune: List[str]
+  Weakness: list[str]
+  Resistant: list[str]
+  Immune: list[str]
 
-  def __init__(self, dict: Dict | None):
-    self.Name = dict.get('Name') or '' if dict else ''
-    weak = dict.get('Weakness') if dict else []
-    self.Weakness = weak or [] if isinstance(
-        weak, List) else weak.value if weak else []
-    res = dict.get('Resistance') if dict else []
-    self.Resistant = res or [] if isinstance(
-        res, List) else res.value if res else []
-    immune = dict.get('Immune') if dict else []
-    self.Immune = immune or [] if isinstance(
-        immune, List) else immune.value if immune else []
+  def __init__(self, dict):
+    vars(self).update(dict)

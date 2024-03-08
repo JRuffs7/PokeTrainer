@@ -87,7 +87,7 @@ class ShopView(discord.ui.View):
 			buying = self.buysellchoice == 'buy'
 			trainerservice.ModifyItemList(
 				self.trainer.Pokeballs if self.itemchoice.startswith('b') else self.trainer.Potions, 
-				int(self.itemchoice[1:]), 
+				self.itemchoice[1:], 
 				self.amountchoice if buying else (0 - self.amountchoice),
 				)
 			self.trainer.Money += (0 - (self.amountchoice)*item.BuyAmount) if buying else ((self.amountchoice)*item.SellAmount)
@@ -100,5 +100,5 @@ class ShopView(discord.ui.View):
 
 
 	async def send(self):
-		await self.interaction.response.send_message(content=f"Money: {self.trainer.Money}", view=self, ephemeral=True)
+		await self.interaction.response.send_message(content=f"Money: ${self.trainer.Money}", view=self, ephemeral=True)
 		self.message = await self.interaction.original_response()

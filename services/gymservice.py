@@ -14,7 +14,7 @@ def GetNextTrainerGym(trainerBadges: list[int]):
 	badges.sort(key=lambda b: b.Id)
 	for b in badges:
 		if b.Id not in trainerBadges:
-			return gymda.GetGymLeaderByBadgeId(b.Id)
+			return next(g for g in gymda.GetAllGymLeaders() if g.BadgeId == b.Id)
 	return None
 
 
@@ -25,15 +25,15 @@ def GetBattleTeam(team: list[int]):
 def GymLeaderFight(trainer: Trainer, leader: GymLeader):
 	trainerTeam = [{ 'Pokemon': pokemonservice.GetPokemonById(t.Pokemon_Id), 'Id': t.Id } for t in trainerservice.GetTeam(trainer)]
 	leaderTeam = GetBattleTeam(leader.Team)
-	fightResults: list[int] = []
+	fightResults: list[bool] = []
 	expList: dict[str, int] = {}
 	trainerInd = leaderInd = 0
 	while trainerInd < len(trainerTeam) and leaderInd < len(leaderTeam):
 		trainerFighter = trainerTeam[trainerInd]
 		leaderFighter = leaderTeam[leaderInd]
-		fight = pokemonservice.PokemonFight(trainerFighter['Pokemon'], leaderFighter, True)
+		fight = pokemonservice.GymFight(trainerFighter['Pokemon'], leaderFighter)
 		fightResults.append(fight)
-		if fight == 1:
+		if fight:
 			expList[trainerTeam[trainerInd]['Id']] = 10*leaderTeam[leaderInd].Rarity
 			leaderInd += 1
 		else:
@@ -42,7 +42,7 @@ def GymLeaderFight(trainer: Trainer, leader: GymLeader):
 	for pId in expList:
 		tPokemon = next(p for p in trainer.OwnedPokemon if pId == p.Id)
 		tData = next(d['Pokemon'] for d in trainerTeam if d['Id'] == tPokemon.Id)
-		pokemonservice.AddExperience(tPokemon, tData.Rarity, expList[pId])
+		pokemonservice.AddExperience(tPokemon, tData, expList[pId])
 	return fightResults
 
 
@@ -59,7 +59,16 @@ def GetAllBadges():
 def GetBadgeById(badgeId: int):
 	return next((b for b in GetAllBadges() if b.Id == badgeId),None)
 
-def GetBadgesByRegion(generation: int):
-	return [b for b in GetAllBadges() if b.Generation == generation]
+def GetGymBadges(trainer: Trainer, generation: int):
+  badgeList = [ba for ba in [GetBadgeById(b) for b in trainer.Badges] if ba]
+  if generation:
+    badgeList = [b for b in badgeList if b.Generation == generation]
+  badgeList.sort(key=lambda x: x.Id)
+  return badgeList
+
+def GymCompletion(trainer: Trainer, generation: int = None):
+  allBadges = [b.Id for b in GetAllBadges() if (b.Generation == generation if generation else True)]
+  obtained = list(filter(allBadges.__contains__, trainer.Badges))
+  return (len(obtained), len(allBadges))
 
 #endregion
