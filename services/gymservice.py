@@ -42,7 +42,7 @@ def GymLeaderFight(trainer: Trainer, leader: GymLeader):
 	for pId in expList:
 		tPokemon = next(p for p in trainer.OwnedPokemon if pId == p.Id)
 		tData = next(d['Pokemon'] for d in trainerTeam if d['Id'] == tPokemon.Id)
-		pokemonservice.AddExperience(tPokemon, tData.Rarity, expList[pId])
+		pokemonservice.AddExperience(tPokemon, tData, expList[pId])
 	return fightResults
 
 

@@ -3,7 +3,7 @@ from discord.ext import commands
 
 from middleware.decorators import method_logger, is_admin, server_check
 from services import serverservice
-from services.utility import discordservice, discordservice_server
+from services.utility import discordservice_server
 
 class ServerCommands(commands.Cog, name="ServerCommands"):
 
@@ -18,7 +18,7 @@ class ServerCommands(commands.Cog, name="ServerCommands"):
     if inter.guild:
       serv = serverservice.RegisterServer(inter.guild_id, inter.channel_id, inter.guild.name)
       return await discordservice_server.PrintRegisterResponse(inter, serv)
-    return await discordservice.SendErrorMessage(inter, "register")
+    return inter.response.defer()
 
   @app_commands.command(name="server",
                         description="(Admin only) Display server details.")

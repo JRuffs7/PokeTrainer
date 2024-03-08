@@ -1,4 +1,4 @@
-from globals import BattleColor, ErrorColor
+from globals import BattleColor
 from services.utility import discordservice
 from discord import Interaction
 
@@ -10,6 +10,6 @@ async def PrintGymBattleResponse(interaction: Interaction, response: int, params
 		filename=responseFile, 
 		command='gymbattle', 
 		responseInd=response, 
-		color=BattleColor if response != 1 else ErrorColor, 
+		color=BattleColor, 
 		params=params,
 		eph=True)

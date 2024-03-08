@@ -83,19 +83,8 @@ def SpawnPokemon():
   pokemon = None
   while not pokemon:
     pokemon = random.choice(pokemonList)
-    # No Megas
-    # No Legendaries/Mythicals
-    # No Starters
-    # First Stage/No Evolution Spawns Only
-    # Must Have a Sprite
-    if pokemon.IsMega or pokemon.IsUltraBeast or (pokemon.Rarity == 3 and pokemon.EvolvesInto) or not pokemon.Sprite or not pokemon.ShinySprite:
+    if not CanSpawn(pokemon):
       pokemon = None
-
-    if pokemon:
-      for range in StarterDexIds:
-        if pokemon.PokedexId in range:
-          pokemon = None
-          break
 
   return GenerateSpawnPokemon(pokemon)
 
@@ -122,19 +111,49 @@ def GenerateSpawnPokemon(pokemon: PokemonData, level: int | None = None):
 
 def GetSpawnList():
   initList = pokemonda.GetPokemonByProperty([1, 2, 3], 'Rarity')
-  trimList = [p for p in initList if not p.IsMega or not p.IsUltraBeast or not (p.Rarity == 3 and p.EvolvesInto) or p.Sprite or p.ShinySprite]
-  return [p for p in trimList if p.PokedexId not in chain(StarterDexIds)]
+  return [p for p in initList if CanSpawn(p)]
+
+def CanSpawn(pokemon: PokemonData):
+  if pokemon.IsMega or pokemon.IsUltraBeast or pokemon.IsLegendary or pokemon.IsMythical or pokemon.IsFossil:
+    return False
+  
+  if pokemon.Rarity > 3 or (pokemon.Rarity == 3 and pokemon.EvolvesInto):
+    return False
+  
+  if not pokemon.Sprite and not pokemon.ShinySprite:
+    return False
+  
+  for range in StarterDexIds:
+    if pokemon.PokedexId in range:
+      return False
+
+  return  True
+
 
 #endregion
 
 #region Trainer Pokemon
 
-def AddExperience(trainerPokemon: Pokemon, trainerRarity: int, exp: int):
+def AddExperience(trainerPokemon: Pokemon, pkmnData: PokemonData, exp: int):
   trainerPokemon.CurrentExp += exp
-  if trainerPokemon.CurrentExp >= ((50 * trainerRarity) if trainerRarity <= 3 else 250):
-    trainerPokemon.Level += 1
-    trainerPokemon.CurrentExp -= ((50 * trainerRarity) if trainerRarity <= 3 else 250)
+  expNeeded = NeededExperience(trainerPokemon.Level, pkmnData.Rarity, len(pkmnData.EvolvesInto) > 0)
+  if trainerPokemon.Level == 100 and trainerPokemon.CurrentExp > expNeeded:
+    trainerPokemon.CurrentExp = expNeeded
+  elif trainerPokemon.CurrentExp > expNeeded:
+      trainerPokemon.Level += 1
+      trainerPokemon.CurrentExp -= expNeeded
 
+def NeededExperience(level: int, rarity: int, canEvolve: bool):
+  if rarity == 1:
+    return 50 if level < 20 else 150 if level < 35 else 250
+  if rarity == 2:
+    return 100 if level < 30 else 250
+  if rarity == 3 and canEvolve:
+    return 150 if level < 35 else 250
+  if rarity == 4 or rarity == 5:
+    return 250
+  if (rarity == 3 and not canEvolve) or rarity >= 8:
+    return 200
 
 def CanTrainerPokemonEvolve(pkmn: Pokemon):
   pkmnData = GetPokemonById(pkmn.Pokemon_Id)
@@ -167,7 +186,7 @@ def EvolvePokemon(initial: Pokemon, evolveId: int):
 def WildFight(attack: PokemonData, defend: PokemonData):
   battleResult = TypeMatch(attack.Types, defend.Types)
   doubleAdv = battleResult == 2
-  doubleDis = battleResult <= -3
+  doubleDis = battleResult <= -2
   attackGroup = RarityGroup(attack.Rarity, attack.IsLegendary or attack.IsMythical)
   defendGroup = RarityGroup(defend.Rarity, defend.IsLegendary or defend.IsMythical)
 

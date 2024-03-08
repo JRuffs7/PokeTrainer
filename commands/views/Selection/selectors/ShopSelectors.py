@@ -14,7 +14,7 @@ class BuySell(discord.ui.Select):
 				),
 				discord.SelectOption(
 					label='Sell',
-					description= 'Sell items to the shop.',
+					description= 'Sell items from your inventory.',
 					value='sell',
 					default=(default == 'sell')
 				),

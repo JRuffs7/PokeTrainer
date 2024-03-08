@@ -28,18 +28,6 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 		except Exception as e:
 			self.logger.critical(f"{e}")
 
-	@commands.command(name="liveupdate")
-	@method_logger
-	@is_bot_admin
-	async def liveupdate(self, ctx: commands.Context, message: str):
-		if not message or not ctx.guild:
-			return
-		print(ctx.guild.id)
-		servers = [s for s in serverservice.GetServers() if s.ServerId != ctx.guild.id]
-		for serv in servers:
-			print(serv.ServerId)
-			await discordservice.SendMessageNoInteraction(serv.ServerId, serv.ChannelIds[0], message)
-
 	@commands.command(name="deleteuser")
 	@is_bot_admin
 	async def deleteuser(self, ctx: commands.Context, user: Member = None):

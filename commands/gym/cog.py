@@ -23,6 +23,8 @@ class GymCommands(commands.Cog, name="GymCommands"):
         gymleader = gymservice.GetNextTrainerGym(trainer.Badges)
         if not gymleader:
             return await discordservice_gym.PrintGymBattleResponse(inter, 0, [])
+        if trainer.Money < int(gymleader.Reward/2):
+            return await discordservice_gym.PrintGymBattleResponse(inter, 1, [int(gymleader.Reward/2), trainer.Money])
         fightResults = gymservice.GymLeaderFight(trainer, gymleader)
         if fightResults.count(True) == len(gymleader.Team):
             trainer.Money += gymleader.Reward
