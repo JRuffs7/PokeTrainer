@@ -18,5 +18,11 @@
 			"Title": "No Results",
 			"Body": "There seem to be no Pokemon categorized under the type {0}. Try again using the given prompts and filters."
 		}
+	],
+	"spawn": [
+		{
+			"Title": "Unable to Spawn",
+			"Body": "You must wait at least 10 minutes in between spawns.\nYour last spawn was at {0} EST"
+		}
 	]
 }

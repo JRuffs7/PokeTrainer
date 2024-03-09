@@ -6,6 +6,7 @@ from commands.views.SpawnPokemonView import SpawnPokemonView
 import discordbot
 
 from commands.views.Selection.EvolveView import EvolveView
+from globals import AdminList
 from middleware.decorators import method_logger, trainer_check
 from services import pokemonservice, typeservice, trainerservice
 from services.utility import discordservice_pokemon
@@ -28,7 +29,10 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
   async def spawn(self, inter: Interaction):
     pokemon = pokemonservice.SpawnPokemon()
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
-    await SpawnPokemonView(inter, trainer, pokemon).send(True)
+    if inter.user.id in AdminList or trainerservice.CanCallSpawn(trainer):
+      await SpawnPokemonView(inter, trainer, pokemon).send(True)
+    else:
+      return await discordservice_pokemon.PrintSpawnResponse(inter, 0, [trainer.LastSpawnTime])
 
   #endregion
 

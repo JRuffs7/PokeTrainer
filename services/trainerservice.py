@@ -1,4 +1,5 @@
 
+from datetime import datetime, timedelta
 from dataaccess import trainerda
 from globals import GreatBallReaction, PokeballReaction, UltraBallReaction
 from models.Item import Potion
@@ -167,6 +168,17 @@ def SetTeamSlot(trainer: Trainer, slotNum: int, pokemonId: str):
 #endregion
 
 #region Spawn
+
+def CanCallSpawn(trainer: Trainer):
+  if not trainer.LastSpawnTime:
+    trainer.LastSpawnTime = datetime.now().strftime('%m/%d/%y %H:%M:%S')
+    return True
+  
+  lastSpawn = datetime.strptime(trainer.LastSpawnTime, '%m/%d/%y %H:%M:%S')
+  if(lastSpawn + timedelta(minutes=10) < datetime.now()):
+    trainer.LastSpawnTime = datetime.now().strftime('%m/%d/%y %H:%M:%S')
+    return True
+  return False
 
 def TryCapture(reaction: str, trainer: Trainer, spawn: Pokemon):
   caught = False

@@ -23,3 +23,13 @@ async def PrintEvolveResponse(interaction: Interaction, response: int):
 		color=PokemonColor, 
 		params=[],
 		eph=True)
+
+async def PrintSpawnResponse(interaction: Interaction, response: int, params: list):
+	return await discordservice.SendCommandResponse(
+		interaction=interaction, 
+		filename=responseFile, 
+		command='spawn', 
+		responseInd=response, 
+		color=PokemonColor, 
+		params=params,
+		eph=True)
