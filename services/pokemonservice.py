@@ -1,4 +1,3 @@
-from itertools import chain
 import math
 import random
 import uuid
@@ -114,7 +113,7 @@ def GetSpawnList():
   return [p for p in initList if CanSpawn(p)]
 
 def CanSpawn(pokemon: PokemonData):
-  if pokemon.IsMega or pokemon.IsUltraBeast or pokemon.IsLegendary or pokemon.IsMythical or pokemon.IsFossil:
+  if pokemon.IsMega or pokemon.IsUltraBeast or pokemon.IsParadox or pokemon.IsLegendary or pokemon.IsMythical or pokemon.IsFossil:
     return False
   
   if pokemon.Rarity > 3 or (pokemon.Rarity == 3 and pokemon.EvolvesInto):
@@ -164,7 +163,6 @@ def CanTrainerPokemonEvolve(pkmn: Pokemon):
   elif pkmnData.Rarity == 3 and len(pkmnData.EvolvesInto) >= 1:
     return pkmn.Level >= 35
   return False
-
 
 def EvolvePokemon(initial: Pokemon, evolveId: int):
   spawn = GenerateSpawnPokemon(GetPokemonById(evolveId))

@@ -30,7 +30,7 @@
       "Description": "Guarenteed capture ball for catching Pokemon.",
       "BuyAmount": null,
       "SellAmount": null,
-      "CaptureRate": 2
+      "CaptureRate": 100
     }
   ],
   "Potion": [

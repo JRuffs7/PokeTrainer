@@ -1,10 +1,12 @@
 
+from math import ceil
+from random import choice
 from dataaccess import trainerda
 from globals import GreatBallReaction, PokeballReaction, UltraBallReaction
-from models.Item import Potion
+from models.Item import Pokeball, Potion
 from models.Trainer import Trainer
-from models.Pokemon import Pokemon
-from services import pokemonservice
+from models.Pokemon import Pokemon, PokemonData
+from services import itemservice, pokemonservice
 
 
 #region Data
@@ -169,15 +171,30 @@ def SetTeamSlot(trainer: Trainer, slotNum: int, pokemonId: str):
 #region Spawn
 
 def TryCapture(reaction: str, trainer: Trainer, spawn: Pokemon):
-  pokeballId = '1' if reaction == PokeballReaction else '2' if reaction == GreatBallReaction else '3' if reaction == UltraBallReaction else '4'
-  if trainer.Pokeballs[pokeballId] > 0:
-    #TODO: IMPLEMENT CAPTURE RATE
-    ModifyItemList(trainer.Pokeballs, pokeballId, -1)
+  caught = False
+  pokeball = itemservice.GetPokeball(1 if reaction == PokeballReaction else 2 if reaction == GreatBallReaction else 3 if reaction == UltraBallReaction else 4)
+  pokemon = pokemonservice.GetPokemonById(spawn.Pokemon_Id)
+  ModifyItemList(trainer.Pokeballs, str(pokeball.Id), -1)
+  if CaptureSuccess(pokeball, pokemon, spawn.Level):
     trainer.OwnedPokemon.append(spawn)
-    TryAddToPokedex(trainer, pokemonservice.GetPokemonById(spawn.Pokemon_Id).PokedexId)
-    UpsertTrainer(trainer)
+    TryAddToPokedex(trainer, pokemon.PokedexId)
+    caught = True
+  UpsertTrainer(trainer)
+  return caught
+
+def CaptureSuccess(pokeball: Pokeball, pokemon: PokemonData, level: int):
+  if pokeball.Name == 'Masterball':
     return True
-  return False
+
+  randInt = choice(range(1,256))
+  if level <= 13:
+    calc = ceil(((pokemon.CaptureRate*pokeball.CaptureRate*2)/3)*((36-(2*level))/10))
+  else:
+    calc = ceil((pokemon.CaptureRate*pokeball.CaptureRate*2)/3)
+
+  print(f"{randInt} / {calc}")
+  return randInt < calc
+    
 
 def TryWildFight(trainer: Trainer, wild: Pokemon):
     if trainer.Health <= 0:

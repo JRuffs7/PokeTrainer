@@ -36,15 +36,15 @@ class SpawnPokemonView(discord.ui.View):
 
 	@discord.ui.button(label=PokeballReaction)
 	async def pokeball_button(self, interaction: discord.Interaction, button: discord.ui.Button):
-		await self.TryCapture(interaction, button.label, "Pokeballs")
+		await self.TryCapture(interaction, button.label, "Pokeball")
 
-	@discord.ui.button(label=GreatBallReaction, custom_id="Greatball")
+	@discord.ui.button(label=GreatBallReaction)
 	async def greatball_button(self, interaction: discord.Interaction, button: discord.ui.Button):
-		await self.TryCapture(interaction, button.label, "Greatballs")
+		await self.TryCapture(interaction, button.label, "Greatball")
 
-	@discord.ui.button(label=UltraBallReaction, custom_id="Ultraball")
+	@discord.ui.button(label=UltraBallReaction)
 	async def ultraball_button(self, interaction: discord.Interaction, button: discord.ui.Button):
-		await self.TryCapture(interaction, button.label, "Ultraballs")
+		await self.TryCapture(interaction, button.label, "Ultraball")
 
 	@discord.ui.button(label=FightReaction, custom_id="fight")
 	async def fight_button(self, interaction: discord.Interaction, button: discord.ui.Button):
@@ -61,11 +61,15 @@ class SpawnPokemonView(discord.ui.View):
 			await interaction.response.send_message(content=f'You defeated {pokemonservice.GetPokemonDisplayName(self.pokemon, False, False)}!\n{pokemonservice.GetPokemonDisplayName(trainerPoke)} gained {self.pkmndata.Rarity}xp\nTrainer lost {fight}hp and gained $50.',ephemeral=True)
 
 	async def TryCapture(self, interaction: discord.Interaction, label: str, ball: str):
-		if trainerservice.TryCapture(label, self.trainer, self.pokemon):
+		pokeballId = '1' if label == PokeballReaction else '2' if label == GreatBallReaction else '3' if label == UltraBallReaction else '4'
+		if self.trainer.Pokeballs[str(pokeballId)] <= 0:
+			await self.message.edit(content=f"You do not have any {ball}s. Buy some from the **/shop** or try another ball!", view=self)
+			await interaction.response.defer()
+		elif trainerservice.TryCapture(label, self.trainer, self.pokemon):
 			await self.message.delete()
-			await interaction.response.send_message(content=f'Congratulations! You have captured {pokemonservice.GetPokemonDisplayName(self.pokemon)}',ephemeral=True)
+			await interaction.response.send_message(content=f'Congratulations! Used a {ball} to capture {pokemonservice.GetPokemonDisplayName(self.pokemon)} (Lvl. {self.pokemon.Level})',ephemeral=True)
 		else:
-			await self.message.edit(content=f"You do not have any {ball}. Buy some from the **/shop** or try another ball!", view=self)
+			await self.message.edit(content=f"Capture failed! Try again", view=self)
 			await interaction.response.defer()
 
 	def GetTitle(self):
