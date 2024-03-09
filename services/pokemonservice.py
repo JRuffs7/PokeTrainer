@@ -1,6 +1,7 @@
-import math
-import random
 import uuid
+from math import ceil, floor
+from random import choice, uniform, randint
+from models.Item import Pokeball
 
 from services import typeservice
 from dataaccess import pokemonda
@@ -81,21 +82,21 @@ def SpawnPokemon():
   pokemonList = pokemonda.GetPokemonByProperty([1, 2, 3], 'Rarity')
   pokemon = None
   while not pokemon:
-    pokemon = random.choice(pokemonList)
+    pokemon = choice(pokemonList)
     if not CanSpawn(pokemon):
       pokemon = None
 
   return GenerateSpawnPokemon(pokemon)
 
 def GenerateSpawnPokemon(pokemon: PokemonData, level: int | None = None):
-  shiny = random.randint(0, ShinyOdds) == int(ShinyOdds / 2)
+  shiny = randint(0, ShinyOdds) == int(ShinyOdds / 2)
   height = round(
-      random.uniform(math.floor(
-          (pokemon.Height * 0.9)), math.ceil((pokemon.Height * 1.1))) / 10, 2)
+      uniform(floor(
+          (pokemon.Height * 0.9)), ceil((pokemon.Height * 1.1))) / 10, 2)
   weight = round(
-      random.uniform(math.floor(
-          (pokemon.Weight * 0.9)), math.ceil((pokemon.Weight * 1.1))) / 10, 2)
-  female = random.randint(0, 100) < int(pokemon.FemaleChance / 8 *
+      uniform(floor(
+          (pokemon.Weight * 0.9)), ceil((pokemon.Weight * 1.1))) / 10, 2)
+  female = randint(0, 100) < int(pokemon.FemaleChance / 8 *
                                         100) if pokemon.FemaleChance else None
   return Pokemon({
       'Id': uuid.uuid4().hex,
@@ -104,7 +105,7 @@ def GenerateSpawnPokemon(pokemon: PokemonData, level: int | None = None):
       'Weight': weight if weight > 0.00 else 0.01,
       'IsShiny': shiny,
       'IsFemale': female,
-      'Level': level if level else random.choice(range(1,6)) if pokemon.Rarity <= 2 else random.choice(range(20,26)) if pokemon.Rarity == 3 else random.choice(range(30,36)),
+      'Level': level if level else choice(range(1,6)) if pokemon.Rarity <= 2 else choice(range(20,26)) if pokemon.Rarity == 3 else choice(range(30,36)),
       'CurrentExp': 0
   })
 
@@ -128,6 +129,18 @@ def CanSpawn(pokemon: PokemonData):
 
   return  True
 
+def CaptureSuccess(pokeball: Pokeball, pokemon: PokemonData, level: int):
+  if pokeball.Name == 'Masterball':
+    return True
+
+  randInt = choice(range(1,256))
+  if level <= 13:
+    calc = ceil(((pokemon.CaptureRate*pokeball.CaptureRate*2)/3)*((36-(2*level))/10))
+  else:
+    calc = ceil((pokemon.CaptureRate*pokeball.CaptureRate*2)/3)
+
+  print(f"{randInt} / {calc}")
+  return randInt < calc
 
 #endregion
 
