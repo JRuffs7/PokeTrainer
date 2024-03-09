@@ -95,7 +95,7 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
     
 
   async def PokeInfoColor(self, inter: Interaction, color: str):
-    pokemonList = pokemonservice.GetPokemonByColor(color.lower())
+    pokemonList = pokemonservice.GetPokemonByColor(color)
     if not pokemonList:
       return await discordservice_pokemon.PrintPokeInfoResponse(inter, 1, [color])
     pokemonList.sort(key=lambda x: x.Name)
