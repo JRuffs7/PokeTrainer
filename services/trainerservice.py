@@ -4,7 +4,7 @@ from globals import GreatBallReaction, PokeballReaction, UltraBallReaction
 from models.Item import Potion
 from models.Trainer import Trainer
 from models.Pokemon import Pokemon
-from services import pokemonservice
+from services import itemservice, pokemonservice
 
 
 #region Data
@@ -169,15 +169,16 @@ def SetTeamSlot(trainer: Trainer, slotNum: int, pokemonId: str):
 #region Spawn
 
 def TryCapture(reaction: str, trainer: Trainer, spawn: Pokemon):
-  pokeballId = '1' if reaction == PokeballReaction else '2' if reaction == GreatBallReaction else '3' if reaction == UltraBallReaction else '4'
-  if trainer.Pokeballs[pokeballId] > 0:
-    #TODO: IMPLEMENT CAPTURE RATE
-    ModifyItemList(trainer.Pokeballs, pokeballId, -1)
+  caught = False
+  pokeball = itemservice.GetPokeball(1 if reaction == PokeballReaction else 2 if reaction == GreatBallReaction else 3 if reaction == UltraBallReaction else 4)
+  pokemon = pokemonservice.GetPokemonById(spawn.Pokemon_Id)
+  ModifyItemList(trainer.Pokeballs, str(pokeball.Id), -1)
+  if pokemonservice.CaptureSuccess(pokeball, pokemon, spawn.Level):
     trainer.OwnedPokemon.append(spawn)
-    TryAddToPokedex(trainer, pokemonservice.GetPokemonById(spawn.Pokemon_Id).PokedexId)
-    UpsertTrainer(trainer)
-    return True
-  return False
+    TryAddToPokedex(trainer, pokemon.PokedexId)
+    caught = True
+  UpsertTrainer(trainer)
+  return caught
 
 def TryWildFight(trainer: Trainer, wild: Pokemon):
     if trainer.Health <= 0:

@@ -15,6 +15,7 @@ class PokemonData:
   IsBaby: bool
   IsFossil: bool
   IsUltraBeast: bool
+  IsParadox: bool
   IsLegendary: bool
   IsMythical: bool
   #Pokemon Properties

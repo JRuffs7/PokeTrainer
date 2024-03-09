@@ -70,7 +70,7 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 			return
 		trainer = trainerservice.GetTrainer(ctx.guild.id, user.id if user else ctx.author.id)
 		if trainer:
-			trainerservice.ModifyItemList(trainer.PokeballList, str(type) if type == 1 or type == 2 or type == 3 else '1', amount)
+			trainerservice.ModifyItemList(trainer.Pokeballs, str(type) if type == 1 or type == 2 or type == 3 else '1', amount)
 			trainerservice.UpsertTrainer(trainer)
 			
 	@commands.command(name="addpotion")
@@ -81,7 +81,7 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 			return
 		trainer = trainerservice.GetTrainer(ctx.guild.id, user.id if user else ctx.author.id)
 		if trainer:
-			trainerservice.ModifyItemList(trainer.PotionList, str(type) if type == 1 or type == 2 or type == 3 else '1', amount)
+			trainerservice.ModifyItemList(trainer.Potions, str(type) if type == 1 or type == 2 or type == 3 else '1', amount)
 			trainerservice.UpsertTrainer(trainer)
 			
 	@commands.command(name="addbadge")
