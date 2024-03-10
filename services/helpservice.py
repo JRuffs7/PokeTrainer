@@ -49,7 +49,7 @@ def BuildFullHelp(isAdmin: bool):
   commandSummary = '__**COMMANDS**__\n\nThis is a list of commands and a simplified description. For further details on each command, try using the **/help** sub commands.'
   newline = "\n"
   for h in commands:
-    if h != 'Actions':
+    if h != 'Actions' and commands[h]:
       commandSummary += f"{newline}{newline}__{h} Commands__"
       helpList = commands[h]
       for helpObj in helpList:
