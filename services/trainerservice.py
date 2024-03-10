@@ -13,13 +13,13 @@ captureLog = logging.getLogger('capture')
 
 #region Data
 
-def GetTrainer(serverId, userId):
+def GetTrainer(serverId: int, userId: int):
   return trainerda.GetTrainer(serverId, userId)
 
-def UpsertTrainer(trainer):
+def UpsertTrainer(trainer: Trainer):
   return trainerda.UpsertTrainer(trainer)
 
-def DeleteTrainer(trainer):
+def DeleteTrainer(trainer: Trainer):
   return trainerda.DeleteTrainer(trainer)
 
 def StartTrainer(pokemonId: int, userId: int, serverId: int):
@@ -40,7 +40,8 @@ def StartTrainer(pokemonId: int, userId: int, serverId: int):
     'Money': 500,
     'Pokeballs': { '1': 5, '2': 0, '3': 0, '4': 0 },
     'Potions': { '1': 0, '2': 0, '3': 0, '4': 0 },
-    'LastSpawnTime': None
+    'LastSpawnTime': None,
+    'LastDaily': None
   })
   trainer.OwnedPokemon.append(spawn)
   UpsertTrainer(trainer)
@@ -80,6 +81,14 @@ def TryUsePotion(trainer: Trainer, potion: Potion):
   ModifyItemList(trainer.Potions, str(potion.Id), -1)
   trainerda.UpsertTrainer(trainer)
   return (True, (trainer.Health - preHealth))
+
+def TryDaily(trainer: Trainer):
+  if not trainer.LastDaily or datetime.strptime(trainer.LastDaily, '%m/%d/%Y').date() < datetime.utcnow().date():
+    trainer.LastDaily = datetime.utcnow().strftime('%m/%d/%Y')
+    ModifyItemList(trainer.Pokeballs, '1', 3)
+    UpsertTrainer(trainer)
+    return True
+  return False
 
 def ModifyItemList(itemDict: dict[str, int], itemId: str, amount: int):
   newAmount = itemDict[itemId] + amount
@@ -174,12 +183,12 @@ def SetTeamSlot(trainer: Trainer, slotNum: int, pokemonId: str):
 
 def CanCallSpawn(trainer: Trainer):
   if not trainer.LastSpawnTime:
-    trainer.LastSpawnTime = datetime.now().strftime('%m/%d/%y %H:%M:%S')
+    trainer.LastSpawnTime = datetime.utcnow().strftime('%m/%d/%y %H:%M:%S')
     return True
   
   lastSpawn = datetime.strptime(trainer.LastSpawnTime, '%m/%d/%y %H:%M:%S')
-  if(lastSpawn + timedelta(minutes=10) < datetime.now()):
-    trainer.LastSpawnTime = datetime.now().strftime('%m/%d/%y %H:%M:%S')
+  if(lastSpawn + timedelta(minutes=10) < datetime.utcnow()):
+    trainer.LastSpawnTime = datetime.utcnow().strftime('%m/%d/%y %H:%M:%S')
     return True
   return False
 

@@ -6,7 +6,7 @@ from models.Trainer import Trainer
 
 collection: str = 'Trainer'
 
-def GetTrainer(serverId, userId) -> Trainer|None:
+def GetTrainer(serverId: int, userId: int) -> Trainer|None:
   key = f"{serverId}{userId}"
   trainer = sqliteda.Load(key)
   if not trainer:

@@ -28,7 +28,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
           break
     return data
 
-  #region Info
+  #region INFO
 
   @app_commands.command(name="trainer",
                         description="Displays trainer info.")
@@ -66,6 +66,14 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
     ptn = itemservice.GetPotion(potion)
     result = trainerservice.TryUsePotion(trainer, ptn)
     return await discordservice_trainer.PrintUsePotion(inter, ptn, result)
+
+  @app_commands.command(name="daily",
+                        description="Claim your daily reward.")
+  @method_logger
+  @trainer_check
+  async def daily(self, interaction: Interaction):
+    trainer = trainerservice.GetTrainer(interaction.guild_id, interaction.user.id)
+    return await discordservice_trainer.PrintDaily(interaction, trainerservice.TryDaily(trainer))
 
   #endregion
 

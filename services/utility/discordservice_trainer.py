@@ -86,3 +86,13 @@ async def PrintRelease(interaction: Interaction, name: str):
 		color=TrainerColor, 
 		params=[name],
 		eph=True)
+
+async def PrintDaily(interaction: Interaction, success: bool):
+	return await discordservice.SendCommandResponse(
+		interaction=interaction, 
+		filename=responseFile, 
+		command='daily', 
+		responseInd=0 if success else 1, 
+		color=TrainerColor, 
+		params=[],
+		eph=True)

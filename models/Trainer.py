@@ -12,6 +12,7 @@ class Trainer:
   Team: list[str]
   Badges: list[int]
   LastSpawnTime: str | None
+  LastDaily: str | None
 
   def __init__(self, dict):
     vars(self).update(dict)

@@ -9,6 +9,16 @@
 			"Body": "No badges obtained for the {0} region. Fight gym leaders using **/gymbattle** to obtain badges."
 		}
 	],
+	"daily": [
+		{
+			"Title": "Daily Reward",
+			"Body": "Thank you for using PokeTrainer. Here is your reward of **Pokeball x3**.\n\nDon't forget to upvote the bot at\nhttps://top.gg/bot/1151657435073875988?s=0ff6c6ca7661b"
+		},
+		{
+			"Title": "Already Claimed",
+			"Body": "You have already claimed your reward for the day! Daily rewards reset at midnight UTC.\n\nDon't forget to upvote the bot at\nhttps://top.gg/bot/1151657435073875988?s=0ff6c6ca7661b"
+		}
+	],
 	"modifyteam": [
 		{
 			"Title": "Cannot Modify Team",
