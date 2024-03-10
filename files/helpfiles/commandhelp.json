@@ -39,6 +39,12 @@
       "RequiresAdmin": false
     },
     {
+      "Name": "daily",
+      "ShortString": "Claim a small reward every day.",
+      "HelpString": "Proper command usage: **/daily**\n\nThis command gives the user 3 Pokeballs every day, resetting at mignight UTC. It will also give a link to upvote the bot!",
+      "RequiresAdmin": false
+    },
+    {
       "Name": "modifyteam",
       "ShortString": "Add or replace a member of your battle team.",
       "HelpString": "Proper command usage: **/modifyteam *[pokemon]***\nParameters:\n**pokemon** - (Optional) Name of Pokemon to add to the team.\n\nThis command has two operations and will bring up two dropdowns.\n\nThe first operation happens when you do not provide a name with the command. This is treated as modifying just your existing team members. One example is you wish to change which Pokemon is in your first team slot for battles. In this case, the first selection dropdown will consist of only your team members. It will contain their expanded name (gender and shiny included) as well as all other relevant stats. The second selection will be your current team alignment. This will tell you what Pokemon is currently in which slot. You may choose a slot to replace with the first selected team member, or there will be an option to remove the selected member entirely.\nNOTE: You must always have at least one Pokemon in your battle team.\n\nThe second operation is providing the name filter when issuing the command. This is used to add a Pokemon from your box to the team either by addition or replacement. With this command path, there will still be two selection dropdowns. However, this time the first selection will only be Pokemon not currently in the team with the name given through the filter. The selection choices will contain information about the Pokemon such as their expanded name (gender and shiny included) as well as all other relevant stats. The second selection will contain allcurrent team members with their details as well. If the current team is not full (6 members), there will be an additional selection named 'Add To End Slot', which will do exactly as it says. You may choose a current team member and replace them in that slot, or add the selected Pokemon to the last available slot on your team (if applicable).",
