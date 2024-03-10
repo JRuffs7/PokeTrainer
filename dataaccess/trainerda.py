@@ -1,36 +1,34 @@
 from threading import Thread
 
-from dataaccess.utility import mongodb
+from dataaccess.utility import mongodb, sqliteda
 from globals import to_dict
 from models.Trainer import Trainer
 
 collection: str = 'Trainer'
-trainerCache: dict[str, Trainer] = {}
 
-
-def GetTrainer(serverId, userId):
+def GetTrainer(serverId, userId) -> Trainer|None:
   key = f"{serverId}{userId}"
-  if key in trainerCache:
-    return trainerCache[key]
-  train = mongodb.GetSingleDoc(collection, {
-      'ServerId': serverId,
-      'UserId': userId
-  })
-  tr = Trainer(train) if train else None
-  if tr:
-    trainerCache[key] = tr
-  return tr
+  trainer = sqliteda.Load(key)
+  if not trainer:
+    train = mongodb.GetSingleDoc(collection, {
+        'ServerId': serverId,
+        'UserId': userId
+    })
+    trainer = Trainer(train) if train else None
+    if trainer:
+      sqliteda.Save(key, trainer)
+  return trainer
 
 
 def UpsertTrainer(trainer: Trainer):
-  trainerCache[f"{trainer.ServerId}{trainer.UserId}"] = trainer
+  sqliteda.Save(f"{trainer.ServerId}{trainer.UserId}", trainer)
   thread = Thread(target=PushTrainerToMongo, args=(trainer, ))
   thread.start()
   return trainer
 
 
 def DeleteTrainer(trainer: Trainer):
-  del trainerCache[f"{trainer.ServerId}{trainer.UserId}"]
+  sqliteda.Remove(f"{trainer.ServerId}{trainer.UserId}")
   thread = Thread(target=DeleteTrainerFromMongo,
                   args=(trainer.ServerId, trainer.UserId))
   thread.start()
