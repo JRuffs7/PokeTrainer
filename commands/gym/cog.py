@@ -1,4 +1,3 @@
-
 from discord import app_commands, Interaction
 from discord.ext import commands
 from commands.views.GymLeaderView import GymLeaderView
@@ -26,10 +25,6 @@ class GymCommands(commands.Cog, name="GymCommands"):
         if trainer.Money < int(gymleader.Reward/2):
             return await discordservice_gym.PrintGymBattleResponse(inter, 1, [int(gymleader.Reward/2), trainer.Money])
         fightResults = gymservice.GymLeaderFight(trainer, gymleader)
-        if fightResults.count(True) == len(gymleader.Team):
-            trainer.Money += gymleader.Reward
-            trainer.Badges.append(gymleader.BadgeId)
-            trainerservice.UpsertTrainer(trainer)
         await GymView(inter, gymleader, trainer, fightResults).send()
 
     

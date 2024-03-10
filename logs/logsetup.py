@@ -22,6 +22,20 @@ LOGGING_CONFIG = {
             'mode': 'w',
             'formatter': 'verbose',
         },
+        'battle': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'logs/battle.log',
+            'mode': 'w',
+            'formatter': 'verbose',
+        },
+        'capture': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'logs/capture.log',
+            'mode': 'w',
+            'formatter': 'verbose',
+        },
         'error': {
             'level': 'INFO',
             'class': 'logging.FileHandler',
@@ -33,6 +47,8 @@ LOGGING_CONFIG = {
     'loggers': {
         'error': { 'handlers': ['error'], 'level': 'INFO', 'propagate': False },
         'discord': { 'handlers': ['discord'], 'level': 'INFO', 'propagate': False },
+        'capture': { 'handlers': ['capture'], 'level': 'INFO', 'propagate': False },
+        'battle': { 'handlers': ['battle'], 'level': 'INFO', 'propagate': False },
         'console': { 'handlers': ['console'], 'level': 'DEBUG', 'propagate': False }
     },
 }

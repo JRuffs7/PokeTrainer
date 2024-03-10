@@ -1,11 +1,14 @@
 
 from datetime import datetime, timedelta
+import logging
 from dataaccess import trainerda
 from globals import GreatBallReaction, PokeballReaction, UltraBallReaction
 from models.Item import Potion
 from models.Trainer import Trainer
 from models.Pokemon import Pokemon
 from services import itemservice, pokemonservice
+
+captureLog = logging.getLogger('capture')
 
 
 #region Data
@@ -189,6 +192,7 @@ def TryCapture(reaction: str, trainer: Trainer, spawn: Pokemon):
     trainer.OwnedPokemon.append(spawn)
     TryAddToPokedex(trainer, pokemon.PokedexId)
     caught = True
+    captureLog.info(f'{trainer.UserId} used {pokeball.Name} and caught a {pokemon.Name}!')
   UpsertTrainer(trainer)
   return caught
 

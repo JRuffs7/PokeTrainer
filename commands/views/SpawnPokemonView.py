@@ -1,3 +1,4 @@
+import logging
 import discord
 
 from table2ascii import table2ascii as t2a, PresetStyle, Alignment, Merge
@@ -8,11 +9,11 @@ from models.Trainer import Trainer
 from services import pokemonservice, trainerservice
 from services.utility import discordservice
 
-
 class SpawnPokemonView(discord.ui.View):
 
 	def __init__(
 			self, interaction: discord.Interaction, trainer: Trainer, pokemon: Pokemon):
+		self.battleLog = logging.getLogger('battle')	
 		self.interaction = interaction
 		self.trainer = trainer
 		self.pokemon = pokemon
@@ -55,10 +56,12 @@ class SpawnPokemonView(discord.ui.View):
 		elif fight > 10 or self.trainer.Health == 0:
 			await self.message.delete()
 			await interaction.response.send_message(content=f'You were beaten by {pokemonservice.GetPokemonDisplayName(self.pokemon, False, False)} and lost {fight}hp.\nNo experience or money gained.',ephemeral=True)
+			self.battleLog.info(f'{self.trainer.UserId} was defeated by a wild {self.pkmndata.Name}.')
 		else:
 			trainerPoke = next(p for p in self.trainer.OwnedPokemon if p.Id == self.trainer.Team[0])
 			await self.message.delete()
 			await interaction.response.send_message(content=f'You defeated {pokemonservice.GetPokemonDisplayName(self.pokemon, False, False)}!\n{pokemonservice.GetPokemonDisplayName(trainerPoke)} gained {self.pkmndata.Rarity}xp\nTrainer lost {fight}hp and gained $50.',ephemeral=True)
+			self.battleLog.info(f'{self.trainer.UserId} defeated a wild {self.pkmndata.Name}!')
 
 	async def TryCapture(self, interaction: discord.Interaction, label: str, ball: str):
 		pokeballId = '1' if label == PokeballReaction else '2' if label == GreatBallReaction else '3' if label == UltraBallReaction else '4'

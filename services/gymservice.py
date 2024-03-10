@@ -1,7 +1,10 @@
+import logging
 from dataaccess import gymda
 from models.Trainer import Trainer
 from services import pokemonservice, trainerservice
 from models.Gym import GymLeader
+
+battleLog = logging.getLogger('battle')
 
 #region Gym Leaders
 
@@ -43,6 +46,15 @@ def GymLeaderFight(trainer: Trainer, leader: GymLeader):
 		tPokemon = next(p for p in trainer.OwnedPokemon if pId == p.Id)
 		tData = next(d['Pokemon'] for d in trainerTeam if d['Id'] == tPokemon.Id)
 		pokemonservice.AddExperience(tPokemon, tData, expList[pId])
+
+	if fightResults.count(True) == len(leader.Team):
+		trainer.Money += leader.Reward
+		trainer.Badges.append(leader.BadgeId)
+		battleLog.info(f'{trainer.UserId} defeated gym leader {leader.Name}!')
+	else:
+		trainer.Money -= int(leader.Reward/2)
+		battleLog.info(f'{trainer.UserId} lost to gym leader {leader.Name}.')
+	trainerservice.UpsertTrainer(trainer)
 	return fightResults
 
 
