@@ -10,11 +10,7 @@ Step 1: Get python environment
 Step 2: Get pip packages
  - In order ot run and do development you need to install three python packages
  - Open a terminal in VSCode and run the following
-   - pip install flask
-   - pip install discord
-   - pip install python-dotenv
-   - pip install pymongo
-   - pip install table2ascii
+   - pip install -r requirements.txt
  - Once they are successful, everything should be set
 
 Step 3: Running the bot

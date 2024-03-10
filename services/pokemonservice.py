@@ -139,7 +139,6 @@ def CaptureSuccess(pokeball: Pokeball, pokemon: PokemonData, level: int):
   else:
     calc = ceil((pokemon.CaptureRate*pokeball.CaptureRate*2)/3)
 
-  print(f"{randInt} / {calc}")
   return randInt < calc
 
 #endregion
