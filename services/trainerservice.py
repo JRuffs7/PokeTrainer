@@ -200,6 +200,8 @@ def TryCapture(reaction: str, trainer: Trainer, spawn: Pokemon):
   if pokemonservice.CaptureSuccess(pokeball, pokemon, spawn.Level):
     trainer.OwnedPokemon.append(spawn)
     TryAddToPokedex(trainer, pokemon.PokedexId)
+    if len(trainer.Team) < 6:
+      trainer.Team.append(spawn.Id)
     caught = True
     captureLog.info(f'{trainer.UserId} used {pokeball.Name} and caught a {pokemon.Name}!')
   UpsertTrainer(trainer)
