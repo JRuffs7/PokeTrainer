@@ -249,9 +249,9 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
   @app_commands.autocomplete(pokemon=starter_autocomplete)
   async def starter(self, inter: Interaction, pokemon: int):
     if pokemon not in [s['Value'] for s in self.starters]:
-      return await discordservice_trainer.PrintStarter(inter, None)
+      return await discordservice_trainer.PrintStarter(inter, None, inter.guild.name)
     trainer = trainerservice.StartTrainer(pokemon, inter.user.id, inter.guild_id)
-    return await discordservice_trainer.PrintStarter(inter, trainer)
+    return await discordservice_trainer.PrintStarter(inter, trainer, inter.guild.name)
 
   #endregion
 

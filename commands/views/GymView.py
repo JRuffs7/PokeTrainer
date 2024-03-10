@@ -20,10 +20,11 @@ class GymView(discord.ui.View):
 		self.leaderTeam = gymservice.GetBattleTeam(leader.Team)
 		self.trainerTeam = gymservice.GetBattleTeam([p.Pokemon_Id for p in trainerservice.GetTeam(trainer) if p])
 		self.battleresults = battleResults
+		self.battlewon = battleResults.count(True) == len(self.leader.Team)
 		super().__init__(timeout=300)
     
 	async def send(self):
-		await self.interaction.response.send_message(view=self)
+		await self.interaction.response.send_message(view=self, ephemeral=True)
 		self.message = await self.interaction.original_response()
 		await self.update_message()
 
@@ -41,7 +42,10 @@ class GymView(discord.ui.View):
 	async def next_button(self, inter: discord.Interaction,
 										button: discord.ui.Button):
 		await self.message.delete()
-		await inter.response.send_message(content=f'Obtained the {gymservice.GetBadgeById(self.leader.BadgeId).Name} Badge!\nWon ${self.leader.Reward} and gained exp.',ephemeral=True)
+		if self.battlewon:
+			await inter.response.send_message(content=f'<@{self.interaction.user.id}> defeated {self.leader.Name} and obtained the {gymservice.GetBadgeById(self.leader.BadgeId).Name} Badge!\nWon ${self.leader.Reward} and gained exp.')
+		else:
+			await inter.response.send_message(content=f'<@{self.interaction.user.id}> was defeated by {self.leader.Name}.\nLost ${int(self.leader.Reward/2)}.')
 
 	def CreateEmbedDesc(self):
 		first = second = 0
@@ -63,6 +67,4 @@ class GymView(discord.ui.View):
 			style=PresetStyle.markdown,
 			cell_padding=2)
 		
-		if first >= len(self.trainerTeam):
-			self.clear_items()
 		return f"```ansi\n{battle}```\n{'You won!' if first < len(self.trainerTeam) else 'You have been defeated.'}"

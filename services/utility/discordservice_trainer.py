@@ -1,9 +1,10 @@
 from models.Item import Potion
+from models.Server import Server
 from models.Trainer import Trainer
 from services import pokemonservice, gymservice, trainerservice
 from services.utility import discordservice
 from discord import Interaction, Member
-from globals import TrainerColor
+from globals import HelpColor, TrainerColor
 
 responseFile = "files/responsefiles/trainerresponses.json"
 
@@ -52,15 +53,20 @@ async def PrintModifyTeam(interaction: Interaction, response: int, pkmnId: str):
 		params=[pokemonservice.GetPokemonById(pkmnId).Name] if pkmnId else [],
 		eph=True)
 
-async def PrintStarter(interaction: Interaction, trainer: Trainer):
+async def PrintStarter(interaction: Interaction, trainer: Trainer, server: str):
 	if trainer:
 		embed = discordservice.CreateEmbed(
 				f"{interaction.user.display_name}'s Journey Begins!",
 				f"Starter: {pokemonservice.GetPokemonDisplayName(trainer.OwnedPokemon[0])}\nStarting Money: ${trainer.Money}\nStarting Pokeballs: 5",
 				TrainerColor)
 		embed.set_image(url=pokemonservice.GetPokemonImage(trainer.OwnedPokemon[0]))
-		return await discordservice.SendEmbed(interaction, embed)
-	return await discordservice.SendCommandResponse(
+		await discordservice.SendEmbed(interaction, embed)
+		embed2 = discordservice.CreateEmbed(
+					f"Welcome to PokeTrainer!",
+					f"You just began your journey in the server {server}. Use commands such as **/spawn** to interact with the bot! More interactions can be found using the **/help** command.",
+					HelpColor)
+		return await discordservice.SendDMs(interaction, [embed2])
+	await discordservice.SendCommandResponse(
 		interaction=interaction, 
 		filename=responseFile, 
 		command='starter', 
