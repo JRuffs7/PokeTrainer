@@ -35,7 +35,7 @@ def UpsertServer(server: Server) -> Server:
 
 
 def DeleteServer(serverId: int):
-  sqliteda.Remove(serverId)
+  sqliteda.Remove('Server', serverId)
   thread = Thread(target=DeleteServerFromMongo, args=(serverId, ))
   thread.start()
   return
