@@ -63,7 +63,7 @@ async def PrintStarter(interaction: Interaction, trainer: Trainer, server: str):
 		await discordservice.SendEmbed(interaction, embed)
 		embed2 = discordservice.CreateEmbed(
 					f"Welcome to PokeTrainer!",
-					f"You just began your journey in the server {server}. Use commands such as **/spawn** to interact with the bot! More interactions can be found using the **/help** command.",
+					f"You just began your journey in the server {server}. Use commands such as **/spawn** to interact with the bot! More interactions can be found using the **/help** command. Don't forget your **/daily** reward!",
 					HelpColor)
 		return await discordservice.SendDMs(interaction, [embed2])
 	await discordservice.SendCommandResponse(
