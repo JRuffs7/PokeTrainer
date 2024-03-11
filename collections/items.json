@@ -37,16 +37,16 @@
     {
       "Id": 1,
       "Name": "Potion",
-      "Description": "Heals trainer for 10 HP.",
+      "Description": "Heals trainer for 15 HP.",
       "BuyAmount": 100,
       "SellAmount": 50,
-      "HealingAmount": 10
+      "HealingAmount": 15
     },
     {
       "Id": 2,
       "Name": "Super Potion",
       "Description": "Heals trainer for 40 HP.",
-      "BuyAmount": 350,
+      "BuyAmount": 250,
       "SellAmount": 150,
       "HealingAmount": 40
     },
@@ -54,16 +54,16 @@
       "Id": 3,
       "Name": "Hyper Potion",
       "Description": "Heals trainer for 80 HP.",
-      "BuyAmount": 600,
-      "SellAmount": 300,
+      "BuyAmount": 450,
+      "SellAmount": 250,
       "HealingAmount": 80
     },
     {
       "Id": 4,
       "Name": "Max Potion",
       "Description": "Heals trainer for max HP.",
-      "BuyAmount": 750,
-      "SellAmount": 350,
+      "BuyAmount": 600,
+      "SellAmount": 300,
       "HealingAmount": 100
     }
   ]

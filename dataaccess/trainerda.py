@@ -8,7 +8,7 @@ collection: str = 'Trainer'
 
 def GetTrainer(serverId: int, userId: int) -> Trainer|None:
   key = f"{serverId}{userId}"
-  trainer = sqliteda.Load(key)
+  trainer = sqliteda.Load('Trainer', key)
   if not trainer:
     train = mongodb.GetSingleDoc(collection, {
         'ServerId': serverId,
@@ -16,19 +16,19 @@ def GetTrainer(serverId: int, userId: int) -> Trainer|None:
     })
     trainer = Trainer(train) if train else None
     if trainer:
-      sqliteda.Save(key, trainer)
+      sqliteda.Save('Trainer', key, trainer)
   return trainer
 
 
 def UpsertTrainer(trainer: Trainer):
-  sqliteda.Save(f"{trainer.ServerId}{trainer.UserId}", trainer)
+  sqliteda.Save('Trainer', f"{trainer.ServerId}{trainer.UserId}", trainer)
   thread = Thread(target=PushTrainerToMongo, args=(trainer, ))
   thread.start()
   return trainer
 
 
 def DeleteTrainer(trainer: Trainer):
-  sqliteda.Remove(f"{trainer.ServerId}{trainer.UserId}")
+  sqliteda.Remove('Trainer', f"{trainer.ServerId}{trainer.UserId}")
   thread = Thread(target=DeleteTrainerFromMongo,
                   args=(trainer.ServerId, trainer.UserId))
   thread.start()

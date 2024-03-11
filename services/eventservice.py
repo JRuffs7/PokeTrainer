@@ -1,6 +1,10 @@
-from dataaccess import eventda
+from random import choice
+
+from models.enums import PokemonCount, StatCompare
 
 
-def GetEventName(eventId: str):
-	event = eventda.GetEvent(eventId)
-	return event.EventName if event else ''
+def GetRandomStatCompare():
+	return choice(list(StatCompare))
+
+def GetRandomCount():
+	return choice(list(PokemonCount))

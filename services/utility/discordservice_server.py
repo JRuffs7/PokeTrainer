@@ -1,6 +1,5 @@
 from globals import ErrorColor, ServerColor
 from models.Server import Server
-from services import eventservice
 from services.utility import discordservice
 from discord import Interaction
 
@@ -13,7 +12,7 @@ async def PrintRegisterResponse(interaction: Interaction, serv: Server | None):
 		command='register', 
 		responseInd=0 if serv else 1, 
 		color=ServerColor if serv else ErrorColor, 
-		params=[serv.ServerName, serv.ChannelId, eventservice.GetEventName(serv.CurrentEventId) if serv else ''],
+		params=[serv.ServerName, serv.ChannelId, serv.CurrentEvent.EventName if serv.CurrentEvent else ''],
 		eph=True)
 
 async def PrintServerResponse(interaction: Interaction, serv: Server):
@@ -23,7 +22,7 @@ async def PrintServerResponse(interaction: Interaction, serv: Server):
 		command='server', 
 		responseInd=0, 
 		color=ServerColor, 
-		params=[serv.ServerName, serv.ChannelId, eventservice.GetEventName(serv.CurrentEventId) if serv else ''],
+		params=[serv.ServerName, serv.ChannelId, serv.CurrentEvent.EventName if serv.CurrentEvent else ''],
 		eph=True)
 
 async def PrintSwapChannelResponse(interaction: Interaction, response: bool):

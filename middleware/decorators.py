@@ -12,10 +12,10 @@ errLog = logging.getLogger('error')
 
 def method_logger(function):
 	@functools.wraps(function)
-	async def wrapper(*args, **kwargs):
+	async def wrapper(self, *args, **kwargs):
 		try:
-			cmdLog.info(f"{function.__name__.upper()} command called")
-			return await function(*args, **kwargs)
+			cmdLog.info(f"{args[0].guild.id} - {function.__name__.upper()} command called")
+			return await function(self, *args, **kwargs)
 		except:
 			# log the exception
 			err = f"There was an exception in command '{function.__name__.upper()}'"

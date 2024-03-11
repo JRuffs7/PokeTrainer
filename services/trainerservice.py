@@ -219,8 +219,11 @@ def TryWildFight(trainer: Trainer, wild: Pokemon):
       healthLost = trainer.Health
     trainer.Health -= healthLost
     trainer.Health = 0 if trainer.Health < 0 else trainer.Health
-    if healthLost <= 10 and trainer.Health > 0:
-      pokemonservice.AddExperience(trainerPokemon, trainerPkmn, wildPkmn.Rarity)
+    if healthLost < 10 and trainer.Health > 0:
+      pokemonservice.AddExperience(
+        trainerPokemon, 
+        trainerPkmn, 
+        wildPkmn.Rarity*wild.Level if wildPkmn.Rarity <= 2 else int(wildPkmn.Rarity*wild.Level*2/3))
       trainer.Money += 50
     UpsertTrainer(trainer)
     return healthLost
