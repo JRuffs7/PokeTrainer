@@ -100,5 +100,4 @@ async def PrintDaily(interaction: Interaction, success: bool):
 		command='daily', 
 		responseInd=0 if success else 1, 
 		color=TrainerColor, 
-		params=[],
-		eph=True)
+		params=[])
