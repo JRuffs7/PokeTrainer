@@ -12,6 +12,7 @@ class PokemonData:
   Generation: int
   Name: str
   PokedexId: int
+  IsStarter: bool
   IsBaby: bool
   IsFossil: bool
   IsUltraBeast: bool
@@ -33,14 +34,14 @@ class PokemonData:
 
 
 class Pokemon:
-  Id: str = ''
-  Pokemon_Id: int = 0
-  Height: float = 0
-  Weight: float = 0
-  IsShiny: bool = False
-  IsFemale: bool = False
-  Level: int = 0
-  CurrentExp: int = 0
+  Id: str
+  Pokemon_Id: int
+  Height: float
+  Weight: float
+  IsShiny: bool
+  IsFemale: bool|None
+  Level: int
+  CurrentExp: int
 
   def __init__(self, dict):
     vars(self).update(dict)

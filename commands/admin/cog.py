@@ -3,10 +3,11 @@ import logging
 from random import choice
 from discord import Member, TextChannel
 from discord.ext import commands
+from commands.views.Events.SpecialSpawnEventView import SpecialSpawnEventView
 from middleware.decorators import method_logger, is_bot_admin
 from models.Server import Server
 from models.enums import EventType
-from services import eventservice, pokemonservice, serverservice, trainerservice
+from services import pokemonservice, serverservice, trainerservice
 
 class AdminCommands(commands.Cog, name="AdminCommands"):
 
@@ -75,7 +76,7 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 			return
 		trainer = trainerservice.GetTrainer(ctx.guild.id, user.id if user else ctx.author.id)
 		if trainer:
-			trainerservice.ModifyItemList(trainer.Pokeballs, str(type) if type == 1 or type == 2 or type == 3 else '1', amount)
+			trainerservice.ModifyItemList(trainer.Pokeballs, str(type), amount)
 			trainerservice.UpsertTrainer(trainer)
 			
 	@commands.command(name="addpotion")
@@ -168,7 +169,17 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 		if not channel or not isinstance(channel, TextChannel):
 			return
 		
-		
+		match eventType:
+			case EventType.StatCompare:
+				print('STAT COMPARE EVENT')
+				return
+			case EventType.PokemonCount:
+				print('POKEMON COUNT EVENT')
+				return
+			case _:
+				print('SPECIAL SPAWN EVENT')
+				spawnPkmn = serverservice.SpecialSpawnEvent(server)
+				await SpecialSpawnEventView(channel, spawnPkmn, 'Special Spawn Event').send()
 
 
 async def setup(bot: commands.Bot):

@@ -54,7 +54,7 @@ class TeamSelectorView(discord.ui.View):
   async def submit_button(self, inter: discord.Interaction,
                         button: discord.ui.Button):
     if not self.pokemonchoice or not self.teamslotchoice:
-      await inter.response.defer()
+      return await inter.response.defer()
 
     self.clear_items()
     pkmn = next(p for p in self.trainer.OwnedPokemon if p.Id == self.pokemonchoice)

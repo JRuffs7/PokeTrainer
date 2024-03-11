@@ -28,7 +28,7 @@ def UpsertTrainer(trainer: Trainer):
 
 
 def DeleteTrainer(trainer: Trainer):
-  sqliteda.Remove(f"{trainer.ServerId}{trainer.UserId}")
+  sqliteda.Remove('Trainer', f"{trainer.ServerId}{trainer.UserId}")
   thread = Thread(target=DeleteTrainerFromMongo,
                   args=(trainer.ServerId, trainer.UserId))
   thread.start()

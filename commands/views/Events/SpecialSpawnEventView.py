@@ -11,7 +11,7 @@ from models.Pokemon import Pokemon
 from services import pokemonservice, trainerservice
 from services.utility import discordservice
 
-class LegendaryEventView(EventView):
+class SpecialSpawnEventView(EventView):
 
 	def __init__(self, channel: discord.TextChannel, pokemon: Pokemon, title: str):
 		self.captureLog = logging.getLogger('capture')
@@ -29,19 +29,24 @@ class LegendaryEventView(EventView):
 	@trainer_check
 	async def masterball_button(self, interaction: discord.Interaction, button: discord.ui.Button):
 		if interaction.user.id in self.userentries:
-			await interaction.response.send_message(content=f"You already captured this special encounter! Wait for more to show up in the future.", ephemeral=True)
+			return await interaction.response.send_message(content=f"You already captured this special encounter! Wait for more to show up in the future.", ephemeral=True)
 		trainer = trainerservice.GetTrainer(interaction.guild_id, interaction.user.id)
 		if trainer.Pokeballs['4'] <= 0:
-			await interaction.response.send_message(content=f"You do not have any Masterballs. Participate in non-legendary public events to receive one.", ephemeral=True)
+			return await interaction.response.send_message(content=f"You do not have any Masterballs. Participate in non-legendary public events to receive one.", ephemeral=True)
 		elif trainerservice.TryCapture(MasterBallReaction, trainer, self.pokemon):
-			if not self.messagethread or interaction.guild.get_channel_or_thread(self.messagethread.id):
-				self.messagethread = self.message.create_thread(
-					name=f'{self.pkmndata.Name} - {datetime.utcnow().strftime('%m/%d/%Y')}',
+			if not self.messagethread or not interaction.guild.get_channel_or_thread(self.messagethread.id):
+				self.messagethread = await self.message.create_thread(
+					name=f"{self.pkmndata.Name}-{datetime.utcnow().strftime('%m/%d/%Y')}",
 					auto_archive_duration=60)
-			await self.messagethread.send(f'<@{self.interaction.user.id}> used a Masterball and captured the legendary {pokemonservice.GetPokemonDisplayName(self.pokemon)}!')
+			await self.messagethread.send(self.CaptureDesc(interaction.user.id))
 			self.userentries.append(interaction.user.id)
+			return await interaction.response.defer()
 		else:
-			await interaction.response.send_message(f"Capture failed for some reason. Try again.", delete_after=10)
+			return await interaction.response.send_message(f"Capture failed for some reason. Try again.", delete_after=10)
+
+	def CaptureDesc(self, userId: int):
+		pkmnType = 'starter' if self.pkmndata.IsStarter else 'Legendary' if self.pkmndata.IsLegendary else 'Ultra Beast' if self.pkmndata.IsUltraBeast else 'Paradox' if self.pkmndata.IsParadox else 'fossil' if self.pkmndata.IsFossil else 'Mythical'
+		return f'<@{userId}> used a Masterball and captured the {pkmnType} Pokemon {pokemonservice.GetPokemonDisplayName(self.pokemon)}!'
 
 	def PokemonDesc(self):
 		pkmnData = t2a(

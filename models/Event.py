@@ -1,5 +1,4 @@
 class Event:
-	EventId: str
 	EventName: str
 	EventType: int
 

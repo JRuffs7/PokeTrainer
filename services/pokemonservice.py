@@ -2,6 +2,7 @@ import uuid
 from math import ceil, floor
 from random import choice, uniform, randint
 from models.Item import Pokeball
+from models.enums import SpecialSpawn
 
 from services import typeservice
 from dataaccess import pokemonda
@@ -88,9 +89,11 @@ def SpawnPokemon():
 
   return GenerateSpawnPokemon(pokemon)
 
-def GetLegendary():
-  pokemonList = pokemonda.GetPokemonByProperty([True], 'IsLegendary')
-  return GenerateSpawnPokemon(choice(pokemonList), 75)
+def GetSpecialSpawn():
+  spawnType = choice(list(SpecialSpawn))
+  pokemonList = pokemonda.GetPokemonByProperty([True], spawnType.value)
+  pkmn = choice(pokemonList)
+  return GenerateSpawnPokemon(pkmn, 5 if pkmn.IsStarter or (pkmn.IsFossil and pkmn.EvolvesInto) else 75 if pkmn.IsLegendary else 40)
 
 def GenerateSpawnPokemon(pokemon: PokemonData, level: int | None = None):
   shiny = randint(0, ShinyOdds) == int(ShinyOdds / 2)
@@ -100,8 +103,7 @@ def GenerateSpawnPokemon(pokemon: PokemonData, level: int | None = None):
   weight = round(
       uniform(floor(
           (pokemon.Weight * 0.9)), ceil((pokemon.Weight * 1.1))) / 10, 2)
-  female = randint(0, 100) < int(pokemon.FemaleChance / 8 *
-                                        100) if pokemon.FemaleChance else None
+  female = randint(0, 100) < int(pokemon.FemaleChance / 8 * 100) if pokemon.FemaleChance >= 0 else None
   return Pokemon({
       'Id': uuid.uuid4().hex,
       'Pokemon_Id': pokemon.Id,
@@ -207,27 +209,27 @@ def WildFight(attack: PokemonData, defend: PokemonData):
   #legendary
   if attackGroup >= 8:
     if defendGroup == 3:
-      return 5 if attackGroup == 10 else 10 if attackGroup == 9 else 15
+      return 5 if attackGroup == 10 else 7 if attackGroup == 9 else 10
     elif defendGroup == 2:
-      return 3 if attackGroup == 10 else 5 if attackGroup == 9 else 10
+      return 3 if attackGroup == 10 else 5 if attackGroup == 9 else 7
     else:
       return 1 if attackGroup == 10 else 3 if attackGroup == 9 else 5
     
   # 1v1 2v2 3v3
   if attackGroup - defendGroup == 0:
-    groupRes = 5 if doubleAdv else 15 if doubleDis else 10 - battleResult
+    groupRes = 5 if doubleAdv else 10 if doubleDis else 7 - battleResult
   # 3v2 2v1
   elif attackGroup - defendGroup == 1:
-    groupRes = 3 if doubleAdv else 10 if doubleDis else 5 - battleResult
+    groupRes = 3 if doubleAdv else 7 if doubleDis else 5 - battleResult
   # 3v1
   elif attackGroup - defendGroup == 2:
     groupRes = 1 if doubleAdv else 5 if doubleDis else 3
   # 1v2 2v3
   elif attackGroup - defendGroup == -1:
-    groupRes = 10 if doubleAdv else 20 if doubleDis else 15 - battleResult
+    groupRes = 7 if doubleAdv else 13 if doubleDis else 10 - battleResult
   # 1v3
   else:
-    groupRes = 15 if doubleAdv else 25 if doubleDis else 20
+    groupRes = 10 if doubleAdv else 15 if doubleDis else 13
   return groupRes
 
 def GymFight(attack: PokemonData, defend: PokemonData):
@@ -262,6 +264,7 @@ def GeneratePokemonSearchGroup(pokemonId):
     'Pokemon_Id': pokemonId,
     'Height': pkmn.Height,
     'Weight': pkmn.Weight,
+    'IsShiny': False,
     'IsFemale': pkmn.FemaleChance == 8,
   }))
   if pkmn.ShinySprite:
@@ -277,6 +280,7 @@ def GeneratePokemonSearchGroup(pokemonId):
       'Pokemon_Id': pokemonId,
       'Height': pkmn.Height,
       'Weight': pkmn.Weight,
+      'IsShiny': False,
       'IsFemale': True,
     }))
   if pkmn.ShinySpriteFemale and pkmn.FemaleChance != 0:

@@ -17,6 +17,11 @@ async def StartBot():
   async def on_ready():
     logger.info(f"{discordBot.user} up and running")
 
+  async def on_message_delete(message):
+    async for entry in message.guild.audit_logs(limit=1,action=discord.AuditLogAction.message_delete):
+        deleter = entry.user
+    print(f"{deleter.name} deleted message by {message.author.name}")
+
   for f in os.listdir("commands"):
     if os.path.exists(os.path.join("commands", f, "cog.py")):
       await discordBot.load_extension(f"commands.{f}.cog")

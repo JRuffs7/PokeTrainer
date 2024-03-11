@@ -49,19 +49,20 @@ class SpawnPokemonView(discord.ui.View):
 
 	@discord.ui.button(label=FightReaction, custom_id="fight")
 	async def fight_button(self, interaction: discord.Interaction, button: discord.ui.Button):
-		fight = trainerservice.TryWildFight(self.trainer, self.pokemon)
+		updatedTrainer = trainerservice.GetTrainer(self.interaction.guild_id, self.interaction.user.id)
+		fight = trainerservice.TryWildFight(updatedTrainer, self.pokemon)
 		if fight is None:
 			await self.message.edit(content=f"You do not have any health! Restore with **/usepotion**. You can buy potions from the **/shop**", view=self)
 			await interaction.response.defer()
-		elif fight > 10 or self.trainer.Health == 0:
+		elif fight >= 10 or updatedTrainer.Health == 0:
 			await self.message.delete()
 			await interaction.response.send_message(content=f'<@{self.interaction.user.id}> was defeated by a wild {pokemonservice.GetPokemonDisplayName(self.pokemon, False, False)} and lost {fight}hp.\nNo experience or money gained.')
-			self.battleLog.info(f'{self.trainer.UserId} was defeated by a wild {self.pkmndata.Name}.')
+			self.battleLog.info(f'{updatedTrainer.UserId} was defeated by a wild {self.pkmndata.Name}.')
 		else:
-			trainerPoke = next(p for p in self.trainer.OwnedPokemon if p.Id == self.trainer.Team[0])
+			trainerPoke = next(p for p in updatedTrainer.OwnedPokemon if p.Id == self.trainer.Team[0])
 			await self.message.delete()
-			await interaction.response.send_message(content=f'<@{self.interaction.user.id}> defeated  a wild {pokemonservice.GetPokemonDisplayName(self.pokemon, False, False)}!\n{pokemonservice.GetPokemonDisplayName(trainerPoke)} gained {self.pkmndata.Rarity}xp\nTrainer lost {fight}hp and gained $50.')
-			self.battleLog.info(f'{self.trainer.UserId} defeated a wild {self.pkmndata.Name}!')
+			await interaction.response.send_message(content=f'<@{self.interaction.user.id}> defeated  a wild {pokemonservice.GetPokemonDisplayName(self.pokemon, False, False)}!\n{pokemonservice.GetPokemonDisplayName(trainerPoke)} gained {self.pkmndata.Rarity*self.pokemon.Level if self.pkmndata.Rarity <= 2 else int(self.pkmndata.Rarity*self.pokemon.Level*2/3)}xp\nTrainer lost {fight}hp and gained $50.')
+			self.battleLog.info(f'{updatedTrainer.UserId} defeated a wild {self.pkmndata.Name}!')
 
 	async def TryCapture(self, interaction: discord.Interaction, label: str, ball: str):
 		pokeballId = '1' if label == PokeballReaction else '2' if label == GreatBallReaction else '3' if label == UltraBallReaction else '4'

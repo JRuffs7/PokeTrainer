@@ -1,5 +1,8 @@
 from dataaccess import serverda
+from models.Event import Event
+from models.enums import EventType
 from models.Server import Server
+from services import pokemonservice
 
 
 def RegisterServer(serverId, channelId, serverName):
@@ -9,11 +12,12 @@ def RegisterServer(serverId, channelId, serverName):
       'ServerId': serverId,
       'ServerName': serverName,
       'ChannelId': channelId,
-      'CurrentEventId': None,
+      'CurrentEvent': None,
   })
   UpsertServer(serv)
   return serv
 
+#region Data
 
 def GetServer(serverId):
   return serverda.GetServer(serverId)
@@ -27,6 +31,17 @@ def UpsertServer(server: Server):
 
 def DeleteServer(server: Server):
   return serverda.DeleteServer(server.ServerId)
+
+#endregion
+
+def SpecialSpawnEvent(server: Server):
+  specialPokemon = pokemonservice.GetSpecialSpawn()
+  server.CurrentEvent = Event({
+    'EventName': f'{pokemonservice.GetPokemonDisplayName(specialPokemon, False, False)} Spawn Event',
+    'EventType': EventType.SpecialSpawn.value
+  })
+  UpsertServer(server)
+  return specialPokemon
 
 
 def SwapChannel(server: Server, channelId):
