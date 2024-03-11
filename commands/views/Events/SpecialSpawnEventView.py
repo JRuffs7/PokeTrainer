@@ -8,12 +8,13 @@ from commands.views.Events.EventView import EventView
 from globals import MasterBallReaction, PokemonColor
 from middleware.decorators import trainer_check
 from models.Pokemon import Pokemon
+from models.Server import Server
 from services import pokemonservice, trainerservice
 from services.utility import discordservice
 
 class SpecialSpawnEventView(EventView):
 
-	def __init__(self, channel: discord.TextChannel, pokemon: Pokemon, title: str):
+	def __init__(self, server: Server, channel: discord.TextChannel, pokemon: Pokemon, title: str):
 		self.captureLog = logging.getLogger('capture')
 		self.pokemon = pokemon
 		self.pkmndata = pokemonservice.GetPokemonById(pokemon.Pokemon_Id)
@@ -23,7 +24,7 @@ class SpecialSpawnEventView(EventView):
 				self.PokemonDesc(),
 				PokemonColor)
 		embed.set_image(url=pokemonservice.GetPokemonImage(pokemon))
-		super().__init__(channel, embed)
+		super().__init__(server, channel, embed)
 
 	@discord.ui.button(label=MasterBallReaction)
 	@trainer_check
