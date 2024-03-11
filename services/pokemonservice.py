@@ -88,6 +88,10 @@ def SpawnPokemon():
 
   return GenerateSpawnPokemon(pokemon)
 
+def GetLegendary():
+  pokemonList = pokemonda.GetPokemonByProperty([True], 'IsLegendary')
+  return GenerateSpawnPokemon(choice(pokemonList), 75)
+
 def GenerateSpawnPokemon(pokemon: PokemonData, level: int | None = None):
   shiny = randint(0, ShinyOdds) == int(ShinyOdds / 2)
   height = round(

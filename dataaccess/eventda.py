@@ -8,29 +8,29 @@ collection: str = 'Event'
 eventCache = {}
 
 
-def GetEvent(eventId):
-  event = sqliteda.Load(eventId)
+def GetEvent(eventId) -> Event|None:
+  event = sqliteda.Load('Event', eventId)
   if not event:
     e = mongodb.GetSingleDoc(collection, {'EventId': eventId})
     event = Event(e) if e else None
     if event:
-      sqliteda.Save(eventId, event)
+      sqliteda.Save('Event', eventId, event)
   return event
 
 
-def GetAllEvents():
+def GetAllEvents() -> list[Event]:
   eventList: list[Event] = []
   events = mongodb.GetManyDocs(collection, {})
   for e in events if events else []:
     if e:
       event = Event(e)
-      sqliteda.Save(event.EventId, event)
+      sqliteda.Save('Event', event.EventId, event)
       eventList.append(event)
   return eventList
 
 
-def UpsertEvent(event: Event):
-  sqliteda.Save(event.EventId, event)
+def UpsertEvent(event: Event) -> Event:
+  sqliteda.Save('Event', event.EventId, event)
   thread = Thread(target=PushEventToMongo, args=(event, ))
   thread.start()
   return event

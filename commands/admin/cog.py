@@ -1,9 +1,12 @@
+import asyncio
 import logging
-from discord import Member
+from random import choice
+from discord import Member, TextChannel
 from discord.ext import commands
 from middleware.decorators import method_logger, is_bot_admin
-from services import pokemonservice, serverservice, trainerservice
-from services.utility import discordservice
+from models.Server import Server
+from models.enums import EventType
+from services import eventservice, pokemonservice, serverservice, trainerservice
 
 class AdminCommands(commands.Cog, name="AdminCommands"):
 
@@ -12,6 +15,8 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 
 	def __init__(self, bot: commands.Bot):
 		self.bot = bot
+
+	#region Test Commands
 
 	@commands.command(name="sync")
 	@method_logger
@@ -119,15 +124,51 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 		if pokemon:
 			print(f"{pokemon.Name}: {pokemon.PokedexId}")
 
+	#endregion
 
-	@commands.command(name="testspawnlist")
+	#region Real Commands
+
+	@commands.command(name="globalmessage")
 	@method_logger
 	@is_bot_admin
-	async def testspawnlist(self, ctx: commands.Context):
+	async def globalmessage(self, ctx: commands.Context, message: str):
 		if not ctx.guild:
 			return
-		self.err.error([p.__dict__ for p in pokemonservice.GetSpawnList()])
+		allServers = serverservice.GetAllServers()
+		for server in allServers:
+			asyncio.run_coroutine_threadsafe(self.MessageThread(message, server), self.bot.loop)
 
+	async def MessageThread(self, message: str, server: Server):
+		guild = self.bot.get_guild(server.ServerId)
+		if not guild:
+			return 
+		channel = guild.get_channel(server.ChannelId)
+		if not channel or not isinstance(channel, TextChannel):
+			return
+		
+		return await channel.send(message)
+		
+	#endregion
+
+	@commands.command(name="globalevent")
+	@method_logger
+	@is_bot_admin
+	async def globalevent(self, ctx: commands.Context):
+		if not ctx.guild:
+			return
+		allServers = serverservice.GetAllServers()
+		for server in allServers:
+			asyncio.run_coroutine_threadsafe(self.EventThread(choice(list(EventType)), server), self.bot.loop)
+
+	async def EventThread(self, eventType: EventType, server: Server):
+		guild = self.bot.get_guild(server.ServerId)
+		if not guild:
+			return 
+		channel = guild.get_channel(server.ChannelId)
+		if not channel or not isinstance(channel, TextChannel):
+			return
+		
+		
 
 
 async def setup(bot: commands.Bot):
