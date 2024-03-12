@@ -187,7 +187,7 @@ def CanCallSpawn(trainer: Trainer):
     return True
   
   lastSpawn = datetime.strptime(trainer.LastSpawnTime, '%m/%d/%y %H:%M:%S')
-  if(lastSpawn + timedelta(minutes=10) < datetime.utcnow()):
+  if(lastSpawn + timedelta(minutes=5) < datetime.utcnow()):
     trainer.LastSpawnTime = datetime.utcnow().strftime('%m/%d/%y %H:%M:%S')
     return True
   return False

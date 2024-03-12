@@ -103,6 +103,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
     teamViewer = PokedexView(
       inter,
+      inter.user,
       trainer, 
       1, 
       trainerservice.GetTeam(trainer),
@@ -179,6 +180,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
     sortString += f'{shiny.name}' if shiny else ''
     dexViewer = PokedexView(
       inter, 
+      user if user else inter.user,
       trainer,
       images.value if images else 10, 
       data,

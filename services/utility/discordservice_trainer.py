@@ -23,7 +23,7 @@ async def PrintTrainer(interaction: Interaction, trainer: Trainer, targetUser: M
 	pokeballString = f"\n{newline.join([f'{i}: {pkblList[i]}' for i in pkblList])}" if len(pkblList) else ""
 	breakStr = f"\n" if len(pkblList) and len(ptnList) else ""
 	potionString = f"\n{newline.join([f'{i}: {ptnList[i]}' for i in ptnList])}" if len(ptnList) else ""
-	inventory = f"__Inventory__{pokeballString}{breakStr}{potionString}\n\n${trainer.Money}" if interaction.user.id == targetUser.id else ""
+	inventory = f"__Inventory__{pokeballString}{breakStr}{potionString}\n\n${trainer.Money}"
 
 	embed = discordservice.CreateEmbed(
 			f"{targetUser.display_name}'s Trainer Info", 
