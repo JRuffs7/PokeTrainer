@@ -103,6 +103,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
     teamViewer = PokedexView(
       inter,
+      inter.user,
       trainer, 
       1, 
       trainerservice.GetTeam(trainer),
