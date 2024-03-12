@@ -14,7 +14,8 @@ from services.utility import discordservice
 class PokedexView(BasePaginationView):
 
   def __init__(
-      self, interaction: discord.Interaction, trainer: Trainer, pageLength: int, data: list[Pokemon], title: str):
+      self, interaction: discord.Interaction, targetUser: discord.Member, trainer: Trainer, pageLength: int, data: list[Pokemon], title: str):
+    self.targetuser = targetUser
     self.trainer = trainer
     self.title = title
     super(PokedexView, self).__init__(interaction, pageLength, data)
@@ -35,7 +36,7 @@ class PokedexView(BasePaginationView):
     if self.pageLength == 1:
       embed.set_image(url=pokemonservice.GetPokemonImage(data[0]))
     else:
-      embed.set_thumbnail(url=self.user.display_avatar.url)
+      embed.set_thumbnail(url=self.targetuser.display_avatar.url)
     embed.set_footer(text=f"{self.currentPage}/{ceil(len(self.data)/self.pageLength)}")
     await self.message.edit(embed=embed, view=self)
 

@@ -179,6 +179,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
     sortString += f'{shiny.name}' if shiny else ''
     dexViewer = PokedexView(
       inter, 
+      user if user else inter.user
       trainer,
       images.value if images else 10, 
       data,
