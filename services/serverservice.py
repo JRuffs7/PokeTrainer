@@ -1,8 +1,10 @@
 from dataaccess import serverda
+import discordbot
 from models.Event import Event
 from models.enums import EventType, StatCompare
 from models.Server import Server
-from services import eventservice, pokemonservice
+from services import eventservice, pokemonservice, trainerservice
+from services.utility import discordservice_server
 
 
 def RegisterServer(serverId, channelId, serverName):
@@ -19,7 +21,7 @@ def RegisterServer(serverId, channelId, serverName):
 
 #region Data
 
-def GetServer(serverId):
+def GetServer(serverId: int):
   return serverda.GetServer(serverId)
 
 def GetAllServers():
@@ -32,6 +34,8 @@ def DeleteServer(server: Server):
   return serverda.DeleteServer(server.ServerId)
 
 #endregion
+
+#region Events
 
 def SpecialSpawnEvent(server: Server):
   specialPokemon = pokemonservice.GetSpecialSpawn()
@@ -55,7 +59,6 @@ def StatCompareEvent(server: Server):
     'EventEntries': {}
   })
   UpsertServer(server)
-  return comparison
 
 def PokemonCountEvent(server: Server):
   count = eventservice.GetRandomCount()
@@ -67,7 +70,34 @@ def PokemonCountEvent(server: Server):
     'EventEntries': {}
   })
   UpsertServer(server)
-  return count
+
+async def EndEvent(server: Server, messageId: int):
+  if not server.CurrentEvent or server.CurrentEvent.MessageId != messageId:
+    return
+  winners: list[tuple[int,int]] = []
+  if server.CurrentEvent.EventEntries:
+    match(server.CurrentEvent.EventType):
+      case EventType.PokemonCount.value:
+        entryList = {k: v for k, v in sorted(server.CurrentEvent.EventEntries.items(), key=lambda item: -int(item[1]))}
+        winners = eventservice.TopThreeWinners(entryList, False)
+      case EventType.StatCompare.value:
+        smallerComp = server.CurrentEvent.SubType == StatCompare.Lightest.value or server.CurrentEvent.SubType == StatCompare.Shortest.value
+        if smallerComp:
+          entryList = {k: int(v) for k, v in sorted(server.CurrentEvent.EventEntries.items(), key=lambda item: float(item[1]))}
+        else:
+          entryList = {k: float(v) for k, v in sorted(server.CurrentEvent.EventEntries.items(), key=lambda item: -float(item[1]))}
+        winners = eventservice.TopThreeWinners(entryList, smallerComp)
+      case _:
+        pass
+
+  for tup in winners:
+    trainerservice.EventWinner(trainerservice.GetTrainer(server.ServerId, tup[0]), tup[1])
+
+  await discordservice_server.PrintEventWinners(server, winners)
+  server.CurrentEvent = None
+  UpsertServer(server)
+
+#endregion
 
 def SwapChannel(server: Server, channelId):
   if server.ChannelId == channelId:

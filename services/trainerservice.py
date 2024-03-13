@@ -2,10 +2,12 @@
 from datetime import datetime, timedelta
 import logging
 from dataaccess import trainerda
-from globals import GreatBallReaction, PokeballReaction, UltraBallReaction
+from globals import GreatBallReaction, PokeballReaction, UltraBallReaction, DateFormat, ShortDateFormat
+from models.Event import Event
 from models.Item import Potion
 from models.Trainer import Trainer
 from models.Pokemon import Pokemon
+from models.enums import EventType, PokemonCount, StatCompare
 from services import itemservice, pokemonservice
 
 captureLog = logging.getLogger('capture')
@@ -83,18 +85,48 @@ def TryUsePotion(trainer: Trainer, potion: Potion):
   return (True, (trainer.Health - preHealth))
 
 def TryDaily(trainer: Trainer):
-  if not trainer.LastDaily or datetime.strptime(trainer.LastDaily, '%m/%d/%Y').date() < datetime.utcnow().date():
-    trainer.LastDaily = datetime.utcnow().strftime('%m/%d/%Y')
+  if not trainer.LastDaily or datetime.strptime(trainer.LastDaily, ShortDateFormat).date() < datetime.utcnow().date():
+    trainer.LastDaily = datetime.utcnow().strftime(ShortDateFormat)
     ModifyItemList(trainer.Pokeballs, '1', 3)
+    trainer.Money += 100
     UpsertTrainer(trainer)
     return True
   return False
+
+def EventEntry(trainer: Trainer, event: Event):
+  #Pokemon Count Event
+  if event.EventType == EventType.PokemonCount.value:
+    if event.SubType <= 17:
+      return sum(PokemonCount(event.SubType).name.lower() in [t.lower() for t in pokemonservice.GetPokemonById(p.Pokemon_Id).Types] for p in trainer.OwnedPokemon)
+    elif event.SubType == PokemonCount.Female.value:
+      return sum(p.IsFemale for p in trainer.OwnedPokemon)
+    elif event.SubType == PokemonCount.Male.value:
+      return sum(not p.IsFemale for p in trainer.OwnedPokemon)
+    elif event.SubType == PokemonCount.Shiny.value:
+      return sum(p.IsShiny for p in trainer.OwnedPokemon)
+    else:
+      return sum(pokemonservice.GetPokemonById(p.Pokemon_Id).IsLegendary for p in trainer.OwnedPokemon)
+  #Stat Compare Event
+  else:
+    heightBased = event.SubType in [StatCompare.Shortest.value, StatCompare.Tallest.value]
+    ordered = GetPokedexList(
+      trainer, 
+      'height' if heightBased else 'weight',
+      0
+    )
+    if event.SubType in [StatCompare.Tallest.value, StatCompare.Heaviest.value]:
+      ordered.reverse()
+    return ordered[0]
+
+def EventWinner(trainer: Trainer, ballId: int):
+  ModifyItemList(trainer.Pokeballs, str(ballId), 1 if ballId == 4 else 5 if ballId == 3 else 10)
+  UpsertTrainer(trainer)
 
 def ModifyItemList(itemDict: dict[str, int], itemId: str, amount: int):
   newAmount = itemDict[itemId] + amount
   if newAmount < 0:
     newAmount = 0
-  itemDict.update({ itemId: newAmount if newAmount > 0 else 0 })
+  itemDict.update({ itemId: newAmount })
   return (amount + newAmount) if newAmount < 0 else amount
 
 #endregion
@@ -182,15 +214,18 @@ def SetTeamSlot(trainer: Trainer, slotNum: int, pokemonId: str):
 #region Spawn
 
 def CanCallSpawn(trainer: Trainer):
+  canSpawn = False
   if not trainer.LastSpawnTime:
-    trainer.LastSpawnTime = datetime.utcnow().strftime('%m/%d/%y %H:%M:%S')
-    return True
+    canSpawn = True
+  else:
+    lastSpawn = datetime.strptime(trainer.LastSpawnTime, DateFormat)
+    if(lastSpawn + timedelta(minutes=5) < datetime.utcnow()):
+      canSpawn = True
   
-  lastSpawn = datetime.strptime(trainer.LastSpawnTime, '%m/%d/%y %H:%M:%S')
-  if(lastSpawn + timedelta(minutes=5) < datetime.utcnow()):
-    trainer.LastSpawnTime = datetime.utcnow().strftime('%m/%d/%y %H:%M:%S')
-    return True
-  return False
+  if canSpawn:
+    trainer.LastSpawnTime = datetime.utcnow().strftime(DateFormat)
+    UpsertTrainer(trainer)
+  return canSpawn
 
 def TryCapture(reaction: str, trainer: Trainer, spawn: Pokemon):
   caught = False
@@ -214,7 +249,7 @@ def TryWildFight(trainer: Trainer, wild: Pokemon):
     trainerPokemon = next(p for p in trainer.OwnedPokemon if p.Id == trainer.Team[0])
     trainerPkmn = pokemonservice.GetPokemonById(trainerPokemon.Pokemon_Id)
     wildPkmn = pokemonservice.GetPokemonById(wild.Pokemon_Id)
-    healthLost = pokemonservice.WildFight(trainerPkmn, wildPkmn)
+    healthLost = pokemonservice.WildFight(trainerPkmn, wildPkmn, trainerPokemon.Level, wild.Level)
     if healthLost > trainer.Health:
       healthLost = trainer.Health
     trainer.Health -= healthLost

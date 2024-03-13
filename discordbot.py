@@ -4,6 +4,8 @@ import os
 import discord
 from discord.ext import commands
 
+from services import serverservice
+
 intents = discord.Intents.all()
 discordBot = commands.Bot(command_prefix='~',
                           case_insensitive=True,
@@ -17,10 +19,11 @@ async def StartBot():
   async def on_ready():
     logger.info(f"{discordBot.user} up and running")
 
-  #async def on_message_delete(message: discord.Message):
-    # async for entry in message.guild.audit_logs(limit=1,action=discord.AuditLogAction.message_delete):
-    #     deleter = entry.user
-    # print(f"{deleter.name} deleted message by {message.author.name}")
+  @discordBot.event
+  async def on_message_delete(message: discord.Message):
+    if not message.guild or message.author.id != discordBot.user.id:
+      return
+    await serverservice.EndEvent(serverservice.GetServer(message.guild.id), message.id)
 
   for f in os.listdir("commands"):
     if os.path.exists(os.path.join("commands", f, "cog.py")):

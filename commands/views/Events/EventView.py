@@ -1,3 +1,5 @@
+import asyncio
+from datetime import datetime, timedelta
 import logging
 import discord
 
@@ -13,9 +15,17 @@ class EventView(discord.ui.View):
 		self.channel = channel
 		self.messagethread = None
 		self.embed = embed
-		super().__init__(timeout=3600)
+		self.embed.set_footer(text=timedelta(minutes=60))
+		super().__init__(timeout=60)
 
 	async def send(self):
-		self.message = await self.channel.send(embed=self.embed, view=self, delete_after=3600)
+		self.message = await self.channel.send(embed=self.embed, view=self, delete_after=65)
 		self.server.CurrentEvent.MessageId = self.message.id
+		sentAt = datetime.utcnow()+timedelta(minutes=1)
+		while datetime.utcnow() < sentAt:
+			self.embed.set_footer(text=str(sentAt-datetime.utcnow()).split('.',2)[0])
+			await self.message.edit(embed=self.embed, view=self)
+			await asyncio.sleep(0.85)
+		self.embed.set_footer(text='Event ended.')
+		print("FINISHED")
 		serverservice.UpsertServer(self.server)

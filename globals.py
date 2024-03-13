@@ -6,10 +6,7 @@ ServerColor: discord.Colour = discord.Colour.blue()
 ErrorColor: discord.Colour = discord.Colour.red()
 TrainerColor: discord.Colour = discord.Colour.purple()
 PokemonColor: discord.Colour = discord.Colour.pink()
-PokemonSpawnColor: discord.Colour = discord.Colour.light_embed()
-PokemonCaughtColor: discord.Colour = discord.Colour.green()
-ShopSuccessColor: discord.Colour = discord.Colour.dark_green()
-ShopFailColor: discord.Colour = discord.Colour.dark_red()
+EventColor: discord.Colour = discord.Colour.dark_red()
 BattleColor: discord.Colour = discord.Colour.dark_orange()
 HelpColor: discord.Colour = discord.Colour.default()
 
@@ -22,7 +19,8 @@ MaleSign = "🟦"
 FemaleSign = "🟥"
 ShinySign = "✨"
 Checkmark = "✅"
-dateFormat = '%m/%d/%y %H:%M:%S'
+DateFormat = '%m/%d/%y %H:%M:%S'
+ShortDateFormat = '%m/%d/%Y'
 
 StarterDexIds = [
     range(1, 10),

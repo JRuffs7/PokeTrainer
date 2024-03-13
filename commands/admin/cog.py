@@ -4,6 +4,7 @@ from random import choice
 from discord import Member, TextChannel
 from discord.ext import commands
 from commands.views.Events.SpecialSpawnEventView import SpecialSpawnEventView
+from commands.views.Events.UserEntryEventView import UserEntryEventView
 from middleware.decorators import method_logger, is_bot_admin
 from models.Server import Server
 from models.enums import EventType
@@ -171,18 +172,16 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 		
 		match eventType:
 			case EventType.StatCompare:
-				print('STAT COMPARE EVENT')
-				#compare = serverservice.StatCompareEvent(server)
-				return
+				serverservice.StatCompareEvent(server)
+				await UserEntryEventView(server, channel, self.bot.user.display_avatar.url).send()
 			case EventType.PokemonCount:
-				print('POKEMON COUNT EVENT')
-				#count = serverservice.PokemonCountEvent(server)
+				serverservice.PokemonCountEvent(server)
+				await UserEntryEventView(server, channel, self.bot.user.display_avatar.url).send()
 				return
 			case _:
-				print('SPECIAL SPAWN EVENT')
-				return
-				#spawnPkmn = serverservice.SpecialSpawnEvent(server)
-				#await SpecialSpawnEventView(server, channel, spawnPkmn, 'Special Spawn Event').send()
+				#return
+				spawnPkmn = serverservice.SpecialSpawnEvent(server)
+				await SpecialSpawnEventView(server, channel, spawnPkmn, 'Special Spawn Event').send()
 
 
 async def setup(bot: commands.Bot):
