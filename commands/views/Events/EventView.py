@@ -16,10 +16,10 @@ class EventView(discord.ui.View):
 		self.messagethread = None
 		self.embed = embed
 		self.embed.set_footer(text=timedelta(minutes=60))
-		super().__init__(timeout=60)
+		super().__init__(timeout=3600)
 
 	async def send(self):
-		self.message = await self.channel.send(embed=self.embed, view=self, delete_after=65)
+		self.message = await self.channel.send(embed=self.embed, view=self, delete_after=3605)
 		self.server.CurrentEvent.MessageId = self.message.id
 		sentAt = datetime.utcnow()+timedelta(minutes=1)
 		while datetime.utcnow() < sentAt:
