@@ -1,3 +1,4 @@
+from datetime import datetime
 import discord
 from flask import json
 
@@ -39,6 +40,12 @@ AdminList = [
   215624857793069056
 ]
 
+eventtimes = [
+  datetime.strptime('02:00:00', '%H:%M:%S').time(),
+  datetime.strptime('08:00:00', '%H:%M:%S').time(),
+  datetime.strptime('14:00:00', '%H:%M:%S').time(),
+  datetime.strptime('20:00:00', '%H:%M:%S').time()
+]
 
 def to_dict(obj):
   return json.loads(json.dumps(obj, default=lambda o: o.__dict__))

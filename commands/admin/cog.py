@@ -151,38 +151,6 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 		return await channel.send(message)
 		
 	#endregion
-
-	@commands.command(name="globalevent")
-	@method_logger
-	@is_bot_admin
-	async def globalevent(self, ctx: commands.Context):
-		if not ctx.guild:
-			return
-		allServers = serverservice.GetAllServers()
-		for server in allServers:
-			asyncio.run_coroutine_threadsafe(self.EventThread(choice(list(EventType)), server), self.bot.loop)
-
-	async def EventThread(self, eventType: EventType, server: Server):
-		guild = self.bot.get_guild(server.ServerId)
-		if not guild:
-			return 
-		channel = guild.get_channel(server.ChannelId)
-		if not channel or not isinstance(channel, TextChannel):
-			return
-		
-		match eventType:
-			case EventType.StatCompare:
-				serverservice.StatCompareEvent(server)
-				await UserEntryEventView(server, channel, self.bot.user.display_avatar.url).send()
-			case EventType.PokemonCount:
-				serverservice.PokemonCountEvent(server)
-				await UserEntryEventView(server, channel, self.bot.user.display_avatar.url).send()
-				return
-			case _:
-				#return
-				spawnPkmn = serverservice.SpecialSpawnEvent(server)
-				await SpecialSpawnEventView(server, channel, spawnPkmn, 'Special Spawn Event').send()
-
-
+	
 async def setup(bot: commands.Bot):
   await bot.add_cog(AdminCommands(bot))
