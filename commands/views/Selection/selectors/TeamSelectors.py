@@ -21,7 +21,7 @@ class TeamChoice(discord.ui.Select):
 
 		options += [discord.SelectOption(
 			label=f'Remove From Team',
-			description=f'Remove selected Pokemon to the end slot on the team.',
+			description=f'Remove selected Pokemon from the team.',
 			value=f'-1'
 		)] if not adding else []
 		super().__init__(options=options, max_values=1, min_values=1, placeholder='Select Team Slot')
