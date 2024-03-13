@@ -111,7 +111,7 @@ def GenerateSpawnPokemon(pokemon: PokemonData, level: int | None = None):
       'Weight': weight if weight > 0.00 else 0.01,
       'IsShiny': shiny,
       'IsFemale': female,
-      'Level': level if level else choice(range(1,6)) if pokemon.Rarity <= 2 else choice(range(20,26)) if pokemon.Rarity == 3 else choice(range(30,36)),
+      'Level': level if level else choice(range(3,8)) if pokemon.Rarity <= 2 else choice(range(20,26)) if pokemon.Rarity == 3 else choice(range(30,36)),
       'CurrentExp': 0
   })
 
@@ -154,9 +154,9 @@ def CaptureSuccess(pokeball: Pokeball, pokemon: PokemonData, level: int):
 def AddExperience(trainerPokemon: Pokemon, pkmnData: PokemonData, exp: int):
   trainerPokemon.CurrentExp += exp
   expNeeded = NeededExperience(trainerPokemon.Level, pkmnData.Rarity, len(pkmnData.EvolvesInto) > 0)
-  if trainerPokemon.Level == 100 and trainerPokemon.CurrentExp > expNeeded:
+  if trainerPokemon.Level == 100 and trainerPokemon.CurrentExp >= expNeeded:
     trainerPokemon.CurrentExp = expNeeded
-  elif trainerPokemon.CurrentExp > expNeeded:
+  elif trainerPokemon.CurrentExp >= expNeeded:
       trainerPokemon.Level += 1
       trainerPokemon.CurrentExp -= expNeeded
 
@@ -199,38 +199,46 @@ def EvolvePokemon(initial: Pokemon, evolveId: int):
 
 #region Fights
 
-def WildFight(attack: PokemonData, defend: PokemonData):
+def WildFight(attack: PokemonData, defend: PokemonData, attackLevel: int, defendLevel: int):
+  healthLost: list[int] = [1,3,5,7,10,13,15]
   battleResult = TypeMatch(attack.Types, defend.Types)
   doubleAdv = battleResult == 2
   doubleDis = battleResult <= -2
   attackGroup = RarityGroup(attack.Rarity, attack.IsLegendary or attack.IsMythical)
   defendGroup = RarityGroup(defend.Rarity, defend.IsLegendary or defend.IsMythical)
+  levelAdvantage = 2 if attackLevel > (defendLevel*2) else 1 if attackLevel > (defendLevel*1.5) else 0
+  levelDisadvantage = 2 if defendLevel > (attackLevel*2) else 1 if defendLevel > (attackLevel*1.5) else 0
+  if attackLevel < 10 and defendLevel < 10:
+    levelAdvantage = 1 if levelAdvantage > 0 else 0 
+    levelDisadvantage = 1 if levelDisadvantage > 0 else 0 
+  
+  returnInd = 3
 
   #legendary
   if attackGroup >= 8:
     if defendGroup == 3:
-      return 5 if attackGroup == 10 else 7 if attackGroup == 9 else 10
+      returnInd = 2 if attackGroup == 10 else 3 if attackGroup == 9 else 4
     elif defendGroup == 2:
-      return 3 if attackGroup == 10 else 5 if attackGroup == 9 else 7
+      returnInd = 1 if attackGroup == 10 else 2 if attackGroup == 9 else 3
     else:
-      return 1 if attackGroup == 10 else 3 if attackGroup == 9 else 5
-    
+      returnInd = 0 if attackGroup == 10 else 1 if attackGroup == 9 else 2
   # 1v1 2v2 3v3
-  if attackGroup - defendGroup == 0:
-    groupRes = 5 if doubleAdv else 10 if doubleDis else 7 - battleResult
+  elif attackGroup - defendGroup == 0:
+    returnInd = 2 if doubleAdv else 4 if doubleDis else 3
   # 3v2 2v1
   elif attackGroup - defendGroup == 1:
-    groupRes = 3 if doubleAdv else 7 if doubleDis else 5 - battleResult
+    returnInd = 1 if doubleAdv else 3 if doubleDis else 2
   # 3v1
   elif attackGroup - defendGroup == 2:
-    groupRes = 1 if doubleAdv else 5 if doubleDis else 3
+    returnInd = 0 if doubleAdv else 2 if doubleDis else 1
   # 1v2 2v3
   elif attackGroup - defendGroup == -1:
-    groupRes = 7 if doubleAdv else 13 if doubleDis else 10 - battleResult
+    returnInd = 3 if doubleAdv else 5 if doubleDis else 4
   # 1v3
   else:
-    groupRes = 10 if doubleAdv else 15 if doubleDis else 13
-  return groupRes
+    returnInd = 4 if doubleAdv else 6 if doubleDis else 5
+  returnInd -= (levelAdvantage - levelDisadvantage)
+  return healthLost[0 if returnInd < 0 else returnInd] - (battleResult if not doubleAdv and not doubleDis else 0)
 
 def GymFight(attack: PokemonData, defend: PokemonData):
   battleResult = TypeMatch(attack.Types, defend.Types)

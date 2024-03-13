@@ -30,7 +30,7 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
     pokemon = pokemonservice.SpawnPokemon()
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
     if inter.user.id in AdminList or trainerservice.CanCallSpawn(trainer):
-      await SpawnPokemonView(inter, trainer, pokemon).send(True)
+      await SpawnPokemonView(inter, trainer, pokemon).send()
     else:
       return await discordservice_pokemon.PrintSpawnResponse(inter, 0, [trainer.LastSpawnTime])
 

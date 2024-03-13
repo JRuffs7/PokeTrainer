@@ -1,7 +1,8 @@
+import discordbot
 from globals import ErrorColor, ServerColor
 from models.Server import Server
 from services.utility import discordservice
-from discord import Interaction
+from discord import Interaction, TextChannel
 
 responseFile = "files/responsefiles/serverresponses.json"
 
@@ -44,3 +45,21 @@ async def PrintUnregisterResponse(interaction: Interaction):
 		color=ServerColor, 
 		params=[],
 		eph=True)
+
+async def PrintEventWinners(server: Server, winners: list[tuple[int,int]]):
+	bot = discordbot.GetBot()
+	if server.CurrentEvent.ThreadId:
+		await bot.get_channel(server.CurrentEvent.ThreadId).delete()
+
+	if winners:
+		guild = bot.get_guild(server.ServerId)
+		if not guild:
+			return 
+		channel = guild.get_channel(server.ChannelId)
+		if not channel or not isinstance(channel, TextChannel):
+			return
+		
+		winText = '\n'.join([f'<@{w[0]}> - {"1x Masterball" if w[1] == 4 else "5x Ultraball" if w[1] == 3 else "10x Greatball"}' for w in winners])
+		message = f'Congratulations to the winners of the {server.CurrentEvent.EventName}!\n\n{winText}'
+
+		await channel.send(message)

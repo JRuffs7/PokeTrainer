@@ -4,6 +4,7 @@ from random import choice
 from discord import Member, TextChannel
 from discord.ext import commands
 from commands.views.Events.SpecialSpawnEventView import SpecialSpawnEventView
+from commands.views.Events.UserEntryEventView import UserEntryEventView
 from middleware.decorators import method_logger, is_bot_admin
 from models.Server import Server
 from models.enums import EventType
@@ -150,40 +151,6 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 		return await channel.send(message)
 		
 	#endregion
-
-	@commands.command(name="globalevent")
-	@method_logger
-	@is_bot_admin
-	async def globalevent(self, ctx: commands.Context):
-		if not ctx.guild:
-			return
-		allServers = serverservice.GetAllServers()
-		for server in allServers:
-			asyncio.run_coroutine_threadsafe(self.EventThread(choice(list(EventType)), server), self.bot.loop)
-
-	async def EventThread(self, eventType: EventType, server: Server):
-		guild = self.bot.get_guild(server.ServerId)
-		if not guild:
-			return 
-		channel = guild.get_channel(server.ChannelId)
-		if not channel or not isinstance(channel, TextChannel):
-			return
-		
-		match eventType:
-			case EventType.StatCompare:
-				print('STAT COMPARE EVENT')
-				#compare = serverservice.StatCompareEvent(server)
-				return
-			case EventType.PokemonCount:
-				print('POKEMON COUNT EVENT')
-				#count = serverservice.PokemonCountEvent(server)
-				return
-			case _:
-				print('SPECIAL SPAWN EVENT')
-				return
-				#spawnPkmn = serverservice.SpecialSpawnEvent(server)
-				#await SpecialSpawnEventView(server, channel, spawnPkmn, 'Special Spawn Event').send()
-
-
+	
 async def setup(bot: commands.Bot):
   await bot.add_cog(AdminCommands(bot))

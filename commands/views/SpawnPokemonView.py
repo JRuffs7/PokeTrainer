@@ -20,20 +20,16 @@ class SpawnPokemonView(discord.ui.View):
 		self.pkmndata = pokemonservice.GetPokemonById(pokemon.Pokemon_Id)
 		super().__init__(timeout=60)
 
-	async def send(self, ephemeral: bool = False):
+	async def send(self):
 		if not self.pokemon:
-			await self.interaction.response.send_message("Failed to spawn a Pokemon. Please try again.", ephemeral=True)
-		await self.interaction.response.send_message(view=self, ephemeral=ephemeral)
-		self.message = await self.interaction.original_response()
-		await self.update_message()
-
-	async def update_message(self):
+			return await self.interaction.response.send_message("Failed to spawn a Pokemon. Please try again.", ephemeral=True)
 		embed = discordservice.CreateEmbed(
 				self.GetTitle(),
 				self.PokemonDesc(),
 				PokemonColor)
 		embed.set_image(url=pokemonservice.GetPokemonImage(self.pokemon))
-		await self.message.edit(embed=embed, view=self)
+		await self.interaction.response.send_message(embed=embed, view=self, ephemeral=True)
+		self.message = await self.interaction.original_response()
 
 	@discord.ui.button(label=PokeballReaction)
 	async def pokeball_button(self, interaction: discord.Interaction, button: discord.ui.Button):
@@ -59,17 +55,18 @@ class SpawnPokemonView(discord.ui.View):
 			await interaction.response.send_message(content=f'<@{self.interaction.user.id}> was defeated by a wild {pokemonservice.GetPokemonDisplayName(self.pokemon, False, False)} and lost {fight}hp.\nNo experience or money gained.')
 			self.battleLog.info(f'{updatedTrainer.UserId} was defeated by a wild {self.pkmndata.Name}.')
 		else:
-			trainerPoke = next(p for p in updatedTrainer.OwnedPokemon if p.Id == self.trainer.Team[0])
+			trainerPoke = next(p for p in updatedTrainer.OwnedPokemon if p.Id == updatedTrainer.Team[0])
 			await self.message.delete()
 			await interaction.response.send_message(content=f'<@{self.interaction.user.id}> defeated a wild {pokemonservice.GetPokemonDisplayName(self.pokemon, False, False)}!\n{pokemonservice.GetPokemonDisplayName(trainerPoke)} gained {self.pkmndata.Rarity*self.pokemon.Level if self.pkmndata.Rarity <= 2 else int(self.pkmndata.Rarity*self.pokemon.Level*2/3)}xp\nTrainer lost {fight}hp and gained $50.')
 			self.battleLog.info(f'{updatedTrainer.UserId} defeated a wild {self.pkmndata.Name}!')
 
 	async def TryCapture(self, interaction: discord.Interaction, label: str, ball: str):
+		updatedTrainer = trainerservice.GetTrainer(self.interaction.guild_id, self.interaction.user.id)
 		pokeballId = '1' if label == PokeballReaction else '2' if label == GreatBallReaction else '3' if label == UltraBallReaction else '4'
-		if self.trainer.Pokeballs[str(pokeballId)] <= 0:
+		if updatedTrainer.Pokeballs[str(pokeballId)] <= 0:
 			await self.message.edit(content=f"You do not have any {ball}s. Buy some from the **/shop** or try another ball!", view=self)
 			await interaction.response.defer()
-		elif trainerservice.TryCapture(label, self.trainer, self.pokemon):
+		elif trainerservice.TryCapture(label, updatedTrainer, self.pokemon):
 			await self.message.delete()
 			await interaction.response.send_message(content=f'<@{self.interaction.user.id}> used a {ball} and captured a {pokemonservice.GetPokemonDisplayName(self.pokemon)} (Lvl. {self.pokemon.Level})!')
 		else:
