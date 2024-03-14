@@ -19,21 +19,21 @@ LOGGING_CONFIG = {
             'level': 'INFO',
             'class': 'logging.FileHandler',
             'filename': 'logs/discord.log',
-            'mode': 'w',
+            'mode': 'a',
             'formatter': 'verbose',
         },
         'battle': {
             'level': 'INFO',
             'class': 'logging.FileHandler',
             'filename': 'logs/battle.log',
-            'mode': 'w',
+            'mode': 'a',
             'formatter': 'verbose',
         },
         'capture': {
             'level': 'INFO',
             'class': 'logging.FileHandler',
             'filename': 'logs/capture.log',
-            'mode': 'w',
+            'mode': 'a',
             'formatter': 'verbose',
         },
         'error': {
@@ -47,7 +47,7 @@ LOGGING_CONFIG = {
             'level': 'INFO',
             'class': 'logging.FileHandler',
             'filename': 'logs/event.log',
-            'mode': 'w',
+            'mode': 'a',
             'formatter': 'verbose',
         }
     },
