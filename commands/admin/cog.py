@@ -1,14 +1,10 @@
 import asyncio
 import logging
-from random import choice
 from discord import Member, TextChannel
 from discord.ext import commands
-from commands.views.Events.SpecialSpawnEventView import SpecialSpawnEventView
-from commands.views.Events.UserEntryEventView import UserEntryEventView
 from middleware.decorators import method_logger, is_bot_admin
 from models.Server import Server
-from models.enums import EventType
-from services import eventservice, pokemonservice, serverservice, trainerservice
+from services import pokemonservice, serverservice, trainerservice
 
 class AdminCommands(commands.Cog, name="AdminCommands"):
 

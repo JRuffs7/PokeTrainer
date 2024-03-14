@@ -14,7 +14,7 @@ def GetTrainer(serverId: int, userId: int) -> Trainer|None:
         'ServerId': serverId,
         'UserId': userId
     })
-    trainer = Trainer(train) if train else None
+    trainer = Trainer.from_dict(train) if train else None
     if trainer:
       sqliteda.Save('Trainer', key, trainer)
   return trainer

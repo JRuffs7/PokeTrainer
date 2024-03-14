@@ -29,7 +29,7 @@
       "Name": "Masterball",
       "Description": "Guarenteed capture ball for catching Pokemon.",
       "BuyAmount": null,
-      "SellAmount": null,
+      "SellAmount": 1000,
       "CaptureRate": 100
     }
   ],

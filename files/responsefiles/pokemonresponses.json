@@ -17,6 +17,10 @@
 		{
 			"Title": "No Results",
 			"Body": "There seem to be no Pokemon categorized under the type {0}. Try again using the given prompts and filters."
+		},
+		{
+			"Title": "No Results",
+			"Body": "There was a problem trying to retrieve the information requested. Try again using the given prompts and filters."
 		}
 	],
 	"spawn": [

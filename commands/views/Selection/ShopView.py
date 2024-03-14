@@ -24,9 +24,11 @@ class ShopView(discord.ui.View):
 				self.remove_item(item)
 
 		self.buysellchoice = choice
+		self.itemchoice = None
+		self.amountchoice = None
 		if choice == 'buy':
-			self.ballList = [b for b in self.fullballList if b.BuyAmount <= self.trainer.Money]
-			self.potionList = [p for p in self.fullptnList if p.BuyAmount <= self.trainer.Money]
+			self.ballList = [b for b in self.fullballList if b.BuyAmount and b.BuyAmount <= self.trainer.Money]
+			self.potionList = [p for p in self.fullptnList if p.BuyAmount and p.BuyAmount <= self.trainer.Money]
 		else:
 			self.ballList = [itemservice.GetPokeball(int(i)) for i in self.trainer.Pokeballs if self.trainer.Pokeballs[i] > 0]
 			self.potionList = [itemservice.GetPotion(int(i)) for i in self.trainer.Potions if self.trainer.Potions[i] > 0]
@@ -48,6 +50,7 @@ class ShopView(discord.ui.View):
 				self.remove_item(item)
 
 		self.itemchoice = choice
+		self.amountchoice = None
 		isPokeball = choice.startswith('b')
 		itemId = int(choice[1:])
 		item = next(i for i in (self.fullballList if isPokeball else self.fullptnList) if i.Id == itemId)

@@ -42,7 +42,7 @@ class ItemChoice(discord.ui.Select):
 			) for d in ptnList if (d.BuyAmount if buying else d.SellAmount)
 		]) if len(ballList) > 0 or len(ptnList) > 0 else [
 			discord.SelectOption(
-					label='No Items To Sell',
+					label='Not enough money' if buying else 'No Items To Sell',
 					value='-1',
 					default=True
 				)

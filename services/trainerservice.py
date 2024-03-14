@@ -31,19 +31,15 @@ def StartTrainer(pokemonId: int, userId: int, serverId: int):
   if not pkmn:
     return None
   spawn = pokemonservice.GenerateSpawnPokemon(pkmn, 5)
-  trainer = Trainer({
+  trainer = Trainer.from_dict({
     'UserId': userId,
     'ServerId': serverId,
     'Team': [spawn.Id],
-    'OwnedPokemon': [],
     'Pokedex': [pkmn.PokedexId],
-    'Badges': [],
     'Health': 50,
     'Money': 500,
     'Pokeballs': { '1': 5, '2': 0, '3': 0, '4': 0 },
-    'Potions': { '1': 0, '2': 0, '3': 0, '4': 0 },
-    'LastSpawnTime': None,
-    'LastDaily': None
+    'Potions': { '1': 0, '2': 0, '3': 0, '4': 0 }
   })
   trainer.OwnedPokemon.append(spawn)
   UpsertTrainer(trainer)
@@ -234,6 +230,7 @@ def TryCapture(reaction: str, trainer: Trainer, spawn: Pokemon):
   ModifyItemList(trainer.Pokeballs, str(pokeball.Id), -1)
   if pokemonservice.CaptureSuccess(pokeball, pokemon, spawn.Level):
     trainer.OwnedPokemon.append(spawn)
+    trainer.Money += 25
     TryAddToPokedex(trainer, pokemon.PokedexId)
     if len(trainer.Team) < 6:
       trainer.Team.append(spawn.Id)

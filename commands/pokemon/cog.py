@@ -81,12 +81,14 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
                       inter: Interaction,
                       search: app_commands.Choice[str],
                       filter: str):
-    if search.value == 'single':
+    if search.value == 'single' and filter.isnumeric():
       await self.PokeInfoSingle(inter, int(filter))
     elif search.value == 'color':
       await self.PokeInfoColor(inter, filter)
     elif search.value == 'type':
       await self.PokeInfoType(inter, filter)
+    else:
+      return await discordservice_pokemon.PrintPokeInfoResponse(inter, 3, [])
     
 
   async def PokeInfoSingle(self, inter: Interaction, pokemonId: int):
