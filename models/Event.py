@@ -10,9 +10,6 @@ class Event:
 	SubType: int|None = None
 	EventEntries: dict[str, str] = field(default_factory=dict)
 
-	def __init__(self, dict):
-		vars(self).update(dict)
-
 	@classmethod
 	def from_dict(cls, dict):
 		field_names = {field.name for field in fields(cls)}
