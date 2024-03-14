@@ -15,8 +15,7 @@ from services.utility import discordservice
 class SpecialSpawnEventView(EventView):
 
 	def __init__(self, server: Server, channel: discord.TextChannel, pokemon: Pokemon, title: str):
-		self.eventLog = logging.getLogger('event')
-		self.eventLog.info(f"{server.ServerId} - Event Begins!")
+		self.captureLog = logging.getLogger('capture')
 		self.pokemon = pokemon
 		self.pkmndata = pokemonservice.GetPokemonById(pokemon.Pokemon_Id)
 		self.userentries = []
@@ -44,12 +43,13 @@ class SpecialSpawnEventView(EventView):
 				serverservice.UpsertServer(self.server)
 			await self.messagethread.send(self.CaptureDesc(interaction.user.id))
 			self.userentries.append(interaction.user.id)
+			self.eventLog.info(f"{self.server.ServerName} - {interaction.user.display_name} participated")
+			self.captureLog.info(f'{self.server.ServerName} - {interaction.user.display_name} used Masterball and caught a {self.pkmndata.Name}')
 			return await interaction.response.defer()
 		else:
 			return await interaction.response.send_message(f"Capture failed for some reason. Try again.", delete_after=10)
 
 	def CaptureDesc(self, userId: int):
-		self.eventLog.info(f"{self.server.ServerId} - <@{userId}> participated")
 		pkmnType = 'starter' if self.pkmndata.IsStarter else 'Legendary' if self.pkmndata.IsLegendary else 'Ultra Beast' if self.pkmndata.IsUltraBeast else 'Paradox' if self.pkmndata.IsParadox else 'fossil' if self.pkmndata.IsFossil else 'Mythical'
 		return f'<@{userId}> used a Masterball and captured the {pkmnType} Pokemon {pokemonservice.GetPokemonDisplayName(self.pokemon)}!'
 

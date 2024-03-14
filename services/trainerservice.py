@@ -235,7 +235,6 @@ def TryCapture(reaction: str, trainer: Trainer, spawn: Pokemon):
     if len(trainer.Team) < 6:
       trainer.Team.append(spawn.Id)
     caught = True
-    captureLog.info(f'{trainer.UserId} used {pokeball.Name} and caught a {pokemon.Name}!')
   UpsertTrainer(trainer)
   return caught
 

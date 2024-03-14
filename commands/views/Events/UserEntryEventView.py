@@ -1,5 +1,4 @@
 from datetime import datetime
-import logging
 import discord
 
 from commands.views.Events.EventView import EventView
@@ -14,8 +13,6 @@ from services.utility import discordservice
 class UserEntryEventView(EventView):
 
 	def __init__(self, server: Server, channel: discord.TextChannel, botImg: str):
-		self.eventLog = logging.getLogger('event')
-		self.eventLog.info(f"{server.ServerId} - Event Begins!")
 		embed = discordservice.CreateEmbed(
 				server.CurrentEvent.EventName,
 				'Press the enter button to submit for a chance to win the following:\n1st Place: 1x Masterball\n2nd Place: 5x Ultraballs\n3rd Place: 10x Greatballs\n\nTies will win the same reward, regardless of the number of users!',
@@ -55,4 +52,4 @@ class UserEntryEventView(EventView):
 				auto_archive_duration=60)
 			self.server.CurrentEvent.ThreadId = self.messagethread.id
 		await self.messagethread.send(f'<@{interaction.user.id}> has entered the event.' if enter else f'<@{interaction.user.id}> has left the event.')
-		self.eventLog.info(f"{self.server.ServerId} - <@{interaction.user.id}> {'entered' if enter else 'dropped out'}")
+		self.eventLog.info(f"{self.server.ServerName} - {interaction.user.display_name} {'entered' if enter else 'dropped out'}")
