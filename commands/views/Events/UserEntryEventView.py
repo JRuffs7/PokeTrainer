@@ -1,5 +1,4 @@
 from datetime import datetime
-import logging
 import discord
 
 from commands.views.Events.EventView import EventView
@@ -14,8 +13,6 @@ from services.utility import discordservice
 class UserEntryEventView(EventView):
 
 	def __init__(self, server: Server, channel: discord.TextChannel, botImg: str):
-		self.eventLog = logging.getLogger('event')
-		self.eventLog.info(f"{server.ServerId} - Event Begins!")
 		embed = discordservice.CreateEmbed(
 				server.CurrentEvent.EventName,
 				'Press the enter button to submit for a chance to win the following:\n1st Place: 1x Masterball\n2nd Place: 5x Ultraballs\n3rd Place: 10x Greatballs\n\nTies will win the same reward, regardless of the number of users!',
@@ -36,6 +33,7 @@ class UserEntryEventView(EventView):
 	@trainer_check
 	async def enter_button(self, interaction: discord.Interaction, button: discord.ui.Button):
 		if str(interaction.user.id) not in self.server.CurrentEvent.EventEntries:
+			self.eventLog.info(f"{self.server.ServerName} - {interaction.user.display_name} participated")
 			entry = trainerservice.EventEntry(trainerservice.GetTrainer(interaction.guild_id, interaction.user.id), self.server.CurrentEvent)
 			if self.server.CurrentEvent.EventType == EventType.StatCompare.value:
 				heightBased = self.server.CurrentEvent.SubType in [StatCompare.Shortest.value, StatCompare.Tallest.value]

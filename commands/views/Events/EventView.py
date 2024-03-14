@@ -10,7 +10,8 @@ class EventView(discord.ui.View):
 
 	def __init__(
 			self, server: Server, channel: discord.TextChannel, embed: discord.Embed):
-		self.captureLog = logging.getLogger('capture')
+		self.eventLog = logging.getLogger('event')
+		self.eventLog.info(f"{server.ServerName} - {server.CurrentEvent.EventName} Begins!")
 		self.server = server
 		self.channel = channel
 		self.messagethread = None
@@ -28,5 +29,5 @@ class EventView(discord.ui.View):
 			await asyncio.sleep(0.85)
 		self.embed.set_footer(text='Event ended.')
 		await self.message.edit(embed=self.embed, view=self)
-		print("FINISHED")
+		self.eventLog.info(f"{self.server.ServerName} - {self.server.CurrentEvent.EventName} Ended")
 		serverservice.UpsertServer(self.server)

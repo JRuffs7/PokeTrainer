@@ -14,6 +14,7 @@ class SpawnPokemonView(discord.ui.View):
 	def __init__(
 			self, interaction: discord.Interaction, trainer: Trainer, pokemon: Pokemon):
 		self.battleLog = logging.getLogger('battle')	
+		self.captureLog = logging.getLogger('capture')	
 		self.interaction = interaction
 		self.trainer = trainer
 		self.pokemon = pokemon
@@ -67,6 +68,7 @@ class SpawnPokemonView(discord.ui.View):
 			await self.message.edit(content=f"You do not have any {ball}s. Buy some from the **/shop** or try another ball!", view=self)
 			await interaction.response.defer()
 		elif trainerservice.TryCapture(label, updatedTrainer, self.pokemon):
+			self.captureLog.info(f'{interaction.guild.name} - {userId} used Masterball and caught a {self.pkmndata.Name}!')
 			await self.message.delete()
 			await interaction.response.send_message(content=f'<@{self.interaction.user.id}> used a {ball} and captured a wild **{pokemonservice.GetPokemonDisplayName(self.pokemon)} (Lvl. {self.pokemon.Level})**!\nAlso gained $25')
 		else:
