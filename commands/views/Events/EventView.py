@@ -11,7 +11,7 @@ class EventView(discord.ui.View):
 	def __init__(
 			self, server: Server, channel: discord.TextChannel, embed: discord.Embed):
 		self.eventLog = logging.getLogger('event')
-		self.eventLog.info(f"{server.ServerName} - {server.CurrentEvent.EventName} Begins!")
+		self.eventLog.info(f"{server.ServerName} - {server.CurrentEvent.EventName} Begins")
 		self.server = server
 		self.channel = channel
 		self.messagethread = None

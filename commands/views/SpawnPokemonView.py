@@ -29,7 +29,8 @@ class SpawnPokemonView(discord.ui.View):
 				self.PokemonDesc(),
 				PokemonColor)
 		embed.set_image(url=pokemonservice.GetPokemonImage(self.pokemon))
-		await self.interaction.response.send_message(embed=embed, view=self, ephemeral=True)
+		trainerPkmn = next(p for p in self.trainer.OwnedPokemon if p.Id == self.trainer.Team[0])
+		await self.interaction.response.send_message(content=f'{pokemonservice.GetPokemonDisplayName(trainerPkmn)} would be used to fight unless changed.', embed=embed, view=self, ephemeral=True)
 		self.message = await self.interaction.original_response()
 
 	@discord.ui.button(label=PokeballReaction)
@@ -63,16 +64,17 @@ class SpawnPokemonView(discord.ui.View):
 
 	async def TryCapture(self, interaction: discord.Interaction, label: str, ball: str):
 		updatedTrainer = trainerservice.GetTrainer(self.interaction.guild_id, self.interaction.user.id)
+		trainerPkmn = next(p for p in updatedTrainer.OwnedPokemon if p.Id == updatedTrainer.Team[0])
 		pokeballId = '1' if label == PokeballReaction else '2' if label == GreatBallReaction else '3' if label == UltraBallReaction else '4'
 		if updatedTrainer.Pokeballs[str(pokeballId)] <= 0:
-			await self.message.edit(content=f"You do not have any {ball}s. Buy some from the **/shop** or try another ball!", view=self)
+			await self.message.edit(content=f"You do not have any {ball}s. Buy some from the **/shop**, try another ball, or fight!\n{pokemonservice.GetPokemonDisplayName(trainerPkmn)} would be used to fight unless changed.", view=self)
 			await interaction.response.defer()
 		elif trainerservice.TryCapture(label, updatedTrainer, self.pokemon):
-			self.captureLog.info(f'{interaction.guild.name} - {userId} used Masterball and caught a {self.pkmndata.Name}!')
+			self.captureLog.info(f'{interaction.guild.name} - {self.interaction.user.display_name} used {ball} and caught a {self.pkmndata.Name}')
 			await self.message.delete()
 			await interaction.response.send_message(content=f'<@{self.interaction.user.id}> used a {ball} and captured a wild **{pokemonservice.GetPokemonDisplayName(self.pokemon)} (Lvl. {self.pokemon.Level})**!\nAlso gained $25')
 		else:
-			await self.message.edit(content=f"Capture failed! Try again", view=self)
+			await self.message.edit(content=f"Capture failed! Try again or fight.\n{pokemonservice.GetPokemonDisplayName(trainerPkmn)} would be used to fight unless changed.", view=self)
 			await interaction.response.defer()
 
 	def GetTitle(self):

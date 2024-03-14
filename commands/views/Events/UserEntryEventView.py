@@ -33,7 +33,6 @@ class UserEntryEventView(EventView):
 	@trainer_check
 	async def enter_button(self, interaction: discord.Interaction, button: discord.ui.Button):
 		if str(interaction.user.id) not in self.server.CurrentEvent.EventEntries:
-			self.eventLog.info(f"{self.server.ServerName} - {interaction.user.display_name} participated")
 			entry = trainerservice.EventEntry(trainerservice.GetTrainer(interaction.guild_id, interaction.user.id), self.server.CurrentEvent)
 			if self.server.CurrentEvent.EventType == EventType.StatCompare.value:
 				heightBased = self.server.CurrentEvent.SubType in [StatCompare.Shortest.value, StatCompare.Tallest.value]
@@ -53,4 +52,4 @@ class UserEntryEventView(EventView):
 				auto_archive_duration=60)
 			self.server.CurrentEvent.ThreadId = self.messagethread.id
 		await self.messagethread.send(f'<@{interaction.user.id}> has entered the event.' if enter else f'<@{interaction.user.id}> has left the event.')
-		self.eventLog.info(f"{self.server.ServerId} - <@{interaction.user.id}> {'entered' if enter else 'dropped out'}")
+		self.eventLog.info(f"{self.server.ServerName} - <@{interaction.user.display_name}> {'entered' if enter else 'dropped out'}")
