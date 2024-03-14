@@ -14,7 +14,7 @@ def method_logger(function):
 	@functools.wraps(function)
 	async def wrapper(self, *args, **kwargs):
 		try:
-			cmdLog.info(f"{args[0].guild.id} - {function.__name__.upper()} command called")
+			cmdLog.info(f"{args[0].guild.name} - {function.__name__.upper()} command called")
 			return await function(self, *args, **kwargs)
 		except:
 			# log the exception
