@@ -52,4 +52,4 @@ class UserEntryEventView(EventView):
 				auto_archive_duration=60)
 			self.server.CurrentEvent.ThreadId = self.messagethread.id
 		await self.messagethread.send(f'<@{interaction.user.id}> has entered the event.' if enter else f'<@{interaction.user.id}> has left the event.')
-		self.eventLog.info(f"{self.server.ServerName} - <@{interaction.user.display_name}> {'entered' if enter else 'dropped out'}")
+		self.eventLog.info(f"{self.server.ServerName} - {interaction.user.display_name} {'entered' if enter else 'dropped out'}")
