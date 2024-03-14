@@ -10,7 +10,7 @@ def GetServer(serverId: int) -> Server|None:
   serv = sqliteda.Load('Server', serverId)
   if not serv:
     s = mongodb.GetSingleDoc(collection, {'ServerId': serverId})
-    serv = Server(s) if s else None
+    serv = Server.from_dict(s) if s else None
     if serv:
       sqliteda.Save('Server', serverId, serv)
   return serv
@@ -21,7 +21,7 @@ def GetAllServers() -> list[Server]:
   servs = mongodb.GetManyDocs(collection, {})
   for s in servs if servs else []:
     if s:
-      server = Server(s)
+      server = Server.from_dict(s)
       sqliteda.Save('Server', server.ServerId, server)
       serverList.append(server)
   return serverList

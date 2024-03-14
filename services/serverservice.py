@@ -10,11 +10,10 @@ from services.utility import discordservice_server
 def RegisterServer(serverId, channelId, serverName):
   if serverId is None or channelId is None:
     return None
-  serv = Server({
+  serv = Server.from_dict({
       'ServerId': serverId,
       'ServerName': serverName,
       'ChannelId': channelId,
-      'CurrentEvent': None,
   })
   UpsertServer(serv)
   return serv
@@ -39,35 +38,28 @@ def DeleteServer(server: Server):
 
 def SpecialSpawnEvent(server: Server):
   specialPokemon = pokemonservice.GetSpecialSpawn()
-  server.CurrentEvent = Event({
+  server.CurrentEvent = Event.from_dict({
     'EventName': f'{pokemonservice.GetPokemonDisplayName(specialPokemon, False, False)} Spawn Event',
-    'MessageId': 0,
     'EventType': EventType.SpecialSpawn.value,
-    'SubType': None,
-    'EventEntries': {}
   })
   UpsertServer(server)
   return specialPokemon
 
 def StatCompareEvent(server: Server):
   comparison = eventservice.GetRandomStatCompare()
-  server.CurrentEvent = Event({
+  server.CurrentEvent = Event.from_dict({
     'EventName': f'{comparison.name} Comparison Event',
-    'MessageId': 0,
     'EventType': EventType.StatCompare.value,
     'SubType': comparison.value,
-    'EventEntries': {}
   })
   UpsertServer(server)
 
 def PokemonCountEvent(server: Server):
   count = eventservice.GetRandomCount()
-  server.CurrentEvent = Event({
+  server.CurrentEvent = Event.from_dict({
     'EventName': f'{count.name} Count Event',
-    'MessageId': 0,
     'EventType': EventType.PokemonCount.value,
     'SubType': count.value,
-    'EventEntries': {}
   })
   UpsertServer(server)
 
