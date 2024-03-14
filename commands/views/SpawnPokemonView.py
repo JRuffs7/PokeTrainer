@@ -55,12 +55,12 @@ class SpawnPokemonView(discord.ui.View):
 		elif fight >= 10 or updatedTrainer.Health == 0:
 			await self.message.delete()
 			await interaction.response.send_message(content=f'<@{self.interaction.user.id}> was defeated by a wild **{pokemonservice.GetPokemonDisplayName(self.pokemon, False, False)} (Lvl. {self.pokemon.Level})** and lost {fight}hp.\nNo experience or money gained.')
-			self.battleLog.info(f'{updatedTrainer.UserId} was defeated by a wild {self.pkmndata.Name}.')
+			self.battleLog.info(f'{interaction.user.display_name} was defeated by a wild {self.pkmndata.Name}')
 		else:
 			trainerPoke = next(p for p in updatedTrainer.OwnedPokemon if p.Id == updatedTrainer.Team[0])
 			await self.message.delete()
 			await interaction.response.send_message(content=f'<@{self.interaction.user.id}> defeated a wild **{pokemonservice.GetPokemonDisplayName(self.pokemon, False, False)} (Lvl. {self.pokemon.Level})**!\n{pokemonservice.GetPokemonDisplayName(trainerPoke)} gained {self.pkmndata.Rarity*self.pokemon.Level if self.pkmndata.Rarity <= 2 else int(self.pkmndata.Rarity*self.pokemon.Level*2/3)}xp\nTrainer lost {fight}hp and gained $50.')
-			self.battleLog.info(f'{updatedTrainer.UserId} defeated a wild {self.pkmndata.Name}!')
+			self.battleLog.info(f'{interaction.user.display_name} defeated a wild {self.pkmndata.Name}')
 
 	async def TryCapture(self, interaction: discord.Interaction, label: str, ball: str):
 		updatedTrainer = trainerservice.GetTrainer(self.interaction.guild_id, self.interaction.user.id)
