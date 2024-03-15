@@ -1,6 +1,6 @@
 import uuid
 from math import ceil, floor
-from random import choice, uniform, randint
+from random import choice, uniform
 from models.Item import Pokeball
 from models.enums import SpecialSpawn
 
@@ -44,6 +44,9 @@ def GetPokemonByType(type: str):
   secondType.sort(key=lambda x: x.Name)
 
   return singleType+firstType+secondType
+
+def GetPokemonByRarity(rarity: list[int]):
+  return pokemonda.GetPokemonByProperty(rarity, 'Rarity')
 
 #endregion
 
@@ -96,14 +99,14 @@ def GetSpecialSpawn():
   return GenerateSpawnPokemon(pkmn, 5 if pkmn.IsStarter or (pkmn.IsFossil and pkmn.EvolvesInto) else 75 if pkmn.IsLegendary else 40)
 
 def GenerateSpawnPokemon(pokemon: PokemonData, level: int | None = None):
-  shiny = randint(0, ShinyOdds) == int(ShinyOdds / 2)
+  shiny = choice(range(0, ShinyOdds)) == int(ShinyOdds / 2)
   height = round(
       uniform(floor(
           (pokemon.Height * 0.9)), ceil((pokemon.Height * 1.1))) / 10, 2)
   weight = round(
       uniform(floor(
           (pokemon.Weight * 0.9)), ceil((pokemon.Weight * 1.1))) / 10, 2)
-  female = randint(0, 100) < int(pokemon.FemaleChance / 8 * 100) if pokemon.FemaleChance >= 0 else None
+  female = choice(range(0, 100)) < int(pokemon.FemaleChance / 8 * 100) if pokemon.FemaleChance >= 0 else None
   return Pokemon({
       'Id': uuid.uuid4().hex,
       'Pokemon_Id': pokemon.Id,
