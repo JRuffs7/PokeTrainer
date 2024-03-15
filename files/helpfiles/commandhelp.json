@@ -41,13 +41,19 @@
     {
       "Name": "daily",
       "ShortString": "Claim a small reward every day.",
-      "HelpString": "Proper command usage: **/daily**\n\nThis command gives the user 3 Pokeballs every day, resetting at mignight UTC. It will also give a link to upvote the bot!",
+      "HelpString": "Proper command usage: **/daily**\n\nThis command gives the user 3 Pokeballs and $100 every day, resetting at mignight UTC. If you have space in your inventory, it will also give you an egg to **/hatch** (more information through **/help eggs**). It will also give a link to upvote the bot on top.gg!",
       "RequiresAdmin": false
     },
     {
       "Name": "modifyteam",
       "ShortString": "Add or replace a member of your battle team.",
       "HelpString": "Proper command usage: **/modifyteam *[pokemon]***\nParameters:\n**pokemon** - (Optional) Name of Pokemon to add to the team.\n\nThis command has two operations and will bring up two dropdowns.\n\nThe first operation happens when you do not provide a name with the command. This is treated as modifying just your existing team members. One example is you wish to change which Pokemon is in your first team slot for battles. In this case, the first selection dropdown will consist of only your team members. It will contain their expanded name (gender and shiny included) as well as all other relevant stats. The second selection will be your current team alignment. This will tell you what Pokemon is currently in which slot. You may choose a slot to replace with the first selected team member, or there will be an option to remove the selected member entirely.\nNOTE: You must always have at least one Pokemon in your battle team.\n\nThe second operation is providing the name filter when issuing the command. This is used to add a Pokemon from your box to the team either by addition or replacement. With this command path, there will still be two selection dropdowns. However, this time the first selection will only be Pokemon not currently in the team with the name given through the filter. The selection choices will contain information about the Pokemon such as their expanded name (gender and shiny included) as well as all other relevant stats. The second selection will contain allcurrent team members with their details as well. If the current team is not full (6 members), there will be an additional selection named 'Add To End Slot', which will do exactly as it says. You may choose a current team member and replace them in that slot, or add the selected Pokemon to the last available slot on your team (if applicable).",
+      "RequiresAdmin": false
+    },
+    {
+      "Name": "myeggs",
+      "ShortString": "View your current battle team in detailed image format.",
+      "HelpString": "Proper command usage: **/myeggs *[images]***\nParameters:\n**images** - (Optional) Display egg images instead of a list.\n\nThis command will display the eggs currently in your inventory, sorted by the order in which you obtained them. Information displayed on each page can contain their name, current progress, and what rarity they will hatch into. A ✅checkmark will be placed next to any eggs that are ready to **/hatch**.\n\nYou may also see the short-hand list through **/trainer**. For more information on eggs use **/help eggs**",
       "RequiresAdmin": false
     },
     {
@@ -117,6 +123,12 @@
       "RequiresAdmin": false
     },
     {
+      "Name": "hatch",
+      "ShortString": "Hatch your eggs that are ready.",
+      "HelpString": "Proper command usage: **/hatch**\n\nOnce your eggs reach the required **/spawn** count (see **/help eggs** for more information), this command will actually hatch them and provide your new Pokemon. This will provide you with a select list of all hatchable eggs that you can do at the same time. Hatching an egg also gives you **$50** towards your trainer. Eggs also have a re-roll for a ✨shiny✨!\n\nCurrent egg progress can be seen through **/myeggs** or **/trainer**. Remember, you cannot throw eggs away, so make sure you hatch them!",
+      "RequiresAdmin": false
+    },
+    {
       "Name": "pokeinfo",
       "ShortString": "Displays Pokemon information for the specified search.",
       "HelpString": "Proper command usage: **/pokeinfo *search* *filter***\nParameters:\n**search** - Which kind of search to perform.\n**filter** - The filter based on the search provided.\n\nThis command is a way for trainers to look at average information about a specific Pokemon species that may spawn or be obtained through other means. Currently, there are 3 different options to search for:\n\n__Single Pokemon__\nThe filter will just be an auto-completing list of all Pokemon names. This search will display a carousel of two (or more) images: the basic and shiny form of the specified Pokemon (and female forms if applicable). Each card will display the average information of the Pokemon such as Average Height, Average Weight, Typing, and Spawn Rarity (1-5). Types are used during fights which can be further explained using the **/help fight** command. Spawn Rarity is used for multiple reasons, which can be seen in both **/help spawn** and **/help fight**.\n\n__Pokemon By Color__\nThe filter for this search will be all color classifications that a Pokemon can have (such as *blue*, *red*, etc.). The color of a Pokemon is based on the Color filter within **Pokemon HOME**. The result of this search will be a text-based list of Pokemon names that belong in the selected color group, sorted by name.\n\nYou may see some oddities, such as Alolan Rattata being grouped with *purple*. This is because **Pokemon Home** classifies each Pokemon based on the *species*, and both Rattata and Alolan Rattata are of the same *Rattata* species, which base color is purple.\n\n__Pokemon By Type__\nThe filter will consist of all the different types a Pokemon can be. Once the type is selected, a list of text-based Pokemon names belonging to the type will be shown. They will also have their types listed, and will be sorted by solo typing, selected type being the main type, then selected typing being the secondary type:\nExample: **/pokeinfo Pokemon-By-Type Dragon**```Axew (Dragon)\nBagon (Dragon)\n...\nAltaria (Dragon/Flying)\nArctibax (Dragon/Ice)\n...\nAlolan Exeggutor (Grass/Dragon)\nKingdra (Water/Dragon)\n...```",
@@ -128,6 +140,12 @@
       "Name": "capture",
       "ShortString": "",
       "HelpString": "With every Pokemon wild spawn, there are three different buttons to try and capture. The three correspond to:\n🔴 - Pokeball, 🔵 - Greatball, 🟡 - Ultraball\n\nFor a capture to be successful, the trainer must choose one of the ball buttons and have at least one of the chosen ball in their inventory, able to be checked with the **/trainer** command.\n\nThe success of a capture is based on a few things:\n- Capture rate of the Pokemon (**/pokeinfo**)\n- Ball used to capture\n- Level (only levels 13 and below)\n- Pokemon are treated as half HP\nThe math behind this is a bit much to explain in help docs, but it is vaguely based off of the real capture success rates. You will find similar numbers crunching through the real equations with the same data.\n\nOn a successful capture, you will gain the Pokemon as well as $25",
+      "RequiresAdmin": false
+    },
+    {
+      "Name": "eggs",
+      "ShortString": "",
+      "HelpString": "Every time you use the **/daily** command, you will receive an egg. There are three different levels of eggs you can obtain: Level One, Level Two, Special.\n\n__Level One Egg__\n- These eggs have a 75% chance of being obtained from a **/daily** roll.\n- These take 100 **/spawn** interactions to become ready to hatch.\n- They will hatch into any First Stage Pokemon in an evolution chain, including fossils and starters but NOT including legendaries.\n\n__Level Two Egg__\n- These eggs have a 24% chance of being obtained from a **/daily** roll.\n- These take 150 **/spawn** interactions to become ready to hatch.\n- They will hatch into any Pokemon without an evolution line, NOT including legendaries.\n\n__Special Egg__\n- These eggs have a 1% chance of being obtained from a **/daily** roll.\n- These take 200 **/spawn** interactions to become ready to hatch.\n- They will hatch into any First Stage Legendary Pokemon in an evolution chain.\n\n\nYou can only have 5 total eggs in your inventory, and cannot get rid of them. When they reach their interaction amount, use the **/hatch** command to get your new Pokemon at level 1.\n\nEggs also have a re-roll for a ✨shiny✨!",
       "RequiresAdmin": false
     },
     {
