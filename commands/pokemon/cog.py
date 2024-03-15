@@ -2,6 +2,7 @@ from discord import app_commands, Interaction
 from discord.ext import commands
 from typing import List
 from commands.views.Pagination.PokemonSearchView import PokemonSearchView
+from commands.views.Selection.HatchView import HatchView
 from commands.views.SpawnPokemonView import SpawnPokemonView
 import discordbot
 
@@ -29,10 +30,23 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
   async def spawn(self, inter: Interaction):
     pokemon = pokemonservice.SpawnPokemon()
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
+    trainerservice.EggInteraction(trainer)
     if inter.user.id in AdminList or trainerservice.CanCallSpawn(trainer):
       await SpawnPokemonView(inter, trainer, pokemon).send()
     else:
       return await discordservice_pokemon.PrintSpawnResponse(inter, 0, [trainer.LastSpawnTime])
+
+  @app_commands.command(name="hatch",
+                        description="Hatch one or more of your eggs.")
+  @method_logger
+  @trainer_check
+  async def hatch(self, inter: Interaction):
+    trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
+    hatchable = [e for e in trainer.Eggs if trainerservice.CanEggHatch(e)]
+    if hatchable:
+      await HatchView(inter, trainer, hatchable).send()
+    else:
+      return await discordservice_pokemon.PrintHatchResponse(inter, 0 if trainer.Eggs else 1)
 
   #endregion
 

@@ -1,10 +1,10 @@
 from models.Item import Potion
 from models.Server import Server
 from models.Trainer import Trainer
-from services import pokemonservice, gymservice, trainerservice
+from services import itemservice, pokemonservice, gymservice, trainerservice
 from services.utility import discordservice
 from discord import Interaction, Member
-from globals import HelpColor, TrainerColor
+from globals import HelpColor, TrainerColor, Checkmark
 
 responseFile = "files/responsefiles/trainerresponses.json"
 
@@ -14,6 +14,10 @@ async def PrintTrainer(interaction: Interaction, trainer: Trainer, targetUser: M
 	totalBadges = len(gymservice.GetAllBadges())
 
 	stats = f"__Trainer Stats__\nHP: {trainer.Health}\nPokedex: {len(trainer.Pokedex)}/{totalPkmn} ({round((len(trainer.Pokedex)*100)/totalPkmn)}%)\nPokemon Caught: {len(trainer.OwnedPokemon)}\nShiny Count: {len([x for x in trainer.OwnedPokemon if x.IsShiny])}\nGym Badges: {len(trainer.Badges)}/{totalBadges}"
+
+	#Egg Section
+	eggString = '\n'.join(f"{itemservice.GetEgg(e.EggId).Name}: {e.SpawnCount}/{itemservice.GetEgg(e.EggId).SpawnsNeeded}{Checkmark if e.SpawnCount == itemservice.GetEgg(e.EggId).SpawnsNeeded else ''}" for e in trainer.Eggs)
+	eggs = f'__Eggs__\n{eggString if trainer.Eggs else "Obtain eggs from **/daily**"}'
 
 	#Inventory Section
 	items = trainerservice.GetInventory(trainer)
@@ -27,7 +31,7 @@ async def PrintTrainer(interaction: Interaction, trainer: Trainer, targetUser: M
 
 	embed = discordservice.CreateEmbed(
 			f"{targetUser.display_name}'s Trainer Info", 
-			f"{stats}\n\n{inventory}", 
+			f"{stats}\n\n{eggs}\n\n{inventory}", 
 			TrainerColor)
 	embed.set_thumbnail(url=targetUser.display_avatar.url)
 
@@ -93,11 +97,20 @@ async def PrintRelease(interaction: Interaction, name: str):
 		params=[name],
 		eph=True)
 
-async def PrintDaily(interaction: Interaction, success: bool):
+async def PrintDaily(interaction: Interaction, success: bool, eggName: str|None):
 	return await discordservice.SendCommandResponse(
 		interaction=interaction, 
 		filename=responseFile, 
 		command='daily', 
-		responseInd=0 if success else 1, 
+		responseInd=0 if not success else 1 if not eggName else 2, 
+		color=TrainerColor, 
+		params=[eggName])
+
+async def PrintMyEggs(interaction: Interaction):
+	return await discordservice.SendCommandResponse(
+		interaction=interaction, 
+		filename=responseFile, 
+		command='myeggs', 
+		responseInd=0, 
 		color=TrainerColor, 
 		params=[])

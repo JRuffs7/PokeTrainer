@@ -1,5 +1,6 @@
 from discord import Member, app_commands, Interaction
 from discord.ext import commands
+from commands.views.Pagination.EggView import EggView
 from commands.views.Pagination.PokedexView import PokedexView
 from commands.views.Selection.TeamSelectorView import TeamSelectorView
 from commands.views.Selection.ReleaseView import ReleaseView
@@ -73,7 +74,27 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
   @trainer_check
   async def daily(self, interaction: Interaction):
     trainer = trainerservice.GetTrainer(interaction.guild_id, interaction.user.id)
-    return await discordservice_trainer.PrintDaily(interaction, trainerservice.TryDaily(trainer))
+    dailyResult = trainerservice.TryDaily(trainer)
+    return await discordservice_trainer.PrintDaily(interaction, dailyResult >= 0, itemservice.GetEgg(dailyResult).Name if dailyResult > 0 else None)
+
+  @app_commands.command(name="myeggs",
+                        description="View your eggs progress.")
+  @app_commands.choices(images=[
+      app_commands.Choice(name="Yes", value=1)
+  ])
+  @method_logger
+  @trainer_check
+  async def myeggs(self, inter: Interaction,
+                   images: app_commands.Choice[int] | None):
+    trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
+    if not trainer.Eggs:
+      return await discordservice_trainer.PrintMyEggs(inter) 
+    teamViewer = EggView(
+      inter,
+      1 if images else 10, 
+      trainer.Eggs)
+    await teamViewer.send() 
+
 
   #endregion
 
@@ -122,8 +143,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
       app_commands.Choice(name="Paldea", value=9)
   ])
   @app_commands.choices(images=[
-      app_commands.Choice(name="Yes", value=1),
-      app_commands.Choice(name="No", value=0)
+      app_commands.Choice(name="Yes", value=1)
   ])
   @method_logger
   @trainer_check

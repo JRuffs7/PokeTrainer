@@ -5,6 +5,16 @@
 			"Body": "You have no Pokemon currently able to evolve. Level your Pokemon up by fighting gym leaders using **/gymbattle** and wild Pokemon using **/spawn**."
 		}
 	],
+	"hatch": [
+		{
+			"Title": "Nothing To Hatch",
+			"Body": "None of your eggs are ready to hatch. Use the **/spawn** command to prep them and check their status through **/myeggs**."
+		},
+		{
+			"Title": "No Eggs",
+			"Body": "You currently do not own any eggs. To claim an egg, use the **/daily** command that resets every day at midnight UTC."
+		}
+	],
 	"pokeinfo": [
 		{
 			"Title": "No Results",
@@ -26,7 +36,7 @@
 	"spawn": [
 		{
 			"Title": "Unable to Spawn",
-			"Body": "You must wait at least 10 minutes in between spawns.\nYour last spawn was at {0} EST"
+			"Body": "You must wait at least 10 minutes in between spawns.\nYour last spawn was at {0} UTC"
 		}
 	]
 }

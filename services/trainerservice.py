@@ -1,8 +1,11 @@
 
-from datetime import datetime, timedelta
+from datetime import UTC, datetime, timedelta
 import logging
+from random import choice
+import uuid
 from dataaccess import trainerda
-from globals import GreatBallReaction, PokeballReaction, UltraBallReaction, DateFormat, ShortDateFormat
+from globals import AdminList, GreatBallReaction, PokeballReaction, ShinyOdds, UltraBallReaction, DateFormat, ShortDateFormat
+from models.Egg import TrainerEgg
 from models.Event import Event
 from models.Item import Potion
 from models.Trainer import Trainer
@@ -81,13 +84,14 @@ def TryUsePotion(trainer: Trainer, potion: Potion):
   return (True, (trainer.Health - preHealth))
 
 def TryDaily(trainer: Trainer):
-  if not trainer.LastDaily or datetime.strptime(trainer.LastDaily, ShortDateFormat).date() < datetime.utcnow().date():
-    trainer.LastDaily = datetime.utcnow().strftime(ShortDateFormat)
+  if (not trainer.LastDaily or datetime.strptime(trainer.LastDaily, ShortDateFormat).date() < datetime.now(UTC).date()) or trainer.UserId in AdminList:
+    trainer.LastDaily = datetime.now(UTC).strftime(ShortDateFormat)
     ModifyItemList(trainer.Pokeballs, '1', 3)
     trainer.Money += 100
+    addEgg = TryAddNewEgg(trainer)
     UpsertTrainer(trainer)
-    return True
-  return False
+    return addEgg
+  return -1
 
 def EventEntry(trainer: Trainer, event: Event):
   #Pokemon Count Event
@@ -124,6 +128,55 @@ def ModifyItemList(itemDict: dict[str, int], itemId: str, amount: int):
     newAmount = 0
   itemDict.update({ itemId: newAmount })
   return (amount + newAmount) if newAmount < 0 else amount
+
+#endregion
+
+#region Eggs
+
+def TryAddNewEgg(trainer: Trainer):
+  if(len(trainer.Eggs) < 5):
+    randId = choice(range(1, 101))
+    newEggId = 1 if randId <= 65 else 2 if randId <= 95 else 3
+    trainer.Eggs.append(TrainerEgg.from_dict({
+      'Id': uuid.uuid4().hex,
+      'EggId': newEggId
+    }))
+    return newEggId
+  return 0
+
+def EggInteraction(trainer: Trainer):
+  updated = False
+  for egg in trainer.Eggs:
+    if egg.SpawnCount < itemservice.GetEgg(egg.EggId).SpawnsNeeded:
+      egg.SpawnCount += 1
+      updated = True
+  
+  if updated:
+    UpsertTrainer(trainer)
+
+def CanEggHatch(egg: TrainerEgg):
+  return egg.SpawnCount == itemservice.GetEgg(egg.EggId).SpawnsNeeded
+
+def TryHatchEgg(trainer: Trainer, eggId: str):
+  egg = next(e for e in trainer.Eggs if e.Id == eggId)
+  eggData = itemservice.GetEgg(egg.EggId)
+  if egg.SpawnCount < eggData.SpawnsNeeded:
+    return None
+
+  trainer.Eggs = [e for e in trainer.Eggs if e.Id != eggId]
+  pkmn = choice(pokemonservice.GetPokemonByRarity(eggData.Hatch))
+  while pkmn.EvolvesInto and pkmn.Rarity == 3:
+    pkmn = choice(pokemonservice.GetPokemonByRarity(eggData.Hatch))
+  newPokemon = pokemonservice.GenerateSpawnPokemon(pkmn, 1)
+  if not newPokemon.IsShiny:
+    newPokemon.IsShiny = choice(range(0, ShinyOdds)) == int(ShinyOdds/2)
+  trainer.OwnedPokemon.append(newPokemon)
+  trainer.Money += 50
+  if len(trainer.Team) < 6:
+    trainer.Team.append(newPokemon.Id)
+  UpsertTrainer(trainer)
+  return newPokemon.Id
+
 
 #endregion
 

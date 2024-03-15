@@ -1,4 +1,5 @@
 from dataclasses import dataclass, field, fields
+from models.Egg import TrainerEgg
 from models.Pokemon import Pokemon
 
 @dataclass
@@ -13,6 +14,7 @@ class Trainer:
   Pokedex: list[int] = field(default_factory=list)
   Team: list[str] = field(default_factory=list)
   Badges: list[int] = field(default_factory=list)
+  Eggs: list[TrainerEgg] = field(default_factory=list)
   LastSpawnTime: str | None = None
   LastDaily: str | None = None
 
@@ -21,6 +23,7 @@ class Trainer:
     field_names = {field.name for field in fields(cls)}
     returnObj = cls(**{k: v for k, v in dict.items() if k in field_names})
     returnObj.OwnedPokemon = [Pokemon(p) for p in returnObj.OwnedPokemon]
+    returnObj.Eggs = [TrainerEgg.from_dict(e) for e in returnObj.Eggs]
     return returnObj
 
   # def __init__(cls, dict):
