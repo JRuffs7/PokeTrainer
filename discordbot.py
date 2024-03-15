@@ -5,6 +5,7 @@ from random import choice
 
 import discord
 from discord.ext import commands, tasks
+from commands.views.Events.SpecialSpawnEventView import SpecialSpawnEventView
 from commands.views.Events.UserEntryEventView import UserEntryEventView
 from globals import eventtimes
 from models.Server import Server
@@ -48,11 +49,9 @@ async def StartBot():
       case EventType.PokemonCount:
         serverservice.PokemonCountEvent(server)
         await UserEntryEventView(server, channel, discordBot.user.display_avatar.url).send()
-        return
       case _:
-        return
-        #spawnPkmn = serverservice.SpecialSpawnEvent(server)
-        #await SpecialSpawnEventView(server, channel, spawnPkmn, 'Special Spawn Event').send()
+        spawnPkmn = serverservice.SpecialSpawnEvent(server)
+        await SpecialSpawnEventView(server, channel, spawnPkmn, 'Special Spawn Event').send()
 
   @discordBot.event
   async def on_message_delete(message: discord.Message):
