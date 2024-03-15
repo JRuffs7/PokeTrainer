@@ -43,9 +43,9 @@ class GymView(discord.ui.View):
 										button: discord.ui.Button):
 		await self.message.delete()
 		if self.battlewon:
-			await inter.response.send_message(content=f'<@{self.interaction.user.id}> defeated {self.leader.Name} and obtained the {gymservice.GetBadgeById(self.leader.BadgeId).Name} Badge!\nWon ${self.leader.Reward} and gained exp.')
+			await inter.response.send_message(content=f'<@{self.interaction.user.display_name}> defeated {self.leader.Name} and obtained the {gymservice.GetBadgeById(self.leader.BadgeId).Name} Badge!\nWon ${self.leader.Reward} and gained exp.')
 		else:
-			await inter.response.send_message(content=f'<@{self.interaction.user.id}> was defeated by {self.leader.Name}.\nLost ${int(self.leader.Reward/2)}.')
+			await inter.response.send_message(content=f'<@{self.interaction.user.display_name}> was defeated by {self.leader.Name}.\nLost ${int(self.leader.Reward/2)}.')
 
 	def CreateEmbedDesc(self):
 		first = second = 0
