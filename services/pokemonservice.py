@@ -212,8 +212,8 @@ def WildFight(attack: PokemonData, defend: PokemonData, attackLevel: int, defend
   levelAdvantage = 2 if attackLevel > (defendLevel*2) else 1 if attackLevel > (defendLevel*1.5) else 0
   levelDisadvantage = 2 if defendLevel > (attackLevel*2) else 1 if defendLevel > (attackLevel*1.5) else 0
   if attackLevel < 10 and defendLevel < 10:
-    levelAdvantage = 1 if levelAdvantage > 0 else 0 
-    levelDisadvantage = 1 if levelDisadvantage > 0 else 0 
+    levelAdvantage = 1 if attackLevel > (defendLevel + 3) else 0 
+    levelDisadvantage = 1 if defendLevel > (attackLevel + 3) else 0 
   
   returnInd = 3
 

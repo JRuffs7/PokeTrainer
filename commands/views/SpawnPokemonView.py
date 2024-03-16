@@ -3,7 +3,8 @@ import discord
 
 from table2ascii import table2ascii as t2a, PresetStyle, Alignment, Merge
 
-from globals import Checkmark, FightReaction, GreatBallReaction, PokeballReaction, PokemonColor, UltraBallReaction
+from commands.views.Selection.selectors.OwnedSelector import OwnedSelector
+from globals import Checkmark, FightReaction, GreatBallReaction, PokeballReaction, PokemonColor, UltraBallReaction, WarningSign
 from models.Pokemon import Pokemon
 from models.Trainer import Trainer
 from services import pokemonservice, trainerservice
@@ -20,6 +21,8 @@ class SpawnPokemonView(discord.ui.View):
 		self.pokemon = pokemon
 		self.pkmndata = pokemonservice.GetPokemonById(pokemon.Pokemon_Id)
 		super().__init__(timeout=60)
+		self.teamslotview = OwnedSelector(trainerservice.GetTeam(trainer), 1, trainer.Team[0])
+		self.add_item(self.teamslotview)
 
 	async def send(self):
 		if not self.pokemon:
@@ -29,9 +32,13 @@ class SpawnPokemonView(discord.ui.View):
 				self.PokemonDesc(),
 				PokemonColor)
 		embed.set_image(url=pokemonservice.GetPokemonImage(self.pokemon))
-		trainerPkmn = next(p for p in self.trainer.OwnedPokemon if p.Id == self.trainer.Team[0])
-		await self.interaction.response.send_message(content=f'{pokemonservice.GetPokemonDisplayName(trainerPkmn)} would be used to fight unless changed.', embed=embed, view=self, ephemeral=True)
+		embed.set_footer(text='Set Your Battle Pokemon Below')
+		await self.interaction.response.send_message(content=f'Current Trainer HP: {self.TrainerHealthString(self.trainer)}', embed=embed, view=self, ephemeral=True)
 		self.message = await self.interaction.original_response()
+
+	async def PokemonSelection(self, inter: discord.Interaction, choice: list[str]):
+		trainerservice.SetTeamSlot(self.trainer, 0, choice[0])
+		await inter.response.defer()
 
 	@discord.ui.button(label=PokeballReaction)
 	async def pokeball_button(self, interaction: discord.Interaction, button: discord.ui.Button):
@@ -64,21 +71,23 @@ class SpawnPokemonView(discord.ui.View):
 
 	async def TryCapture(self, interaction: discord.Interaction, label: str, ball: str):
 		updatedTrainer = trainerservice.GetTrainer(self.interaction.guild_id, self.interaction.user.id)
-		trainerPkmn = next(p for p in updatedTrainer.OwnedPokemon if p.Id == updatedTrainer.Team[0])
 		pokeballId = '1' if label == PokeballReaction else '2' if label == GreatBallReaction else '3' if label == UltraBallReaction else '4'
 		if updatedTrainer.Pokeballs[str(pokeballId)] <= 0:
-			await self.message.edit(content=f"You do not have any {ball}s. Buy some from the **/shop**, try another ball, or fight!\n{pokemonservice.GetPokemonDisplayName(trainerPkmn)} would be used to fight unless changed.", view=self)
+			await self.message.edit(content=f"You do not have any {ball}s. Buy some from the **/shop**, try another ball, or fight!\nCurrent Trainer HP: {self.TrainerHealthString(updatedTrainer)}", view=self)
 			await interaction.response.defer()
 		elif trainerservice.TryCapture(label, updatedTrainer, self.pokemon):
 			self.captureLog.info(f'{interaction.guild.name} - {self.interaction.user.display_name} used {ball} and caught a {self.pkmndata.Name}')
 			await self.message.delete()
 			await interaction.response.send_message(content=f'<@{self.interaction.user.id}> used a {ball} and captured a wild **{pokemonservice.GetPokemonDisplayName(self.pokemon)} (Lvl. {self.pokemon.Level})**!\nAlso gained $25')
 		else:
-			await self.message.edit(content=f"Capture failed! Try again or fight.\n{pokemonservice.GetPokemonDisplayName(trainerPkmn)} would be used to fight unless changed.", view=self)
+			await self.message.edit(content=f"Capture failed! Try again or fight.\nCurrent Trainer HP: {self.TrainerHealthString(updatedTrainer)}", view=self)
 			await interaction.response.defer()
 
 	def GetTitle(self):
 		return f'{f"{Checkmark} " if self.pkmndata.PokedexId in self.trainer.Pokedex else ""}{pokemonservice.GetPokemonDisplayName(self.pokemon)} (Lvl. {self.pokemon.Level})'
+
+	def TrainerHealthString(self, trainer: Trainer):
+		return f"{trainer.Health}{WarningSign}" if trainer.Health < 10 else f"{trainer.Health}"
 
 	def PokemonDesc(self):
 		pkmnData = t2a(

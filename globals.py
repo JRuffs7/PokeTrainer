@@ -20,6 +20,7 @@ MaleSign = "🟦"
 FemaleSign = "🟥"
 ShinySign = "✨"
 Checkmark = "✅"
+WarningSign = "⚠️"
 DateFormat = '%m/%d/%y %H:%M:%S'
 ShortDateFormat = '%m/%d/%Y'
 

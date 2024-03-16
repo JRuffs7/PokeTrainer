@@ -18,7 +18,7 @@ class TeamSelectorView(discord.ui.View):
     self.pokemonchoice = None
     self.teamslotchoice = None
     
-    self.currentteam = [next(p for p in trainer.OwnedPokemon if p.Id == t) for t in trainer.Team]
+    self.currentteam = trainerservice.GetTeam(trainer)
     self.modifypokemonlist = [
       x for x in trainer.OwnedPokemon if 
       x.Id not in trainer.Team and 
