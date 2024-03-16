@@ -229,41 +229,13 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
 
   #region STARTER
     
-  starters: list[dict[str, int]] = [ 
-      {'Name':'Bulbasaur','Value':1},
-      {'Name':'Charmander','Value':4},
-      {'Name':'Squirtle','Value':7},
-      {'Name':'Chikorita','Value':152},
-      {'Name':'Cyndaquil','Value':155},
-      {'Name':'Totodile','Value':158},
-      {'Name':'Treecko','Value':252},
-      {'Name':'Torchic','Value':255},
-      {'Name':'Mudkip','Value':258},
-      {'Name':'Turtwig','Value':387},
-      {'Name':'Chimchar','Value':390},
-      {'Name':'Piplup','Value':393},
-      {'Name':'Snivy','Value':495},
-      {'Name':'Tepig','Value':498},
-      {'Name':'Oshawott','Value':501},
-      {'Name':'Chespin','Value':650},
-      {'Name':'Fenniken','Value':653},
-      {'Name':'Froakie','Value':656},
-      {'Name':'Rowlet','Value':722},
-      {'Name':'Litten','Value':725},
-      {'Name':'Popplio','Value':728},
-      {'Name':'Grookey','Value':810},
-      {'Name':'Scorbunny','Value':813},
-      {'Name':'Sobble','Value':816},
-      {'Name':'Sprigatito','Value':906},
-      {'Name':'Fuecoco','Value':909},
-      {'Name':'Quaxly','Value':912}
-  ]
   async def starter_autocomplete(self, inter: Interaction, current: str) -> list[app_commands.Choice[int]]:
-    
     choices = []
-    for st in self.starters:
-      if current.lower() in st['Name'].lower():
-        choices.append(app_commands.Choice(name=st['Name'],value=st['Value']))
+    starters = pokemonservice.GetStarterPokemon()
+    starters.sort(key=lambda x: x.PokedexId)
+    for st in starters:
+      if current.lower() in st.Name.lower():
+        choices.append(app_commands.Choice(name=st.Name,value=st.Id))
       if len(choices) == 25:
         break
     return choices
@@ -272,7 +244,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
                         description="Choose a Pokemon to start your trainer!")
   @app_commands.autocomplete(pokemon=starter_autocomplete)
   async def starter(self, inter: Interaction, pokemon: int):
-    if pokemon not in [s['Value'] for s in self.starters]:
+    if pokemon not in [p.Id for p in pokemonservice.GetStarterPokemon()]:
       return await discordservice_trainer.PrintStarter(inter, None, inter.guild.name)
     trainer = trainerservice.StartTrainer(pokemon, inter.user.id, inter.guild_id)
     return await discordservice_trainer.PrintStarter(inter, trainer, inter.guild.name)

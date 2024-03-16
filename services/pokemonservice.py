@@ -48,6 +48,9 @@ def GetPokemonByType(type: str):
 def GetPokemonByRarity(rarity: list[int]):
   return pokemonda.GetPokemonByProperty(rarity, 'Rarity')
 
+def GetStarterPokemon():
+  return [p for p in pokemonda.GetAllPokemon() if p.IsStarter]
+
 #endregion
 
 #region Display
