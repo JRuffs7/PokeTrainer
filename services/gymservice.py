@@ -24,7 +24,7 @@ def GetBattleTeam(team: list[int]):
 
 
 def GymLeaderFight(trainer: Trainer, leader: GymLeader):
-	trainerTeam = [{ 'Pokemon': pokemonservice.GetPokemonById(t.Pokemon_Id), 'Id': t.Id } for t in trainerservice.GetTeam(trainer)]
+	trainerTeam = [{ 'Pokemon': pokemonservice.GetPokemonById(t.Pokemon_Id), 'Id': t.Id, 'Level': t.Level } for t in trainerservice.GetTeam(trainer)]
 	leaderTeam = GetBattleTeam(leader.Team)
 	fightResults: list[bool] = []
 	expList: dict[str, int] = {}
@@ -32,10 +32,10 @@ def GymLeaderFight(trainer: Trainer, leader: GymLeader):
 	while trainerInd < len(trainerTeam) and leaderInd < len(leaderTeam):
 		trainerFighter = trainerTeam[trainerInd]
 		leaderFighter = leaderTeam[leaderInd]
-		fight = pokemonservice.GymFight(trainerFighter['Pokemon'], leaderFighter)
+		fight = pokemonservice.GymFight(trainerFighter['Pokemon'], leaderFighter, trainerFighter['Level'])
 		fightResults.append(fight)
 		if fight:
-			expList[trainerTeam[trainerInd]['Id']] = 50*leaderTeam[leaderInd].Rarity
+			expList[trainerFighter['Id']] = 50*leaderTeam[leaderInd].Rarity
 			leaderInd += 1
 		else:
 			trainerInd += 1

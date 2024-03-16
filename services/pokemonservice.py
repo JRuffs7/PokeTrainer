@@ -160,11 +160,14 @@ def CaptureSuccess(pokeball: Pokeball, pokemon: PokemonData, level: int):
 def AddExperience(trainerPokemon: Pokemon, pkmnData: PokemonData, exp: int):
   trainerPokemon.CurrentExp += exp
   expNeeded = NeededExperience(trainerPokemon.Level, pkmnData.Rarity, len(pkmnData.EvolvesInto) > 0)
-  if trainerPokemon.Level == 100 and trainerPokemon.CurrentExp >= expNeeded:
+  while trainerPokemon.CurrentExp >= expNeeded and trainerPokemon.Level < 100:
+    trainerPokemon.Level += 1
+    trainerPokemon.CurrentExp -= expNeeded
+
+  if trainerPokemon.Level == 100 and trainerPokemon.CurrentExp > expNeeded:
     trainerPokemon.CurrentExp = expNeeded
-  elif trainerPokemon.CurrentExp >= expNeeded:
-      trainerPokemon.Level += 1
-      trainerPokemon.CurrentExp -= expNeeded
+    return
+
 
 def NeededExperience(level: int, rarity: int, canEvolve: bool):
   if rarity == 1:
@@ -246,13 +249,14 @@ def WildFight(attack: PokemonData, defend: PokemonData, attackLevel: int, defend
   returnInd -= (levelAdvantage - levelDisadvantage)
   return healthLost[0 if returnInd < 0 else returnInd] - (battleResult if not doubleAdv and not doubleDis else 0)
 
-def GymFight(attack: PokemonData, defend: PokemonData):
+def GymFight(attack: PokemonData, defend: PokemonData, attackLevel: int):
   battleResult = TypeMatch(attack.Types, defend.Types)
   doubleAdv = battleResult >= 2
   attackGroup = RarityGroup(attack.Rarity, attack.IsLegendary or attack.IsMythical)
   defendGroup = RarityGroup(defend.Rarity, defend.IsLegendary or defend.IsMythical)
+  defendLevel = 15 if defendGroup == 1 else 25 if defendGroup == 2 else 35 if defendGroup == 3 else 100
 
-  return doubleAdv and (attackGroup >= defendGroup)
+  return doubleAdv and (attackGroup >= defendGroup or (attackGroup == defendGroup-1 and attackLevel > defendLevel*1.25))
 
 def TypeMatch(attackTypes: list[str], defendTypes: list[str]):
   if len(attackTypes) == 1:
