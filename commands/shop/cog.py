@@ -17,8 +17,8 @@ class ShopCommands(commands.Cog, name="ShopCommands"):
   @trainer_check
   async def shop(self, inter: Interaction):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
-    dexViewer = ShopView(inter, trainer)
-    await dexViewer.send()
+    shopViewer = ShopView(inter, trainer)
+    await shopViewer.send()
 
 async def setup(bot: commands.Bot):
   await bot.add_cog(ShopCommands(bot))

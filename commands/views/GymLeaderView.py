@@ -21,8 +21,8 @@ class GymLeaderView(discord.ui.View):
 
 	async def send(self):
 		if not self.leader:
-			await self.interaction.response.send_message("The gym leader provided does not exist. Please try again.", ephemeral=True)
-		await self.interaction.response.send_message(view=self, ephemeral=True)
+			await self.interaction.followup.send("The gym leader provided does not exist. Please try again.", ephemeral=True)
+		await self.interaction.followup.send(view=self, ephemeral=True)
 		self.message = await self.interaction.original_response()
 		await self.update_message(False)
 

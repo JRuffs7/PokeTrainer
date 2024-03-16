@@ -6,7 +6,7 @@ from models.enums import SpecialSpawn
 
 from services import typeservice
 from dataaccess import pokemonda
-from globals import FemaleSign, MaleSign, ShinyOdds, ShinySign, StarterDexIds
+from globals import FemaleSign, MaleSign, ShinyOdds, ShinySign
 from models.Pokemon import PokemonData, Pokemon
 
 #region Data
@@ -135,8 +135,8 @@ def CanSpawn(pokemon: PokemonData):
   if not pokemon.Sprite and not pokemon.ShinySprite:
     return False
   
-  for range in StarterDexIds:
-    if pokemon.PokedexId in range:
+  for pkmn in GetStarterPokemon():
+    if pkmn.PokedexId <= pokemon.PokedexId <= pkmn.PokedexId+2:
       return False
 
   return  True

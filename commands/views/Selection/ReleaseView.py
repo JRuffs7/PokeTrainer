@@ -19,27 +19,29 @@ class ReleaseView(discord.ui.View):
 
 
 	async def PokemonSelection(self, inter: discord.Interaction, choices: list[str]):
-		self.pokemonchoices = choices
 		await inter.response.defer()
+		self.pokemonchoices = choices
 
 
 	@discord.ui.button(label="Cancel", style=discord.ButtonStyle.red)
 	@button_check
 	async def cancel_button(self, inter: discord.Interaction,
 												button: discord.ui.Button):
-		await self.message.delete()
-		await inter.response.send_message(content='Canceled release.',ephemeral=True)
+		await inter.response.defer()
+		self.clear_items()
+		await self.message.edit(content='Canceled release.')
 
 	@discord.ui.button(label="Submit", style=discord.ButtonStyle.green)
 	@button_check
 	async def submit_button(self, inter: discord.Interaction,
 												button: discord.ui.Button):
+		await inter.response.defer()
 		if self.pokemonchoices:
 			pokemon = trainerservice.ReleasePokemon(trainerservice.GetTrainer(inter.guild_id, inter.user.id), self.pokemonchoices)
 			await self.message.delete()
-			await inter.response.send_message(content=f"You have released {len(self.pokemonchoices)} {pokemon}",ephemeral=True)
+			await inter.followup.send(content=f"You have released {len(self.pokemonchoices)} {pokemon}",ephemeral=True)
 
 
 	async def send(self):
-		await self.interaction.response.send_message(content="Choose Pokemon to release", view=self, ephemeral=True)
+		await self.interaction.followup.send(content="Choose Pokemon to release", view=self, ephemeral=True)
 		self.message = await self.interaction.original_response()

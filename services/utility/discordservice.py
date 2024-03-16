@@ -1,16 +1,9 @@
-from discord import Colour, Embed, Interaction
+from discord import Embed, Interaction
 
 from dataaccess.utility.jsonreader import GetJson
 
-
-async def SendMessage(interaction: Interaction, title: str, desc: str, color: Colour, eph: bool = False):
-  return await interaction.response.send_message(embed=CreateEmbed(
-      title, desc, color),
-                                          ephemeral=eph)
-
-
 async def SendEmbed(interaction: Interaction, embed: Embed, eph: bool = False):
-  return await interaction.response.send_message(embed=embed, ephemeral=eph)
+  return await interaction.followup.send(embed=embed, ephemeral=eph)
 
 
 async def SendDMs(interaction: Interaction, embedList: list[Embed]):
@@ -18,8 +11,9 @@ async def SendDMs(interaction: Interaction, embedList: list[Embed]):
 
 
 async def SendCommandResponse(interaction: Interaction, filename: str, command: str, responseInd: int, color, params: list=[], eph: bool=False):
+  print(eph)
   response = GetJson(filename)[command][responseInd]
-  return await interaction.response.send_message(embed=CreateEmbed(
+  return await interaction.followup.send(embed=CreateEmbed(
       response["Title"], response["Body"].format(*params), color), ephemeral=eph)
 
 

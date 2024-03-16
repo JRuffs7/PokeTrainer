@@ -16,7 +16,7 @@ class BadgeView(BasePaginationView):
 		super(BadgeView, self).__init__(interaction, pageLength, data)
 
 	async def send(self):
-		await self.interaction.response.send_message(view=self)
+		await self.interaction.followup.send(view=self)
 		self.message = await self.interaction.original_response()
 		await self.update_message(self.data[:self.pageLength])
 

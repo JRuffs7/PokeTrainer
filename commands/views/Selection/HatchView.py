@@ -19,13 +19,14 @@ class HatchView(discord.ui.View):
 
 	@button_check
 	async def EggSelection(self, inter: discord.Interaction, choices: list[str]):
-		self.hatchchoices = choices
 		await inter.response.defer()
+		self.hatchchoices = choices
 
 	@discord.ui.button(label="Cancel", style=discord.ButtonStyle.red)
 	@button_check
 	async def cancel_button(self, inter: discord.Interaction,
 												button: discord.ui.Button):
+		await inter.response.defer()
 		self.clear_items()
 		await self.message.edit(content='Canceled hatching.', view=self)
 
@@ -33,6 +34,7 @@ class HatchView(discord.ui.View):
 	@button_check
 	async def submit_button(self, inter: discord.Interaction,
 												button: discord.ui.Button):
+		await inter.response.defer()
 		if self.hatchchoices:
 			hatchResults: dict[int,str] = {}
 			for i in self.hatchchoices:
@@ -41,9 +43,8 @@ class HatchView(discord.ui.View):
 			self.clear_items()
 			hatchMessage = '\n'.join([f'{itemservice.GetEgg(hatchResults[hr]).Name} hatched into a **{pokemonservice.GetPokemonDisplayName(next(p for p in self.trainer.OwnedPokemon if p.Id == hr))}** +$50' for hr in hatchResults])
 			await self.message.edit(content=hatchMessage, view=self)
-		await inter.response.defer()
 
 
 	async def send(self):
-		await self.interaction.response.send_message(view=self)
+		await self.interaction.followup.send(view=self)
 		self.message = await self.interaction.original_response()

@@ -243,6 +243,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
   @app_commands.command(name="starter",
                         description="Choose a Pokemon to start your trainer!")
   @app_commands.autocomplete(pokemon=starter_autocomplete)
+  @method_logger
   async def starter(self, inter: Interaction, pokemon: int):
     if pokemon not in [p.Id for p in pokemonservice.GetStarterPokemon()]:
       return await discordservice_trainer.PrintStarter(inter, None, inter.guild.name)

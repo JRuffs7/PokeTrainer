@@ -22,8 +22,8 @@ class PokedexView(BasePaginationView):
 
   async def send(self, ephemeral: bool = False):
     if not self.data:
-      await self.interaction.response.send_message("Target Trainer does not own any Pokemon that fit the filters.", ephemeral=True)
-    await self.interaction.response.send_message(view=self, ephemeral=ephemeral)
+      await self.interaction.followup.send("Target Trainer does not own any Pokemon that fit the filters.", ephemeral=True)
+    await self.interaction.followup.send(view=self, ephemeral=ephemeral)
     self.message = await self.interaction.original_response()
     await self.update_message(self.data[:self.pageLength])
 

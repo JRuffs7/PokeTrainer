@@ -29,11 +29,12 @@ class SpecialSpawnEventView(EventView):
 	@discord.ui.button(label=MasterBallReaction)
 	@trainer_check
 	async def masterball_button(self, interaction: discord.Interaction, button: discord.ui.Button):
+		await interaction.response.defer()
 		if interaction.user.id in self.userentries:
-			return await interaction.response.send_message(content=f"You already captured this special encounter! Wait for more to show up in the future.", ephemeral=True)
+			return await interaction.followup.send(content=f"You already captured this special encounter! Wait for more to show up in the future.", ephemeral=True)
 		trainer = trainerservice.GetTrainer(interaction.guild_id, interaction.user.id)
 		if trainer.Pokeballs['4'] <= 0:
-			return await interaction.response.send_message(content=f"You do not have any Masterballs. Participate in non-legendary public events to receive one.", ephemeral=True)
+			return await interaction.followup.send(content=f"You do not have any Masterballs. Participate in non-legendary public events to receive one.", ephemeral=True)
 		elif trainerservice.TryCapture(MasterBallReaction, trainer, self.pokemon):
 			if not self.messagethread or not interaction.guild.get_channel_or_thread(self.messagethread.id):
 				self.messagethread = await self.message.create_thread(
@@ -45,9 +46,9 @@ class SpecialSpawnEventView(EventView):
 			self.userentries.append(interaction.user.id)
 			self.eventLog.info(f"{self.server.ServerName} - {interaction.user.display_name} participated")
 			self.captureLog.info(f'{self.server.ServerName} - {interaction.user.display_name} used Masterball and caught a {self.pkmndata.Name}')
-			return await interaction.response.defer()
+			return
 		else:
-			return await interaction.response.send_message(f"Capture failed for some reason. Try again.", delete_after=10)
+			return await interaction.followup.send(f"Capture failed for some reason. Try again.", delete_after=10)
 
 	def CaptureDesc(self, userId: int):
 		pkmnType = 'starter' if self.pkmndata.IsStarter else 'Legendary' if self.pkmndata.IsLegendary else 'Ultra Beast' if self.pkmndata.IsUltraBeast else 'Paradox' if self.pkmndata.IsParadox else 'fossil' if self.pkmndata.IsFossil else 'Mythical'

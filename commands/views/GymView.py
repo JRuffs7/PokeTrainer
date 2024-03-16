@@ -26,7 +26,7 @@ class GymView(discord.ui.View):
 		super().__init__(timeout=300)
     
 	async def send(self):
-		await self.interaction.response.send_message(view=self, ephemeral=True)
+		await self.interaction.followup.send(view=self, ephemeral=True)
 		self.message = await self.interaction.original_response()
 		await self.update_message()
 
@@ -43,11 +43,12 @@ class GymView(discord.ui.View):
 	@button_check
 	async def next_button(self, inter: discord.Interaction,
 										button: discord.ui.Button):
+		await inter.response.defer()
 		await self.message.delete()
 		if self.battlewon:
-			await inter.response.send_message(content=f'<@{self.interaction.user.id}> defeated {self.leader.Name} and obtained the {gymservice.GetBadgeById(self.leader.BadgeId).Name} Badge!\nWon ${self.leader.Reward} and gained exp.')
+			await inter.followup.send(content=f'<@{self.interaction.user.id}> defeated {self.leader.Name} and obtained the {gymservice.GetBadgeById(self.leader.BadgeId).Name} Badge!\nWon ${self.leader.Reward} and gained exp.')
 		else:
-			await inter.response.send_message(content=f'<@{self.interaction.user.id}> was defeated by {self.leader.Name}.\nLost ${int(self.leader.Reward/2)}.')
+			await inter.followup.send(content=f'<@{self.interaction.user.id}> was defeated by {self.leader.Name}.\nLost ${int(self.leader.Reward/2)}.')
 
 	def CreateEmbedDesc(self):
 		first = second = 0

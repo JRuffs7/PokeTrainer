@@ -18,7 +18,6 @@ class ServerCommands(commands.Cog, name="ServerCommands"):
     if inter.guild:
       serv = serverservice.RegisterServer(inter.guild_id, inter.channel_id, inter.guild.name)
       return await discordservice_server.PrintRegisterResponse(inter, serv)
-    return inter.response.defer()
 
   @app_commands.command(name="server",
                         description="(Admin only) Display server details.")

@@ -35,7 +35,7 @@ async def PrintTrainer(interaction: Interaction, trainer: Trainer, targetUser: M
 			TrainerColor)
 	embed.set_thumbnail(url=targetUser.display_avatar.url)
 
-	return await interaction.response.send_message(embed=embed)
+	return await interaction.followup.send(embed=embed)
 
 async def PrintUsePotion(interaction: Interaction, potion: Potion | None, result: tuple[bool, int]):
 	return await discordservice.SendCommandResponse(

@@ -21,11 +21,12 @@ class EvolveView(discord.ui.View):
 
 	@button_check
 	async def EvolveSelection(self, inter: discord.Interaction, choice: str):
-		self.evolvechoice = choice
 		await inter.response.defer()
+		self.evolvechoice = choice
 
 	@button_check
 	async def PokemonSelection(self, inter: discord.Interaction, choice: list[str]):
+		await inter.response.defer()
 		for item in self.children:
 			if type(item) is not discord.ui.Button:
 				self.remove_item(item)
@@ -38,13 +39,13 @@ class EvolveView(discord.ui.View):
 		self.add_item(self.ownlist)
 		self.add_item(self.evlist)
 		await self.message.edit(view=self)
-		await inter.response.defer()
 
 
 	@discord.ui.button(label="Cancel", style=discord.ButtonStyle.red)
 	@button_check
 	async def cancel_button(self, inter: discord.Interaction,
 												button: discord.ui.Button):
+		await inter.response.defer()
 		self.clear_items()
 		await self.message.edit(content='Canceled evolution.', view=self)
 
@@ -52,13 +53,13 @@ class EvolveView(discord.ui.View):
 	@button_check
 	async def submit_button(self, inter: discord.Interaction,
 												button: discord.ui.Button):
+		await inter.response.defer()
 		if self.pokemonchoice and self.evolvechoice and self.evolvechoice != '0':
 			evolvedPokemon = trainerservice.Evolve(self.trainer, self.pokemonchoice, int(self.evolvechoice))
 			self.clear_items()
 			await self.message.edit(content=f"**{pokemonservice.GetPokemonDisplayName(self.pokemonchoice, False)}** evolved into **{pokemonservice.GetPokemonDisplayName(evolvedPokemon, False)}**", view=self)
-		await inter.response.defer()
 
 
 	async def send(self):
-		await self.interaction.response.send_message(view=self)
+		await self.interaction.followup.send(view=self)
 		self.message = await self.interaction.original_response()

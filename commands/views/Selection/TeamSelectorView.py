@@ -35,26 +35,28 @@ class TeamSelectorView(discord.ui.View):
 
   @button_check
   async def PokemonSelection(self, inter: discord.Interaction, choice: str):
-    self.pokemonchoice = choice[0]
     await inter.response.defer()
+    self.pokemonchoice = choice[0]
 
   @button_check
   async def TeamSlotSelection(self, inter: discord.Interaction, choice: str):
-    self.teamslotchoice = int(choice)
     await inter.response.defer()
+    self.teamslotchoice = int(choice)
 
 
   @discord.ui.button(label="Cancel", style=discord.ButtonStyle.red)
   async def cancel_button(self, inter: discord.Interaction,
                         button: discord.ui.Button):
+    await inter.response.defer()
     self.clear_items()
     await self.message.edit(content='Canceled team editing.', view=self)
 
   @discord.ui.button(label="Submit", style=discord.ButtonStyle.green)
   async def submit_button(self, inter: discord.Interaction,
                         button: discord.ui.Button):
+    await inter.response.defer()
     if not self.pokemonchoice or self.teamslotchoice is None:
-      return await inter.response.defer()
+      return
 
     self.clear_items()
     pkmn = next(p for p in self.trainer.OwnedPokemon if p.Id == self.pokemonchoice)
@@ -71,9 +73,8 @@ class TeamSelectorView(discord.ui.View):
         message = f"{next(pokemonservice.GetPokemonDisplayName(p) for p in self.trainer.OwnedPokemon if p.Id == self.pokemonchoice)} was swapped into slot {int(self.teamslotchoice) + 1}"
       trainerservice.SetTeamSlot(self.trainer, self.teamslotchoice, self.pokemonchoice)
       await self.message.edit(content=message, view=self)
-    await inter.response.defer()
 
 
   async def send(self):
-    await self.interaction.response.send_message(view=self, ephemeral=True)
+    await self.interaction.followup.send(view=self, ephemeral=True)
     self.message = await self.interaction.original_response()

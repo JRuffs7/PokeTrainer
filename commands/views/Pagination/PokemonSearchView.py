@@ -17,9 +17,9 @@ class PokemonSearchView(BasePaginationView):
 
   async def send(self):
     if not self.data:
-      await self.interaction.response.send_message("There are no Pokemon that fit the search. Try again.", ephemeral=True)
+      await self.interaction.followup.send("There are no Pokemon that fit the search. Try again.", ephemeral=True)
 
-    await self.interaction.response.send_message(view=self, ephemeral=True)
+    await self.interaction.followup.send(view=self, ephemeral=True)
     self.message = await self.interaction.original_response()
     await self.update_message(self.data[:self.pageLength])
 

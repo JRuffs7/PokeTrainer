@@ -24,16 +24,23 @@ WarningSign = "⚠️"
 DateFormat = '%m/%d/%y %H:%M:%S'
 ShortDateFormat = '%m/%d/%Y'
 
-StarterDexIds = [
-    range(1, 10),
-    range(152, 161),
-    range(252, 261),
-    range(387, 396),
-    range(495, 504),
-    range(650, 659),
-    range(722, 731),
-    range(810, 819),
-    range(906, 915)
+EphemeralCommands = [
+    'myteam',
+    'shop',
+    'help',
+    'register',
+    'server',
+    'swapchannel',
+    'unregister',
+    'modifyteam',
+    'release',
+    'spawn',
+    'usepotion',
+    'gymbattle',
+    'pokeinfo',
+    'gyminfo',
+    'evolve',
+    'hatch'
 ]
 
 

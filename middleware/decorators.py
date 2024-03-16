@@ -2,7 +2,7 @@ import functools
 import logging
 import functools
 
-from globals import AdminList
+from globals import AdminList, EphemeralCommands
 from services import serverservice, trainerservice
 from services.utility import discordservice_permission
 
@@ -11,19 +11,20 @@ cmdLog = logging.getLogger('discord')
 errLog = logging.getLogger('error')
 
 def method_logger(function):
-	@functools.wraps(function)
-	async def wrapper(self, *args, **kwargs):
-		try:
-			cmdLog.info(f"{args[0].guild.name} - {function.__name__.upper()} command called")
-			return await function(self, *args, **kwargs)
-		except:
-			# log the exception
-			err = f"There was an exception in command '{function.__name__.upper()}'"
-			errLog.exception(f"\nERROR - {function.__name__.upper()}\n{err}\n\n")
-			
-			# re-raise the exception
-			raise
-	return wrapper
+  @functools.wraps(function)
+  async def wrapper(self, *args, **kwargs):
+    try:
+      cmdLog.info(f"{args[0].guild.name} - {function.__name__.upper()} command called")
+      await args[0].response.defer(ephemeral=(function.__name__.lower() in EphemeralCommands))
+      return await function(self, *args, **kwargs)
+    except:
+      # log the exception
+      err = f"There was an exception in command '{function.__name__.upper()}'"
+      errLog.exception(f"\nERROR - {function.__name__.upper()}\n{err}\n\n")
+      
+      # re-raise the exception
+      raise
+  return wrapper
 
 
 def is_admin(function):
