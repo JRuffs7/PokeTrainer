@@ -113,4 +113,5 @@ async def PrintMyEggs(interaction: Interaction):
 		command='myeggs', 
 		responseInd=0, 
 		color=TrainerColor, 
-		params=[])
+		params=[],
+		eph=True)

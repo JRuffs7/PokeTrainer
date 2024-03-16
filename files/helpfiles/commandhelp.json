@@ -175,7 +175,7 @@
     {
       "Name": "update",
       "ShortString": "",
-      "HelpString": "__Newest Update (3/16/2024)__\n- Update /spawn view to include trainer health (with warning)\n- Updated trainer view to select Pokemon to battle with. Default to first slot\n- Minor behind-the-scenes changes\n\n__3/15/2024__\n- Added Eggs and Hatching. Max 5 eggs at a time. See more through **/help eggs**\n- Logging update for me\n- Updated help documentation",
+      "HelpString": "__Newest Update (3/16/2024)__\n- Update /spawn view to include trainer health (with warning)\n- Updated trainer view to select Pokemon to battle with. Default to first slot\n- Make /myeggs available for any trainers egg collection\n- Minor behind-the-scenes changes\n\n__3/15/2024__\n- Added Eggs and Hatching. Max 5 eggs at a time. See more through **/help eggs**\n- Logging update for me\n- Updated help documentation",
       "RequiresAdmin": false
     }
   ]

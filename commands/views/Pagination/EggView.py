@@ -10,8 +10,8 @@ from services.utility import discordservice
 
 class EggView(BasePaginationView):
 
-	def __init__(self, interaction: discord.Interaction, pageLength: int, data: list[TrainerEgg]):
-		self.title = f"{interaction.user.display_name}'s Egg List"
+	def __init__(self, interaction: discord.Interaction, targetUser: discord.User | discord.Member, pageLength: int, data: list[TrainerEgg]):
+		self.title = f"{targetUser.display_name}'s Egg List"
 		super(EggView, self).__init__(interaction, pageLength, data)
 
 	async def send(self):

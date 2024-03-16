@@ -85,12 +85,14 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
   @method_logger
   @trainer_check
   async def myeggs(self, inter: Interaction,
-                   images: app_commands.Choice[int] | None):
-    trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
+                   images: app_commands.Choice[int] | None,
+                   user: Member | None):
+    trainer = trainerservice.GetTrainer(inter.guild_id, user.id if user else inter.user.id)
     if not trainer.Eggs:
       return await discordservice_trainer.PrintMyEggs(inter) 
     teamViewer = EggView(
       inter,
+      user if user else inter.user,
       1 if images else 10, 
       trainer.Eggs)
     await teamViewer.send() 
