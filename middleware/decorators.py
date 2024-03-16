@@ -61,6 +61,8 @@ def trainer_check(function):
   @functools.wraps(function)
   async def wrapper(self, *args, **kwargs):
     inter = args[0]
+    if not inter.response.is_done():
+       await inter.response.defer()
     userId = next((int(o["value"]) for o in inter.data["options"] if o["type"] == 6), inter.user.id) if "options" in inter.data.keys() else inter.user.id
     trainer = trainerservice.GetTrainer(inter.guild_id, userId if userId else inter.user.id)
     if not trainer:

@@ -11,7 +11,6 @@ async def SendDMs(interaction: Interaction, embedList: list[Embed]):
 
 
 async def SendCommandResponse(interaction: Interaction, filename: str, command: str, responseInd: int, color, params: list=[], eph: bool=False):
-  print(eph)
   response = GetJson(filename)[command][responseInd]
   return await interaction.followup.send(embed=CreateEmbed(
       response["Title"], response["Body"].format(*params), color), ephemeral=eph)
