@@ -86,8 +86,8 @@ def TryUsePotion(trainer: Trainer, potion: Potion):
 def TryDaily(trainer: Trainer):
   if (not trainer.LastDaily or datetime.strptime(trainer.LastDaily, ShortDateFormat).date() < datetime.now(UTC).date()) or trainer.UserId in AdminList:
     trainer.LastDaily = datetime.now(UTC).strftime(ShortDateFormat)
-    ModifyItemList(trainer.Pokeballs, '1', 3)
-    trainer.Money += 100
+    ModifyItemList(trainer.Pokeballs, '1', 10)
+    trainer.Money += 200
     addEgg = TryAddNewEgg(trainer)
     UpsertTrainer(trainer)
     return addEgg
@@ -176,7 +176,6 @@ def TryHatchEgg(trainer: Trainer, eggId: str):
     trainer.Team.append(newPokemon.Id)
   UpsertTrainer(trainer)
   return newPokemon.Id
-
 
 #endregion
 

@@ -1,3 +1,4 @@
+import logging
 import discord
 
 from table2ascii import table2ascii as t2a, PresetStyle, Alignment
@@ -14,6 +15,7 @@ class GymView(discord.ui.View):
 
 	def __init__(self, interaction: discord.Interaction, leader: GymLeader,
 							 trainer: Trainer, battleResults: list[bool]):
+		self.battleLog = logging.getLogger('battle')
 		self.interaction = interaction
 		self.user = interaction.user
 		self.leader = leader
@@ -67,4 +69,9 @@ class GymView(discord.ui.View):
 			style=PresetStyle.markdown,
 			cell_padding=2)
 		
-		return f"```ansi\n{battle}```\n{'You won!' if first < len(self.trainerTeam) else 'You have been defeated.'}"
+		if first < len(self.trainerTeam):
+			self.battleLog.info(f'{self.interaction.user.display_name} defeated leader {self.leader.Name}.')
+			return f"```ansi\n{battle}```\nYou won!"
+		
+		self.battleLog.info(f'{self.interaction.user.display_name} lost to gym leader {self.leader.Name}.')
+		return f"```ansi\n{battle}```\nYou have been defeated."

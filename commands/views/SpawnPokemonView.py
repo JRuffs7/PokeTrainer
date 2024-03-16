@@ -1,3 +1,4 @@
+import asyncio
 import logging
 import discord
 
@@ -27,14 +28,15 @@ class SpawnPokemonView(discord.ui.View):
 	async def send(self):
 		if not self.pokemon:
 			return await self.interaction.response.send_message("Failed to spawn a Pokemon. Please try again.", ephemeral=True)
+		await self.interaction.response.send_message(view=self, ephemeral=True)
+		self.message = await self.interaction.original_response()
 		embed = discordservice.CreateEmbed(
 				self.GetTitle(),
 				self.PokemonDesc(),
 				PokemonColor)
 		embed.set_image(url=pokemonservice.GetPokemonImage(self.pokemon))
 		embed.set_footer(text='Set Your Battle Pokemon Below')
-		await self.interaction.response.send_message(content=f'Current Trainer HP: {self.TrainerHealthString(self.trainer)}', embed=embed, view=self, ephemeral=True)
-		self.message = await self.interaction.original_response()
+		await self.message.edit(content=f'Current Trainer HP: {self.TrainerHealthString(self.trainer)}', embed=embed, view=self)
 
 	async def PokemonSelection(self, inter: discord.Interaction, choice: list[str]):
 		trainerservice.SetTeamSlot(self.trainer, 0, choice[0])

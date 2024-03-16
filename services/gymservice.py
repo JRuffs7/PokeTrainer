@@ -4,8 +4,6 @@ from models.Trainer import Trainer
 from services import pokemonservice, trainerservice
 from models.Gym import GymLeader
 
-battleLog = logging.getLogger('battle')
-
 #region Gym Leaders
 
 def GetAllGymLeaders():
@@ -50,10 +48,8 @@ def GymLeaderFight(trainer: Trainer, leader: GymLeader):
 	if fightResults.count(True) == len(leader.Team):
 		trainer.Money += leader.Reward
 		trainer.Badges.append(leader.BadgeId)
-		battleLog.info(f'{trainer.UserId} defeated gym leader {leader.Name}!')
 	else:
 		trainer.Money -= int(leader.Reward/2)
-		battleLog.info(f'{trainer.UserId} lost to gym leader {leader.Name}.')
 	trainerservice.UpsertTrainer(trainer)
 	return fightResults
 

@@ -41,7 +41,7 @@
     {
       "Name": "daily",
       "ShortString": "Claim a small reward every day.",
-      "HelpString": "Proper command usage: **/daily**\n\nThis command gives the user 3 Pokeballs and $100 every day, resetting at mignight UTC. If you have space in your inventory, it will also give you an egg to **/hatch** (more information through **/help eggs**). It will also give a link to upvote the bot on top.gg!",
+      "HelpString": "Proper command usage: **/daily**\n\nThis command gives the user 10 Pokeballs and $200 every day, resetting at mignight UTC. If you have space in your inventory, it will also give you an egg to **/hatch** (more information through **/help eggs**). It will also give a link to upvote the bot on top.gg!",
       "RequiresAdmin": false
     },
     {
@@ -52,7 +52,7 @@
     },
     {
       "Name": "myeggs",
-      "ShortString": "View your current battle team in detailed image format.",
+      "ShortString": "View your current egg list in list or image format.",
       "HelpString": "Proper command usage: **/myeggs *[images]***\nParameters:\n**images** - (Optional) Display egg images instead of a list.\n\nThis command will display the eggs currently in your inventory, sorted by the order in which you obtained them. Information displayed on each page can contain their name, current progress, and what rarity they will hatch into. A ✅checkmark will be placed next to any eggs that are ready to **/hatch**.\n\nYou may also see the short-hand list through **/trainer**. For more information on eggs use **/help eggs**",
       "RequiresAdmin": false
     },
@@ -64,7 +64,7 @@
     },
     {
       "Name": "pokedex",
-      "ShortString": "Displays the current or given users owned Pokedex.",
+      "ShortString": "Displays the current or given users owned Pokemon.",
       "HelpString": "Proper command usage: **/pokedex *[image]* *[order]* *[shiny]* *[@user]***\nParameters:\n**image** - (Optional) Whether the Pokedex should be shown in image format.\n**order** - (Optional) How the Pokedex should be ordered.\n**shiny** - (Optional) Choose if shiny Pokemon are specially sorted.\n**@user** - (Optional) View another server members Pokedex progress.\n\nThis command will display the current (or given) users current Pokemon collection in a text list form by default. Using the options above, you can format and change the returned list to your liking.\nNOTE: This is *not* a list of the actual Pokedex progress, but a list of currently owned Pokemon in the box/team.\n\n__Examples__\n**/pokedex images:Yes** - Display the current (or given) users Pokedex in a carousel image format with default ordering and no special shiny sorting.\n**/pokedex order:Name shiny:Shiny First** - Display the Pokedex in a text list and sort the Pokedex by name. Shiny Pokemon will be displayed and sorted by name at the front of the list.\n```Gloom✨\nVulpix✨\nAbra\nBlaziken\nZubat```\n**/pokedex  order:National Dex shiny:Shiny Only** - Displays the Pokedex in sorted order by National Dex number and only displays owned shinies.",
       "RequiresAdmin": false
     },
@@ -175,7 +175,7 @@
     {
       "Name": "update",
       "ShortString": "",
-      "HelpString": "__Newest Update (3/16/2024)__\n- Update /spawn view to include trainer health (with warning)\n- Updated trainer view to select Pokemon to battle with. Default to first slot\n- Make /myeggs available for any trainers egg collection\n- Minor behind-the-scenes changes\n\n__3/15/2024__\n- Added Eggs and Hatching. Max 5 eggs at a time. See more through **/help eggs**\n- Logging update for me\n- Updated help documentation",
+      "HelpString": "__Newest Update (3/16/2024)__\n- You now get 10 Pokeballs and $200 per day instead of 3 and $100\n- Update /spawn view to include trainer health (with warning)\n- Updated trainer view to select Pokemon to battle with. Default to first slot\n- Make /myeggs available for any trainers egg collection\n- Help updates\n- Minor behind-the-scenes changes and bug fixes\n\n__3/15/2024__\n- Added Eggs and Hatching. Max 5 eggs at a time. See more through **/help eggs**\n- Logging update for me\n- Updated help documentation",
       "RequiresAdmin": false
     }
   ]

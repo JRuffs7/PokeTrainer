@@ -3,10 +3,10 @@ from models.Event import Event
 
 @dataclass
 class Server:
-  ServerName: str
-  ServerId: int
-  ChannelId: int
-  CurrentEvent: Event|None
+  ServerName: str = ''
+  ServerId: int = 0
+  ChannelId: int = 0
+  CurrentEvent: Event|None = None
 
   @classmethod
   def from_dict(cls, dict):
