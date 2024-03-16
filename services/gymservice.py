@@ -35,7 +35,7 @@ def GymLeaderFight(trainer: Trainer, leader: GymLeader):
 		fight = pokemonservice.GymFight(trainerFighter['Pokemon'], leaderFighter)
 		fightResults.append(fight)
 		if fight:
-			expList[trainerTeam[trainerInd]['Id']] = 10*leaderTeam[leaderInd].Rarity
+			expList[trainerTeam[trainerInd]['Id']] = 50*leaderTeam[leaderInd].Rarity
 			leaderInd += 1
 		else:
 			trainerInd += 1

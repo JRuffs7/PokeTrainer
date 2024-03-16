@@ -175,7 +175,7 @@
     {
       "Name": "update",
       "ShortString": "",
-      "HelpString": "__Newest Update (3/16/2024)__\n- You now get 10 Pokeballs and $200 per day instead of 3 and $100\n- Update /spawn view to include trainer health (with warning)\n- Updated trainer view to select Pokemon to battle with. Default to first slot\n- Make /myeggs available for any trainers egg collection\n- Help updates\n- Minor behind-the-scenes changes and bug fixes\n\n__3/15/2024__\n- Added Eggs and Hatching. Max 5 eggs at a time. See more through **/help eggs**\n- Logging update for me\n- Updated help documentation",
+      "HelpString": "__Newest Update (3/16/2024)__\n- Gym leaders not give more exp\n- You now get 10 Pokeballs and $200 per day instead of 3 and $100\n- Update /spawn view to include trainer health (with warning)\n- Updated trainer view to select Pokemon to battle with. Default to first slot\n- Make /myeggs available for any trainers egg collection\n- Help updates\n- Minor behind-the-scenes changes and bug fixes\n\n__3/15/2024__\n- Added Eggs and Hatching. Max 5 eggs at a time. See more through **/help eggs**\n- Logging update for me\n- Updated help documentation",
       "RequiresAdmin": false
     }
   ]
