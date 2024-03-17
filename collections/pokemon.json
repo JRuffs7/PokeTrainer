@@ -771,7 +771,7 @@
     "Color": "Yellow",
     "EvolvesInto": [
       26,
-      1130
+      10202
     ],
     "FemaleChance": 4,
     "Generation": 1,
@@ -3212,7 +3212,7 @@
     "Color": "Pink",
     "EvolvesInto": [
       103,
-      1144
+      10216
     ],
     "FemaleChance": 4,
     "Generation": 1,
@@ -3277,7 +3277,7 @@
     "Color": "Brown",
     "EvolvesInto": [
       105,
-      1145
+      10217
     ],
     "FemaleChance": 4,
     "Generation": 1,
@@ -3432,7 +3432,7 @@
     "Color": "Purple",
     "EvolvesInto": [
       110,
-      1167
+      10326
     ],
     "FemaleChance": 4,
     "Generation": 1,
@@ -4912,7 +4912,7 @@
     "Color": "Yellow",
     "EvolvesInto": [
       157,
-      1200
+      10402
     ],
     "FemaleChance": 1,
     "Generation": 2,
@@ -13825,7 +13825,7 @@
     "Color": "Pink",
     "EvolvesInto": [
       122,
-      1168
+      10327
     ],
     "FemaleChance": 4,
     "Generation": 4,
@@ -15784,7 +15784,7 @@
     "Color": "Blue",
     "EvolvesInto": [
       503,
-      1203
+      10405
     ],
     "FemaleChance": 1,
     "Generation": 5,
@@ -17231,7 +17231,7 @@
     "Color": "Green",
     "EvolvesInto": [
       549,
-      1204
+      10406
     ],
     "FemaleChance": 8,
     "Generation": 5,
@@ -19716,7 +19716,7 @@
     "Color": "White",
     "EvolvesInto": [
       628,
-      1207
+      10409
     ],
     "FemaleChance": 0,
     "Generation": 5,
@@ -20915,25 +20915,25 @@
     "Color": "Black",
     "EvolvesInto": [
       666,
-      1090,
-      1091,
-      1092,
-      1093,
-      1094,
-      1095,
-      1096,
-      1097,
-      1098,
-      1099,
-      1100,
-      1101,
-      1102,
-      1103,
-      1104,
-      1105,
-      1106,
-      1125,
-      1126
+      10086,
+      10087,
+      10088,
+      10089,
+      10090,
+      10091,
+      10092,
+      10093,
+      10094,
+      10095,
+      10096,
+      10097,
+      10098,
+      10099,
+      10100,
+      10101,
+      10102,
+      10161,
+      10162
     ],
     "FemaleChance": 4,
     "Generation": 6,
@@ -22162,7 +22162,7 @@
     "Color": "Purple",
     "EvolvesInto": [
       705,
-      1208
+      10410
     ],
     "FemaleChance": 4,
     "Generation": 6,
@@ -22416,7 +22416,7 @@
     "Color": "Blue",
     "EvolvesInto": [
       713,
-      1210
+      10412
     ],
     "FemaleChance": 4,
     "Generation": 6,
@@ -22596,7 +22596,7 @@
     "Rarity": 10
   },
   {
-    "Id": 718,
+    "Id": 719,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -22627,7 +22627,7 @@
     "Rarity": 10
   },
   {
-    "Id": 719,
+    "Id": 720,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -22658,7 +22658,7 @@
     "Rarity": 10
   },
   {
-    "Id": 720,
+    "Id": 721,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -22689,7 +22689,7 @@
     "Rarity": 10
   },
   {
-    "Id": 721,
+    "Id": 722,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -22722,15 +22722,15 @@
     "Rarity": 1
   },
   {
-    "Id": 722,
+    "Id": 723,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
     "CaptureRate": 45,
     "Color": "Brown",
     "EvolvesInto": [
-      723,
-      1211
+      724,
+      10413
     ],
     "FemaleChance": 1,
     "Generation": 7,
@@ -22756,7 +22756,7 @@
     "Rarity": 3
   },
   {
-    "Id": 723,
+    "Id": 724,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -22787,7 +22787,7 @@
     "Rarity": 5
   },
   {
-    "Id": 724,
+    "Id": 725,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -22819,7 +22819,7 @@
     "Rarity": 1
   },
   {
-    "Id": 725,
+    "Id": 726,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -22851,7 +22851,7 @@
     "Rarity": 3
   },
   {
-    "Id": 726,
+    "Id": 727,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -22882,7 +22882,7 @@
     "Rarity": 5
   },
   {
-    "Id": 727,
+    "Id": 728,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -22914,7 +22914,7 @@
     "Rarity": 1
   },
   {
-    "Id": 728,
+    "Id": 729,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -22946,7 +22946,7 @@
     "Rarity": 3
   },
   {
-    "Id": 729,
+    "Id": 730,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -22977,7 +22977,7 @@
     "Rarity": 5
   },
   {
-    "Id": 730,
+    "Id": 731,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -23010,7 +23010,7 @@
     "Rarity": 1
   },
   {
-    "Id": 731,
+    "Id": 732,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -23043,7 +23043,7 @@
     "Rarity": 3
   },
   {
-    "Id": 732,
+    "Id": 733,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -23074,7 +23074,7 @@
     "Rarity": 5
   },
   {
-    "Id": 733,
+    "Id": 734,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -23106,7 +23106,7 @@
     "Rarity": 2
   },
   {
-    "Id": 734,
+    "Id": 735,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -23136,7 +23136,7 @@
     "Rarity": 4
   },
   {
-    "Id": 735,
+    "Id": 736,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -23168,7 +23168,7 @@
     "Rarity": 1
   },
   {
-    "Id": 736,
+    "Id": 737,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -23201,7 +23201,7 @@
     "Rarity": 3
   },
   {
-    "Id": 737,
+    "Id": 738,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -23232,7 +23232,7 @@
     "Rarity": 5
   },
   {
-    "Id": 738,
+    "Id": 739,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -23264,7 +23264,7 @@
     "Rarity": 2
   },
   {
-    "Id": 739,
+    "Id": 740,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -23295,7 +23295,7 @@
     "Rarity": 4
   },
   {
-    "Id": 740,
+    "Id": 741,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -23326,7 +23326,7 @@
     "Rarity": 3
   },
   {
-    "Id": 741,
+    "Id": 742,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -23359,7 +23359,7 @@
     "Rarity": 2
   },
   {
-    "Id": 742,
+    "Id": 743,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -23390,16 +23390,16 @@
     "Rarity": 4
   },
   {
-    "Id": 743,
+    "Id": 744,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
     "CaptureRate": 190,
     "Color": "Brown",
     "EvolvesInto": [
-      744,
-      1152,
-      1160
+      745,
+      10228,
+      10311
     ],
     "FemaleChance": 4,
     "Generation": 7,
@@ -23424,7 +23424,7 @@
     "Rarity": 2
   },
   {
-    "Id": 744,
+    "Id": 745,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -23454,7 +23454,7 @@
     "Rarity": 4
   },
   {
-    "Id": 745,
+    "Id": 746,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -23484,7 +23484,7 @@
     "Rarity": 3
   },
   {
-    "Id": 746,
+    "Id": 747,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -23517,7 +23517,7 @@
     "Rarity": 2
   },
   {
-    "Id": 747,
+    "Id": 748,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -23548,7 +23548,7 @@
     "Rarity": 4
   },
   {
-    "Id": 748,
+    "Id": 749,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -23580,7 +23580,7 @@
     "Rarity": 2
   },
   {
-    "Id": 749,
+    "Id": 750,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -23610,7 +23610,7 @@
     "Rarity": 4
   },
   {
-    "Id": 750,
+    "Id": 751,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -23643,7 +23643,7 @@
     "Rarity": 2
   },
   {
-    "Id": 751,
+    "Id": 752,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -23674,7 +23674,7 @@
     "Rarity": 4
   },
   {
-    "Id": 752,
+    "Id": 753,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -23706,7 +23706,7 @@
     "Rarity": 2
   },
   {
-    "Id": 753,
+    "Id": 754,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -23736,7 +23736,7 @@
     "Rarity": 4
   },
   {
-    "Id": 754,
+    "Id": 755,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -23769,7 +23769,7 @@
     "Rarity": 2
   },
   {
-    "Id": 755,
+    "Id": 756,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -23800,7 +23800,7 @@
     "Rarity": 4
   },
   {
-    "Id": 756,
+    "Id": 757,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -23833,7 +23833,7 @@
     "Rarity": 2
   },
   {
-    "Id": 757,
+    "Id": 758,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -23864,7 +23864,7 @@
     "Rarity": 4
   },
   {
-    "Id": 758,
+    "Id": 759,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -23897,7 +23897,7 @@
     "Rarity": 2
   },
   {
-    "Id": 759,
+    "Id": 760,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -23928,7 +23928,7 @@
     "Rarity": 4
   },
   {
-    "Id": 760,
+    "Id": 761,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -23960,7 +23960,7 @@
     "Rarity": 1
   },
   {
-    "Id": 761,
+    "Id": 762,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -23992,7 +23992,7 @@
     "Rarity": 3
   },
   {
-    "Id": 762,
+    "Id": 763,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -24022,7 +24022,7 @@
     "Rarity": 5
   },
   {
-    "Id": 763,
+    "Id": 764,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -24052,7 +24052,7 @@
     "Rarity": 3
   },
   {
-    "Id": 764,
+    "Id": 765,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -24083,7 +24083,7 @@
     "Rarity": 3
   },
   {
-    "Id": 765,
+    "Id": 766,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -24113,7 +24113,7 @@
     "Rarity": 3
   },
   {
-    "Id": 766,
+    "Id": 767,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -24146,7 +24146,7 @@
     "Rarity": 2
   },
   {
-    "Id": 767,
+    "Id": 768,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -24177,7 +24177,7 @@
     "Rarity": 4
   },
   {
-    "Id": 768,
+    "Id": 769,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -24210,7 +24210,7 @@
     "Rarity": 2
   },
   {
-    "Id": 769,
+    "Id": 770,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -24241,7 +24241,7 @@
     "Rarity": 4
   },
   {
-    "Id": 770,
+    "Id": 771,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -24271,7 +24271,7 @@
     "Rarity": 3
   },
   {
-    "Id": 771,
+    "Id": 772,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -24303,7 +24303,7 @@
     "Rarity": 2
   },
   {
-    "Id": 772,
+    "Id": 773,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -24333,7 +24333,7 @@
     "Rarity": 10
   },
   {
-    "Id": 773,
+    "Id": 774,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -24364,7 +24364,7 @@
     "Rarity": 3
   },
   {
-    "Id": 774,
+    "Id": 775,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -24394,7 +24394,7 @@
     "Rarity": 3
   },
   {
-    "Id": 775,
+    "Id": 776,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -24425,7 +24425,7 @@
     "Rarity": 3
   },
   {
-    "Id": 776,
+    "Id": 777,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -24456,7 +24456,7 @@
     "Rarity": 3
   },
   {
-    "Id": 777,
+    "Id": 778,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -24487,7 +24487,7 @@
     "Rarity": 3
   },
   {
-    "Id": 778,
+    "Id": 779,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -24518,7 +24518,7 @@
     "Rarity": 3
   },
   {
-    "Id": 779,
+    "Id": 780,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -24549,7 +24549,7 @@
     "Rarity": 3
   },
   {
-    "Id": 780,
+    "Id": 781,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -24580,7 +24580,7 @@
     "Rarity": 3
   },
   {
-    "Id": 781,
+    "Id": 782,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -24612,7 +24612,7 @@
     "Rarity": 1
   },
   {
-    "Id": 782,
+    "Id": 783,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -24645,7 +24645,7 @@
     "Rarity": 3
   },
   {
-    "Id": 783,
+    "Id": 784,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -24676,7 +24676,7 @@
     "Rarity": 5
   },
   {
-    "Id": 784,
+    "Id": 785,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -24707,7 +24707,7 @@
     "Rarity": 10
   },
   {
-    "Id": 785,
+    "Id": 786,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -24738,7 +24738,7 @@
     "Rarity": 10
   },
   {
-    "Id": 786,
+    "Id": 787,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -24769,7 +24769,7 @@
     "Rarity": 10
   },
   {
-    "Id": 787,
+    "Id": 788,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -24800,7 +24800,7 @@
     "Rarity": 10
   },
   {
-    "Id": 788,
+    "Id": 789,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -24832,7 +24832,7 @@
     "Rarity": 8
   },
   {
-    "Id": 789,
+    "Id": 790,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -24865,7 +24865,7 @@
     "Rarity": 9
   },
   {
-    "Id": 790,
+    "Id": 791,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -24896,7 +24896,7 @@
     "Rarity": 10
   },
   {
-    "Id": 791,
+    "Id": 792,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -24927,7 +24927,7 @@
     "Rarity": 10
   },
   {
-    "Id": 792,
+    "Id": 793,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -24958,7 +24958,7 @@
     "Rarity": 10
   },
   {
-    "Id": 793,
+    "Id": 794,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -24989,7 +24989,7 @@
     "Rarity": 10
   },
   {
-    "Id": 794,
+    "Id": 795,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -25020,7 +25020,7 @@
     "Rarity": 10
   },
   {
-    "Id": 795,
+    "Id": 796,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -25050,7 +25050,7 @@
     "Rarity": 10
   },
   {
-    "Id": 796,
+    "Id": 797,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -25081,7 +25081,7 @@
     "Rarity": 10
   },
   {
-    "Id": 797,
+    "Id": 798,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -25112,7 +25112,7 @@
     "Rarity": 10
   },
   {
-    "Id": 798,
+    "Id": 799,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -25143,7 +25143,7 @@
     "Rarity": 10
   },
   {
-    "Id": 799,
+    "Id": 800,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -25173,7 +25173,7 @@
     "Rarity": 10
   },
   {
-    "Id": 800,
+    "Id": 801,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -25204,7 +25204,7 @@
     "Rarity": 10
   },
   {
-    "Id": 801,
+    "Id": 802,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -25235,7 +25235,7 @@
     "Rarity": 10
   },
   {
-    "Id": 802,
+    "Id": 803,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -25267,7 +25267,7 @@
     "Rarity": 9
   },
   {
-    "Id": 803,
+    "Id": 804,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -25298,7 +25298,7 @@
     "Rarity": 10
   },
   {
-    "Id": 804,
+    "Id": 805,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -25329,7 +25329,7 @@
     "Rarity": 10
   },
   {
-    "Id": 805,
+    "Id": 806,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -25360,7 +25360,7 @@
     "Rarity": 10
   },
   {
-    "Id": 806,
+    "Id": 807,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -25390,7 +25390,7 @@
     "Rarity": 10
   },
   {
-    "Id": 807,
+    "Id": 808,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -25420,7 +25420,7 @@
     "Rarity": 10
   },
   {
-    "Id": 808,
+    "Id": 809,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -25450,7 +25450,7 @@
     "Rarity": 10
   },
   {
-    "Id": 809,
+    "Id": 810,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -25482,7 +25482,7 @@
     "Rarity": 1
   },
   {
-    "Id": 810,
+    "Id": 811,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -25514,7 +25514,7 @@
     "Rarity": 3
   },
   {
-    "Id": 811,
+    "Id": 812,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -25544,7 +25544,7 @@
     "Rarity": 5
   },
   {
-    "Id": 812,
+    "Id": 813,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -25576,7 +25576,7 @@
     "Rarity": 1
   },
   {
-    "Id": 813,
+    "Id": 814,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -25608,7 +25608,7 @@
     "Rarity": 3
   },
   {
-    "Id": 814,
+    "Id": 815,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -25638,7 +25638,7 @@
     "Rarity": 5
   },
   {
-    "Id": 815,
+    "Id": 816,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -25670,7 +25670,7 @@
     "Rarity": 1
   },
   {
-    "Id": 816,
+    "Id": 817,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -25702,7 +25702,7 @@
     "Rarity": 3
   },
   {
-    "Id": 817,
+    "Id": 818,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -25732,7 +25732,7 @@
     "Rarity": 5
   },
   {
-    "Id": 818,
+    "Id": 819,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -25764,7 +25764,7 @@
     "Rarity": 2
   },
   {
-    "Id": 819,
+    "Id": 820,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -25794,7 +25794,7 @@
     "Rarity": 4
   },
   {
-    "Id": 820,
+    "Id": 821,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -25826,7 +25826,7 @@
     "Rarity": 1
   },
   {
-    "Id": 821,
+    "Id": 822,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -25858,7 +25858,7 @@
     "Rarity": 3
   },
   {
-    "Id": 822,
+    "Id": 823,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -25889,7 +25889,7 @@
     "Rarity": 5
   },
   {
-    "Id": 823,
+    "Id": 824,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -25921,7 +25921,7 @@
     "Rarity": 1
   },
   {
-    "Id": 824,
+    "Id": 825,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -25954,7 +25954,7 @@
     "Rarity": 3
   },
   {
-    "Id": 825,
+    "Id": 826,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -25985,7 +25985,7 @@
     "Rarity": 5
   },
   {
-    "Id": 826,
+    "Id": 827,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -26017,7 +26017,7 @@
     "Rarity": 2
   },
   {
-    "Id": 827,
+    "Id": 828,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -26047,7 +26047,7 @@
     "Rarity": 4
   },
   {
-    "Id": 828,
+    "Id": 829,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -26079,7 +26079,7 @@
     "Rarity": 2
   },
   {
-    "Id": 829,
+    "Id": 830,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -26109,7 +26109,7 @@
     "Rarity": 4
   },
   {
-    "Id": 830,
+    "Id": 831,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -26141,7 +26141,7 @@
     "Rarity": 2
   },
   {
-    "Id": 831,
+    "Id": 832,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -26171,7 +26171,7 @@
     "Rarity": 4
   },
   {
-    "Id": 832,
+    "Id": 833,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -26203,7 +26203,7 @@
     "Rarity": 2
   },
   {
-    "Id": 833,
+    "Id": 834,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -26234,7 +26234,7 @@
     "Rarity": 4
   },
   {
-    "Id": 834,
+    "Id": 835,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -26266,7 +26266,7 @@
     "Rarity": 2
   },
   {
-    "Id": 835,
+    "Id": 836,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -26296,7 +26296,7 @@
     "Rarity": 4
   },
   {
-    "Id": 836,
+    "Id": 837,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -26328,7 +26328,7 @@
     "Rarity": 1
   },
   {
-    "Id": 837,
+    "Id": 838,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -26361,7 +26361,7 @@
     "Rarity": 3
   },
   {
-    "Id": 838,
+    "Id": 839,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -26392,7 +26392,7 @@
     "Rarity": 5
   },
   {
-    "Id": 839,
+    "Id": 840,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -26427,7 +26427,7 @@
     "Rarity": 1
   },
   {
-    "Id": 840,
+    "Id": 841,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -26458,7 +26458,7 @@
     "Rarity": 4
   },
   {
-    "Id": 841,
+    "Id": 842,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -26489,7 +26489,7 @@
     "Rarity": 4
   },
   {
-    "Id": 842,
+    "Id": 843,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -26521,7 +26521,7 @@
     "Rarity": 2
   },
   {
-    "Id": 843,
+    "Id": 844,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -26551,7 +26551,7 @@
     "Rarity": 4
   },
   {
-    "Id": 844,
+    "Id": 845,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -26582,7 +26582,7 @@
     "Rarity": 3
   },
   {
-    "Id": 845,
+    "Id": 846,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -26614,7 +26614,7 @@
     "Rarity": 2
   },
   {
-    "Id": 846,
+    "Id": 847,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -26644,15 +26644,15 @@
     "Rarity": 4
   },
   {
-    "Id": 847,
+    "Id": 848,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
     "CaptureRate": 75,
     "Color": "Purple",
     "EvolvesInto": [
-      848,
-      1180
+      849,
+      10343
     ],
     "FemaleChance": 4,
     "Generation": 8,
@@ -26678,7 +26678,7 @@
     "Rarity": 2
   },
   {
-    "Id": 848,
+    "Id": 849,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -26709,7 +26709,7 @@
     "Rarity": 4
   },
   {
-    "Id": 849,
+    "Id": 850,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -26742,7 +26742,7 @@
     "Rarity": 2
   },
   {
-    "Id": 850,
+    "Id": 851,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -26773,7 +26773,7 @@
     "Rarity": 4
   },
   {
-    "Id": 851,
+    "Id": 852,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -26805,7 +26805,7 @@
     "Rarity": 2
   },
   {
-    "Id": 852,
+    "Id": 853,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -26835,7 +26835,7 @@
     "Rarity": 4
   },
   {
-    "Id": 853,
+    "Id": 854,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -26867,7 +26867,7 @@
     "Rarity": 2
   },
   {
-    "Id": 854,
+    "Id": 855,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -26897,7 +26897,7 @@
     "Rarity": 4
   },
   {
-    "Id": 855,
+    "Id": 856,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -26929,7 +26929,7 @@
     "Rarity": 1
   },
   {
-    "Id": 856,
+    "Id": 857,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -26961,7 +26961,7 @@
     "Rarity": 3
   },
   {
-    "Id": 857,
+    "Id": 858,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -26992,7 +26992,7 @@
     "Rarity": 5
   },
   {
-    "Id": 858,
+    "Id": 859,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -27025,7 +27025,7 @@
     "Rarity": 1
   },
   {
-    "Id": 859,
+    "Id": 860,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -27058,7 +27058,7 @@
     "Rarity": 3
   },
   {
-    "Id": 860,
+    "Id": 861,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -27089,7 +27089,7 @@
     "Rarity": 5
   },
   {
-    "Id": 861,
+    "Id": 862,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -27120,7 +27120,7 @@
     "Rarity": 5
   },
   {
-    "Id": 862,
+    "Id": 863,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -27150,7 +27150,7 @@
     "Rarity": 4
   },
   {
-    "Id": 863,
+    "Id": 864,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -27180,7 +27180,7 @@
     "Rarity": 4
   },
   {
-    "Id": 864,
+    "Id": 865,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -27210,7 +27210,7 @@
     "Rarity": 4
   },
   {
-    "Id": 865,
+    "Id": 866,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -27241,7 +27241,7 @@
     "Rarity": 5
   },
   {
-    "Id": 866,
+    "Id": 867,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -27272,7 +27272,7 @@
     "Rarity": 4
   },
   {
-    "Id": 867,
+    "Id": 868,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -27304,7 +27304,7 @@
     "Rarity": 2
   },
   {
-    "Id": 868,
+    "Id": 869,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -27334,7 +27334,7 @@
     "Rarity": 4
   },
   {
-    "Id": 869,
+    "Id": 870,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -27364,7 +27364,7 @@
     "Rarity": 3
   },
   {
-    "Id": 870,
+    "Id": 871,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -27394,7 +27394,7 @@
     "Rarity": 3
   },
   {
-    "Id": 871,
+    "Id": 872,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -27427,7 +27427,7 @@
     "Rarity": 2
   },
   {
-    "Id": 872,
+    "Id": 873,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -27458,7 +27458,7 @@
     "Rarity": 4
   },
   {
-    "Id": 873,
+    "Id": 874,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -27488,7 +27488,7 @@
     "Rarity": 3
   },
   {
-    "Id": 874,
+    "Id": 875,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -27518,7 +27518,7 @@
     "Rarity": 3
   },
   {
-    "Id": 875,
+    "Id": 876,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -27549,7 +27549,7 @@
     "Rarity": 3
   },
   {
-    "Id": 876,
+    "Id": 877,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -27580,7 +27580,7 @@
     "Rarity": 3
   },
   {
-    "Id": 877,
+    "Id": 878,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -27612,7 +27612,7 @@
     "Rarity": 2
   },
   {
-    "Id": 878,
+    "Id": 879,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -27642,7 +27642,7 @@
     "Rarity": 4
   },
   {
-    "Id": 879,
+    "Id": 880,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -27673,7 +27673,7 @@
     "Rarity": 3
   },
   {
-    "Id": 880,
+    "Id": 881,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -27704,7 +27704,7 @@
     "Rarity": 3
   },
   {
-    "Id": 881,
+    "Id": 882,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -27735,7 +27735,7 @@
     "Rarity": 3
   },
   {
-    "Id": 882,
+    "Id": 883,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -27766,7 +27766,7 @@
     "Rarity": 3
   },
   {
-    "Id": 883,
+    "Id": 884,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -27799,7 +27799,7 @@
     "Rarity": 2
   },
   {
-    "Id": 884,
+    "Id": 885,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -27832,7 +27832,7 @@
     "Rarity": 1
   },
   {
-    "Id": 885,
+    "Id": 886,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -27865,7 +27865,7 @@
     "Rarity": 3
   },
   {
-    "Id": 886,
+    "Id": 887,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -27896,7 +27896,7 @@
     "Rarity": 5
   },
   {
-    "Id": 887,
+    "Id": 890,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -27927,15 +27927,15 @@
     "Rarity": 10
   },
   {
-    "Id": 888,
+    "Id": 891,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
     "CaptureRate": 3,
     "Color": "Gray",
     "EvolvesInto": [
-      889,
-      1193
+      892,
+      10360
     ],
     "FemaleChance": 1,
     "Generation": 8,
@@ -27960,7 +27960,7 @@
     "Rarity": 9
   },
   {
-    "Id": 889,
+    "Id": 892,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -27991,7 +27991,7 @@
     "Rarity": 10
   },
   {
-    "Id": 890,
+    "Id": 893,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -28022,7 +28022,7 @@
     "Rarity": 10
   },
   {
-    "Id": 891,
+    "Id": 894,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -28052,7 +28052,7 @@
     "Rarity": 10
   },
   {
-    "Id": 892,
+    "Id": 895,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -28082,7 +28082,7 @@
     "Rarity": 10
   },
   {
-    "Id": 893,
+    "Id": 896,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -28112,7 +28112,7 @@
     "Rarity": 10
   },
   {
-    "Id": 894,
+    "Id": 897,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -28142,15 +28142,15 @@
     "Rarity": 10
   },
   {
-    "Id": 895,
+    "Id": 898,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
     "CaptureRate": 3,
     "Color": "Green",
     "EvolvesInto": [
-      1194,
-      1195
+      10362,
+      10363
     ],
     "FemaleChance": -1,
     "Generation": 8,
@@ -28176,7 +28176,7 @@
     "Rarity": 10
   },
   {
-    "Id": 896,
+    "Id": 899,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -28207,7 +28207,7 @@
     "Rarity": 4
   },
   {
-    "Id": 897,
+    "Id": 900,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -28238,7 +28238,7 @@
     "Rarity": 4
   },
   {
-    "Id": 898,
+    "Id": 901,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -28269,7 +28269,7 @@
     "Rarity": 5
   },
   {
-    "Id": 899,
+    "Id": 902,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -28300,7 +28300,7 @@
     "Rarity": 4
   },
   {
-    "Id": 900,
+    "Id": 903,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -28331,7 +28331,7 @@
     "Rarity": 4
   },
   {
-    "Id": 901,
+    "Id": 904,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -28362,7 +28362,7 @@
     "Rarity": 4
   },
   {
-    "Id": 902,
+    "Id": 905,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -28393,7 +28393,7 @@
     "Rarity": 10
   },
   {
-    "Id": 903,
+    "Id": 906,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -28425,7 +28425,7 @@
     "Rarity": 1
   },
   {
-    "Id": 904,
+    "Id": 907,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -28457,7 +28457,7 @@
     "Rarity": 3
   },
   {
-    "Id": 905,
+    "Id": 908,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -28488,7 +28488,7 @@
     "Rarity": 5
   },
   {
-    "Id": 906,
+    "Id": 909,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -28520,7 +28520,7 @@
     "Rarity": 1
   },
   {
-    "Id": 907,
+    "Id": 910,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -28552,7 +28552,7 @@
     "Rarity": 3
   },
   {
-    "Id": 908,
+    "Id": 911,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -28583,7 +28583,7 @@
     "Rarity": 5
   },
   {
-    "Id": 909,
+    "Id": 912,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -28615,7 +28615,7 @@
     "Rarity": 1
   },
   {
-    "Id": 910,
+    "Id": 913,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -28647,7 +28647,7 @@
     "Rarity": 3
   },
   {
-    "Id": 911,
+    "Id": 914,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -28678,7 +28678,7 @@
     "Rarity": 5
   },
   {
-    "Id": 912,
+    "Id": 915,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -28710,7 +28710,7 @@
     "Rarity": 2
   },
   {
-    "Id": 913,
+    "Id": 916,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -28740,7 +28740,7 @@
     "Rarity": 4
   },
   {
-    "Id": 914,
+    "Id": 917,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -28772,7 +28772,7 @@
     "Rarity": 2
   },
   {
-    "Id": 915,
+    "Id": 918,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -28802,7 +28802,7 @@
     "Rarity": 4
   },
   {
-    "Id": 916,
+    "Id": 919,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -28834,7 +28834,7 @@
     "Rarity": 2
   },
   {
-    "Id": 917,
+    "Id": 920,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -28865,7 +28865,7 @@
     "Rarity": 4
   },
   {
-    "Id": 918,
+    "Id": 921,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -28897,7 +28897,7 @@
     "Rarity": 1
   },
   {
-    "Id": 919,
+    "Id": 922,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -28930,7 +28930,7 @@
     "Rarity": 3
   },
   {
-    "Id": 920,
+    "Id": 923,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -28961,7 +28961,7 @@
     "Rarity": 5
   },
   {
-    "Id": 921,
+    "Id": 924,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -28993,7 +28993,7 @@
     "Rarity": 2
   },
   {
-    "Id": 922,
+    "Id": 925,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -29023,7 +29023,7 @@
     "Rarity": 4
   },
   {
-    "Id": 923,
+    "Id": 926,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -29055,7 +29055,7 @@
     "Rarity": 2
   },
   {
-    "Id": 924,
+    "Id": 927,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -29085,7 +29085,7 @@
     "Rarity": 4
   },
   {
-    "Id": 925,
+    "Id": 928,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -29118,7 +29118,7 @@
     "Rarity": 1
   },
   {
-    "Id": 926,
+    "Id": 929,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -29151,7 +29151,7 @@
     "Rarity": 3
   },
   {
-    "Id": 927,
+    "Id": 930,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -29182,7 +29182,7 @@
     "Rarity": 5
   },
   {
-    "Id": 928,
+    "Id": 931,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -29213,7 +29213,7 @@
     "Rarity": 3
   },
   {
-    "Id": 929,
+    "Id": 932,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -29245,7 +29245,7 @@
     "Rarity": 1
   },
   {
-    "Id": 930,
+    "Id": 933,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -29277,7 +29277,7 @@
     "Rarity": 3
   },
   {
-    "Id": 931,
+    "Id": 934,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -29307,7 +29307,7 @@
     "Rarity": 5
   },
   {
-    "Id": 932,
+    "Id": 935,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -29340,7 +29340,7 @@
     "Rarity": 2
   },
   {
-    "Id": 933,
+    "Id": 936,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -29371,7 +29371,7 @@
     "Rarity": 4
   },
   {
-    "Id": 934,
+    "Id": 937,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -29402,7 +29402,7 @@
     "Rarity": 4
   },
   {
-    "Id": 935,
+    "Id": 938,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -29434,7 +29434,7 @@
     "Rarity": 2
   },
   {
-    "Id": 936,
+    "Id": 939,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -29464,7 +29464,7 @@
     "Rarity": 4
   },
   {
-    "Id": 937,
+    "Id": 940,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -29497,7 +29497,7 @@
     "Rarity": 2
   },
   {
-    "Id": 938,
+    "Id": 941,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -29528,7 +29528,7 @@
     "Rarity": 4
   },
   {
-    "Id": 939,
+    "Id": 942,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -29560,7 +29560,7 @@
     "Rarity": 2
   },
   {
-    "Id": 940,
+    "Id": 943,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -29590,7 +29590,7 @@
     "Rarity": 4
   },
   {
-    "Id": 941,
+    "Id": 944,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -29623,7 +29623,7 @@
     "Rarity": 2
   },
   {
-    "Id": 942,
+    "Id": 945,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -29654,7 +29654,7 @@
     "Rarity": 4
   },
   {
-    "Id": 943,
+    "Id": 946,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -29687,7 +29687,7 @@
     "Rarity": 2
   },
   {
-    "Id": 944,
+    "Id": 947,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -29718,7 +29718,7 @@
     "Rarity": 4
   },
   {
-    "Id": 945,
+    "Id": 948,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -29751,7 +29751,7 @@
     "Rarity": 2
   },
   {
-    "Id": 946,
+    "Id": 949,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -29782,7 +29782,7 @@
     "Rarity": 4
   },
   {
-    "Id": 947,
+    "Id": 950,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -29812,7 +29812,7 @@
     "Rarity": 3
   },
   {
-    "Id": 948,
+    "Id": 951,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -29844,7 +29844,7 @@
     "Rarity": 2
   },
   {
-    "Id": 949,
+    "Id": 952,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -29875,7 +29875,7 @@
     "Rarity": 4
   },
   {
-    "Id": 950,
+    "Id": 953,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -29907,7 +29907,7 @@
     "Rarity": 2
   },
   {
-    "Id": 951,
+    "Id": 954,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -29938,7 +29938,7 @@
     "Rarity": 4
   },
   {
-    "Id": 952,
+    "Id": 955,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -29970,7 +29970,7 @@
     "Rarity": 2
   },
   {
-    "Id": 953,
+    "Id": 956,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -30000,7 +30000,7 @@
     "Rarity": 4
   },
   {
-    "Id": 954,
+    "Id": 957,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -30033,7 +30033,7 @@
     "Rarity": 1
   },
   {
-    "Id": 955,
+    "Id": 958,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -30066,7 +30066,7 @@
     "Rarity": 3
   },
   {
-    "Id": 956,
+    "Id": 959,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -30097,7 +30097,7 @@
     "Rarity": 5
   },
   {
-    "Id": 957,
+    "Id": 960,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -30129,7 +30129,7 @@
     "Rarity": 2
   },
   {
-    "Id": 958,
+    "Id": 961,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -30159,7 +30159,7 @@
     "Rarity": 4
   },
   {
-    "Id": 959,
+    "Id": 962,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -30190,7 +30190,7 @@
     "Rarity": 3
   },
   {
-    "Id": 960,
+    "Id": 963,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -30222,7 +30222,7 @@
     "Rarity": 2
   },
   {
-    "Id": 961,
+    "Id": 964,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -30252,7 +30252,7 @@
     "Rarity": 4
   },
   {
-    "Id": 962,
+    "Id": 965,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -30285,7 +30285,7 @@
     "Rarity": 2
   },
   {
-    "Id": 963,
+    "Id": 966,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -30316,7 +30316,7 @@
     "Rarity": 4
   },
   {
-    "Id": 964,
+    "Id": 967,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -30347,7 +30347,7 @@
     "Rarity": 3
   },
   {
-    "Id": 965,
+    "Id": 968,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -30377,7 +30377,7 @@
     "Rarity": 3
   },
   {
-    "Id": 966,
+    "Id": 969,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -30410,7 +30410,7 @@
     "Rarity": 2
   },
   {
-    "Id": 967,
+    "Id": 970,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -30441,7 +30441,7 @@
     "Rarity": 4
   },
   {
-    "Id": 968,
+    "Id": 971,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -30473,7 +30473,7 @@
     "Rarity": 2
   },
   {
-    "Id": 969,
+    "Id": 972,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -30503,7 +30503,7 @@
     "Rarity": 4
   },
   {
-    "Id": 970,
+    "Id": 973,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -30534,7 +30534,7 @@
     "Rarity": 3
   },
   {
-    "Id": 971,
+    "Id": 974,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -30566,7 +30566,7 @@
     "Rarity": 2
   },
   {
-    "Id": 972,
+    "Id": 975,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -30596,7 +30596,7 @@
     "Rarity": 4
   },
   {
-    "Id": 973,
+    "Id": 976,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -30627,7 +30627,7 @@
     "Rarity": 3
   },
   {
-    "Id": 974,
+    "Id": 977,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -30657,7 +30657,7 @@
     "Rarity": 3
   },
   {
-    "Id": 975,
+    "Id": 978,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -30688,7 +30688,7 @@
     "Rarity": 3
   },
   {
-    "Id": 976,
+    "Id": 979,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -30719,7 +30719,7 @@
     "Rarity": 5
   },
   {
-    "Id": 977,
+    "Id": 980,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -30750,7 +30750,7 @@
     "Rarity": 4
   },
   {
-    "Id": 978,
+    "Id": 981,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -30781,7 +30781,7 @@
     "Rarity": 4
   },
   {
-    "Id": 979,
+    "Id": 982,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -30811,7 +30811,7 @@
     "Rarity": 4
   },
   {
-    "Id": 980,
+    "Id": 983,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -30842,7 +30842,7 @@
     "Rarity": 5
   },
   {
-    "Id": 981,
+    "Id": 984,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -30873,7 +30873,7 @@
     "Rarity": 3
   },
   {
-    "Id": 982,
+    "Id": 985,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -30904,7 +30904,7 @@
     "Rarity": 3
   },
   {
-    "Id": 983,
+    "Id": 986,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -30935,7 +30935,7 @@
     "Rarity": 3
   },
   {
-    "Id": 984,
+    "Id": 987,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -30966,7 +30966,7 @@
     "Rarity": 3
   },
   {
-    "Id": 985,
+    "Id": 988,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -30997,7 +30997,7 @@
     "Rarity": 3
   },
   {
-    "Id": 986,
+    "Id": 989,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -31028,7 +31028,7 @@
     "Rarity": 3
   },
   {
-    "Id": 987,
+    "Id": 990,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -31059,7 +31059,7 @@
     "Rarity": 3
   },
   {
-    "Id": 988,
+    "Id": 991,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -31090,7 +31090,7 @@
     "Rarity": 3
   },
   {
-    "Id": 989,
+    "Id": 992,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -31121,7 +31121,7 @@
     "Rarity": 3
   },
   {
-    "Id": 990,
+    "Id": 993,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -31152,7 +31152,7 @@
     "Rarity": 3
   },
   {
-    "Id": 991,
+    "Id": 994,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -31183,7 +31183,7 @@
     "Rarity": 3
   },
   {
-    "Id": 992,
+    "Id": 995,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -31214,7 +31214,7 @@
     "Rarity": 3
   },
   {
-    "Id": 993,
+    "Id": 996,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -31247,7 +31247,7 @@
     "Rarity": 1
   },
   {
-    "Id": 994,
+    "Id": 997,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -31280,7 +31280,7 @@
     "Rarity": 3
   },
   {
-    "Id": 995,
+    "Id": 998,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -31311,7 +31311,7 @@
     "Rarity": 5
   },
   {
-    "Id": 996,
+    "Id": 999,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -31343,7 +31343,7 @@
     "Rarity": 2
   },
   {
-    "Id": 997,
+    "Id": 1000,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -31374,7 +31374,7 @@
     "Rarity": 4
   },
   {
-    "Id": 998,
+    "Id": 1001,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -31405,7 +31405,7 @@
     "Rarity": 10
   },
   {
-    "Id": 999,
+    "Id": 1002,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -31436,7 +31436,7 @@
     "Rarity": 10
   },
   {
-    "Id": 1000,
+    "Id": 1003,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -31467,7 +31467,7 @@
     "Rarity": 10
   },
   {
-    "Id": 1001,
+    "Id": 1004,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -31498,7 +31498,7 @@
     "Rarity": 10
   },
   {
-    "Id": 1002,
+    "Id": 1005,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -31529,7 +31529,7 @@
     "Rarity": 3
   },
   {
-    "Id": 1003,
+    "Id": 1006,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -31560,7 +31560,7 @@
     "Rarity": 3
   },
   {
-    "Id": 1004,
+    "Id": 1007,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -31591,7 +31591,7 @@
     "Rarity": 10
   },
   {
-    "Id": 1005,
+    "Id": 1008,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -31622,7 +31622,7 @@
     "Rarity": 10
   },
   {
-    "Id": 1006,
+    "Id": 1009,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -31653,7 +31653,7 @@
     "Rarity": 3
   },
   {
-    "Id": 1007,
+    "Id": 1010,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -31684,7 +31684,7 @@
     "Rarity": 3
   },
   {
-    "Id": 1008,
+    "Id": 1011,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -31717,7 +31717,7 @@
     "Rarity": 3
   },
   {
-    "Id": 1009,
+    "Id": 1012,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -31750,7 +31750,7 @@
     "Rarity": 2
   },
   {
-    "Id": 1010,
+    "Id": 1013,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -31781,7 +31781,7 @@
     "Rarity": 4
   },
   {
-    "Id": 1011,
+    "Id": 1014,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -31812,7 +31812,7 @@
     "Rarity": 10
   },
   {
-    "Id": 1012,
+    "Id": 1015,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -31843,7 +31843,7 @@
     "Rarity": 10
   },
   {
-    "Id": 1013,
+    "Id": 1016,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -31874,7 +31874,7 @@
     "Rarity": 10
   },
   {
-    "Id": 1014,
+    "Id": 1017,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -31904,7 +31904,7 @@
     "Rarity": 10
   },
   {
-    "Id": 1015,
+    "Id": 1018,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -31935,7 +31935,7 @@
     "Rarity": 4
   },
   {
-    "Id": 1016,
+    "Id": 1019,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -31966,7 +31966,7 @@
     "Rarity": 5
   },
   {
-    "Id": 1017,
+    "Id": 1020,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -31997,7 +31997,7 @@
     "Rarity": 3
   },
   {
-    "Id": 1018,
+    "Id": 1021,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -32028,7 +32028,7 @@
     "Rarity": 3
   },
   {
-    "Id": 1019,
+    "Id": 1022,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -32059,7 +32059,7 @@
     "Rarity": 3
   },
   {
-    "Id": 1020,
+    "Id": 1023,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -32090,7 +32090,7 @@
     "Rarity": 3
   },
   {
-    "Id": 1021,
+    "Id": 1024,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -32120,7 +32120,7 @@
     "Rarity": 10
   },
   {
-    "Id": 1022,
+    "Id": 1025,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -32151,7 +32151,7 @@
     "Rarity": 10
   },
   {
-    "Id": 1023,
+    "Id": 10001,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -32181,7 +32181,7 @@
     "Rarity": 3
   },
   {
-    "Id": 1024,
+    "Id": 10002,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -32211,7 +32211,7 @@
     "Rarity": 3
   },
   {
-    "Id": 1025,
+    "Id": 10003,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -32241,7 +32241,7 @@
     "Rarity": 3
   },
   {
-    "Id": 1026,
+    "Id": 10004,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -32271,7 +32271,7 @@
     "Rarity": 3
   },
   {
-    "Id": 1027,
+    "Id": 10005,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -32301,7 +32301,7 @@
     "Rarity": 3
   },
   {
-    "Id": 1028,
+    "Id": 10006,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -32331,7 +32331,7 @@
     "Rarity": 3
   },
   {
-    "Id": 1029,
+    "Id": 10007,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -32361,7 +32361,7 @@
     "Rarity": 3
   },
   {
-    "Id": 1030,
+    "Id": 10008,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -32391,7 +32391,7 @@
     "Rarity": 3
   },
   {
-    "Id": 1031,
+    "Id": 10009,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -32421,7 +32421,7 @@
     "Rarity": 3
   },
   {
-    "Id": 1032,
+    "Id": 10010,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -32451,7 +32451,7 @@
     "Rarity": 3
   },
   {
-    "Id": 1033,
+    "Id": 10011,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -32481,7 +32481,7 @@
     "Rarity": 3
   },
   {
-    "Id": 1034,
+    "Id": 10012,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -32511,7 +32511,7 @@
     "Rarity": 3
   },
   {
-    "Id": 1035,
+    "Id": 10013,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -32541,7 +32541,7 @@
     "Rarity": 3
   },
   {
-    "Id": 1036,
+    "Id": 10014,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -32571,7 +32571,7 @@
     "Rarity": 3
   },
   {
-    "Id": 1037,
+    "Id": 10015,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -32601,7 +32601,7 @@
     "Rarity": 3
   },
   {
-    "Id": 1038,
+    "Id": 10016,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -32631,7 +32631,7 @@
     "Rarity": 3
   },
   {
-    "Id": 1039,
+    "Id": 10017,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -32661,7 +32661,7 @@
     "Rarity": 3
   },
   {
-    "Id": 1040,
+    "Id": 10018,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -32691,7 +32691,7 @@
     "Rarity": 3
   },
   {
-    "Id": 1041,
+    "Id": 10019,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -32721,7 +32721,7 @@
     "Rarity": 3
   },
   {
-    "Id": 1042,
+    "Id": 10020,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -32751,7 +32751,7 @@
     "Rarity": 3
   },
   {
-    "Id": 1043,
+    "Id": 10021,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -32781,7 +32781,7 @@
     "Rarity": 3
   },
   {
-    "Id": 1044,
+    "Id": 10022,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -32811,7 +32811,7 @@
     "Rarity": 3
   },
   {
-    "Id": 1045,
+    "Id": 10023,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -32841,7 +32841,7 @@
     "Rarity": 3
   },
   {
-    "Id": 1046,
+    "Id": 10024,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -32871,7 +32871,7 @@
     "Rarity": 3
   },
   {
-    "Id": 1047,
+    "Id": 10025,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -32901,7 +32901,7 @@
     "Rarity": 3
   },
   {
-    "Id": 1048,
+    "Id": 10026,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -32931,7 +32931,7 @@
     "Rarity": 3
   },
   {
-    "Id": 1049,
+    "Id": 10027,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -32961,7 +32961,7 @@
     "Rarity": 3
   },
   {
-    "Id": 1050,
+    "Id": 10028,
     "IsMega": false,
     "IsBattleOnly": true,
     "IsDefault": true,
@@ -32991,7 +32991,7 @@
     "Rarity": 3
   },
   {
-    "Id": 1051,
+    "Id": 10029,
     "IsMega": false,
     "IsBattleOnly": true,
     "IsDefault": true,
@@ -33021,7 +33021,7 @@
     "Rarity": 3
   },
   {
-    "Id": 1052,
+    "Id": 10030,
     "IsMega": false,
     "IsBattleOnly": true,
     "IsDefault": true,
@@ -33051,14 +33051,14 @@
     "Rarity": 3
   },
   {
-    "Id": 1053,
+    "Id": 10034,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
     "CaptureRate": 120,
     "Color": "Green",
     "EvolvesInto": [
-      1055,
+      10036,
       414
     ],
     "FemaleChance": 4,
@@ -33084,14 +33084,14 @@
     "Rarity": 2
   },
   {
-    "Id": 1054,
+    "Id": 10035,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
     "CaptureRate": 120,
     "Color": "Green",
     "EvolvesInto": [
-      1056,
+      10037,
       414
     ],
     "FemaleChance": 4,
@@ -33117,7 +33117,7 @@
     "Rarity": 2
   },
   {
-    "Id": 1055,
+    "Id": 10036,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -33148,7 +33148,7 @@
     "Rarity": 4
   },
   {
-    "Id": 1056,
+    "Id": 10037,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -33179,14 +33179,14 @@
     "Rarity": 4
   },
   {
-    "Id": 1057,
+    "Id": 10039,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
     "CaptureRate": 190,
     "Color": "Purple",
     "EvolvesInto": [
-      1058
+      10040
     ],
     "FemaleChance": 4,
     "Generation": 4,
@@ -33211,7 +33211,7 @@
     "Rarity": 2
   },
   {
-    "Id": 1058,
+    "Id": 10040,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -33242,7 +33242,7 @@
     "Rarity": 4
   },
   {
-    "Id": 1059,
+    "Id": 10041,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -33272,7 +33272,7 @@
     "Rarity": 10
   },
   {
-    "Id": 1060,
+    "Id": 10042,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -33302,7 +33302,7 @@
     "Rarity": 10
   },
   {
-    "Id": 1061,
+    "Id": 10043,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -33332,7 +33332,7 @@
     "Rarity": 10
   },
   {
-    "Id": 1062,
+    "Id": 10044,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -33362,7 +33362,7 @@
     "Rarity": 10
   },
   {
-    "Id": 1063,
+    "Id": 10045,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -33392,7 +33392,7 @@
     "Rarity": 10
   },
   {
-    "Id": 1064,
+    "Id": 10046,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -33422,7 +33422,7 @@
     "Rarity": 10
   },
   {
-    "Id": 1065,
+    "Id": 10047,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -33452,7 +33452,7 @@
     "Rarity": 10
   },
   {
-    "Id": 1066,
+    "Id": 10048,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -33482,7 +33482,7 @@
     "Rarity": 10
   },
   {
-    "Id": 1067,
+    "Id": 10049,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -33512,7 +33512,7 @@
     "Rarity": 10
   },
   {
-    "Id": 1068,
+    "Id": 10050,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -33542,7 +33542,7 @@
     "Rarity": 10
   },
   {
-    "Id": 1069,
+    "Id": 10051,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -33572,7 +33572,7 @@
     "Rarity": 10
   },
   {
-    "Id": 1070,
+    "Id": 10052,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -33602,7 +33602,7 @@
     "Rarity": 10
   },
   {
-    "Id": 1071,
+    "Id": 10053,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -33632,7 +33632,7 @@
     "Rarity": 10
   },
   {
-    "Id": 1072,
+    "Id": 10054,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -33662,7 +33662,7 @@
     "Rarity": 10
   },
   {
-    "Id": 1073,
+    "Id": 10055,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -33692,7 +33692,7 @@
     "Rarity": 10
   },
   {
-    "Id": 1074,
+    "Id": 10056,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -33722,7 +33722,7 @@
     "Rarity": 10
   },
   {
-    "Id": 1075,
+    "Id": 10057,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -33752,7 +33752,7 @@
     "Rarity": 10
   },
   {
-    "Id": 1076,
+    "Id": 10058,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -33783,7 +33783,7 @@
     "Rarity": 3
   },
   {
-    "Id": 1077,
+    "Id": 10059,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -33814,7 +33814,7 @@
     "Rarity": 3
   },
   {
-    "Id": 1078,
+    "Id": 10060,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -33845,7 +33845,7 @@
     "Rarity": 3
   },
   {
-    "Id": 1079,
+    "Id": 10061,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -33876,7 +33876,7 @@
     "Rarity": 3
   },
   {
-    "Id": 1080,
+    "Id": 10062,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -33907,7 +33907,7 @@
     "Rarity": 3
   },
   {
-    "Id": 1081,
+    "Id": 10064,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -33938,7 +33938,7 @@
     "Rarity": 10
   },
   {
-    "Id": 1082,
+    "Id": 10066,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -33968,14 +33968,14 @@
     "Rarity": 2
   },
   {
-    "Id": 1083,
+    "Id": 10068,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
     "CaptureRate": 190,
     "Color": "Pink",
     "EvolvesInto": [
-      1086
+      10071
     ],
     "FemaleChance": 4,
     "Generation": 5,
@@ -34001,14 +34001,14 @@
     "Rarity": 2
   },
   {
-    "Id": 1084,
+    "Id": 10069,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
     "CaptureRate": 190,
     "Color": "Pink",
     "EvolvesInto": [
-      1087
+      10072
     ],
     "FemaleChance": 4,
     "Generation": 5,
@@ -34034,14 +34034,14 @@
     "Rarity": 2
   },
   {
-    "Id": 1085,
+    "Id": 10070,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
     "CaptureRate": 190,
     "Color": "Pink",
     "EvolvesInto": [
-      1088
+      10073
     ],
     "FemaleChance": 4,
     "Generation": 5,
@@ -34067,7 +34067,7 @@
     "Rarity": 2
   },
   {
-    "Id": 1086,
+    "Id": 10071,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -34098,7 +34098,7 @@
     "Rarity": 4
   },
   {
-    "Id": 1087,
+    "Id": 10072,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -34129,7 +34129,7 @@
     "Rarity": 4
   },
   {
-    "Id": 1088,
+    "Id": 10073,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -34160,7 +34160,7 @@
     "Rarity": 4
   },
   {
-    "Id": 1089,
+    "Id": 10085,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -34190,7 +34190,7 @@
     "Rarity": 10
   },
   {
-    "Id": 1090,
+    "Id": 10086,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -34221,7 +34221,7 @@
     "Rarity": 5
   },
   {
-    "Id": 1091,
+    "Id": 10087,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -34252,7 +34252,7 @@
     "Rarity": 5
   },
   {
-    "Id": 1092,
+    "Id": 10088,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -34283,7 +34283,7 @@
     "Rarity": 5
   },
   {
-    "Id": 1093,
+    "Id": 10089,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -34314,7 +34314,7 @@
     "Rarity": 5
   },
   {
-    "Id": 1094,
+    "Id": 10090,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -34345,7 +34345,7 @@
     "Rarity": 5
   },
   {
-    "Id": 1095,
+    "Id": 10091,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -34376,7 +34376,7 @@
     "Rarity": 5
   },
   {
-    "Id": 1096,
+    "Id": 10092,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -34407,7 +34407,7 @@
     "Rarity": 5
   },
   {
-    "Id": 1097,
+    "Id": 10093,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -34438,7 +34438,7 @@
     "Rarity": 5
   },
   {
-    "Id": 1098,
+    "Id": 10094,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -34469,7 +34469,7 @@
     "Rarity": 5
   },
   {
-    "Id": 1099,
+    "Id": 10095,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -34500,7 +34500,7 @@
     "Rarity": 5
   },
   {
-    "Id": 1100,
+    "Id": 10096,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -34531,7 +34531,7 @@
     "Rarity": 5
   },
   {
-    "Id": 1101,
+    "Id": 10097,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -34562,7 +34562,7 @@
     "Rarity": 5
   },
   {
-    "Id": 1102,
+    "Id": 10098,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -34593,7 +34593,7 @@
     "Rarity": 5
   },
   {
-    "Id": 1103,
+    "Id": 10099,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -34624,7 +34624,7 @@
     "Rarity": 5
   },
   {
-    "Id": 1104,
+    "Id": 10100,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -34655,7 +34655,7 @@
     "Rarity": 5
   },
   {
-    "Id": 1105,
+    "Id": 10101,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -34686,7 +34686,7 @@
     "Rarity": 5
   },
   {
-    "Id": 1106,
+    "Id": 10102,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -34717,14 +34717,14 @@
     "Rarity": 5
   },
   {
-    "Id": 1107,
+    "Id": 10103,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
     "CaptureRate": 225,
     "Color": "White",
     "EvolvesInto": [
-      1111
+      10107
     ],
     "FemaleChance": 8,
     "Generation": 6,
@@ -34749,14 +34749,14 @@
     "Rarity": 1
   },
   {
-    "Id": 1108,
+    "Id": 10104,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
     "CaptureRate": 225,
     "Color": "White",
     "EvolvesInto": [
-      1112
+      10108
     ],
     "FemaleChance": 8,
     "Generation": 6,
@@ -34781,14 +34781,14 @@
     "Rarity": 1
   },
   {
-    "Id": 1109,
+    "Id": 10105,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
     "CaptureRate": 225,
     "Color": "White",
     "EvolvesInto": [
-      1113
+      10109
     ],
     "FemaleChance": 8,
     "Generation": 6,
@@ -34813,7 +34813,7 @@
     "Rarity": 1
   },
   {
-    "Id": 1110,
+    "Id": 10106,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -34845,14 +34845,14 @@
     "Rarity": 1
   },
   {
-    "Id": 1111,
+    "Id": 10107,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
     "CaptureRate": 120,
     "Color": "White",
     "EvolvesInto": [
-      1115
+      10111
     ],
     "FemaleChance": 8,
     "Generation": 6,
@@ -34877,14 +34877,14 @@
     "Rarity": 3
   },
   {
-    "Id": 1112,
+    "Id": 10108,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
     "CaptureRate": 120,
     "Color": "White",
     "EvolvesInto": [
-      1116
+      10112
     ],
     "FemaleChance": 8,
     "Generation": 6,
@@ -34909,14 +34909,14 @@
     "Rarity": 3
   },
   {
-    "Id": 1113,
+    "Id": 10109,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
     "CaptureRate": 120,
     "Color": "White",
     "EvolvesInto": [
-      1117
+      10113
     ],
     "FemaleChance": 8,
     "Generation": 6,
@@ -34941,7 +34941,7 @@
     "Rarity": 3
   },
   {
-    "Id": 1114,
+    "Id": 10110,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -34973,7 +34973,7 @@
     "Rarity": 3
   },
   {
-    "Id": 1115,
+    "Id": 10111,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -35003,7 +35003,7 @@
     "Rarity": 5
   },
   {
-    "Id": 1116,
+    "Id": 10112,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -35033,7 +35033,7 @@
     "Rarity": 5
   },
   {
-    "Id": 1117,
+    "Id": 10113,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -35063,7 +35063,7 @@
     "Rarity": 5
   },
   {
-    "Id": 1118,
+    "Id": 10114,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -35093,14 +35093,14 @@
     "Rarity": 5
   },
   {
-    "Id": 1119,
+    "Id": 10126,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
     "CaptureRate": 120,
     "Color": "Brown",
     "EvolvesInto": [
-      1122
+      10129
     ],
     "FemaleChance": 4,
     "Generation": 6,
@@ -35126,14 +35126,14 @@
     "Rarity": 2
   },
   {
-    "Id": 1120,
+    "Id": 10127,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
     "CaptureRate": 120,
     "Color": "Brown",
     "EvolvesInto": [
-      1123
+      10130
     ],
     "FemaleChance": 4,
     "Generation": 6,
@@ -35159,14 +35159,14 @@
     "Rarity": 2
   },
   {
-    "Id": 1121,
+    "Id": 10128,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
     "CaptureRate": 120,
     "Color": "Brown",
     "EvolvesInto": [
-      1124
+      10131
     ],
     "FemaleChance": 4,
     "Generation": 6,
@@ -35192,7 +35192,7 @@
     "Rarity": 2
   },
   {
-    "Id": 1122,
+    "Id": 10129,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -35223,7 +35223,7 @@
     "Rarity": 4
   },
   {
-    "Id": 1123,
+    "Id": 10130,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -35254,7 +35254,7 @@
     "Rarity": 4
   },
   {
-    "Id": 1124,
+    "Id": 10131,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -35285,7 +35285,7 @@
     "Rarity": 4
   },
   {
-    "Id": 1125,
+    "Id": 10161,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -35316,7 +35316,7 @@
     "Rarity": 5
   },
   {
-    "Id": 1126,
+    "Id": 10162,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -35347,7 +35347,7 @@
     "Rarity": 5
   },
   {
-    "Id": 1127,
+    "Id": 10163,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -35377,14 +35377,14 @@
     "Rarity": 3
   },
   {
-    "Id": 1128,
+    "Id": 10193,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
     "CaptureRate": 255,
     "Color": "Purple",
     "EvolvesInto": [
-      1129
+      10194
     ],
     "FemaleChance": 4,
     "Generation": 7,
@@ -35410,7 +35410,7 @@
     "Rarity": 2
   },
   {
-    "Id": 1129,
+    "Id": 10194,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -35441,7 +35441,7 @@
     "Rarity": 4
   },
   {
-    "Id": 1130,
+    "Id": 10202,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -35472,14 +35472,14 @@
     "Rarity": 5
   },
   {
-    "Id": 1131,
+    "Id": 10203,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
     "CaptureRate": 255,
     "Color": "Yellow",
     "EvolvesInto": [
-      1132
+      10204
     ],
     "FemaleChance": 4,
     "Generation": 7,
@@ -35505,7 +35505,7 @@
     "Rarity": 2
   },
   {
-    "Id": 1132,
+    "Id": 10204,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -35536,14 +35536,14 @@
     "Rarity": 4
   },
   {
-    "Id": 1133,
+    "Id": 10205,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
     "CaptureRate": 190,
     "Color": "Brown",
     "EvolvesInto": [
-      1134
+      10206
     ],
     "FemaleChance": 6,
     "Generation": 7,
@@ -35568,7 +35568,7 @@
     "Rarity": 2
   },
   {
-    "Id": 1134,
+    "Id": 10206,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -35599,14 +35599,14 @@
     "Rarity": 4
   },
   {
-    "Id": 1135,
+    "Id": 10207,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
     "CaptureRate": 255,
     "Color": "Brown",
     "EvolvesInto": [
-      1136
+      10208
     ],
     "FemaleChance": 4,
     "Generation": 7,
@@ -35632,7 +35632,7 @@
     "Rarity": 2
   },
   {
-    "Id": 1136,
+    "Id": 10208,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -35663,14 +35663,14 @@
     "Rarity": 4
   },
   {
-    "Id": 1137,
+    "Id": 10209,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
     "CaptureRate": 255,
     "Color": "Yellow",
     "EvolvesInto": [
-      1138
+      10210
     ],
     "FemaleChance": 4,
     "Generation": 7,
@@ -35695,7 +35695,7 @@
     "Rarity": 2
   },
   {
-    "Id": 1138,
+    "Id": 10210,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -35725,14 +35725,14 @@
     "Rarity": 4
   },
   {
-    "Id": 1139,
+    "Id": 10211,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
     "CaptureRate": 255,
     "Color": "Brown",
     "EvolvesInto": [
-      1140
+      10212
     ],
     "FemaleChance": 4,
     "Generation": 7,
@@ -35758,14 +35758,14 @@
     "Rarity": 1
   },
   {
-    "Id": 1140,
+    "Id": 10212,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
     "CaptureRate": 120,
     "Color": "Brown",
     "EvolvesInto": [
-      1141
+      10213
     ],
     "FemaleChance": 4,
     "Generation": 7,
@@ -35791,7 +35791,7 @@
     "Rarity": 3
   },
   {
-    "Id": 1141,
+    "Id": 10213,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -35822,14 +35822,14 @@
     "Rarity": 5
   },
   {
-    "Id": 1142,
+    "Id": 10214,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
     "CaptureRate": 190,
     "Color": "Purple",
     "EvolvesInto": [
-      1143
+      10215
     ],
     "FemaleChance": 4,
     "Generation": 7,
@@ -35855,7 +35855,7 @@
     "Rarity": 2
   },
   {
-    "Id": 1143,
+    "Id": 10215,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -35886,7 +35886,7 @@
     "Rarity": 4
   },
   {
-    "Id": 1144,
+    "Id": 10216,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -35917,7 +35917,7 @@
     "Rarity": 4
   },
   {
-    "Id": 1145,
+    "Id": 10217,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -35948,14 +35948,14 @@
     "Rarity": 4
   },
   {
-    "Id": 1146,
+    "Id": 10220,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
     "CaptureRate": 3,
     "Color": "Green",
     "EvolvesInto": [
-      1147
+      10221
     ],
     "FemaleChance": -1,
     "Generation": 6,
@@ -35981,14 +35981,14 @@
     "Rarity": 9
   },
   {
-    "Id": 1147,
+    "Id": 10221,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
     "CaptureRate": 3,
     "Color": "Green",
     "EvolvesInto": [
-      1148
+      10222
     ],
     "FemaleChance": -1,
     "Generation": 6,
@@ -36014,7 +36014,7 @@
     "Rarity": 9
   },
   {
-    "Id": 1148,
+    "Id": 10222,
     "IsMega": false,
     "IsBattleOnly": true,
     "IsDefault": true,
@@ -36045,7 +36045,7 @@
     "Rarity": 10
   },
   {
-    "Id": 1149,
+    "Id": 10225,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -36076,7 +36076,7 @@
     "Rarity": 3
   },
   {
-    "Id": 1150,
+    "Id": 10226,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -36107,7 +36107,7 @@
     "Rarity": 3
   },
   {
-    "Id": 1151,
+    "Id": 10227,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -36138,7 +36138,7 @@
     "Rarity": 3
   },
   {
-    "Id": 1152,
+    "Id": 10228,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -36168,7 +36168,7 @@
     "Rarity": 4
   },
   {
-    "Id": 1153,
+    "Id": 10255,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -36199,7 +36199,7 @@
     "Rarity": 3
   },
   {
-    "Id": 1154,
+    "Id": 10256,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -36230,7 +36230,7 @@
     "Rarity": 3
   },
   {
-    "Id": 1155,
+    "Id": 10257,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -36261,7 +36261,7 @@
     "Rarity": 3
   },
   {
-    "Id": 1156,
+    "Id": 10258,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -36292,7 +36292,7 @@
     "Rarity": 3
   },
   {
-    "Id": 1157,
+    "Id": 10259,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -36323,7 +36323,7 @@
     "Rarity": 3
   },
   {
-    "Id": 1158,
+    "Id": 10260,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -36354,7 +36354,7 @@
     "Rarity": 3
   },
   {
-    "Id": 1159,
+    "Id": 10261,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -36385,7 +36385,7 @@
     "Rarity": 3
   },
   {
-    "Id": 1160,
+    "Id": 10311,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -36415,14 +36415,14 @@
     "Rarity": 4
   },
   {
-    "Id": 1161,
+    "Id": 10320,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
     "CaptureRate": 255,
     "Color": "Yellow",
     "EvolvesInto": [
-      862
+      863
     ],
     "FemaleChance": 4,
     "Generation": 8,
@@ -36447,14 +36447,14 @@
     "Rarity": 2
   },
   {
-    "Id": 1162,
+    "Id": 10321,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
     "CaptureRate": 190,
     "Color": "Yellow",
     "EvolvesInto": [
-      1163
+      10322
     ],
     "FemaleChance": 4,
     "Generation": 8,
@@ -36479,7 +36479,7 @@
     "Rarity": 2
   },
   {
-    "Id": 1163,
+    "Id": 10322,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -36510,15 +36510,15 @@
     "Rarity": 4
   },
   {
-    "Id": 1164,
+    "Id": 10323,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
     "CaptureRate": 190,
     "Color": "Pink",
     "EvolvesInto": [
-      1165,
-      1172
+      10324,
+      10331
     ],
     "FemaleChance": 4,
     "Generation": 8,
@@ -36543,7 +36543,7 @@
     "Rarity": 2
   },
   {
-    "Id": 1165,
+    "Id": 10324,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -36574,7 +36574,7 @@
     "Rarity": 4
   },
   {
-    "Id": 1166,
+    "Id": 10325,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -36606,7 +36606,7 @@
     "Rarity": 2
   },
   {
-    "Id": 1167,
+    "Id": 10326,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -36637,7 +36637,7 @@
     "Rarity": 4
   },
   {
-    "Id": 1168,
+    "Id": 10327,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -36670,7 +36670,7 @@
     "Rarity": 3
   },
   {
-    "Id": 1169,
+    "Id": 10328,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -36701,7 +36701,7 @@
     "Rarity": 10
   },
   {
-    "Id": 1170,
+    "Id": 10329,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -36732,7 +36732,7 @@
     "Rarity": 10
   },
   {
-    "Id": 1171,
+    "Id": 10330,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -36763,7 +36763,7 @@
     "Rarity": 10
   },
   {
-    "Id": 1172,
+    "Id": 10331,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -36794,7 +36794,7 @@
     "Rarity": 4
   },
   {
-    "Id": 1173,
+    "Id": 10332,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -36826,14 +36826,14 @@
     "Rarity": 2
   },
   {
-    "Id": 1174,
+    "Id": 10333,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
     "CaptureRate": 255,
     "Color": "Brown",
     "EvolvesInto": [
-      1175
+      10334
     ],
     "FemaleChance": 4,
     "Generation": 8,
@@ -36859,7 +36859,7 @@
     "Rarity": 1
   },
   {
-    "Id": 1175,
+    "Id": 10334,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -36892,14 +36892,14 @@
     "Rarity": 3
   },
   {
-    "Id": 1176,
+    "Id": 10335,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
     "CaptureRate": 120,
     "Color": "Red",
     "EvolvesInto": [
-      1177
+      10336
     ],
     "FemaleChance": 4,
     "Generation": 8,
@@ -36924,7 +36924,7 @@
     "Rarity": 2
   },
   {
-    "Id": 1177,
+    "Id": 10336,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -36954,14 +36954,14 @@
     "Rarity": 4
   },
   {
-    "Id": 1178,
+    "Id": 10338,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
     "CaptureRate": 190,
     "Color": "Black",
     "EvolvesInto": [
-      866
+      867
     ],
     "FemaleChance": 4,
     "Generation": 8,
@@ -36987,7 +36987,7 @@
     "Rarity": 2
   },
   {
-    "Id": 1179,
+    "Id": 10339,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -37018,7 +37018,7 @@
     "Rarity": 3
   },
   {
-    "Id": 1180,
+    "Id": 10343,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -37049,14 +37049,14 @@
     "Rarity": 4
   },
   {
-    "Id": 1181,
+    "Id": 10344,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
     "CaptureRate": 120,
     "Color": "Purple",
     "EvolvesInto": [
-      1182
+      10345
     ],
     "FemaleChance": -1,
     "Generation": 8,
@@ -37081,7 +37081,7 @@
     "Rarity": 2
   },
   {
-    "Id": 1182,
+    "Id": 10345,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -37111,7 +37111,7 @@
     "Rarity": 4
   },
   {
-    "Id": 1183,
+    "Id": 10346,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -37141,7 +37141,7 @@
     "Rarity": 4
   },
   {
-    "Id": 1184,
+    "Id": 10347,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -37171,7 +37171,7 @@
     "Rarity": 4
   },
   {
-    "Id": 1185,
+    "Id": 10348,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -37201,7 +37201,7 @@
     "Rarity": 4
   },
   {
-    "Id": 1186,
+    "Id": 10349,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -37231,7 +37231,7 @@
     "Rarity": 4
   },
   {
-    "Id": 1187,
+    "Id": 10350,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -37261,7 +37261,7 @@
     "Rarity": 4
   },
   {
-    "Id": 1188,
+    "Id": 10351,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -37291,7 +37291,7 @@
     "Rarity": 4
   },
   {
-    "Id": 1189,
+    "Id": 10352,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -37321,7 +37321,7 @@
     "Rarity": 4
   },
   {
-    "Id": 1190,
+    "Id": 10353,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -37351,7 +37351,7 @@
     "Rarity": 4
   },
   {
-    "Id": 1191,
+    "Id": 10357,
     "IsMega": false,
     "IsBattleOnly": true,
     "IsDefault": true,
@@ -37382,7 +37382,7 @@
     "Rarity": 10
   },
   {
-    "Id": 1192,
+    "Id": 10358,
     "IsMega": false,
     "IsBattleOnly": true,
     "IsDefault": true,
@@ -37413,7 +37413,7 @@
     "Rarity": 10
   },
   {
-    "Id": 1193,
+    "Id": 10360,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -37444,7 +37444,7 @@
     "Rarity": 10
   },
   {
-    "Id": 1194,
+    "Id": 10362,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -37475,7 +37475,7 @@
     "Rarity": 10
   },
   {
-    "Id": 1195,
+    "Id": 10363,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -37506,14 +37506,14 @@
     "Rarity": 10
   },
   {
-    "Id": 1196,
+    "Id": 10398,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
     "CaptureRate": 190,
     "Color": "Brown",
     "EvolvesInto": [
-      1197
+      10399
     ],
     "FemaleChance": 2,
     "Generation": 8,
@@ -37539,7 +37539,7 @@
     "Rarity": 2
   },
   {
-    "Id": 1197,
+    "Id": 10399,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -37570,14 +37570,14 @@
     "Rarity": 4
   },
   {
-    "Id": 1198,
+    "Id": 10400,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
     "CaptureRate": 190,
     "Color": "Red",
     "EvolvesInto": [
-      1199
+      10401
     ],
     "FemaleChance": -1,
     "Generation": 8,
@@ -37603,7 +37603,7 @@
     "Rarity": 2
   },
   {
-    "Id": 1199,
+    "Id": 10401,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -37634,7 +37634,7 @@
     "Rarity": 4
   },
   {
-    "Id": 1200,
+    "Id": 10402,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -37665,7 +37665,7 @@
     "Rarity": 5
   },
   {
-    "Id": 1201,
+    "Id": 10403,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -37698,14 +37698,14 @@
     "Rarity": 2
   },
   {
-    "Id": 1202,
+    "Id": 10404,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
     "CaptureRate": 60,
     "Color": "Black",
     "EvolvesInto": [
-      900
+      903
     ],
     "FemaleChance": 4,
     "Generation": 8,
@@ -37731,7 +37731,7 @@
     "Rarity": 2
   },
   {
-    "Id": 1203,
+    "Id": 10405,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -37762,7 +37762,7 @@
     "Rarity": 5
   },
   {
-    "Id": 1204,
+    "Id": 10406,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -37793,14 +37793,14 @@
     "Rarity": 4
   },
   {
-    "Id": 1205,
+    "Id": 10407,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
     "CaptureRate": 75,
     "Color": "Gray",
     "EvolvesInto": [
-      1206
+      10408
     ],
     "FemaleChance": 1,
     "Generation": 8,
@@ -37826,7 +37826,7 @@
     "Rarity": 2
   },
   {
-    "Id": 1206,
+    "Id": 10408,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -37857,7 +37857,7 @@
     "Rarity": 4
   },
   {
-    "Id": 1207,
+    "Id": 10409,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -37888,14 +37888,14 @@
     "Rarity": 4
   },
   {
-    "Id": 1208,
+    "Id": 10410,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
     "CaptureRate": 45,
     "Color": "Purple",
     "EvolvesInto": [
-      1209
+      10411
     ],
     "FemaleChance": 4,
     "Generation": 8,
@@ -37921,7 +37921,7 @@
     "Rarity": 3
   },
   {
-    "Id": 1209,
+    "Id": 10411,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -37952,7 +37952,7 @@
     "Rarity": 5
   },
   {
-    "Id": 1210,
+    "Id": 10412,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -37983,7 +37983,7 @@
     "Rarity": 4
   },
   {
-    "Id": 1211,
+    "Id": 10413,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -38014,7 +38014,7 @@
     "Rarity": 5
   },
   {
-    "Id": 1212,
+    "Id": 10416,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": true,
@@ -38046,7 +38046,7 @@
     "Rarity": 2
   },
   {
-    "Id": 1213,
+    "Id": 10419,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -38062,7 +38062,7 @@
     "IsParadox": false,
     "IsLegendary": false,
     "IsMythical": false,
-    "Name": "Tauros",
+    "Name": "Paldean Tauros",
     "PokedexId": 128,
     "Height": 14,
     "Sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10250.png",
@@ -38076,7 +38076,7 @@
     "Rarity": 3
   },
   {
-    "Id": 1214,
+    "Id": 10420,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -38092,7 +38092,7 @@
     "IsParadox": false,
     "IsLegendary": false,
     "IsMythical": false,
-    "Name": "Tauros",
+    "Name": "Paldean Tauros Fire",
     "PokedexId": 128,
     "Height": 14,
     "Sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10251.png",
@@ -38107,7 +38107,7 @@
     "Rarity": 3
   },
   {
-    "Id": 1215,
+    "Id": 10421,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -38123,7 +38123,7 @@
     "IsParadox": false,
     "IsLegendary": false,
     "IsMythical": false,
-    "Name": "Tauros",
+    "Name": "Paldean Tauros Water",
     "PokedexId": 128,
     "Height": 14,
     "Sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10252.png",
@@ -38138,7 +38138,7 @@
     "Rarity": 3
   },
   {
-    "Id": 1216,
+    "Id": 10422,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -38157,7 +38157,7 @@
     "IsParadox": false,
     "IsLegendary": false,
     "IsMythical": false,
-    "Name": "Wooper",
+    "Name": "Paldean Wooper",
     "PokedexId": 194,
     "Height": 4,
     "Sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10253.png",
@@ -38172,7 +38172,7 @@
     "Rarity": 2
   },
   {
-    "Id": 1217,
+    "Id": 10424,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -38202,7 +38202,7 @@
     "Rarity": 4
   },
   {
-    "Id": 1218,
+    "Id": 10426,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -38232,7 +38232,7 @@
     "Rarity": 4
   },
   {
-    "Id": 1219,
+    "Id": 10427,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -38263,7 +38263,7 @@
     "Rarity": 3
   },
   {
-    "Id": 1220,
+    "Id": 10428,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -38294,7 +38294,7 @@
     "Rarity": 3
   },
   {
-    "Id": 1221,
+    "Id": 10429,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
@@ -38325,7 +38325,7 @@
     "Rarity": 3
   },
   {
-    "Id": 1222,
+    "Id": 10430,
     "IsMega": false,
     "IsBattleOnly": false,
     "IsDefault": false,
