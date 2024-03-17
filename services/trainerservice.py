@@ -87,6 +87,7 @@ def TryDaily(trainer: Trainer):
   if (not trainer.LastDaily or datetime.strptime(trainer.LastDaily, ShortDateFormat).date() < datetime.now(UTC).date()) or trainer.UserId in AdminList:
     trainer.LastDaily = datetime.now(UTC).strftime(ShortDateFormat)
     ModifyItemList(trainer.Pokeballs, '1', 10)
+    ModifyItemList(trainer.Pokeballs, '4', 1)
     trainer.Money += 200
     addEgg = TryAddNewEgg(trainer)
     UpsertTrainer(trainer)

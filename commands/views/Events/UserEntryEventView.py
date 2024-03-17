@@ -23,7 +23,6 @@ class UserEntryEventView(EventView):
 	@discord.ui.button(label='Drop', style=discord.ButtonStyle.danger)
 	@trainer_check
 	async def drop_button(self, interaction: discord.Interaction, button: discord.ui.Button):
-		await interaction.response.defer()
 		if str(interaction.user.id) not in self.server.CurrentEvent.EventEntries:
 			return 
 		self.server.CurrentEvent.EventEntries.pop(str(interaction.user.id))
@@ -33,7 +32,6 @@ class UserEntryEventView(EventView):
 	@discord.ui.button(label='Enter', style=discord.ButtonStyle.success)
 	@trainer_check
 	async def enter_button(self, interaction: discord.Interaction, button: discord.ui.Button):
-		await interaction.response.defer()
 		if str(interaction.user.id) not in self.server.CurrentEvent.EventEntries:
 			entry = trainerservice.EventEntry(trainerservice.GetTrainer(interaction.guild_id, interaction.user.id), self.server.CurrentEvent)
 			if self.server.CurrentEvent.EventType == EventType.StatCompare.value:
