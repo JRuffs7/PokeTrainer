@@ -262,18 +262,18 @@ def SetTeamSlot(trainer: Trainer, slotNum: int, pokemonId: str):
 #region Spawn
 
 def CanCallSpawn(trainer: Trainer):
-  canSpawn = False
-  if not trainer.LastSpawnTime:
-    canSpawn = True
-  else:
-    lastSpawn = datetime.strptime(trainer.LastSpawnTime, DateFormat)
-    if(lastSpawn + timedelta(minutes=5) < datetime.now(UTC)):
-      canSpawn = True
+  # canSpawn = False
+  # if not trainer.LastSpawnTime:
+  #   canSpawn = True
+  # else:
+  #   lastSpawn = datetime.strptime(trainer.LastSpawnTime, DateFormat)
+  #   if(lastSpawn + timedelta(minutes=5) < datetime.now(UTC)):
+  #     canSpawn = True
   
-  if canSpawn:
-    trainer.LastSpawnTime = datetime.now(UTC).strftime(DateFormat)
-    UpsertTrainer(trainer)
-  return canSpawn
+  # if canSpawn:
+  trainer.LastSpawnTime = datetime.now(UTC).strftime(DateFormat)
+  UpsertTrainer(trainer)
+  return True
 
 def TryCapture(reaction: str, trainer: Trainer, spawn: Pokemon):
   caught = False
