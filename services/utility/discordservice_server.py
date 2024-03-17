@@ -1,8 +1,11 @@
+import logging
 import discordbot
 from globals import ErrorColor, ServerColor
 from models.Server import Server
 from services.utility import discordservice
 from discord import Interaction, TextChannel
+
+errorLog = logging.getLogger('error')
 
 responseFile = "files/responsefiles/serverresponses.json"
 
@@ -49,7 +52,10 @@ async def PrintUnregisterResponse(interaction: Interaction):
 async def PrintEventWinners(server: Server, winners: list[tuple[int,int]]):
 	bot = discordbot.GetBot()
 	if server.CurrentEvent.ThreadId:
-		await bot.get_channel(server.CurrentEvent.ThreadId).delete()
+		try:
+			await bot.get_channel(server.CurrentEvent.ThreadId).delete()
+		except:
+			errorLog.error('Failed to delete thread')
 
 	if winners:
 		guild = bot.get_guild(server.ServerId)
