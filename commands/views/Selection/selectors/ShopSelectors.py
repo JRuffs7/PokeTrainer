@@ -1,6 +1,6 @@
 import discord
 
-from models.Item import Pokeball, Potion
+from models.Item import Candy, Pokeball, Potion
 
 
 class BuySell(discord.ui.Select):
@@ -25,22 +25,29 @@ class BuySell(discord.ui.Select):
 		await self.view.BuySellSelection(inter, self.values[0])
         
 class ItemChoice(discord.ui.Select):
-	def __init__(self, ballList: list[Pokeball], ptnList: list[Potion], buying: bool, default: str = None):
+	def __init__(self, ballList: list[Pokeball], ptnList: list[Potion], cndyList: list[Candy], buying: bool, default: str = None):
 		options=([
 			discord.SelectOption(
-				label=f'{d.Name} - ${d.BuyAmount if buying else d.SellAmount}',
-				description= f'{d.Description}' if buying else None,
-				value=f'b{d.Id}',
-				default=(default == f'b{d.Id}')
-			) for d in ballList if (d.BuyAmount if buying else d.SellAmount)
+				label=f'{b.Name} - ${b.BuyAmount if buying else b.SellAmount}',
+				description= f'{b.Description}' if buying else None,
+				value=f'b{b.Id}',
+				default=(default == f'b{b.Id}')
+			) for b in ballList if (b.BuyAmount if buying else b.SellAmount)
 		]+[
 			discord.SelectOption(
-				label=f'{d.Name} - ${d.BuyAmount if buying else d.SellAmount}',
-				description= f'{d.Description}' if buying else None,
-				value=f'p{d.Id}',
-				default=(default == f'p{d.Id}')
-			) for d in ptnList if (d.BuyAmount if buying else d.SellAmount)
-		]) if len(ballList) > 0 or len(ptnList) > 0 else [
+				label=f'{p.Name} - ${p.BuyAmount if buying else p.SellAmount}',
+				description= f'{p.Description}' if buying else None,
+				value=f'p{p.Id}',
+				default=(default == f'p{p.Id}')
+			) for p in ptnList if (p.BuyAmount if buying else p.SellAmount)
+		]+[
+			discord.SelectOption(
+				label=f'{c.Name} - ${c.BuyAmount if buying else c.SellAmount}',
+				description= f'{c.Description}' if buying else None,
+				value=f'c{c.Id}',
+				default=(default == f'c{c.Id}')
+			) for c in cndyList if (c.BuyAmount if buying else c.SellAmount)
+		]) if len(ballList) > 0 or len(ptnList) > 0 or len(cndyList) > 0 else [
 			discord.SelectOption(
 					label='Not enough money' if buying else 'No Items To Sell',
 					value='-1',
@@ -51,17 +58,4 @@ class ItemChoice(discord.ui.Select):
 	
 	async def callback(self, inter: discord.Interaction):
 		await self.view.ItemSelection(inter, self.values[0])
-        
-class AmountChoice(discord.ui.Select):
-	def __init__(self, maximum: int | None):
-			maximum = 11 if not maximum or maximum > 10 else maximum + 1
-			options=[
-					discord.SelectOption(
-						label=f'{num}',
-						value=f'{num}'
-					) for num in range(1, maximum)
-			]
-			super().__init__(options=options, max_values=1, min_values=1, placeholder='Choose Amount')
-	
-	async def callback(self, inter: discord.Interaction):
-		await self.view.AmountSelection(inter, self.values[0])
+      

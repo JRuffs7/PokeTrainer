@@ -1,6 +1,6 @@
 from dataaccess.utility.jsonreader import GetJson
 
-from models.Item import Pokeball, Potion
+from models.Item import Candy, Pokeball, Potion
 
 itemFile = "collections/items.json"
 
@@ -13,3 +13,8 @@ def GetAllPokeballs():
 def GetAllPotions():
   json = GetJson(itemFile)
   return [Potion(p) for p in json["Potion"]]
+
+
+def GetAllCandies():
+  json = GetJson(itemFile)
+  return [Candy(c) for c in json["Candy"]]

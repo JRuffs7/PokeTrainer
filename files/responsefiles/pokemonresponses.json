@@ -5,6 +5,16 @@
 			"Body": "You have no Pokemon currently able to evolve. Level your Pokemon up by fighting gym leaders using **/gymbattle** and wild Pokemon using **/spawn**."
 		}
 	],
+	"givecandy": [
+		{
+			"Title": "No Candies",
+			"Body": "You do not have any candies to give to your Pokemon. You can buy some through the **/shop**."
+		},
+		{
+			"Title": "Pokemon Does Not Exist",
+			"Body": "There seems to be an issue locating the selected Pokemon. Try again."
+		}
+	],
 	"hatch": [
 		{
 			"Title": "Nothing To Hatch",

@@ -1,10 +1,19 @@
 from dataaccess import eggda, itemda
+from models.Item import Item
 
 
-def GetFullShop():
-  pokeballs = [p for p in itemda.GetAllPokeballs()]
-  potions = [p for p in itemda.GetAllPotions()]
-  return (pokeballs, potions)
+def GetAllPokeballs():
+  return itemda.GetAllPokeballs()
+
+
+def GetAllPotions():
+  return itemda.GetAllPotions()
+
+
+def GetAllCandies():
+  itemList: list[Item] = []
+  itemList.extend(itemda.GetAllCandies())
+  return itemList
 
 
 def GetPokeball(id: int):
@@ -13,6 +22,10 @@ def GetPokeball(id: int):
 
 def GetPotion(id: int):
   return next(p for p in itemda.GetAllPotions() if p.Id == id)
+
+
+def GetCandy(id: int):
+  return next(c for c in itemda.GetAllCandies() if c.Id == id)
 
 
 def GetEgg(id: int):

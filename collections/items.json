@@ -66,5 +66,31 @@
       "SellAmount": 300,
       "HealingAmount": 100
     }
+  ],
+  "Candy": [
+    {
+      "Id": 1,
+      "Name": "Rare Candy",
+      "Description": "Level up your Pokemon by 1 level.",
+      "BuyAmount": 1000,
+      "SellAmount": 500,
+      "Experience": null
+    },
+    {
+      "Id": 2,
+      "Name": "Small Candy",
+      "Description": "Provide a Pokemon with 15 exp.",
+      "BuyAmount": 100,
+      "SellAmount": 50,
+      "Experience": 15
+    },
+    {
+      "Id": 3,
+      "Name": "Large Candy",
+      "Description": "Provide a Pokemon with 40 exp.",
+      "BuyAmount": 250,
+      "SellAmount": 250,
+      "Experience": 40
+    }
   ]
 }
