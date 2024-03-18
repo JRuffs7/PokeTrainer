@@ -83,7 +83,7 @@
     {
       "Name": "trainer",
       "ShortString": "Displays stats about the current or given user.",
-      "HelpString": "Proper command usage: **/trainer *[@user]***\nParameters:\n**@user** - (Optional) View another server members statistics.\n\nThis command will give statistics regarding the trainer belonging to either yourself or the specified user. Information will include stats such as health, Pokedex completion, current number of Pokemon owned, current number of shiny Pokemon, and badge completion.\n\nIf you run this command for yourself, you may also see your current inventory of Pokeballs, Potions, and money.",
+      "HelpString": "Proper command usage: **/trainer *[@user]***\nParameters:\n**@user** - (Optional) View another server members statistics.\n\nThis command will give statistics regarding the trainer belonging to either yourself or the specified user. Information will include stats such as health, Pokedex completion, current number of Pokemon owned, current number of shiny Pokemon, and badge completion.\nThere is also an *Inventory* section that will display all relevant items such as Pokeballs, Potions, and Candies, and an Egg section that will show all current eggs and their progress.",
       "RequiresAdmin": false
     },
     {
@@ -120,6 +120,12 @@
       "Name": "evolve",
       "ShortString": "Evolve one of your Pokemon that are eligible.",
       "HelpString": "Proper command usage: **/evolve *[pokemon]***\nParameters:\n**pokemon** - (Optional) Name filter of the Pokemon you wish to evolve.\n\nWhen you own a Pokemon that meets the criteria for evolution, this command is used to actually do the evolution step. To see the criteria needed, check out **/help evolution** which will contain much more detail. After running the evolve command, you will be prompted with 2 select menus. The first menu will be all available options for evolution (filtered if the parameter is given), up to 25 different selections. Once the first option is selected, the second menu will contain all available evolution options for the initial Pokemon to evolve into (i.e. If Gloom is chosen to evolve, the second list will contain Vileplume and Bellossom). You may evolve any Pokemon that you own, including any members of your party.",
+      "RequiresAdmin": false
+    },
+    {
+      "Name": "givecandy",
+      "ShortString": "Give an exp candy to one of your Pokemon.",
+      "HelpString": "Proper command usage: **/givecandy *[pokemon]***\nParameters:\n**pokemon** - (Optional) Name filter of the Pokemon you wish to receive a candy.\n\nCandies are a way to gain experience points and levels for your Pokemon. Currently there are only three different candies:\n- Small Candy: 15 experience\n- Large Candy: 40 experience\n- Rare Candy: 1 Level\nYou can purchase candies through the **/shop** and view how many you currently own through **/trainer**.",
       "RequiresAdmin": false
     },
     {
@@ -175,7 +181,7 @@
     {
       "Name": "update",
       "ShortString": "",
-      "HelpString": "__Newest Update (3/16/2024)__\n- Gym leaders not give more exp\n- You now get 10 Pokeballs and $200 per day instead of 3 and $100\n- Update /spawn view to include trainer health (with warning)\n- Updated trainer view to select Pokemon to battle with. Default to first slot\n- Make /myeggs available for any trainers egg collection\n- Help updates\n- Minor behind-the-scenes changes and bug fixes\n\n__3/15/2024__\n- Added Eggs and Hatching. Max 5 eggs at a time. See more through **/help eggs**\n- Logging update for me\n- Updated help documentation",
+      "HelpString": "__Newest Update__ (3/18/2024)\n- Candies have been added to the shop. Use **/help givecandy** for more information\n- Updated help for new commands\n\n__3/16/2024__\n- Gym leaders not give more exp\n- You now get 10 Pokeballs and $200 per day instead of 3 and $100\n- Update /spawn view to include trainer health (with warning)\n- Updated trainer view to select Pokemon to battle with. Default to first slot\n- Make /myeggs available for any trainers egg collection\n- Help updates\n- Minor behind-the-scenes changes and bug fixes\n\n__3/15/2024__\n- Added Eggs and Hatching. Max 5 eggs at a time. See more through **/help eggs**\n- Logging update for me\n- Updated help documentation",
       "RequiresAdmin": false
     }
   ]
