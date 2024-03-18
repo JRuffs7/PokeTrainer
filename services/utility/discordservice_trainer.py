@@ -1,7 +1,6 @@
 from models.Item import Potion
-from models.Server import Server
 from models.Trainer import Trainer
-from services import itemservice, pokemonservice, gymservice, trainerservice
+from services import itemservice, pokemonservice, gymservice
 from services.utility import discordservice
 from discord import Interaction, Member
 from globals import HelpColor, TrainerColor, Checkmark
@@ -15,23 +14,29 @@ async def PrintTrainer(interaction: Interaction, trainer: Trainer, targetUser: M
 
 	stats = f"__Trainer Stats__\nHP: {trainer.Health}\nPokedex: {len(trainer.Pokedex)}/{totalPkmn} ({round((len(trainer.Pokedex)*100)/totalPkmn)}%)\nPokemon Caught: {len(trainer.OwnedPokemon)}\nShiny Count: {len([x for x in trainer.OwnedPokemon if x.IsShiny])}\nGym Badges: {len(trainer.Badges)}/{totalBadges}"
 
+	#Pokeball Section
+	pkblString = '\n'.join(f"{itemservice.GetPokeball(int(p)).Name}: {trainer.Pokeballs[p]}" for p in list(sorted(trainer.Pokeballs, key=lambda x: x)) if trainer.Pokeballs[p])
+	pkbl = f'{pkblString}' if pkblString else ''
+
+	#Potion Section
+	ptnString = '\n'.join(f"{itemservice.GetPotion(int(p)).Name}: {trainer.Potions[p]}" for p in list(sorted(trainer.Potions, key=lambda x: x)) if trainer.Potions[p])
+	ptn = f'{ptnString}' if ptnString else ''
+
+	#Candy Section
+	cndString = '\n'.join(f"{itemservice.GetCandy(int(c)).Name}: {trainer.Candies[c]}" for c in list(sorted(trainer.Candies, key=lambda x: x)) if trainer.Candies[c])
+	candy = f'{cndString}' if cndString else ''
+
 	#Egg Section
-	eggString = '\n'.join(f"{itemservice.GetEgg(e.EggId).Name}: {e.SpawnCount}/{itemservice.GetEgg(e.EggId).SpawnsNeeded}{Checkmark if e.SpawnCount == itemservice.GetEgg(e.EggId).SpawnsNeeded else ''}" for e in trainer.Eggs)
-	eggs = f'__Eggs__\n{eggString if trainer.Eggs else "Obtain eggs from **/daily**"}'
+	eggString = '\n'.join(f"{itemservice.GetEgg(e.EggId).Name}: {e.SpawnCount}/{itemservice.GetEgg(e.EggId).SpawnsNeeded}{Checkmark if e.SpawnCount == itemservice.GetEgg(e.EggId).SpawnsNeeded else ''}" for e in list(sorted(trainer.Eggs, key=lambda x: x.EggId)))
+	eggs = f'__Eggs__\n{eggString if eggString else "Obtain eggs from **/daily**"}'
 
 	#Inventory Section
-	items = trainerservice.GetInventory(trainer)
-	pkblList = items[1]
-	ptnList = items[2]
-	newline = '\n'
-	pokeballString = f"\n{newline.join([f'{i}: {pkblList[i]}' for i in pkblList])}" if len(pkblList) else ""
-	breakStr = f"\n" if len(pkblList) and len(ptnList) else ""
-	potionString = f"\n{newline.join([f'{i}: {ptnList[i]}' for i in ptnList])}" if len(ptnList) else ""
-	inventory = f"__Inventory__{pokeballString}{breakStr}{potionString}\n\n${trainer.Money}"
+	newLine = '\n\n'
+	inventory = f"__Inventory__\n{newLine.join(s for s in [pkbl,ptn,candy,eggs] if s)}\n\n${trainer.Money}"
 
 	embed = discordservice.CreateEmbed(
 			f"{targetUser.display_name}'s Trainer Info", 
-			f"{stats}\n\n{eggs}\n\n{inventory}", 
+			f"{stats}\n\n{inventory}", 
 			TrainerColor)
 	embed.set_thumbnail(url=targetUser.display_avatar.url)
 

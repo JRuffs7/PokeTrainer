@@ -10,6 +10,7 @@ class Trainer:
   Money: int = 0
   Pokeballs: dict[str, int] = field(default_factory=dict)
   Potions: dict[str, int] = field(default_factory=dict)
+  Candies: dict[str, int] = field(default_factory=dict)
   OwnedPokemon: list[Pokemon] = field(default_factory=list)
   Pokedex: list[int] = field(default_factory=list)
   Team: list[str] = field(default_factory=list)

@@ -43,3 +43,13 @@ async def PrintHatchResponse(interaction: Interaction, response: int):
 		color=PokemonColor, 
 		params=[],
 		eph=True)
+
+async def PrintGiveCandyResponse(interaction: Interaction, response: int):
+	return await discordservice.SendCommandResponse(
+		interaction=interaction, 
+		filename=responseFile, 
+		command='givecandy', 
+		responseInd=response, 
+		color=PokemonColor, 
+		params=[],
+		eph=True)

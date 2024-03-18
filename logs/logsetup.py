@@ -10,10 +10,12 @@ LOGGING_CONFIG = {
         'standard': { 'format': '%(levelname)-10s - %(name)-15s : %(message)s' },
     },
     'handlers': {
-        'console': {
-            'level': 'DEBUG',
-            'class': 'logging.StreamHandler',
-            'formatter': 'standard',
+        'command': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'logs/command.log',
+            'mode': 'a+',
+            'formatter': 'verbose',
         },
         'discord': {
             'level': 'INFO',
@@ -52,7 +54,7 @@ LOGGING_CONFIG = {
         }
     },
     'loggers': {
-        'console': { 'handlers': ['console'], 'level': 'DEBUG', 'propagate': False },
+        'command': { 'handlers': ['command'], 'level': 'INFO', 'propagate': False },
         'discord': { 'handlers': ['discord'], 'level': 'INFO', 'propagate': False },
         'capture': { 'handlers': ['capture'], 'level': 'INFO', 'propagate': False },
         'battle': { 'handlers': ['battle'], 'level': 'INFO', 'propagate': False },

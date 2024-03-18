@@ -40,7 +40,8 @@ EphemeralCommands = [
     'pokeinfo',
     'gyminfo',
     'evolve',
-    'hatch'
+    'hatch',
+    'givecandy'
 ]
 
 

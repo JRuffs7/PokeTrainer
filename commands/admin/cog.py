@@ -2,34 +2,19 @@ import asyncio
 import logging
 from discord import Member, TextChannel
 from discord.ext import commands
-from middleware.decorators import method_logger, is_bot_admin
+from middleware.decorators import is_bot_admin
 from models.Server import Server
 from services import pokemonservice, serverservice, trainerservice
 
 class AdminCommands(commands.Cog, name="AdminCommands"):
 
-	logger = logging.getLogger('discord')
+	logger = logging.getLogger('command')
 	err = logging.getLogger('error')
 
 	def __init__(self, bot: commands.Bot):
 		self.bot = bot
 
 	#region Test Commands
-
-	@commands.command(name="sync")
-	@method_logger
-	@is_bot_admin
-	async def sync(self, ctx: commands.Context, serverOnly: int | None):
-		try:
-			if serverOnly:
-				self.logger.info(f'Local Sync Command called by {ctx.author.display_name} in server {ctx.guild.name}')
-				await ctx.bot.tree.sync(guild=ctx.guild)
-			else:
-				self.logger.info(f'Global Sync Command called by {ctx.author.display_name} in server {ctx.guild.name}')
-				await ctx.bot.tree.sync()
-			self.logger.info(f'Syncing complete.')
-		except Exception as e:
-			self.logger.critical(f"{e}")
 
 	@commands.command(name="deleteuser")
 	@is_bot_admin
@@ -42,7 +27,6 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 		
 
 	@commands.command(name="addhealth")
-	@method_logger
 	@is_bot_admin
 	async def addhealth(self, ctx: commands.Context, amount: int, user: Member = None):
 		if not ctx.guild:
@@ -54,7 +38,6 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 			trainerservice.UpsertTrainer(trainer)
 
 	@commands.command(name="givemoney")
-	@method_logger
 	@is_bot_admin
 	async def givemoney(self, ctx: commands.Context, amount: int, user: Member = None):
 		if not ctx.guild:
@@ -66,7 +49,6 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 			trainerservice.UpsertTrainer(trainer)
 			
 	@commands.command(name="addball")
-	@method_logger
 	@is_bot_admin
 	async def addball(self, ctx: commands.Context, type: int, amount: int, user: Member = None):
 		if not ctx.guild:
@@ -77,7 +59,6 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 			trainerservice.UpsertTrainer(trainer)
 			
 	@commands.command(name="addpotion")
-	@method_logger
 	@is_bot_admin
 	async def addpotion(self, ctx: commands.Context, type: int, amount: int, user: Member = None):
 		if not ctx.guild:
@@ -88,7 +69,6 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 			trainerservice.UpsertTrainer(trainer)
 			
 	@commands.command(name="addbadge")
-	@method_logger
 	@is_bot_admin
 	async def addbadge(self, ctx: commands.Context, badge: int, user: Member = None):
 		if not ctx.guild:
@@ -99,7 +79,6 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 			trainerservice.UpsertTrainer(trainer)
 
 	@commands.command(name="addpokemon")
-	@method_logger
 	@is_bot_admin
 	async def addpokemon(self, ctx: commands.Context, pokemonId: int, user: Member = None):
 		if not ctx.guild:
@@ -113,7 +92,6 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 			trainerservice.UpsertTrainer(trainer)
 
 	@commands.command(name="testpokemon")
-	@method_logger
 	@is_bot_admin
 	async def testpokemon(self, ctx: commands.Context, pokemonId: int):
 		if not ctx.guild:
@@ -127,9 +105,9 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 	#region Real Commands
 
 	@commands.command(name="globalmessage")
-	@method_logger
 	@is_bot_admin
 	async def globalmessage(self, ctx: commands.Context, message: str):
+		self.logger.info(f'GLOBAL MESSAGE SENT')
 		if not ctx.guild:
 			return
 		allServers = serverservice.GetAllServers()
@@ -146,6 +124,20 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 		
 		return await channel.send(message)
 		
+	@commands.command(name="sync")
+	@is_bot_admin
+	async def sync(self, ctx: commands.Context, serverOnly: int | None):
+		try:
+			if serverOnly:
+				self.logger.info(f'Local Sync Command called by {ctx.author.display_name} in server {ctx.guild.name}')
+				await ctx.bot.tree.sync(guild=ctx.guild)
+			else:
+				self.logger.info(f'Global Sync Command called by {ctx.author.display_name} in server {ctx.guild.name}')
+				await ctx.bot.tree.sync()
+			self.logger.info(f'Syncing complete.')
+		except Exception as e:
+			self.logger.critical(f"{e}")
+
 	#endregion
 	
 async def setup(bot: commands.Bot):

@@ -41,8 +41,7 @@ def StartTrainer(pokemonId: int, userId: int, serverId: int):
     'Pokedex': [pkmn.PokedexId],
     'Health': 50,
     'Money': 500,
-    'Pokeballs': { '1': 5, '2': 0, '3': 0, '4': 0 },
-    'Potions': { '1': 0, '2': 0, '3': 0, '4': 0 }
+    'Pokeballs': { '1': 5, '2': 0, '3': 0, '4': 0 }
   })
   trainer.OwnedPokemon.append(spawn)
   UpsertTrainer(trainer)
@@ -51,22 +50,6 @@ def StartTrainer(pokemonId: int, userId: int, serverId: int):
 #endregion
 
 #region Inventory/Items
-
-def GetInventory(trainer: Trainer):
-  pkblList = {
-      "Pokeball": trainer.Pokeballs['1'],
-      "Greatball": trainer.Pokeballs['2'],
-      "Ultraball": trainer.Pokeballs['3'],
-      "Masterball": trainer.Pokeballs['4']
-  }
-  ptnList = {
-      "Potion": trainer.Potions['1'],
-      "Super Potion": trainer.Potions['2'],
-      "Hyper Potion": trainer.Potions['3'],
-      "Max Potion": trainer.Potions['4']
-  }
-  return (trainer.Money, dict(filter(lambda x: x[1] != 0, pkblList.items())),
-          dict(filter(lambda x: x[1] != 0, ptnList.items())))
 
 def TryUsePotion(trainer: Trainer, potion: Potion):
   if trainer.Potions[str(potion.Id)] == 0:
@@ -124,11 +107,10 @@ def EventWinner(trainer: Trainer, ballId: int):
   UpsertTrainer(trainer)
 
 def ModifyItemList(itemDict: dict[str, int], itemId: str, amount: int):
-  newAmount = itemDict[itemId] + amount
+  newAmount = itemDict[itemId] + amount if itemId in itemDict else amount
   if newAmount < 0:
     newAmount = 0
   itemDict.update({ itemId: newAmount })
-  return (amount + newAmount) if newAmount < 0 else amount
 
 #endregion
 

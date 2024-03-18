@@ -68,7 +68,7 @@ def GetNameEmojis(pokemon: Pokemon, showGender: bool, showShiny: bool):
 
 def GetOwnedPokemonDescription(pokemon: Pokemon):
   pkmn = GetPokemonById(pokemon.Pokemon_Id)
-  return f"Lvl. {pokemon.Level} ({pokemon.CurrentExp}/{(50 * pkmn.Rarity) if pkmn.Rarity <= 3 else 250}xp) | H:{pokemon.Height} | W:{pokemon.Weight} | Types: {'/'.join(pkmn.Types)}"
+  return f"Lvl. {pokemon.Level} ({pokemon.CurrentExp}/{NeededExperience(pokemon.Level, pkmn.Rarity, len(pkmn.EvolvesInto) > 0)}xp | H:{pokemon.Height} | W:{pokemon.Weight} | Types: {'/'.join(pkmn.Types)}"
 
 
 def GetPokemonImage(pokemon: Pokemon | PokemonData):

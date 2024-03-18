@@ -21,3 +21,10 @@ class Potion(Item):
 
   def __init__(self, dict):
     super(Potion, self).__init__(dict)
+
+
+class Candy(Item):
+  Experience: int|None
+
+  def __init__(self, dict):
+    super(Candy, self).__init__(dict)

@@ -7,7 +7,7 @@ from services import serverservice, trainerservice
 from services.utility import discordservice_permission
 
 
-cmdLog = logging.getLogger('discord')
+cmdLog = logging.getLogger('command')
 errLog = logging.getLogger('error')
 
 def method_logger(function):
@@ -50,9 +50,12 @@ def is_bot_admin(function):
 def server_check(function):
   @functools.wraps(function)
   async def wrapper(self, *args, **kwargs):
-    serv = serverservice.GetServer(args[0].guild_id)
+    inter = args[0]
+    if not inter.response.is_done():
+       await inter.response.defer()
+    serv = serverservice.GetServer(inter.guild_id)
     if not serv:
-      await discordservice_permission.SendError(args[0], 'server')
+      await discordservice_permission.SendError(inter, 'server')
       return
     return await function(self, *args, **kwargs)
   return wrapper
