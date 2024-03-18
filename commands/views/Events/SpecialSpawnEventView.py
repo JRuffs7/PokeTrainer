@@ -45,9 +45,9 @@ class SpecialSpawnEventView(EventView):
 			self.userentries.append(interaction.user.id)
 			self.eventLog.info(f"{self.server.ServerName} - {interaction.user.display_name} participated")
 			self.captureLog.info(f'{self.server.ServerName} - {interaction.user.display_name} used Masterball and caught a {self.pkmndata.Name}')
-			return await interaction.followup.send(content=f"You captured a {self.pkmndata.Name}!\nYou used 1x Masterball and gained $25.")
+			return await interaction.followup.send(content=f"You captured a {self.pkmndata.Name}!\nYou used 1x Masterball and gained $25.", ephemeral=True)
 		else:
-			return await interaction.followup.send(f"Capture failed for some reason. Try again.", delete_after=10)
+			return await interaction.followup.send(f"Capture failed for some reason. Try again.", ephemeral=True)
 
 	def CaptureDesc(self, userId: int):
 		pkmnType = 'starter' if self.pkmndata.IsStarter else 'Legendary' if self.pkmndata.IsLegendary else 'Ultra Beast' if self.pkmndata.IsUltraBeast else 'Paradox' if self.pkmndata.IsParadox else 'fossil' if self.pkmndata.IsFossil else 'Mythical'
