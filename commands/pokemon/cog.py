@@ -193,8 +193,8 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
     if not pokeList:
       return await discordservice_pokemon.PrintGiveCandyResponse(inter, 1)
 
-    evolveView = CandyView(inter, trainer, pokeList)
-    return await evolveView.send()
+    candyView = CandyView(inter, trainer, pokeList)
+    return await candyView.send()
 
 
   #endregion
