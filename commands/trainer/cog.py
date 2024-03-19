@@ -142,7 +142,8 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
       app_commands.Choice(name="Unova", value=5),
       app_commands.Choice(name="Kalos", value=6),
       app_commands.Choice(name="Galar", value=8),
-      app_commands.Choice(name="Paldea", value=9)
+      app_commands.Choice(name="Paldea", value=9),
+      app_commands.Choice(name="Voltage", value=10)
   ])
   @app_commands.choices(images=[
       app_commands.Choice(name="Yes", value=1)
