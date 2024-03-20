@@ -1,5 +1,6 @@
 from discord import Member, app_commands, Interaction
 from discord.ext import commands
+from commands.autofills.autofills import autofill_pokemon
 from commands.views.Pagination.EggView import EggView
 from commands.views.Pagination.PokedexView import PokedexView
 from commands.views.Selection.TeamSelectorView import TeamSelectorView
@@ -15,19 +16,6 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
 
   def __init__(self, bot: commands.Bot):
     self.bot = bot
-
-  async def pokemon_autocomplete(self, inter: Interaction, current: str) -> list[app_commands.Choice[str]]:
-    data = []
-    trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
-    if trainer:
-      pkmnList = [m for m in [pokemonservice.GetPokemonById(p.Pokemon_Id) for p in trainer.OwnedPokemon if p.Id not in trainer.Team] if m]
-      pkmnList.sort(key=lambda x: x.Name)
-      for pkmn in pkmnList:
-        if current.lower() in pkmn.Name.lower() and pkmn.Name not in [d.name for d in data]:
-          data.append(app_commands.Choice(name=pkmn.Name, value=pkmn.Id))
-        if len(data) == 25:
-          break
-    return data
 
   #region INFO
 
@@ -104,7 +92,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
 
   @app_commands.command(name="modifyteam",
                         description="Add a specified Pokemon into a team slot or modify existing team.")
-  @app_commands.autocomplete(pokemon=pokemon_autocomplete)
+  @app_commands.autocomplete(pokemon=autofill_pokemon)
   @method_logger
   @trainer_check
   async def modifyteam(self, inter: Interaction, pokemon: int | None):
@@ -114,7 +102,10 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
     elif len(trainer.Team) == 1 and not pokemon:
       return await discordservice_trainer.PrintModifyTeam(inter, 1, pokemon)
     elif pokemon and pokemon not in [p.Pokemon_Id for p in trainer.OwnedPokemon]:
-      return await discordservice_trainer.PrintModifyTeam(inter, 2, str(pokemon))
+      return await discordservice_trainer.PrintModifyTeam(inter, 2, pokemon)
+    elif pokemon and pokemon not in [p.Pokemon_Id for p in [p for p in trainer.OwnedPokemon if p.Id not in trainer.Team]]:
+      return await discordservice_trainer.PrintModifyTeam(inter, 3, pokemon)
+
     teamSelect = TeamSelectorView(inter, trainer, pokemon)
     await teamSelect.send()
 
@@ -213,7 +204,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
 
   @app_commands.command(name="release",
                         description="Choose a Pokemon to release.")
-  @app_commands.autocomplete(pokemon=pokemon_autocomplete)
+  @app_commands.autocomplete(pokemon=autofill_pokemon)
   @method_logger
   @trainer_check
   async def release(self, inter: Interaction,
