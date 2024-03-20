@@ -249,7 +249,7 @@ def CanCallSpawn(trainer: Trainer):
     canSpawn = True
   else:
     lastSpawn = datetime.strptime(trainer.LastSpawnTime, DateFormat)
-    if(lastSpawn + timedelta(minutes=1) < datetime.now(UTC)):
+    if(lastSpawn + timedelta(minutes=1) < datetime.utcnow()):
       canSpawn = True
   
   if canSpawn:
