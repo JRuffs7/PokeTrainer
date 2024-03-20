@@ -254,8 +254,8 @@ def CanCallSpawn(trainer: Trainer):
   
   if canSpawn:
     trainer.LastSpawnTime = datetime.now(UTC).strftime(DateFormat)
-  UpsertTrainer(trainer)
-  return True
+    UpsertTrainer(trainer)
+  return canSpawn
 
 def TryCapture(reaction: str, trainer: Trainer, spawn: Pokemon):
   caught = False
