@@ -50,7 +50,7 @@
 	"spawn": [
 		{
 			"Title": "Unable to Spawn",
-			"Body": "You must wait at least 5 minutes in between spawns.\nYour last spawn was at {0} UTC"
+			"Body": "You must wait at least 1 minutes in between spawns.\nYour last spawn was at {0} UTC"
 		}
 	]
 }
