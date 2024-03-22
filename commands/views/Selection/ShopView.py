@@ -33,7 +33,7 @@ class ShopView(discord.ui.View):
 		if choice == 'buy':
 			self.ballList = [b for b in self.fullballList if b.BuyAmount and b.BuyAmount <= self.trainer.Money]
 			self.potionList = [p for p in self.fullptnList if p.BuyAmount and p.BuyAmount <= self.trainer.Money]
-			self.candyList = [c for c in self.fullcndylist if c.BuyAmount and c.BuyAmount <= self.trainer.Money]
+			self.candyList = []
 		else:
 			self.ballList = [itemservice.GetPokeball(int(i)) for i in self.trainer.Pokeballs if self.trainer.Pokeballs[i] > 0]
 			self.potionList = [itemservice.GetPotion(int(i)) for i in self.trainer.Potions if self.trainer.Potions[i] > 0]

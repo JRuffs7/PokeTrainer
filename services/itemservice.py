@@ -1,5 +1,5 @@
 from dataaccess import eggda, itemda
-from models.Item import Item
+from models.Item import Candy
 
 
 def GetAllPokeballs():
@@ -11,9 +11,7 @@ def GetAllPotions():
 
 
 def GetAllCandies():
-  itemList: list[Item] = []
-  itemList.extend(itemda.GetAllCandies())
-  return itemList
+  return itemda.GetAllCandies()
 
 
 def GetPokeball(id: int):
