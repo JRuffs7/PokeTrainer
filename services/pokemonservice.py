@@ -256,8 +256,13 @@ def GymFight(attack: PokemonData, defend: PokemonData, attackLevel: int):
   battleResult = TypeMatch(attack.Types, defend.Types)
   doubleAdv = battleResult >= 2
   attackGroup = RarityGroup(attack)
+  attackGroup = attackGroup % 7 if attackGroup < 10 else attackGroup
   defendGroup = RarityGroup(defend)
+  defendGroup = defendGroup % 7 if defendGroup < 10 else defendGroup
   defendLevel = 15 if defendGroup == 1 else 25 if defendGroup == 2 else 35 if defendGroup == 3 else 100
+
+  if IsSpecialPokemon(defend) and len(attack.Types) == 1:
+    return battleResult >= 1 and attackGroup >= defendGroup
 
   return doubleAdv and (attackGroup >= defendGroup or (attackGroup == defendGroup-1 and attackLevel > defendLevel*1.25))
 

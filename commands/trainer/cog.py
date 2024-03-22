@@ -134,7 +134,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
       app_commands.Choice(name="Kalos", value=6),
       app_commands.Choice(name="Galar", value=8),
       app_commands.Choice(name="Paldea", value=9),
-      app_commands.Choice(name="Voltage", value=10)
+      app_commands.Choice(name="Voltage", value=1000)
   ])
   @app_commands.choices(images=[
       app_commands.Choice(name="Yes", value=1)
@@ -212,7 +212,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
     result = [x for x in trainer.OwnedPokemon if x.Pokemon_Id == pokemon and x.Id not in trainer.Team]
     if not result:
-      return await discordservice_trainer.PrintRelease(inter, pokemon)
+      return await discordservice_trainer.PrintRelease(inter, pokemonservice.GetPokemonById(pokemon).Name)
 
     releaseSelect = ReleaseView(inter, result)
     await releaseSelect.send()

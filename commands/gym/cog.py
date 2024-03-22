@@ -33,8 +33,12 @@ class GymCommands(commands.Cog, name="GymCommands"):
         trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
         leaderList = [l for l in gymservice.GetAllGymLeaders()]
         leaderList.sort(key=lambda x: x.BadgeId)
+        nextDone = False
         for ldr in leaderList:
-            nextGym = trainer is not None and ldr.BadgeId == (max(trainer.Badges, default=0) + 1)
+            nextGym = False
+            if trainer is not None and ldr.BadgeId not in trainer.Badges and not nextDone:
+                nextGym = True
+                nextDone = True
             if current.lower() in ldr.Name.lower():
                 data.append(app_commands.Choice(name=f'{ldr.Name} (Your Next)' if nextGym else ldr.Name, value=ldr.BadgeId))
                 if len(data) == 25:

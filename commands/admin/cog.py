@@ -70,10 +70,11 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 			
 	@commands.command(name="addbadge")
 	@is_bot_admin
-	async def addbadge(self, ctx: commands.Context, badge: int, user: Member = None):
+	async def addbadge(self, ctx: commands.Context, badge: int = None, user: Member = None):
 		if not ctx.guild:
 			return
 		trainer = trainerservice.GetTrainer(ctx.guild.id, user.id if user else ctx.author.id)
+		badge = badge if badge else len(trainer.Badges) + 1
 		if trainer and badge not in trainer.Badges:
 			trainer.Badges.append(badge)
 			trainerservice.UpsertTrainer(trainer)
