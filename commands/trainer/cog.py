@@ -1,6 +1,6 @@
 from discord import Member, app_commands, Interaction
 from discord.ext import commands
-from commands.autofills.autofills import autofill_pokemon
+from commands.autofills.autofills import autofill_pokemon, autofill_potions, autofill_zones
 from commands.views.Pagination.EggView import EggView
 from commands.views.Pagination.PokedexView import PokedexView
 from commands.views.Selection.TeamSelectorView import TeamSelectorView
@@ -8,7 +8,7 @@ from commands.views.Selection.ReleaseView import ReleaseView
 from commands.views.Pagination.BadgeView import BadgeView
 
 from middleware.decorators import method_logger, trainer_check
-from services import gymservice, pokemonservice, trainerservice, itemservice
+from services import gymservice, pokemonservice, trainerservice, itemservice, zoneservice
 from services.utility import discordservice_trainer
 
 
@@ -30,29 +30,19 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
     trainer = trainerservice.GetTrainer(interaction.guild_id, targetUser.id)
     return await discordservice_trainer.PrintTrainer(interaction, trainer, targetUser)
 
-  async def autofill_usepotion(self, inter: Interaction, current: str):
-    data: list[app_commands.Choice] = []
-    trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
-    if trainer:
-      ptnList = [itemservice.GetPotion(int(p)) for p in trainer.Potions if trainer.Potions[p] > 0]
-      ptnList.sort(key=lambda x: x.Id)
-      for ptn in ptnList:
-        if current.lower() in ptn.Name.lower():
-          data.append(app_commands.Choice(name=ptn.Name, value=ptn.Id))
-        if len(data) == 25:
-          break
-    return data
 
   @app_commands.command(name="usepotion",
                         description="Use a potion to restore trainer health.")
-  @app_commands.autocomplete(potion=autofill_usepotion)
+  @app_commands.autocomplete(potion=autofill_potions)
   @method_logger
   @trainer_check
   async def usepotion(self, inter: Interaction, potion: int):
-    trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
-    if str(potion) not in trainer.Potions:
+    if potion not in [p.Id for p in itemservice.GetAllPotions()]:
       return await discordservice_trainer.PrintUsePotion(inter, None, (False, 0))
+    trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
     ptn = itemservice.GetPotion(potion)
+    if str(potion) not in trainer.Potions:
+      return await discordservice_trainer.PrintUsePotion(inter, ptn, (False, 0))
     result = trainerservice.TryUsePotion(trainer, ptn)
     return await discordservice_trainer.PrintUsePotion(inter, ptn, result)
 
@@ -85,6 +75,27 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
       trainer.Eggs)
     await teamViewer.send() 
 
+
+  @app_commands.command(name="changezone",
+                        description="Change a zone to spawn specific types.")
+  @app_commands.autocomplete(zone=autofill_zones)
+  @method_logger
+  @trainer_check
+  async def changezone(self, inter: Interaction, zone: int):
+    trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
+    zoneData = zoneservice.GetZone(zone)
+    if trainer.CurrentZone == zone:
+      return await discordservice_trainer.PrintChangeZone(inter, 0 if zone != 0 else 2, [zoneData.Name])
+    
+    trainer.CurrentZone = zone
+    trainerservice.UpsertTrainer(trainer)
+    zoneTypes = zoneData.Types
+    zoneTypes.sort()
+    if zone == 0:
+      await discordservice_trainer.PrintChangeZone(inter, 2, [])
+    else:
+      await discordservice_trainer.PrintChangeZone(inter, 1, ['/'.join(zoneTypes), zoneData.Name])
+    
 
   #endregion
 

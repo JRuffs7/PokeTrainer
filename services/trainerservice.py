@@ -18,6 +18,9 @@ captureLog = logging.getLogger('capture')
 
 #region Data
 
+def CheckTrainer(serverId: int, userId: int):
+  return trainerda.CheckTrainer(serverId, userId)
+
 def GetTrainer(serverId: int, userId: int):
   return trainerda.GetTrainer(serverId, userId)
 

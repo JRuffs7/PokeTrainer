@@ -9,6 +9,20 @@
 			"Body": "No badges obtained for the {0} region. Fight gym leaders using **/gymbattle** to obtain badges."
 		}
 	],
+	"changezone": [
+		{
+			"Title": "Zone Already Set",
+			"Body": "You are already searching for Pokemon in the **__{0} Zone__**. Please choose a different zone."
+		},
+		{
+			"Title": "Zone Changed",
+			"Body": "You are now set to search for {0} type Pokemon in the **__{1} Zone__**. Use this command again to go into a different zone or reset to normal."
+		},
+		{
+			"Title": "Zone Reset",
+			"Body": "Your zone has been reset and you will now find every type of Pokemon. Use this command again to go into a different zone."
+		}
+	],
 	"daily": [
 		{
 			"Title": "Already Claimed",
@@ -74,7 +88,7 @@
 		},
 		{
 			"Title": "Invalid Command",
-			"Body": "Please select a potion from the provided list when executing the command. If no potions show up, you must first purchase one by using **/shop**."
+			"Body": "Please select a potion from the provided list when executing the command."
 		}
 	]
 }

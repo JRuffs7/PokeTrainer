@@ -41,7 +41,8 @@ EphemeralCommands = [
     'gyminfo',
     'evolve',
     'hatch',
-    'givecandy'
+    'givecandy',
+    'changezone'
 ]
 
 

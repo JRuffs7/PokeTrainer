@@ -120,3 +120,13 @@ async def PrintMyEggs(interaction: Interaction):
 		color=TrainerColor, 
 		params=[],
 		eph=True)
+
+async def PrintChangeZone(interaction: Interaction, responseId: int, params: list[str]):
+	return await discordservice.SendCommandResponse(
+		interaction=interaction, 
+		filename=responseFile, 
+		command='changezone', 
+		responseInd=responseId, 
+		color=TrainerColor, 
+		params=params,
+		eph=True)

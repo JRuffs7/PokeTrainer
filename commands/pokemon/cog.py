@@ -11,7 +11,7 @@ import discordbot
 from commands.views.Selection.EvolveView import EvolveView
 from globals import AdminList
 from middleware.decorators import method_logger, trainer_check
-from services import pokemonservice, typeservice, trainerservice
+from services import pokemonservice, typeservice, trainerservice, zoneservice
 from services.utility import discordservice_pokemon
 
 
@@ -30,8 +30,8 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
   @method_logger
   @trainer_check
   async def spawn(self, inter: Interaction):
-    pokemon = pokemonservice.SpawnPokemon()
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
+    pokemon = pokemonservice.SpawnPokemon(None if trainer.CurrentZone == 0 else zoneservice.GetZone(trainer.CurrentZone))
     trainerservice.EggInteraction(trainer)
     if inter.user.id in AdminList or trainerservice.CanCallSpawn(trainer):
       await SpawnPokemonView(inter, trainer, pokemon).send()
@@ -171,8 +171,8 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
     if not candyList: 
       return await discordservice_pokemon.PrintGiveCandyResponse(inter, 0)
 
-    evolveView = CandyView(inter, trainer, pokeList)
-    return await evolveView.send()
+    candyView = CandyView(inter, trainer, pokeList)
+    return await candyView.send()
 
 
   #endregion
