@@ -14,14 +14,14 @@ async def PrintPokeInfoResponse(interaction: Interaction, response: int, params:
 		params=params,
 		eph=True)
 
-async def PrintEvolveResponse(interaction: Interaction, response: int):
+async def PrintEvolveResponse(interaction: Interaction, response: int, pkmnname: str|None = None):
 	return await discordservice.SendCommandResponse(
 		interaction=interaction, 
 		filename=responseFile, 
 		command='evolve', 
 		responseInd=response, 
 		color=PokemonColor, 
-		params=[],
+		params=[pkmnname],
 		eph=True)
 
 async def PrintSpawnResponse(interaction: Interaction, response: int, params: list):
@@ -44,12 +44,12 @@ async def PrintHatchResponse(interaction: Interaction, response: int):
 		params=[],
 		eph=True)
 
-async def PrintGiveCandyResponse(interaction: Interaction, response: int):
+async def PrintGiveCandyResponse(interaction: Interaction, response: int, pkmnname: str|None = None):
 	return await discordservice.SendCommandResponse(
 		interaction=interaction, 
 		filename=responseFile, 
 		command='givecandy', 
 		responseInd=response, 
 		color=PokemonColor, 
-		params=[],
+		params=[pkmnname],
 		eph=True)

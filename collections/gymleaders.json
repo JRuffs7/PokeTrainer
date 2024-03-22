@@ -29,9 +29,9 @@
     "MainType": "Electric",
     "Sprite": "https://imgur.com/DkjvZ6M.png",
     "Team": [
+      100,
       25,
-      26,
-      100
+      26
     ],
     "BadgeId": 3,
     "Reward": 300
@@ -42,9 +42,9 @@
     "MainType": "Grass",
     "Sprite": "https://imgur.com/2yLQus2.png",
     "Team": [
-      45,
       71,
-      114
+      114,
+      45
     ],
     "BadgeId": 4,
     "Reward": 300
@@ -55,10 +55,10 @@
     "MainType": "Poison",
     "Sprite": "https://imgur.com/e1hReA9.png",
     "Team": [
+      109,
       89,
       109,
-      110,
-      109
+      110
     ],
     "BadgeId": 5,
     "Reward": 400
@@ -69,10 +69,10 @@
     "MainType": "Psychic",
     "Sprite": "https://imgur.com/EfJuyZI.png",
     "Team": [
-      49,
       64,
-      65,
-      122
+      122,
+      49,
+      65
     ],
     "BadgeId": 6,
     "Reward": 400
@@ -84,9 +84,9 @@
     "Sprite": "https://imgur.com/yGBKKzx.png",
     "Team": [
       58,
-      59,
       77,
-      78
+      78,
+      59
     ],
     "BadgeId": 7,
     "Reward": 400
@@ -97,10 +97,10 @@
     "MainType": "Ground",
     "Sprite": "https://imgur.com/dOFTbdS.png",
     "Team": [
+      111,
+      51,
       31,
       34,
-      51,
-      111,
       112
     ],
     "BadgeId": 8,
@@ -151,8 +151,8 @@
     "Team": [
       92,
       93,
-      94,
-      93
+      93,
+      94
     ],
     "BadgeId": 12,
     "Reward": 400
@@ -176,8 +176,8 @@
     "Sprite": "https://imgur.com/jHel83B.png",
     "Team": [
       81,
-      208,
-      81
+      81,
+      208
     ],
     "BadgeId": 14,
     "Reward": 300
@@ -203,8 +203,8 @@
     "Team": [
       148,
       148,
-      230,
-      148
+      148,
+      230
     ],
     "BadgeId": 16,
     "Reward": 200
@@ -240,8 +240,8 @@
     "Sprite": "https://imgur.com/3kDIg8c.png",
     "Team": [
       81,
-      82,
-      100
+      100,
+      82
     ],
     "BadgeId": 19,
     "Reward": 300
@@ -253,8 +253,8 @@
     "Sprite": "https://imgur.com/Z9xmB4G.png",
     "Team": [
       218,
-      324,
-      218
+      218,
+      324
     ],
     "BadgeId": 20,
     "Reward": 300
@@ -265,8 +265,8 @@
     "MainType": "Normal",
     "Sprite": "https://imgur.com/qHAdyEC.png",
     "Team": [
-      288,
       289,
+      288,
       289
     ],
     "BadgeId": 21,
@@ -278,9 +278,9 @@
     "MainType": "Flying",
     "Sprite": "https://imgur.com/VUQhtxA.png",
     "Team": [
-      227,
       277,
       279,
+      227,
       334
     ],
     "BadgeId": 22,
@@ -292,8 +292,8 @@
     "MainType": "Psychic",
     "Sprite": "https://imgur.com/ZMrt8ol.png",
     "Team": [
-      337,
-      338
+      338,
+      337
     ],
     "BadgeId": 23,
     "Reward": 200
@@ -304,11 +304,11 @@
     "MainType": "Water",
     "Sprite": "https://imgur.com/vsHk8DX.png",
     "Team": [
-      119,
+      370,
       340,
-      350,
       364,
-      370
+      119,
+      350
     ],
     "BadgeId": 24,
     "Reward": 500
@@ -332,9 +332,9 @@
     "MainType": "Grass",
     "Sprite": "https://imgur.com/136ObJd.png",
     "Team": [
+      420,
       387,
-      407,
-      420
+      407
     ],
     "BadgeId": 26,
     "Reward": 300
@@ -345,8 +345,8 @@
     "MainType": "Fighting",
     "Sprite": "https://imgur.com/sMviNOM.png",
     "Team": [
-      67,
       307,
+      67,
       448
     ],
     "BadgeId": 27,
@@ -371,8 +371,8 @@
     "MainType": "Ghost",
     "Sprite": "https://imgur.com/iZjIH9L.png",
     "Team": [
-      94,
       426,
+      94,
       429
     ],
     "BadgeId": 29,
@@ -384,9 +384,9 @@
     "MainType": "Steel",
     "Sprite": "https://imgur.com/kQp2ZYp.png",
     "Team": [
+      436,
       208,
-      411,
-      436
+      411
     ],
     "BadgeId": 30,
     "Reward": 300
@@ -397,9 +397,9 @@
     "MainType": "Ice",
     "Sprite": "https://imgur.com/bt012wp.png",
     "Team": [
+      459,
       215,
       308,
-      459,
       460
     ],
     "BadgeId": 31,
@@ -412,9 +412,9 @@
     "Sprite": "https://imgur.com/uRFVrw8.png",
     "Team": [
       26,
+      424,
       224,
-      405,
-      424
+      405
     ],
     "BadgeId": 32,
     "Reward": 400
@@ -426,8 +426,8 @@
     "Sprite": "https://imgur.com/HYSAS3q.png",
     "Team": [
       506,
-      511,
       513,
+      511,
       515
     ],
     "BadgeId": 33,
@@ -439,8 +439,8 @@
     "MainType": "Normal",
     "Sprite": "https://imgur.com/XNSdadk.png",
     "Team": [
-      505,
-      507
+      507,
+      505
     ],
     "BadgeId": 34,
     "Reward": 200
@@ -451,9 +451,9 @@
     "MainType": "Bug",
     "Sprite": "https://imgur.com/of1eWxH.png",
     "Team": [
-      542,
       544,
-      557
+      557,
+      542
     ],
     "BadgeId": 35,
     "Reward": 300
@@ -464,9 +464,9 @@
     "MainType": "Electric",
     "Sprite": "https://imgur.com/PB0kqgd.png",
     "Team": [
-      523,
       587,
-      587
+      587,
+      523
     ],
     "BadgeId": 36,
     "Reward": 200
@@ -477,9 +477,9 @@
     "MainType": "Ground",
     "Sprite": "https://imgur.com/nbLVZg3.png",
     "Team": [
-      530,
+      552,
       536,
-      552
+      530
     ],
     "BadgeId": 37,
     "Reward": 300
@@ -490,8 +490,8 @@
     "MainType": "Flying",
     "Sprite": "https://imgur.com/PQnvl3G.png",
     "Team": [
-      521,
       528,
+      521,
       581
     ],
     "BadgeId": 38,
@@ -504,8 +504,8 @@
     "Sprite": "https://imgur.com/hkvM2Ho.png",
     "Team": [
       583,
-      614,
-      615
+      615,
+      614
     ],
     "BadgeId": 39,
     "Reward": 300
@@ -517,8 +517,8 @@
     "Sprite": "https://imgur.com/WioOPnB.png",
     "Team": [
       611,
-      612,
-      621
+      621,
+      612
     ],
     "BadgeId": 40,
     "Reward": 300
@@ -553,9 +553,9 @@
     "MainType": "Fighting",
     "Sprite": "https://imgur.com/GigyhxJ.png",
     "Team": [
-      67,
       619,
-      701
+      701,
+      67
     ],
     "BadgeId": 43,
     "Reward": 300
@@ -566,9 +566,9 @@
     "MainType": "Grass",
     "Sprite": "https://imgur.com/WqQlOFs.png",
     "Team": [
-      70,
       189,
-      673
+      673,
+      70
     ],
     "BadgeId": 44,
     "Reward": 300
@@ -579,8 +579,8 @@
     "MainType": "Electric",
     "Sprite": "https://imgur.com/eIhMsEE.png",
     "Team": [
-      82,
       587,
+      82,
       695
     ],
     "BadgeId": 45,
@@ -592,8 +592,8 @@
     "MainType": "Fairy",
     "Sprite": "https://imgur.com/d9sYWoK.png",
     "Team": [
-      122,
       303,
+      122,
       700
     ],
     "BadgeId": 46,
@@ -605,8 +605,8 @@
     "MainType": "Psychic",
     "Sprite": "https://imgur.com/cyMoq3w.png",
     "Team": [
-      199,
       561,
+      199,
       678
     ],
     "BadgeId": 47,
@@ -644,8 +644,8 @@
     "Sprite": "https://imgur.com/XeZpSAn.png",
     "Team": [
       118,
-      834,
-      846
+      846,
+      834
     ],
     "BadgeId": 50,
     "Reward": 300
@@ -669,10 +669,10 @@
     "MainType": "Fighting",
     "Sprite": "https://imgur.com/eFNLrq9.png",
     "Team": [
-      68,
       237,
       675,
-      865
+      865,
+      68
     ],
     "BadgeId": 52,
     "Reward": 400
@@ -683,10 +683,10 @@
     "MainType": "Ghost",
     "Sprite": "https://imgur.com/Hfc33hn.png",
     "Team": [
-      94,
       562,
       778,
-      864
+      864,
+      94
     ],
     "BadgeId": 53,
     "Reward": 400
@@ -697,10 +697,10 @@
     "MainType": "Fairy",
     "Sprite": "https://imgur.com/TV0yquq.png",
     "Team": [
+      10326,
       303,
       468,
-      869,
-      1203
+      869
     ],
     "BadgeId": 54,
     "Reward": 400
@@ -711,10 +711,10 @@
     "MainType": "Rock",
     "Sprite": "https://imgur.com/o2ARMHG.png",
     "Team": [
-      213,
       689,
-      839,
-      874
+      213,
+      874,
+      839
     ],
     "BadgeId": 55,
     "Reward": 400
@@ -725,10 +725,10 @@
     "MainType": "Ice",
     "Sprite": "https://imgur.com/6iOUt3i.png",
     "Team": [
-      131,
       873,
+      10336,
       875,
-      1213
+      131
     ],
     "BadgeId": 56,
     "Reward": 400
@@ -739,11 +739,11 @@
     "MainType": "Dark",
     "Sprite": "https://imgur.com/SVUtJiS.png",
     "Team": [
-      454,
       510,
+      454,
       560,
-      861,
-      877
+      877,
+      861
     ],
     "BadgeId": 57,
     "Reward": 500
@@ -754,8 +754,8 @@
     "MainType": "Dragon",
     "Sprite": "https://imgur.com/x0B60kt.png",
     "Team": [
-      330,
       526,
+      330,
       844,
       884
     ],
@@ -768,9 +768,9 @@
     "MainType": "Bug",
     "Sprite": "https://imgur.com/BrUUmLq.png",
     "Team": [
-      216,
-      915,
-      917
+      919,
+      917,
+      216
     ],
     "BadgeId": 59,
     "Reward": 300
@@ -781,9 +781,9 @@
     "MainType": "Grass",
     "Sprite": "https://imgur.com/qdzITwv.png",
     "Team": [
-      185,
       548,
-      926
+      928,
+      185
     ],
     "BadgeId": 60,
     "Reward": 300
@@ -794,10 +794,10 @@
     "MainType": "Electric",
     "Sprite": "https://imgur.com/6IkKQgZ.png",
     "Team": [
+      940,
+      939,
       404,
-      429,
-      937,
-      938
+      429
     ],
     "BadgeId": 61,
     "Reward": 400
@@ -808,9 +808,9 @@
     "MainType": "Water",
     "Sprite": "https://imgur.com/xTqUlgM.png",
     "Team": [
-      740,
-      959,
-      974
+      976,
+      961,
+      740
     ],
     "BadgeId": 62,
     "Reward": 300
@@ -821,9 +821,9 @@
     "MainType": "Normal",
     "Sprite": "https://imgur.com/fG70ipA.png",
     "Team": [
-      398,
       775,
-      980
+      982,
+      398
     ],
     "BadgeId": 63,
     "Reward": 300
@@ -836,8 +836,8 @@
     "Team": [
       354,
       778,
-      849,
-      970
+      972,
+      849
     ],
     "BadgeId": 64,
     "Reward": 400
@@ -848,10 +848,10 @@
     "MainType": "Psychic",
     "Sprite": "https://imgur.com/G5z68PN.png",
     "Team": [
+      981,
       282,
-      671,
-      954,
-      979
+      956,
+      671
     ],
     "BadgeId": 65,
     "Reward": 400
@@ -862,10 +862,10 @@
     "MainType": "Ice",
     "Sprite": "https://imgur.com/rAhq2ed.png",
     "Team": [
-      334,
-      614,
       873,
-      973
+      614,
+      975,
+      334
     ],
     "BadgeId": 66,
     "Reward": 400
@@ -876,15 +876,15 @@
     "MainType": "Psychic",
     "Sprite": "https://imgur.com/qAat2ZF.png",
     "Team": [
-      178,
-      376,
-      454,
+      899,
       475,
-      648,
-      1201
+      866,
+      687,
+      282,
+      648
     ],
     "BadgeId": 1000,
-    "Reward": 1000
+    "Reward": 5000
   },
   {
     "Name": "Miku Grass",
@@ -893,14 +893,14 @@
     "Sprite": "https://imgur.com/OEFCL75.png",
     "Team": [
       272,
-      407,
-      709,
-      787,
+      598,
+      952,
+      346,
       812,
-      842
+      787
     ],
     "BadgeId": 1001,
-    "Reward": 1000
+    "Reward": 5000
   },
   {
     "Name": "Miku Fire",
@@ -908,15 +908,15 @@
     "MainType": "Fire",
     "Sprite": "https://imgur.com/qAat2ZF.png",
     "Team": [
-      229,
-      244,
-      392,
+      851,
       758,
       776,
-      909
+      911,
+      637,
+      485
     ],
     "BadgeId": 1002,
-    "Reward": 1000
+    "Reward": 5000
   },
   {
     "Name": "Miku Water",
@@ -924,15 +924,15 @@
     "MainType": "Water",
     "Sprite": "https://imgur.com/g8BH7aa.png",
     "Team": [
-      171,
-      365,
-      484,
-      730,
+      537,
       748,
-      768
+      171,
+      768,
+      730,
+      1009
     ],
     "BadgeId": 1003,
-    "Reward": 1000
+    "Reward": 5000
   },
   {
     "Name": "Miku Electric",
@@ -940,15 +940,15 @@
     "MainType": "Electric",
     "Sprite": "https://imgur.com/u239T4L.png",
     "Team": [
-      462,
-      479,
-      644,
-      695,
+      604,
       738,
-      1142
+      695,
+      10401,
+      479,
+      644
     ],
     "BadgeId": 1004,
-    "Reward": 1000
+    "Reward": 5000
   },
   {
     "Name": "Miku Normal",
@@ -956,13 +956,15 @@
     "MainType": "Normal",
     "Sprite": "https://imgur.com/YMMQZlx.png",
     "Team": [
-      40,
       441,
-      660,
-      668
+      945,
+      40,
+      400,
+      981,
+      486
     ],
     "BadgeId": 1005,
-    "Reward": 1000
+    "Reward": 5000
   },
   {
     "Name": "Miku Ice",
@@ -970,15 +972,15 @@
     "MainType": "Ice",
     "Sprite": "https://imgur.com/ifafGHC.png",
     "Team": [
-      124,
       131,
-      473,
-      478,
-      646,
-      740
+      124,
+      998,
+      10204,
+      10206,
+      646
     ],
     "BadgeId": 1006,
-    "Reward": 1000
+    "Reward": 5000
   },
   {
     "Name": "Miku Rock",
@@ -986,15 +988,15 @@
     "MainType": "Rock",
     "Sprite": "https://imgur.com/4FVD8ez.png",
     "Team": [
+      699,
       142,
-      213,
+      346,
+      558,
       306,
-      337,
-      639,
-      699
+      719
     ],
     "BadgeId": 1007,
-    "Reward": 1000
+    "Reward": 5000
   },
   {
     "Name": "Miku Ground",
@@ -1003,14 +1005,14 @@
     "Sprite": "https://imgur.com/sMLAobn.png",
     "Team": [
       31,
-      208,
       330,
-      389,
-      645,
-      770
+      208,
+      445,
+      260,
+      645
     ],
     "BadgeId": 1008,
-    "Reward": 1000
+    "Reward": 5000
   },
   {
     "Name": "Miku Flying",
@@ -1018,15 +1020,15 @@
     "MainType": "Flying",
     "Sprite": "https://imgur.com/yoSTnFI.png",
     "Team": [
-      18,
       334,
       823,
-      960,
-      971,
-      1082
+      373,
+      227,
+      941,
+      250
     ],
     "BadgeId": 1009,
-    "Reward": 1000
+    "Reward": 5000
   },
   {
     "Name": "Miku Fairy",
@@ -1034,15 +1036,15 @@
     "MainType": "Fairy",
     "Sprite": "https://imgur.com/MRS6bye.png",
     "Team": [
+      10326,
+      730,
       39,
-      716,
+      959,
       861,
-      957,
-      1004,
-      1135
+      801
     ],
     "BadgeId": 1010,
-    "Reward": 1000
+    "Reward": 5000
   },
   {
     "Name": "Miku Bug",
@@ -1050,15 +1052,15 @@
     "MainType": "Bug",
     "Sprite": "https://imgur.com/SuZrlKd.png",
     "Team": [
+      752,
+      596,
+      10036,
       348,
       402,
-      596,
-      649,
-      752,
-      851
+      649
     ],
     "BadgeId": 1011,
-    "Reward": 1000
+    "Reward": 5000
   },
   {
     "Name": "Miku Poison",
@@ -1066,15 +1068,15 @@
     "MainType": "Poison",
     "Sprite": "https://imgur.com/PgDuCzm.png",
     "Team": [
-      34,
+      545,
+      849,
+      435,
       45,
       169,
-      435,
-      849,
-      1023
+      1015
     ],
     "BadgeId": 1012,
-    "Reward": 1000
+    "Reward": 5000
   },
   {
     "Name": "Miku Ghost",
@@ -1082,15 +1084,15 @@
     "MainType": "Ghost",
     "Sprite": "https://imgur.com/CZPmEkZ.png",
     "Team": [
-      429,
-      487,
-      609,
-      681,
       778,
-      935
+      442,
+      10408,
+      429,
+      302,
+      792
     ],
     "BadgeId": 1013,
-    "Reward": 1000
+    "Reward": 5000
   },
   {
     "Name": "Miku Dark",
@@ -1098,15 +1100,15 @@
     "MainType": "Dark",
     "Sprite": "https://imgur.com/fB4eWfB.png",
     "Team": [
-      430,
-      491,
-      553,
-      658,
       862,
-      1144
+      452,
+      430,
+      983,
+      920,
+      892
     ],
     "BadgeId": 1014,
-    "Reward": 1000
+    "Reward": 5000
   },
   {
     "Name": "Miku Steel",
@@ -1114,14 +1116,15 @@
     "MainType": "Steel",
     "Sprite": "https://imgur.com/vx8GJbf.png",
     "Team": [
-      385,
+      1018,
+      205,
       395,
-      437,
-      448,
-      998
+      589,
+      411,
+      385
     ],
     "BadgeId": 1015,
-    "Reward": 1000
+    "Reward": 5000
   },
   {
     "Name": "Miku Fighting",
@@ -1129,15 +1132,15 @@
     "MainType": "Fighting",
     "Sprite": "https://imgur.com/HJhtXOX.png",
     "Team": [
-      62,
-      286,
-      760,
       865,
-      977,
-      1228
+      448,
+      308,
+      923,
+      903,
+      10358
     ],
     "BadgeId": 1016,
-    "Reward": 1000
+    "Reward": 5000
   },
   {
     "Name": "Miku Dragon",
@@ -1145,14 +1148,14 @@
     "MainType": "Dragon",
     "Sprite": "https://imgur.com/X9AUIiG.png",
     "Team": [
-      384,
-      483,
       643,
-      888,
-      893,
-      1006
+      10222,
+      483,
+      1020,
+      484,
+      1008
     ],
     "BadgeId": 1017,
-    "Reward": 1000
+    "Reward": 5000
   }
 ]

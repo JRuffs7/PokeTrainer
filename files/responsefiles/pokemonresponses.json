@@ -3,6 +3,10 @@
 		{
 			"Title": "Cannot Evolve",
 			"Body": "You have no Pokemon currently able to evolve. Level your Pokemon up by fighting gym leaders using **/gymbattle** and wild Pokemon using **/spawn**."
+		},
+		{
+			"Title": "Cannot Evolve",
+			"Body": "You do not own any {0} that are able to evolve. Level your Pokemon up by fighting gym leaders using **/gymbattle** and wild Pokemon using **/spawn**."
 		}
 	],
 	"givecandy": [
@@ -11,8 +15,8 @@
 			"Body": "You do not have any candies to give to your Pokemon. You can buy some through the **/shop**."
 		},
 		{
-			"Title": "Pokemon Does Not Exist",
-			"Body": "There seems to be an issue locating the selected Pokemon. Try again."
+			"Title": "Cannot Give Candy",
+			"Body": "You do not own any {0} to give a candy to. Try again."
 		}
 	],
 	"hatch": [
@@ -46,7 +50,7 @@
 	"spawn": [
 		{
 			"Title": "Unable to Spawn",
-			"Body": "You must wait at least 5 minutes in between spawns.\nYour last spawn was at {0} UTC"
+			"Body": "You must wait at least 1 minutes in between spawns.\nYour last spawn was at {0} UTC"
 		}
 	]
 }

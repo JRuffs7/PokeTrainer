@@ -51,6 +51,9 @@ def GetPokemonByRarity(rarity: list[int]):
 def GetStarterPokemon():
   return [p for p in pokemonda.GetAllPokemon() if p.IsStarter]
 
+def IsSpecialPokemon(pokemon: PokemonData):
+  return pokemon.IsLegendary or pokemon.IsMythical or pokemon.IsUltraBeast
+
 #endregion
 
 #region Display
@@ -213,8 +216,8 @@ def WildFight(attack: PokemonData, defend: PokemonData, attackLevel: int, defend
   battleResult = TypeMatch(attack.Types, defend.Types)
   doubleAdv = battleResult >= 2
   doubleDis = battleResult <= -2
-  attackGroup = RarityGroup(attack.Rarity, attack.IsLegendary or attack.IsMythical)
-  defendGroup = RarityGroup(defend.Rarity, defend.IsLegendary or defend.IsMythical)
+  attackGroup = RarityGroup(attack)
+  defendGroup = RarityGroup(defend)
   levelAdvantage = 2 if attackLevel > (defendLevel*2) else 1 if attackLevel > (defendLevel*1.5) else 0
   levelDisadvantage = 2 if defendLevel > (attackLevel*2) else 1 if defendLevel > (attackLevel*1.5) else 0
   if attackLevel < 10 and defendLevel < 10:
@@ -252,9 +255,14 @@ def WildFight(attack: PokemonData, defend: PokemonData, attackLevel: int, defend
 def GymFight(attack: PokemonData, defend: PokemonData, attackLevel: int):
   battleResult = TypeMatch(attack.Types, defend.Types)
   doubleAdv = battleResult >= 2
-  attackGroup = RarityGroup(attack.Rarity, attack.IsLegendary or attack.IsMythical)
-  defendGroup = RarityGroup(defend.Rarity, defend.IsLegendary or defend.IsMythical)
+  attackGroup = RarityGroup(attack)
+  attackGroup = attackGroup % 7 if attackGroup < 10 else attackGroup
+  defendGroup = RarityGroup(defend)
+  defendGroup = defendGroup % 7 if defendGroup < 10 else defendGroup
   defendLevel = 15 if defendGroup == 1 else 25 if defendGroup == 2 else 35 if defendGroup == 3 else 100
+
+  if IsSpecialPokemon(defend) and len(attack.Types) == 1:
+    return battleResult >= 1 and attackGroup >= defendGroup
 
   return doubleAdv and (attackGroup >= defendGroup or (attackGroup == defendGroup-1 and attackLevel > defendLevel*1.25))
 
@@ -284,10 +292,10 @@ def TypeMatch(attackTypes: list[str], defendTypes: list[str]):
     
     return firstType + secondType
 
-def RarityGroup(rarity: int, isLegendary: bool):
-  rarityGroup = 1 if rarity <= 2 else 2 if rarity == 3 else 3
-  if isLegendary:
-    rarityGroup = rarity
+def RarityGroup(pokemon: PokemonData):
+  rarityGroup = 1 if pokemon.Rarity <= 2 else 2 if pokemon.Rarity == 3 else 3
+  if IsSpecialPokemon(pokemon):
+    rarityGroup = pokemon.Rarity
   return rarityGroup
 
 #endregion

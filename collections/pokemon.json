@@ -24300,7 +24300,7 @@
       "Normal"
     ],
     "Weight": 1205,
-    "Rarity": 2
+    "Rarity": 9
   },
   {
     "Id": 773,
@@ -35974,11 +35974,11 @@
     "SpriteFemale": null,
     "ShinySpriteFemale": null,
     "Types": [
-      "Ground",
-      "Dragon"
+      "Dragon",
+      "Ground"
     ],
     "Weight": 335,
-    "Rarity": 9
+    "Rarity": 8
   },
   {
     "Id": 10221,
@@ -36007,8 +36007,8 @@
     "SpriteFemale": null,
     "ShinySpriteFemale": null,
     "Types": [
-      "Ground",
-      "Dragon"
+      "Dragon",
+      "Ground"
     ],
     "Weight": 3050,
     "Rarity": 9
@@ -36038,8 +36038,8 @@
     "SpriteFemale": null,
     "ShinySpriteFemale": null,
     "Types": [
-      "Ground",
-      "Dragon"
+      "Dragon",
+      "Ground"
     ],
     "Weight": 6100,
     "Rarity": 10
