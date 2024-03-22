@@ -55,9 +55,12 @@ async def StartBot():
 
   @discordBot.event
   async def on_message_delete(message: discord.Message):
-    if not message.guild or message.author.id != discordBot.user.id:
-      return
-    await serverservice.EndEvent(serverservice.GetServer(message.guild.id), message.id)
+    try:
+      if not message.guild or message.author.id != discordBot.user.id:
+        return
+      await serverservice.EndEvent(serverservice.GetServer(message.guild.id), message.id)
+    except Exception as e:
+      logger.error(f"EVENT ERROR FOR SERVER: {message.guild.name if message.guild else 'N/A'}")
 
   for f in os.listdir("commands"):
     if os.path.exists(os.path.join("commands", f, "cog.py")):
