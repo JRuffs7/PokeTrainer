@@ -2,6 +2,7 @@ import uuid
 from math import ceil, floor
 from random import choice, uniform
 from models.Item import Pokeball
+from models.Zone import Zone
 from models.enums import SpecialSpawn
 
 from services import typeservice
@@ -88,8 +89,11 @@ def GetPokemonImage(pokemon: Pokemon | PokemonData):
 
 #region Spawns
 
-def SpawnPokemon():
+def SpawnPokemon(specialZone: Zone|None):
   pokemonList = pokemonda.GetPokemonByProperty([1, 2, 3], 'Rarity')
+  if specialZone:
+    specialTypes = [t.lower() for t in specialZone.Types]
+    pokemonList = [p for p in pokemonList if p.Types[0].lower() in specialTypes or (p.Types[1] in specialTypes if len(p.Types) > 1 else False)]
   pokemon = None
   while not pokemon:
     pokemon = choice(pokemonList)
