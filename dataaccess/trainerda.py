@@ -6,8 +6,17 @@ from models.Trainer import Trainer
 
 collection: str = 'Trainer'
 
+def CheckTrainer(serverId: int, userId: int):
+  if sqliteda.KeyExists('trainer', f'{serverId}{userId}'):
+    return True
+  trainer = mongodb.GetSingleDoc(collection, {
+        'ServerId': serverId,
+        'UserId': userId
+  })
+  return (trainer is not None)
+
 def GetTrainer(serverId: int, userId: int) -> Trainer|None:
-  key = f"{serverId}{userId}"
+  key = f'{serverId}{userId}'
   trainer = sqliteda.Load('Trainer', key)
   if not trainer:
     train = mongodb.GetSingleDoc(collection, {
@@ -21,14 +30,14 @@ def GetTrainer(serverId: int, userId: int) -> Trainer|None:
 
 
 def UpsertTrainer(trainer: Trainer):
-  sqliteda.Save('Trainer', f"{trainer.ServerId}{trainer.UserId}", trainer)
+  sqliteda.Save('Trainer', f'{trainer.ServerId}{trainer.UserId}', trainer)
   thread = Thread(target=PushTrainerToMongo, args=(trainer, ))
   thread.start()
   return trainer
 
 
 def DeleteTrainer(trainer: Trainer):
-  sqliteda.Remove('Trainer', f"{trainer.ServerId}{trainer.UserId}")
+  sqliteda.Remove('Trainer', f'{trainer.ServerId}{trainer.UserId}')
   thread = Thread(target=DeleteTrainerFromMongo,
                   args=(trainer.ServerId, trainer.UserId))
   thread.start()

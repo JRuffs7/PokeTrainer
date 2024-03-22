@@ -4,6 +4,14 @@ from sqlitedict import SqliteDict
 errorLog = logging.getLogger('error')
 cacheFile = "dataaccess/utility/cache.sqlite3"
 
+def KeyExists(table: str, key: str):
+	try:
+		with SqliteDict(cacheFile, tablename=table) as mydict:
+			exists = str(key) in [k for k in mydict.keys()]
+		return exists
+	except Exception as ex:
+		errorLog.error(f'Sqlite Key Error: {ex}')
+
 def Save(table: str, key: str, value):
 	try:
 		with SqliteDict(cacheFile, tablename=table) as mydict:

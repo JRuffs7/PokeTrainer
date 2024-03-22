@@ -18,6 +18,7 @@ class Trainer:
   Eggs: list[TrainerEgg] = field(default_factory=list)
   LastSpawnTime: str | None = None
   LastDaily: str | None = None
+  CurrentZone: int = 0
 
   @classmethod
   def from_dict(cls, dict):
