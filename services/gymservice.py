@@ -64,6 +64,9 @@ def GetGymLeaderByBadge(badgeId: int):
 def GetAllBadges():
 	return gymda.GetAllBadges()
 
+def GetBadgesByRegion(region: int):
+	return [b for b in gymda.GetAllBadges() if b.Generation == region]
+
 def GetBadgeById(badgeId: int):
 	return next((b for b in GetAllBadges() if b.Id == badgeId),None)
 

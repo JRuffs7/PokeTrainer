@@ -11,7 +11,7 @@ from models.Item import Potion
 from models.Trainer import Trainer
 from models.Pokemon import Pokemon
 from models.enums import EventType, PokemonCount, StatCompare
-from services import itemservice, pokemonservice
+from services import gymservice, itemservice, pokemonservice
 
 captureLog = logging.getLogger('capture')
 
@@ -113,6 +113,19 @@ def ModifyItemList(itemDict: dict[str, int], itemId: str, amount: int):
   if newAmount < 0:
     newAmount = 0
   itemDict.update({ itemId: newAmount })
+
+def HasRegionReward(trainer: Trainer, region: int):
+  return max([b.Id for b in gymservice.GetBadgesByRegion(region)]) in trainer.Badges
+
+def TryGetCandy():
+  if choice(range(1,101)) < 20:
+    randCandy = choice(range(1,101))
+    if randCandy < 10:
+      return itemservice.GetCandy(1) #Rare Candy
+    elif randCandy < 40:
+      return itemservice.GetCandy(3) #Large Candy
+    return itemservice.GetCandy(2) #Small Candy
+  return None
 
 #endregion
 
@@ -288,12 +301,27 @@ def TryWildFight(trainer: Trainer, wild: Pokemon):
     trainer.Health -= healthLost
     trainer.Health = 0 if trainer.Health < 0 else trainer.Health
     if healthLost < 10 and trainer.Health > 0:
-      pokemonservice.AddExperience(
-        trainerPokemon, 
-        trainerPkmn, 
-        wildPkmn.Rarity*wild.Level*2 if wildPkmn.Rarity <= 2 else wildPkmn.Rarity*wild.Level)
+      if HasRegionReward(trainer, 1):
+        for pok in trainer.Team:
+          teamMember = next(p for p in trainer.OwnedPokemon if p.Id == pok)
+          pkmn = pokemonservice.GetPokemonById(teamMember.Pokemon_Id)
+          exp = wildPkmn.Rarity*wild.Level*2 if wildPkmn.Rarity <= 2 else wildPkmn.Rarity*wild.Level
+          pokemonservice.AddExperience(
+            teamMember, 
+            pkmn, 
+            exp if pok == trainer.Team[0] else int(exp/2))
+      else:
+        pokemonservice.AddExperience(
+            trainerPokemon, 
+            trainerPkmn, 
+            wildPkmn.Rarity*wild.Level*2 if wildPkmn.Rarity <= 2 else wildPkmn.Rarity*wild.Level)
       trainer.Money += 50
+
+    candy = TryGetCandy() if healthLost < 10 else None
+    if candy:
+      ModifyItemList(trainer.Candies, candy.Id, 1)
+    
     UpsertTrainer(trainer)
-    return healthLost
+    return (healthLost,candy)
 
 #endregion
