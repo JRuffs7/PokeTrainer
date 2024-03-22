@@ -229,9 +229,7 @@
             "grass",
             "electric"
         ],
-        "Immune": [
-            "ghost"
-        ]
+        "Immune": []
     },
     {
         "Name": "dark",
