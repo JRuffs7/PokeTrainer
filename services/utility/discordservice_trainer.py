@@ -1,9 +1,9 @@
 from models.Item import Potion
 from models.Trainer import Trainer
-from services import itemservice, pokemonservice, gymservice
+from services import itemservice, pokemonservice, gymservice, zoneservice
 from services.utility import discordservice
 from discord import Interaction, Member
-from globals import HelpColor, TrainerColor, Checkmark
+from globals import HelpColor, TrainerColor
 
 responseFile = "files/responsefiles/trainerresponses.json"
 
@@ -12,7 +12,15 @@ async def PrintTrainer(interaction: Interaction, trainer: Trainer, targetUser: M
 	totalPkmn = pokemonservice.GetPokemonCount()
 	totalBadges = len(gymservice.GetAllBadges())
 
-	stats = f"__Trainer Stats__\nHP: {trainer.Health}\nPokedex: {len(trainer.Pokedex)}/{totalPkmn} ({round((len(trainer.Pokedex)*100)/totalPkmn)}%)\nPokemon Caught: {len(trainer.OwnedPokemon)}\nShiny Count: {len([x for x in trainer.OwnedPokemon if x.IsShiny])}\nGym Badges: {len(trainer.Badges)}/{totalBadges}"
+	healthString = f'HP: {trainer.Health}'
+	pokedexString = f'Pokedex: {len(trainer.Pokedex)}/{totalPkmn} ({round((len(trainer.Pokedex)*100)/totalPkmn)}%)'
+	caughtString = f'Pokemon Caught: {len(trainer.OwnedPokemon)}'
+	shinyString = f'Shiny Count: {len([x for x in trainer.OwnedPokemon if x.IsShiny])}'
+	badgeString = f'Gym Badges: {len(trainer.Badges)}/{totalBadges}'
+	zoneString = f'Current Zone: **{zoneservice.GetZone(trainer.CurrentZone).Name}**'
+
+	newLine = '\n'
+	stats = f'__Trainer Stats__\n{newLine.join([healthString, pokedexString, caughtString, shinyString, badgeString, zoneString])}'
 
 	#Pokeball Section
 	pkblString = '\n'.join(f"{itemservice.GetPokeball(int(p)).Name}: {trainer.Pokeballs[p]}" for p in list(sorted(trainer.Pokeballs, key=lambda x: x)) if trainer.Pokeballs[p])
@@ -26,13 +34,9 @@ async def PrintTrainer(interaction: Interaction, trainer: Trainer, targetUser: M
 	cndString = '\n'.join(f"{itemservice.GetCandy(int(c)).Name}: {trainer.Candies[c]}" for c in list(sorted(trainer.Candies, key=lambda x: x)) if trainer.Candies[c])
 	candy = f'{cndString}' if cndString else ''
 
-	#Egg Section
-	eggString = '\n'.join(f"{itemservice.GetEgg(e.EggId).Name}: {e.SpawnCount}/{itemservice.GetEgg(e.EggId).SpawnsNeeded}{Checkmark if e.SpawnCount == itemservice.GetEgg(e.EggId).SpawnsNeeded else ''}" for e in list(sorted(trainer.Eggs, key=lambda x: x.EggId)))
-	eggs = f'__Eggs__\n{eggString if eggString else "Obtain eggs from **/daily**"}'
 
-	#Inventory Section
 	newLine = '\n\n'
-	inventory = f"__Inventory__\n{newLine.join(s for s in [pkbl,ptn,candy,eggs] if s)}\n\n${trainer.Money}"
+	inventory = f"__Inventory__\n{newLine.join(s for s in [pkbl,ptn,candy] if s)}\n\n${trainer.Money}"
 
 	embed = discordservice.CreateEmbed(
 			f"{targetUser.display_name}'s Trainer Info", 
