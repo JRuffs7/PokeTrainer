@@ -31,7 +31,10 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
   @trainer_check
   async def spawn(self, inter: Interaction):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
-    pokemon = pokemonservice.SpawnPokemon(None if trainer.CurrentZone == 0 else zoneservice.GetZone(trainer.CurrentZone))
+    pokemon = pokemonservice.SpawnPokemon(
+      None if trainer.CurrentZone == 0 else zoneservice.GetZone(trainer.CurrentZone),
+      max([b for b in trainer.Badges if b < 1000]) if len(trainer.Badges) > 0 else 0
+    )
     trainerservice.EggInteraction(trainer)
     if inter.user.id in AdminList or trainerservice.CanCallSpawn(trainer):
       await SpawnPokemonView(inter, trainer, pokemon).send()

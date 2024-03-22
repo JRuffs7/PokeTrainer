@@ -89,7 +89,7 @@ def GetPokemonImage(pokemon: Pokemon | PokemonData):
 
 #region Spawns
 
-def SpawnPokemon(specialZone: Zone|None):
+def SpawnPokemon(specialZone: Zone|None, badgeBones: int):
   pokemonList = pokemonda.GetPokemonByProperty([1, 2, 3], 'Rarity')
   if specialZone:
     specialTypes = [t.lower() for t in specialZone.Types]
@@ -100,7 +100,9 @@ def SpawnPokemon(specialZone: Zone|None):
     if not CanSpawn(pokemon):
       pokemon = None
 
-  return GenerateSpawnPokemon(pokemon)
+  spawn = GenerateSpawnPokemon(pokemon)
+  spawn.Level += floor(badgeBones/2)
+  return spawn
 
 def GetSpecialSpawn():
   spawnType = choice(list(SpecialSpawn))
