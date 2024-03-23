@@ -55,8 +55,8 @@ class PokemonSearchView(BasePaginationView):
 
   def SingleDesc(self, pokemon: Pokemon):
     pkmn = pokemonservice.GetPokemonById(pokemon.Pokemon_Id)
-    pkmnData = t2a(body=[['Rarity:', f"{pkmn.Rarity}", '|', 'Avg Height:', pokemon.Height],
-                         ['Color:',f"{pkmn.Color}", '|','Avg Weight:', pokemon.Weight], 
+    pkmnData = t2a(body=[['Rarity:', f"{pkmn.Rarity}", '|', 'Avg Height:', pokemon.Height/10],
+                         ['Color:',f"{pkmn.Color}", '|','Avg Weight:', pokemon.Weight/10], 
                          ['Catch Rate:',f"{pkmn.CaptureRate}", '|','Female:', f'{pkmn.FemaleChance}/8' if pkmn.FemaleChance >= 0 else 'N/A'], 
                          ['Types:', f"{'/'.join(pkmn.Types)}", Merge.LEFT, Merge.LEFT, Merge.LEFT]], 
                       first_col_heading=False,
