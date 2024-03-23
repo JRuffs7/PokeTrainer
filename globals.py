@@ -42,7 +42,8 @@ EphemeralCommands = [
     'evolve',
     'hatch',
     'givecandy',
-    'changezone'
+    'changezone',
+    'invite'
 ]
 
 
