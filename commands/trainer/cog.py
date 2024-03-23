@@ -53,7 +53,11 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
   async def daily(self, interaction: Interaction):
     trainer = trainerservice.GetTrainer(interaction.guild_id, interaction.user.id)
     dailyResult = trainerservice.TryDaily(trainer)
-    return await discordservice_trainer.PrintDaily(interaction, dailyResult >= 0, itemservice.GetEgg(dailyResult).Name if dailyResult > 0 else None)
+    return await discordservice_trainer.PrintDaily(
+      interaction, 
+      dailyResult >= 0, 
+      trainerservice.HasRegionReward(trainer, 5),
+      itemservice.GetEgg(dailyResult).Name if dailyResult > 0 else None)
 
   @app_commands.command(name="myeggs",
                         description="View your eggs progress.")

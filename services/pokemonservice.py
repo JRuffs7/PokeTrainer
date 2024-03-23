@@ -89,7 +89,7 @@ def GetPokemonImage(pokemon: Pokemon | PokemonData):
 
 #region Spawns
 
-def SpawnPokemon(specialZone: Zone|None, badgeBones: int):
+def SpawnPokemon(specialZone: Zone|None, badgeBonus: int):
   pokemonList = pokemonda.GetPokemonByProperty([1, 2, 3], 'Rarity')
   if specialZone:
     specialTypes = [t.lower() for t in specialZone.Types]
@@ -101,7 +101,7 @@ def SpawnPokemon(specialZone: Zone|None, badgeBones: int):
       pokemon = None
 
   spawn = GenerateSpawnPokemon(pokemon)
-  spawn.Level += floor(badgeBones/2)
+  spawn.Level += floor(badgeBonus/2)
   return spawn
 
 def GetSpecialSpawn():
@@ -260,12 +260,12 @@ def WildFight(attack: PokemonData, defend: PokemonData, attackLevel: int, defend
 
 def GymFight(attack: PokemonData, defend: PokemonData, attackLevel: int):
   battleResult = TypeMatch(attack.Types, defend.Types)
-  doubleAdv = battleResult >= 2
   attackGroup = RarityGroup(attack)
   attackGroup = attackGroup % 7 if attackGroup < 10 else attackGroup
   defendGroup = RarityGroup(defend)
   defendGroup = defendGroup % 7 if defendGroup < 10 else defendGroup
   defendLevel = 15 if defendGroup == 1 else 25 if defendGroup == 2 else 35 if defendGroup == 3 else 100
+  doubleAdv = battleResult >= 2 or (battleResult > 0 and attackLevel > defendLevel*1.5 and attackGroup == defendGroup)
 
   if IsSpecialPokemon(defend) and len(attack.Types) == 1:
     return battleResult >= 1 and attackGroup >= defendGroup

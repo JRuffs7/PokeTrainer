@@ -30,10 +30,10 @@ class SpecialSpawnEventView(EventView):
 	@trainer_check
 	async def masterball_button(self, interaction: discord.Interaction, button: discord.ui.Button):
 		if interaction.user.id in self.userentries:
-			return await interaction.followup.send(content=f"You already captured this special encounter! Wait for more to show up in the future.")
+			return await interaction.followup.send(content=f"You already captured this special encounter! Wait for more to show up in the future.", ephemeral=True)
 		trainer = trainerservice.GetTrainer(interaction.guild_id, interaction.user.id)
 		if trainer.Pokeballs['4'] <= 0:
-			return await interaction.followup.send(content=f"You do not have any Masterballs. Participate in non-legendary public events to receive one.")
+			return await interaction.followup.send(content=f"You do not have any Masterballs. Participate in non-legendary public events to receive one.", ephemeral=True)
 		elif trainerservice.TryCapture(MasterBallReaction, trainer, self.pokemon):
 			if not self.messagethread or not interaction.guild.get_channel_or_thread(self.messagethread.id):
 				self.messagethread = await self.message.create_thread(

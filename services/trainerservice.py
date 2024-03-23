@@ -72,8 +72,14 @@ def TryUsePotion(trainer: Trainer, potion: Potion):
 def TryDaily(trainer: Trainer):
   if (not trainer.LastDaily or datetime.strptime(trainer.LastDaily, ShortDateFormat).date() < datetime.now(UTC).date()) or trainer.UserId in AdminList:
     trainer.LastDaily = datetime.now(UTC).strftime(ShortDateFormat)
-    ModifyItemList(trainer.Pokeballs, '1', 10)
-    trainer.Money += 200
+
+    #Unova Reward
+    if HasRegionReward(trainer, 5):
+      ModifyItemList(trainer.Pokeballs, '1', 20)
+      trainer.Money += 500
+    else:
+      ModifyItemList(trainer.Pokeballs, '1', 10)
+      trainer.Money += 200
     addEgg = TryAddNewEgg(trainer)
     UpsertTrainer(trainer)
     return addEgg
@@ -134,7 +140,13 @@ def TryGetCandy():
 def TryAddNewEgg(trainer: Trainer):
   if(len(trainer.Eggs) < 5):
     randId = choice(range(1, 101))
-    newEggId = 1 if randId <= 65 else 2 if randId <= 95 else 3
+
+    #Johta Reward
+    if HasRegionReward(trainer, 2):
+      newEggId = 1 if randId <= 50 else 2 if randId <= 90 else 3
+    else:
+      newEggId = 1 if randId <= 65 else 2 if randId <= 95 else 3
+
     trainer.Eggs.append(TrainerEgg.from_dict({
       'Id': uuid.uuid4().hex,
       'EggId': newEggId
@@ -278,7 +290,9 @@ def TryCapture(reaction: str, trainer: Trainer, spawn: Pokemon):
   pokeball = itemservice.GetPokeball(1 if reaction == PokeballReaction else 2 if reaction == GreatBallReaction else 3 if reaction == UltraBallReaction else 4)
   pokemon = pokemonservice.GetPokemonById(spawn.Pokemon_Id)
   ModifyItemList(trainer.Pokeballs, str(pokeball.Id), -1)
-  if pokemonservice.CaptureSuccess(pokeball, pokemon, spawn.Level):
+
+  #Sinnoh Reward
+  if (HasRegionReward(trainer, 4) and choice(range(1, 101)) < 11) or pokemonservice.CaptureSuccess(pokeball, pokemon, spawn.Level):
     trainer.OwnedPokemon.append(spawn)
     trainer.Money += 25
     TryAddToPokedex(trainer, pokemon.PokedexId)
@@ -296,8 +310,11 @@ def TryWildFight(trainer: Trainer, wild: Pokemon):
     trainerPkmn = pokemonservice.GetPokemonById(trainerPokemon.Pokemon_Id)
     wildPkmn = pokemonservice.GetPokemonById(wild.Pokemon_Id)
     healthLost = pokemonservice.WildFight(trainerPkmn, wildPkmn, trainerPokemon.Level, wild.Level)
-    if healthLost > trainer.Health:
-      healthLost = trainer.Health
+
+    #Hoenn Reward
+    if HasRegionReward(trainer, 3) and choice(range(1, 101)) < 11:
+      healthLost = 0
+      
     trainer.Health -= healthLost
     trainer.Health = 0 if trainer.Health < 0 else trainer.Health
     if healthLost < 10 and trainer.Health > 0:
@@ -319,7 +336,7 @@ def TryWildFight(trainer: Trainer, wild: Pokemon):
 
     candy = TryGetCandy() if healthLost < 10 else None
     if candy:
-      ModifyItemList(trainer.Candies, candy.Id, 1)
+      ModifyItemList(trainer.Candies, str(candy.Id), 1)
     
     UpsertTrainer(trainer)
     return (healthLost,candy)

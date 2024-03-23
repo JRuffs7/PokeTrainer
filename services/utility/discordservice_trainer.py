@@ -106,14 +106,14 @@ async def PrintRelease(interaction: Interaction, name: str):
 		params=[name],
 		eph=True)
 
-async def PrintDaily(interaction: Interaction, success: bool, eggName: str|None):
+async def PrintDaily(interaction: Interaction, success: bool, boosted: bool, eggName: str|None):
 	return await discordservice.SendCommandResponse(
 		interaction=interaction, 
 		filename=responseFile, 
 		command='daily', 
 		responseInd=0 if not success else 1 if not eggName else 2, 
 		color=TrainerColor, 
-		params=[eggName])
+		params=['20' if boosted else '10', '500' if boosted else '200', eggName])
 
 async def PrintMyEggs(interaction: Interaction):
 	return await discordservice.SendCommandResponse(
