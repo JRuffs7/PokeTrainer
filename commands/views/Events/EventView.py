@@ -22,7 +22,7 @@ class EventView(discord.ui.View):
 	async def send(self):
 		self.message = await self.channel.send(embed=self.embed, view=self, delete_after=3605)
 		self.server.CurrentEvent.MessageId = self.message.id
-		sentAt = datetime.now(UTC)+timedelta(minutes=1)
+		sentAt = datetime.now(UTC)+timedelta(minutes=60)
 		while datetime.now(UTC) < sentAt:
 			self.embed.set_footer(text=str(sentAt-datetime.now(UTC)).split('.',2)[0])
 			await self.message.edit(embed=self.embed, view=self)
