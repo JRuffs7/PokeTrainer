@@ -258,13 +258,13 @@ def WildFight(attack: PokemonData, defend: PokemonData, attackLevel: int, defend
   returnInd -= (levelAdvantage - levelDisadvantage)
   return healthLost[0 if returnInd < 0 else returnInd] - (battleResult if not doubleAdv and not doubleDis else 0)
 
-def GymFight(attack: PokemonData, defend: PokemonData, attackLevel: int):
+def GymFight(attack: PokemonData, defend: PokemonData, attackLevel: int, gymID: int):
   battleResult = TypeMatch(attack.Types, defend.Types)
   attackGroup = RarityGroup(attack)
   attackGroup = attackGroup % 7 if attackGroup < 10 else attackGroup
   defendGroup = RarityGroup(defend)
   defendGroup = defendGroup % 7 if defendGroup < 10 else defendGroup
-  defendLevel = 15 if defendGroup == 1 else 25 if defendGroup == 2 else 35 if defendGroup == 3 else 100
+  defendLevel = 100 if gymID >= 1000 else 15 if defendGroup == 1 else 25 if defendGroup == 2 else 35 if defendGroup == 3 else 100
   doubleAdv = battleResult >= 2 or (battleResult > 0 and attackLevel > defendLevel*1.5 and attackGroup >= defendGroup)
 
   if IsSpecialPokemon(defend) and len(attack.Types) == 1:
