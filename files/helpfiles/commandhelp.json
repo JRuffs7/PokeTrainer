@@ -103,7 +103,7 @@
     {
       "Name": "gyminfo",
       "ShortString": "Display information about a specified gym leader.",
-      "HelpString": "Proper command usage: **/gyminfo *leader***\nParameters:\n**leader** - Which gym leader to display.\n\nThis command provides the trainer information about a former or upcoming gym leader. During the command entry, a list of gym leaders will be provided and the next leader on the trainers journey will be labeled. The default information given is a image of the gym leader, the name of their badge, the type of gym they are, and the reward for defeating them. If you have already defeated the gym leader, there will be another page available that displays their battle team.",
+      "HelpString": "Proper command usage: **/gyminfo *leader***\nParameters:\n**leader** - Which gym leader to display.\n\nThis command provides the trainer information about a former or upcoming gym leader. During the command entry, a list of gym leaders will be provided and the next leader on the trainers journey will be labeled. The default information given is a image of the gym leader, the name of their badge, the type of gym they are, and the reward for defeating them. If you have already defeated the gym leader, there will be another page available that displays their battle team.\n\nNOTE: You may also filter by region when running the command.",
       "RequiresAdmin": false
     }
   ],
