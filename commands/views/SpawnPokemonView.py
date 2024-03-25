@@ -58,6 +58,9 @@ class SpawnPokemonView(discord.ui.View):
 	async def fight_button(self, interaction: discord.Interaction, button: discord.ui.Button):
 		await interaction.response.defer()
 		updatedTrainer = trainerservice.GetTrainer(self.interaction.guild_id, self.interaction.user.id)
+		if updatedTrainer is None:
+			return await self.message.edit(content=f"Error fighting. Please try again.", view=self)
+		
 		trainerPkmn = next(p for p in updatedTrainer.OwnedPokemon if p.Id == updatedTrainer.Team[0])
 		fight = trainerservice.TryWildFight(updatedTrainer, self.pokemon)
 		if fight is None:
@@ -74,7 +77,7 @@ class SpawnPokemonView(discord.ui.View):
 			await self.message.delete()
 			battleMsg = f'<@{self.interaction.user.id}> defeated a wild **{pokemonservice.GetPokemonDisplayName(self.pokemon, False, False)} (Lvl. {self.pokemon.Level})**!'
 			expMsg = f'{pokemonservice.GetPokemonDisplayName(trainerPkmn)} gained {self.pkmndata.Rarity*self.pokemon.Level*2 if self.pkmndata.Rarity <= 2 else self.pkmndata.Rarity*self.pokemon.Level}xp'
-			expShareMsg = f'The rest of your team gained half exp. as well.' if trainerservice.HasRegionReward(updatedTrainer, 1) else ''
+			expShareMsg = f'{pokemonservice.GetPokemonDisplayName(next(p for p in updatedTrainer.OwnedPokemon if p.Id == updatedTrainer.Team[1]))} gained half exp. as well.' if trainerservice.HasRegionReward(updatedTrainer, 1) and len(updatedTrainer.Team) > 1 else ''
 			rewardMsg = f'Trainer lost {healthLost}hp and gained $50.{f" Found one **{candy.Name}**!" if candy else ""}'
 			newline = '\n'
 			return await interaction.followup.send(content=f'{newline.join([battleMsg, expMsg, expShareMsg, rewardMsg])}')

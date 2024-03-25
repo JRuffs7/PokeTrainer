@@ -16,6 +16,7 @@ LOGGING_CONFIG = {
             'filename': 'logs/command.log',
             'mode': 'a+',
             'formatter': 'verbose',
+			'encoding': 'utf-8'
         },
         'discord': {
             'level': 'INFO',
@@ -23,6 +24,7 @@ LOGGING_CONFIG = {
             'filename': 'logs/discord.log',
             'mode': 'a+',
             'formatter': 'verbose',
+			'encoding': 'utf-8'
         },
         'battle': {
             'level': 'INFO',
@@ -30,6 +32,7 @@ LOGGING_CONFIG = {
             'filename': 'logs/battle.log',
             'mode': 'a+',
             'formatter': 'verbose',
+			'encoding': 'utf-8'
         },
         'capture': {
             'level': 'INFO',
@@ -37,6 +40,7 @@ LOGGING_CONFIG = {
             'filename': 'logs/capture.log',
             'mode': 'a+',
             'formatter': 'verbose',
+			'encoding': 'utf-8'
         },
         'error': {
             'level': 'INFO',
@@ -44,6 +48,7 @@ LOGGING_CONFIG = {
             'filename': 'logs/errors.log',
             'mode': 'w+',
             'formatter': 'verbose',
+			'encoding': 'utf-8'
         },
         'event': {
             'level': 'INFO',
@@ -51,6 +56,7 @@ LOGGING_CONFIG = {
             'filename': 'logs/event.log',
             'mode': 'a+',
             'formatter': 'verbose',
+			'encoding': 'utf-8'
         }
     },
     'loggers': {

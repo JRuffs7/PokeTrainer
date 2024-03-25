@@ -318,21 +318,19 @@ def TryWildFight(trainer: Trainer, wild: Pokemon):
     trainer.Health -= healthLost
     trainer.Health = 0 if trainer.Health < 0 else trainer.Health
     if healthLost < 10 and trainer.Health > 0:
-      if HasRegionReward(trainer, 1):
-        for pok in trainer.Team:
-          teamMember = next(p for p in trainer.OwnedPokemon if p.Id == pok)
-          pkmn = pokemonservice.GetPokemonById(teamMember.Pokemon_Id)
-          exp = wildPkmn.Rarity*wild.Level*2 if wildPkmn.Rarity <= 2 else wildPkmn.Rarity*wild.Level
-          pokemonservice.AddExperience(
-            teamMember, 
-            pkmn, 
-            exp if pok == trainer.Team[0] else int(exp/2))
-      else:
+      pokemonservice.AddExperience(
+        trainerPokemon, 
+        trainerPkmn, 
+        wildPkmn.Rarity*wild.Level*2 if wildPkmn.Rarity <= 2 else wildPkmn.Rarity*wild.Level)
+      #Kanto Reward
+      if HasRegionReward(trainer, 1) and len(trainer.Team) > 1:
+        teamMember = next(p for p in trainer.OwnedPokemon if p.Id == trainer.Team[1])
+        pkmn = pokemonservice.GetPokemonById(teamMember.Pokemon_Id)
+        exp = wildPkmn.Rarity*wild.Level*2 if wildPkmn.Rarity <= 2 else wildPkmn.Rarity*wild.Level
         pokemonservice.AddExperience(
-            trainerPokemon, 
-            trainerPkmn, 
-            wildPkmn.Rarity*wild.Level*2 if wildPkmn.Rarity <= 2 else wildPkmn.Rarity*wild.Level)
-      trainer.Money += 50
+          teamMember, 
+          pkmn, 
+          int(exp/2))
 
     candy = TryGetCandy() if healthLost < 10 else None
     if candy:
