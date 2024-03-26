@@ -21,7 +21,7 @@
     {
       "Name": "swapchannel",
       "ShortString": "(Admin Only) Change the current event channel of the server.",
-      "HelpString": "Proper command usage: **/swapchannel**\n\nThis command will toggle the spawning of Pokemon in the current channel. If the channel is already in the spawn list, it will be removed. The full list of channels can be seen through the **/serverinfo** command.\n\nYour server must be registered with the bot by using the **/register** command first, and there must always be at least one channel in the spawn list.\nIf you wish to turn the bot off, please use the **/stop** command.",
+      "HelpString": "Proper command usage: **/swapchannel**\n\nThis command will change the channel in which events and public notifications gets sent, to the current channel. You can see the current event channel by using the **/server** command.\n\nYour server must be registered with the bot by using the **/register** command in order to swap event channels and have events occur in your server.\nIf you wish to turn the events off, please use the **/unregister** command.",
       "RequiresAdmin": true
     }
   ],
