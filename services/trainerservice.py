@@ -182,6 +182,7 @@ def TryHatchEgg(trainer: Trainer, eggId: str):
     newPokemon.IsShiny = choice(range(0, ShinyOdds)) == int(ShinyOdds/2)
   trainer.OwnedPokemon.append(newPokemon)
   trainer.Money += 50
+  TryAddToPokedex(trainer, pkmn.PokedexId)
   if len(trainer.Team) < 6:
     trainer.Team.append(newPokemon.Id)
   UpsertTrainer(trainer)
