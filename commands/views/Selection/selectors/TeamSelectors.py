@@ -10,7 +10,7 @@ class TeamChoice(discord.ui.Select):
 			label='Add To End Slot',
 			description=f'Add selected Pokemon to the end slot on the team.',
 			value=f'{len(data)}'
-		)] if adding else []
+		)] if adding and len(data) < 6 else []
 		
 		options += [discord.SelectOption(
 			label=f'Slot {i+1}: {pokemonservice.GetPokemonDisplayName(data[i])}',
