@@ -9,13 +9,13 @@
     {
       "Name": "server",
       "ShortString": "(Admin Only) Prints the current server settings.",
-      "HelpString": "Proper command usage: **/serverinfo**\n\nThis command will return the details of the server settings for the bot. This includes the server name, registered event channel, and the current event taking place (if applicable).",
+      "HelpString": "Proper command usage: **/server**\n\nThis command will return the details of the server settings for the bot. This includes the server name, registered event channel, and the current event taking place (if applicable).",
       "RequiresAdmin": true
     },
     {
       "Name": "unregister",
       "ShortString": "(Admin Only) Unregister this server from the PokeTrainer bot events.",
-      "HelpString": "Proper command usage: **/stop**\n\nThis command will remove your server from being able to receive public events and notifications. If you wish to receive public events again, look into the **/register** command.\n\nTrainers will still be able to interact with PokeTrainer as long as it is in the server, regardless of registration.",
+      "HelpString": "Proper command usage: **/unregister**\n\nThis command will remove your server from being able to receive public events and notifications. If you wish to receive public events again, look into the **/register** command.\n\nTrainers will still be able to interact with PokeTrainer as long as it is in the server, regardless of registration.",
       "RequiresAdmin": true
     },
     {
