@@ -93,7 +93,7 @@ def SpawnPokemon(specialZone: Zone|None, badgeBonus: int):
   pokemonList = pokemonda.GetPokemonByProperty([1, 2, 3], 'Rarity')
   if specialZone:
     specialTypes = [t.lower() for t in specialZone.Types]
-    pokemonList = [p for p in pokemonList if p.Types[0].lower() in specialTypes or (p.Types[1] in specialTypes if len(p.Types) > 1 else False)]
+    pokemonList = [p for p in pokemonList if p.Types[0].lower() in specialTypes or (p.Types[1].lower() in specialTypes if len(p.Types) > 1 else False)]
   pokemon = None
   while not pokemon:
     pokemon = choice(pokemonList)
