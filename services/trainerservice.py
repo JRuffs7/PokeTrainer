@@ -323,6 +323,7 @@ def TryWildFight(trainer: Trainer, wild: Pokemon):
         trainerPokemon, 
         trainerPkmn, 
         wildPkmn.Rarity*wild.Level*2 if wildPkmn.Rarity <= 2 else wildPkmn.Rarity*wild.Level)
+      trainer.Money += 50
       #Kanto Reward
       if HasRegionReward(trainer, 1) and len(trainer.Team) > 1:
         teamMember = next(p for p in trainer.OwnedPokemon if p.Id == trainer.Team[1])
