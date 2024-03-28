@@ -6,4 +6,5 @@ typeFile = "collections/types.json"
 
 
 def GetAllTypes():
-  return [Type(t) for t in GetJson(typeFile)]
+  types = GetJson(typeFile)
+  return [Type(t) for t in types]

@@ -5,4 +5,5 @@ from models.Zone import Zone
 zoneFile = "collections/zones.json"
 
 def GetAllZones():
-  return [Zone(z) for z in GetJson(zoneFile)]
+  zones = GetJson(zoneFile)
+  return [Zone(z) for z in zones]

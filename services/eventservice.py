@@ -9,7 +9,7 @@ def GetRandomStatCompare():
 def GetRandomCount():
 	return choice(list(PokemonCount))
 
-def TopThreeWinners(sortedList: dict[str,int|float], smallFirst: bool):
+def TopThreeWinners(sortedList: dict[str,float], smallFirst: bool):
 	winners: list[tuple[int,int]] = []
 	compareEntry = None
 	numWinners = 0

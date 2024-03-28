@@ -6,22 +6,20 @@ pokemonFile = "collections/pokemon.json"
 
 
 def GetAllPokemon():
-  return [
-    PokemonData(x) for x in GetJson(pokemonFile)
-  ]
+  pokemon = GetJson(pokemonFile)
+  return [PokemonData(x) for x in pokemon]
 
 
 def GetPokemonByType(type):
-  return [
-    PokemonData(x) for x in GetJson(pokemonFile) if type.lower() in [y.lower() for y in x['Types']]
-  ]
+  pokemon = GetJson(pokemonFile)
+  return [PokemonData(x) for x in pokemon if type.lower() in [y.lower() for y in x['Types']]]
 
 
 def GetPokemonByProperty(searchVals: list, property: str):
-  return [
-      PokemonData(x) for x in GetJson(pokemonFile) if searchVals.__contains__(x[property])
-  ]
+  pokemon = GetJson(pokemonFile)
+  return [PokemonData(x) for x in pokemon if searchVals.__contains__(x[property])]
 
 
 def GetUniquePokemonProperty(prop):
-  return set([x[prop] for x in GetJson(pokemonFile)])
+  pokemon = GetJson(pokemonFile)
+  return set([x[prop] for x in pokemon])

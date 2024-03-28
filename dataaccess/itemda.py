@@ -6,15 +6,15 @@ itemFile = "collections/items.json"
 
 
 def GetAllPokeballs():
-  json = GetJson(itemFile)
-  return [Pokeball(p) for p in json["Pokeball"]]
+  pokeballs = GetJson(itemFile)["Pokeball"]
+  return [Pokeball(p) for p in pokeballs]
 
 
 def GetAllPotions():
-  json = GetJson(itemFile)
-  return [Potion(p) for p in json["Potion"]]
+  potions = GetJson(itemFile)["Potion"]
+  return [Potion(p) for p in potions]
 
 
 def GetAllCandies():
-  json = GetJson(itemFile)
-  return [Candy(c) for c in json["Candy"]]
+  candy = GetJson(itemFile)["Candy"]
+  return [Candy(c) for c in candy]

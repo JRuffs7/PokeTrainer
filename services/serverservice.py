@@ -70,12 +70,12 @@ async def EndEvent(server: Server, messageId: int):
   if server.CurrentEvent.EventEntries:
     match(server.CurrentEvent.EventType):
       case EventType.PokemonCount.value:
-        entryList = {k: v for k, v in sorted(server.CurrentEvent.EventEntries.items(), key=lambda item: -int(item[1]))}
+        entryList = {k: float(v) for k, v in sorted(server.CurrentEvent.EventEntries.items(), key=lambda item: -float(item[1]))}
         winners = eventservice.TopThreeWinners(entryList, False)
       case EventType.StatCompare.value:
         smallerComp = server.CurrentEvent.SubType == StatCompare.Lightest.value or server.CurrentEvent.SubType == StatCompare.Shortest.value
         if smallerComp:
-          entryList = {k: int(v) for k, v in sorted(server.CurrentEvent.EventEntries.items(), key=lambda item: float(item[1]))}
+          entryList = {k: float(v) for k, v in sorted(server.CurrentEvent.EventEntries.items(), key=lambda item: float(item[1]))}
         else:
           entryList = {k: float(v) for k, v in sorted(server.CurrentEvent.EventEntries.items(), key=lambda item: -float(item[1]))}
         winners = eventservice.TopThreeWinners(entryList, smallerComp)

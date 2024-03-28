@@ -8,13 +8,15 @@ badgesFile = "collections/badges.json"
 #region Gym Leaders
 
 def GetAllGymLeaders():
-  return [GymLeader(g) for g in GetJson(leadersFile)]
+  gyms = GetJson(leadersFile)
+  return [GymLeader(g) for g in gyms]
 
 #endregion
 
 #region Badges
 
 def GetAllBadges():
-  return [Badge(b) for b in GetJson(badgesFile)]
+  badges = GetJson(badgesFile)
+  return [Badge(b) for b in badges]
 
 #endregion
