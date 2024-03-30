@@ -107,8 +107,12 @@ def SpawnPokemon(specialZone: Zone|None, badgeBonus: int):
 def GetSpecialSpawn():
   spawnType = choice(list(SpecialSpawn))
   pokemonList = pokemonda.GetPokemonByProperty([True], spawnType.value)
-  pkmn = choice(pokemonList)
-  return GenerateSpawnPokemon(pkmn, 5 if pkmn.IsStarter or (pkmn.IsFossil and pkmn.EvolvesInto) else 75 if pkmn.IsLegendary else 40)
+  pkmn = None
+  while not pkmn:
+    pkmn = choice(pokemonList)
+    if pkmn.IsFossil and pkmn.EvolvesInto:
+      pkmn = None
+  return GenerateSpawnPokemon(pkmn, 5 if pkmn.IsStarter or pkmn.IsFossil else 75 if pkmn.IsLegendary or pkmn.IsMythical else 40)
 
 def GenerateSpawnPokemon(pokemon: PokemonData, level: int | None = None):
   shiny = choice(range(0, ShinyOdds)) == int(ShinyOdds / 2)
