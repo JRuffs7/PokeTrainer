@@ -24,10 +24,10 @@ def CheckTrainer(serverId: int, userId: int):
 
 def GetTrainer(serverId: int, userId: int):
   if userId == 197547442651004928 and serverId == 204074128309747713:
-    debugLog.debug(f'Start: {datetime.now()}')
+    debugLog.debug(f'Trainer Get Start: {datetime.now()}')
   trainer = trainerda.GetTrainer(serverId, userId)
   if userId == 197547442651004928 and serverId == 204074128309747713:
-    debugLog.debug(f'End: {datetime.now()}')
+    debugLog.debug(f'Trainer Get End: {datetime.now()}')
   return trainer
 
 def UpsertTrainer(trainer: Trainer):

@@ -1,3 +1,5 @@
+from datetime import datetime
+import logging
 from discord import app_commands, Interaction
 from discord.ext import commands
 from typing import List
@@ -18,6 +20,7 @@ from services.utility import discordservice_pokemon
 class PokemonCommands(commands.Cog, name="PokemonCommands"):
 
   discordBot = discordbot.GetBot()
+  debugLog = logging.getLogger('debug')
 
   def __init__(self, bot: commands.Bot):
     self.bot = bot
@@ -147,7 +150,11 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
   @trainer_check
   async def evolve(self, inter: Interaction, pokemon: int | None):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
+    if inter.user.id == 197547442651004928 and inter.guild_id == 204074128309747713:
+      self.debugLog.debug(f'Evolve List Start: {datetime.now()}')
     pokeList = [p for p in trainer.OwnedPokemon if pokemonservice.CanTrainerPokemonEvolve(p)]
+    if inter.user.id == 197547442651004928 and inter.guild_id == 204074128309747713:
+      self.debugLog.debug(f'Evolve List End: {datetime.now()}')
     if not pokeList:
       return await discordservice_pokemon.PrintEvolveResponse(inter, 0)
     
