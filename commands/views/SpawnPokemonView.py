@@ -82,6 +82,12 @@ class SpawnPokemonView(discord.ui.View):
 			newline = '\n'
 			return await interaction.followup.send(content=f'{newline.join([battleMsg, expMsg, expShareMsg, rewardMsg])}')
 			
+
+	@discord.ui.button(label='💨')
+	async def run_button(self, interaction: discord.Interaction, button: discord.ui.Button):
+		await interaction.response.defer()
+		await self.message.delete()
+		await interaction.followup.send(content=f'Ran away from {pokemonservice.GetPokemonDisplayName(self.pokemon)}', ephemeral=True)
 			
 	async def TryCapture(self, interaction: discord.Interaction, label: str, ball: str):
 		await interaction.response.defer()
