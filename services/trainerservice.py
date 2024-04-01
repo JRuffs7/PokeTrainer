@@ -95,7 +95,8 @@ def EventEntry(trainer: Trainer, event: Event):
   #Pokemon Count Event
   if event.EventType == EventType.PokemonCount.value:
     if event.SubType <= 17:
-      return sum(PokemonCount(event.SubType).name.lower() in [t.lower() for t in pokemonservice.GetPokemonById(p.Pokemon_Id).Types] for p in trainer.OwnedPokemon)
+      dataList = pokemonservice.GetPokemonDataForOwned([p for p in trainer.OwnedPokemon])
+      return sum(PokemonCount(event.SubType).name.lower() in [t.lower() for t in next(pk for pk in dataList if p.Pokemon_Id == pk.Id).Types] for p in trainer.OwnedPokemon)
     elif event.SubType == PokemonCount.Female.value:
       return sum(p.IsFemale for p in trainer.OwnedPokemon)
     elif event.SubType == PokemonCount.Male.value:
@@ -103,7 +104,8 @@ def EventEntry(trainer: Trainer, event: Event):
     elif event.SubType == PokemonCount.Shiny.value:
       return sum(p.IsShiny for p in trainer.OwnedPokemon)
     else:
-      return sum(pokemonservice.GetPokemonById(p.Pokemon_Id).IsLegendary for p in trainer.OwnedPokemon)
+      dataList = pokemonservice.GetPokemonDataForOwned([p for p in trainer.OwnedPokemon])
+      return sum(next(pk for pk in dataList if p.Pokemon_Id == pk.Id).IsLegendary for p in trainer.OwnedPokemon)
   #Stat Compare Event
   else:
     heightBased = event.SubType in [StatCompare.Shortest.value, StatCompare.Tallest.value]

@@ -1,5 +1,4 @@
 from dataaccess import serverda
-import discordbot
 from models.Event import Event
 from models.enums import EventType, StatCompare
 from models.Server import Server

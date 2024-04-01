@@ -181,7 +181,6 @@ def AddExperience(trainerPokemon: Pokemon, pkmnData: PokemonData, exp: int):
     trainerPokemon.CurrentExp = expNeeded
     return
 
-
 def NeededExperience(level: int, rarity: int, canEvolve: bool):
   if rarity == 1:
     return 50 if level < 20 else 150 if level < 35 else 250
@@ -194,14 +193,13 @@ def NeededExperience(level: int, rarity: int, canEvolve: bool):
   if (rarity == 3 and not canEvolve) or rarity >= 8:
     return 200
 
-def CanTrainerPokemonEvolve(pkmn: Pokemon):
-  pkmnData = GetPokemonById(pkmn.Pokemon_Id)
-  if pkmnData.Rarity == 1 and len(pkmnData.EvolvesInto) >= 1:
-    return pkmn.Level >= 20
-  elif pkmnData.Rarity == 2 and len(pkmnData.EvolvesInto) >= 1:
-    return pkmn.Level >= 30
-  elif pkmnData.Rarity == 3 and len(pkmnData.EvolvesInto) >= 1:
-    return pkmn.Level >= 35
+def CanPokemonEvolve(pkmn: PokemonData, level: int):
+  if pkmn.Rarity == 1 and len(pkmn.EvolvesInto) >= 1:
+    return level >= 20
+  elif pkmn.Rarity == 2 and len(pkmn.EvolvesInto) >= 1:
+    return level >= 30
+  elif pkmn.Rarity == 3 and len(pkmn.EvolvesInto) >= 1:
+    return level >= 35
   return False
 
 def EvolvePokemon(initial: Pokemon, evolveId: int):
@@ -216,6 +214,16 @@ def EvolvePokemon(initial: Pokemon, evolveId: int):
       'Level': initial.Level,
       'CurrentExp': initial.CurrentExp
     })
+
+def GetPokemonThatCanEvolve(ownedPokemon: list[Pokemon]):
+  if not ownedPokemon:
+    return []
+  dataList = GetPokemonDataForOwned(ownedPokemon)
+  returnList = [p for p in ownedPokemon if CanPokemonEvolve(next(pk for pk in dataList if pk.Id == p.Pokemon_Id), p.Level)]
+  return returnList
+
+def GetPokemonDataForOwned(ownedList: list[Pokemon]):
+  return pokemonda.GetPokemonByProperty([p.Pokemon_Id for p in ownedList], 'Id')
 
 #endregion
 
