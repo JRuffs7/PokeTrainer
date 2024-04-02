@@ -1,3 +1,4 @@
+import uuid
 import discord
 
 from models.Pokemon import Pokemon
@@ -16,7 +17,7 @@ class OwnedSelector(discord.ui.Select):
             value=f'{d.Id}',
             default=(defaultId and d.Id == defaultId)
         ) for d in data]
-        super().__init__(options=options, max_values=max_select, min_values=1, placeholder='Select Pokemon', custom_id=customId)
+        super().__init__(options=options, max_values=max_select, min_values=1, placeholder='Select Pokemon', custom_id=(customId if customId else uuid.uuid4().hex))
     
     async def callback(self, inter: discord.Interaction):
         await self.view.PokemonSelection(inter, self.values)
