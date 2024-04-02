@@ -4,7 +4,7 @@ from models.Pokemon import Pokemon
 from services import pokemonservice
 
 class OwnedSelector(discord.ui.Select):
-    def __init__(self, data: list[Pokemon], max_select: int = 25, defaultId: str = None):
+    def __init__(self, data: list[Pokemon], max_select: int = 25, defaultId: str = None, customId: str = None):
         if len(data) > 25:
             data = data[:25]
         pkmnData = pokemonservice.GetPokemonByIdList([d.Pokemon_Id for d in data])
@@ -16,7 +16,7 @@ class OwnedSelector(discord.ui.Select):
             value=f'{d.Id}',
             default=(defaultId and d.Id == defaultId)
         ) for d in data]
-        super().__init__(options=options, max_values=max_select, min_values=1, placeholder='Select Pokemon')
+        super().__init__(options=options, max_values=max_select, min_values=1, placeholder='Select Pokemon', custom_id=customId)
     
     async def callback(self, inter: discord.Interaction):
         await self.view.PokemonSelection(inter, self.values)

@@ -205,6 +205,7 @@ def GetPokedexList(trainer: Trainer, orderString: str, shiny: int):
   if shiny == 1:
     pokemonList = [p for p in pokemonList if p.IsShiny]
 
+  pkmnDataList = pokemonservice.GetPokemonByIdList([p.Pokemon_Id for p in pokemonList])
   match orderString:
     case "height":
       if shiny == 2:
@@ -213,14 +214,14 @@ def GetPokedexList(trainer: Trainer, orderString: str, shiny: int):
         pokemonList.sort(key=lambda x: x.Height)
     case "dex":
       if shiny == 2:
-        pokemonList.sort(key=lambda x: (-x.IsShiny,pokemonservice.GetPokemonById(x.Pokemon_Id).PokedexId,x.Pokemon_Id))
+        pokemonList.sort(key=lambda x: (-x.IsShiny,next(p for p in pkmnDataList if p.Id == x.Pokemon_Id).PokedexId,x.Pokemon_Id))
       else:
-        pokemonList.sort(key=lambda x: (pokemonservice.GetPokemonById(x.Pokemon_Id).PokedexId,x.Pokemon_Id))
+        pokemonList.sort(key=lambda x: (next(p for p in pkmnDataList if p.Id == x.Pokemon_Id).PokedexId,x.Pokemon_Id))
     case "name":
       if shiny == 2:
-        pokemonList.sort(key=lambda x: (-x.IsShiny,pokemonservice.GetPokemonById(x.Pokemon_Id).Name))
+        pokemonList.sort(key=lambda x: (-x.IsShiny,next(p for p in pkmnDataList if p.Id == x.Pokemon_Id).Name))
       else:
-        pokemonList.sort(key=lambda x: pokemonservice.GetPokemonById(x.Pokemon_Id).Name)
+        pokemonList.sort(key=lambda x: next(p for p in pkmnDataList if p.Id == x.Pokemon_Id).Name)
     case "weight":
       if shiny == 2:
         pokemonList.sort(key=lambda x: (-x.IsShiny,x.Weight))
@@ -253,6 +254,16 @@ def ReleasePokemon(trainer: Trainer, pokemonIds: list[str]):
   trainer.OwnedPokemon = [p for p in trainer.OwnedPokemon if p.Id not in pokemonIds]
   UpsertTrainer(trainer)
   return pokemonservice.GetPokemonById(released.Pokemon_Id).Name
+
+def TradePokemon(trainerOne: Trainer, pokemonOne: Pokemon, trainerTwo: Trainer, pokemonTwo: Pokemon):
+  trainerOne.OwnedPokemon = [p for p in trainerOne.OwnedPokemon if p.Id != pokemonOne.Id]
+  trainerTwo.OwnedPokemon = [p for p in trainerTwo.OwnedPokemon if p.Id != pokemonTwo.Id]
+  trainerOne.OwnedPokemon.append(pokemonTwo)
+  TryAddToPokedex(trainerOne, pokemonservice.GetPokemonById(pokemonTwo.Pokemon_Id).PokedexId)
+  UpsertTrainer(trainerOne)
+  trainerTwo.OwnedPokemon.append(pokemonOne)
+  TryAddToPokedex(trainerTwo, pokemonservice.GetPokemonById(pokemonOne.Pokemon_Id).PokedexId)
+  UpsertTrainer(trainerTwo)
 
 #endregion
 
