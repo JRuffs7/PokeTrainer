@@ -13,31 +13,28 @@ class TradeCommands(commands.Cog, name="TradeCommands"):
 		self.bot = bot
 
 	async def autofill_trade(self, inter: Interaction, current: str):
-		try:
-			data = []
-			if 'user' not in inter.namespace:
-				data.append(app_commands.Choice(name='Select User to trade with',value=-1))
-				return data
-			user = inter.namespace['user']
-			if user.id == inter.user.id:
-				data.append(app_commands.Choice(name='Select User to trade with',value=-1))
-				return data
-
-			trainer = trainerservice.GetTrainer(inter.guild_id, user.id)
-			if not trainer:
-				data.append(app_commands.Choice(name='User did not start their journey',value=-1))
-				return data
-			
-			pkmnList = pokemonservice.GetPokemonByIdList([p.Pokemon_Id for p in trainer.OwnedPokemon if p.Id not in trainer.Team])
-			pkmnList.sort(key=lambda x: x.Name)
-			for pkmn in pkmnList:
-				if current.lower() in pkmn.Name.lower():
-					data.append(app_commands.Choice(name=pkmn.Name, value=pkmn.Id))
-				if len(data) == 25:
-					break
+		data = []
+		if 'user' not in inter.namespace:
+			data.append(app_commands.Choice(name='Select User to trade with',value=-1))
 			return data
-		except Exception as e:
-			print(f'{e}')
+		user = inter.namespace['user']
+		if user.id == inter.user.id:
+			data.append(app_commands.Choice(name='Select User to trade with',value=-1))
+			return data
+
+		trainer = trainerservice.GetTrainer(inter.guild_id, user.id)
+		if not trainer:
+			data.append(app_commands.Choice(name='User did not start their journey',value=-1))
+			return data
+		
+		pkmnList = pokemonservice.GetPokemonByIdList([p.Pokemon_Id for p in trainer.OwnedPokemon if p.Id not in trainer.Team])
+		pkmnList.sort(key=lambda x: x.Name)
+		for pkmn in pkmnList:
+			if current.lower() in pkmn.Name.lower():
+				data.append(app_commands.Choice(name=pkmn.Name, value=pkmn.Id))
+			if len(data) == 25:
+				break
+		return data
 
 
 	@app_commands.command(name="trade",
