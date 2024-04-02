@@ -1,5 +1,5 @@
 from discord import Interaction, app_commands
-from services import itemservice, pokemonservice, zoneservice
+from services import itemservice, pokemonservice, trainerservice, zoneservice
 
 
 async def autofill_pokemon(inter: Interaction, current: str):
@@ -63,3 +63,16 @@ async def autofill_zones(inter: Interaction, current: str):
 		if len(data) == 25:
 			break
 	return data
+
+
+async def autofill_nonteam(inter: Interaction, current: str):
+    data = []
+    trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
+    pkmnList = pokemonservice.GetPokemonByIdList([p.Pokemon_Id for p in trainer.OwnedPokemon if p.Id not in trainer.Team])
+    pkmnList.sort(key=lambda x: x.Name)
+    for pkmn in pkmnList:
+      if current.lower() in pkmn.Name.lower():
+        data.append(app_commands.Choice(name=pkmn.Name, value=pkmn.Id))
+      if len(data) == 25:
+        break
+    return data

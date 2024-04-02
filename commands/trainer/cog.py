@@ -1,6 +1,6 @@
 from discord import Member, app_commands, Interaction
 from discord.ext import commands
-from commands.autofills.autofills import autofill_pokemon, autofill_potions, autofill_zones
+from commands.autofills.autofills import autofill_nonteam, autofill_zones
 from commands.views.Pagination.EggView import EggView
 from commands.views.Pagination.PokedexView import PokedexView
 from commands.views.Selection.TeamSelectorView import TeamSelectorView
@@ -117,21 +117,9 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
 
   #region TEAM
 
-  async def autofill_modify(self, inter: Interaction, current: str):
-    data = []
-    trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
-    pkmnList = pokemonservice.GetPokemonByIdList([p.Pokemon_Id for p in trainer.OwnedPokemon if p.Id not in trainer.Team])
-    pkmnList.sort(key=lambda x: x.Name)
-    for pkmn in pkmnList:
-      if current.lower() in pkmn.Name.lower():
-        data.append(app_commands.Choice(name=pkmn.Name, value=pkmn.Id))
-      if len(data) == 25:
-        break
-    return data
-
   @app_commands.command(name="modifyteam",
                         description="Add a specified Pokemon into a team slot or modify existing team.")
-  @app_commands.autocomplete(pokemon=autofill_modify)
+  @app_commands.autocomplete(pokemon=autofill_nonteam)
   @method_logger
   @trainer_check
   async def modifyteam(self, inter: Interaction, pokemon: int | None):
@@ -243,7 +231,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
 
   @app_commands.command(name="release",
                         description="Choose a Pokemon to release.")
-  @app_commands.autocomplete(pokemon=autofill_pokemon)
+  @app_commands.autocomplete(pokemon=autofill_nonteam)
   @method_logger
   @trainer_check
   async def release(self, inter: Interaction,

@@ -1,0 +1,12 @@
+{
+	"trade": [
+		{
+			"Title": "No Pokemon To Trade",
+			"Body": "You do not have any {0} available for trade."
+		},
+		{
+			"Title": "No Pokemon To Trade",
+			"Body": "{0} does not have any {1} available to trade."
+		}
+	]
+}
