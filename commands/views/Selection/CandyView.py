@@ -1,3 +1,4 @@
+from math import ceil
 import discord
 from commands.views.Selection.selectors.GenericSelector import AmountSelector
 from commands.views.Selection.selectors.ItemSelector import ItemSelector
@@ -28,7 +29,7 @@ class CandyView(discord.ui.View):
 			if type(item) is not discord.ui.Button:
 				self.remove_item(item)
 
-		self.pokemonchoice = choices[0]
+		self.pokemonchoice = next(p for p in self.trainer.OwnedPokemon if p.Id == choices[0])
 		self.candychoice = None
 		self.amountchoice = None
 		self.ownlist = OwnedSelector(self.pokemon, 1, choices[0])
@@ -45,9 +46,9 @@ class CandyView(discord.ui.View):
 			if type(item) is not discord.ui.Button:
 				self.remove_item(item)
 
-		self.candychoice = int(choice)
+		self.candychoice = itemservice.GetCandy(int(choice))
 		self.amountchoice = None
-		self.ownlist = OwnedSelector(self.pokemon, 1, self.pokemonchoice)
+		self.ownlist = OwnedSelector(self.pokemon, 1, self.pokemonchoice.Id)
 		self.candyselector = ItemSelector([itemservice.GetCandy(int(c)) for c in self.trainer.Candies if self.trainer.Candies[c] > 0], choice)
 		self.amountselector = AmountSelector(self.trainer.Candies[choice])
 		self.add_item(self.ownlist)
@@ -75,24 +76,30 @@ class CandyView(discord.ui.View):
 		await inter.response.defer()
 		if self.pokemonchoice and self.candychoice and self.amountchoice:
 			#Rare Candy
-			pkmn = next(p for p in self.trainer.OwnedPokemon if p.Id == self.pokemonchoice)
-			pkmnData = pokemonservice.GetPokemonById(pkmn.Pokemon_Id)
-			if itemservice.GetCandy(self.candychoice).Experience == None:
+			pkmnData = pokemonservice.GetPokemonById(self.pokemonchoice.Pokemon_Id)
+			if self.candychoice.Experience == None:
 				num = 0
-				while num < self.amountchoice:
+				while num < self.amountchoice and self.pokemonchoice.Level < 100:
 					pokemonservice.AddExperience(
-						pkmn, 
+						self.pokemonchoice, 
 						pkmnData, 
-						(pokemonservice.NeededExperience(pkmn.Level, pkmnData.Rarity, len(pkmnData.EvolvesInto) > 0) - pkmn.CurrentExp))
+						(pokemonservice.NeededExperience(self.pokemonchoice.Level, pkmnData.Rarity, len(pkmnData.EvolvesInto) > 0) - self.pokemonchoice.CurrentExp))
 					num += 1
-				message = f"{pokemonservice.GetPokemonDisplayName(pkmn)} gained {self.amountchoice} level(s)."
+				message = f"{pokemonservice.GetPokemonDisplayName(self.pokemonchoice, pkmnData)} gained {num} level(s)."
+				trainerservice.ModifyItemList(self.trainer.Candies, str(self.candychoice.Id), (0-num))
 			else:
-				pokemonservice.AddExperience(
-					pkmn, 
-					pkmnData, 
-					itemservice.GetCandy(self.candychoice).Experience*self.amountchoice)
-				message = f"{pokemonservice.GetPokemonDisplayName(pkmn)} gained {itemservice.GetCandy(self.candychoice).Experience*self.amountchoice} experience points."
-			trainerservice.ModifyItemList(self.trainer.Candies, str(self.candychoice), (0-self.amountchoice))
+				num = 0
+				while num < self.amountchoice and self.pokemonchoice.Level < 100:
+					nextLevel = pokemonservice.NeededExperience(self.pokemonchoice.Level, pkmnData.Rarity, len(pkmnData.EvolvesInto) > 0) - self.pokemonchoice.CurrentExp
+					numToUse = ceil(nextLevel/self.candychoice.Experience)
+					numToUse = self.amountchoice - num if numToUse > self.amountchoice - num else numToUse
+					pokemonservice.AddExperience(
+						self.pokemonchoice, 
+						pkmnData, 
+						self.candychoice.Experience*numToUse)
+					num += numToUse
+				message = f"{pokemonservice.GetPokemonDisplayName(self.pokemonchoice, pkmnData)} gained {self.candychoice.Experience*num} experience points."
+				trainerservice.ModifyItemList(self.trainer.Candies, str(self.candychoice.Id), (0-num))
 			trainerservice.UpsertTrainer(self.trainer)
 			self.clear_items()
 			await self.message.edit(content=message, view=self)

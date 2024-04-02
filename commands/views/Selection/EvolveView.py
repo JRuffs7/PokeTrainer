@@ -22,7 +22,7 @@ class EvolveView(discord.ui.View):
 	@button_check
 	async def EvolveSelection(self, inter: discord.Interaction, choice: str):
 		await inter.response.defer()
-		self.evolvechoice = choice
+		self.evolvechoice = pokemonservice.GetPokemonById(int(choice))
 
 	@button_check
 	async def PokemonSelection(self, inter: discord.Interaction, choice: list[str]):
@@ -32,10 +32,10 @@ class EvolveView(discord.ui.View):
 				self.remove_item(item)
 
 		self.pokemonchoice = next(p for p in self.trainer.OwnedPokemon if p.Id == choice[0])
-		pkmnChoiceData = pokemonservice.GetPokemonById(self.pokemonchoice.Pokemon_Id)
+		self.pkmnChoiceData = pokemonservice.GetPokemonById(self.pokemonchoice.Pokemon_Id)
 		self.evolvechoice = None
 		self.ownlist = OwnedSelector(self.evolveMon, 1, choice[0])
-		self.evlist = EvolveSelector([pokemonservice.GetPokemonById(p) for p in pkmnChoiceData.EvolvesInto])
+		self.evlist = EvolveSelector(pokemonservice.GetPokemonByIdList([p for p in self.pkmnChoiceData.EvolvesInto]))
 		self.add_item(self.ownlist)
 		self.add_item(self.evlist)
 		await self.message.edit(view=self)
@@ -54,10 +54,10 @@ class EvolveView(discord.ui.View):
 	async def submit_button(self, inter: discord.Interaction,
 												button: discord.ui.Button):
 		await inter.response.defer()
-		if self.pokemonchoice and self.evolvechoice and self.evolvechoice != '0':
-			evolvedPokemon = trainerservice.Evolve(self.trainer, self.pokemonchoice, int(self.evolvechoice))
+		if self.pokemonchoice and self.evolvechoice:
+			evolvedPokemon = trainerservice.Evolve(self.trainer, self.pokemonchoice, self.evolvechoice)
 			self.clear_items()
-			await self.message.edit(content=f"**{pokemonservice.GetPokemonDisplayName(self.pokemonchoice, False)}** evolved into **{pokemonservice.GetPokemonDisplayName(evolvedPokemon, False)}**", view=self)
+			await self.message.edit(content=f"**{pokemonservice.GetPokemonDisplayName(self.pokemonchoice, self.pkmnChoiceData)}** evolved into **{pokemonservice.GetPokemonDisplayName(evolvedPokemon, self.evolvechoice)}**", view=self)
 
 
 	async def send(self):

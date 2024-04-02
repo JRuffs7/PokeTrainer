@@ -63,7 +63,7 @@ class PokemonSearchView(BasePaginationView):
                       alignments=[Alignment.LEFT,Alignment.LEFT,Alignment.CENTER,Alignment.LEFT,Alignment.LEFT],
                       style=PresetStyle.plain,
                       cell_padding=0)
-    return f"**__{pokemonservice.GetPokemonDisplayName(pokemon, pokemon.IsFemale)}__**\n```{pkmnData}```"
+    return f"**__{pokemonservice.GetPokemonDisplayName(pokemon, pkmn, pokemon.IsFemale)}__**\n```{pkmnData}```"
   
   def ListDesc(self, data: list[PokemonData]):
     newline = '\n'

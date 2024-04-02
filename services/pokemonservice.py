@@ -22,6 +22,8 @@ def GetPokemonById(id: int):
     return results.pop()
   return None
 
+def GetPokemonByIdList(idList: list[int]):
+  return pokemonda.GetPokemonByProperty(idList, 'Id')
 
 def GetPokemonCount():
   return len(set(p.PokedexId for p in GetAllPokemon()))
@@ -59,8 +61,8 @@ def IsSpecialPokemon(pokemon: PokemonData):
 
 #region Display
 
-def GetPokemonDisplayName(pokemon: Pokemon, showGender: bool = True, showShiny: bool = True):
-  pkmn = GetPokemonById(pokemon.Pokemon_Id)
+def GetPokemonDisplayName(pokemon: Pokemon, data: PokemonData = None, showGender: bool = True, showShiny: bool = True):
+  pkmn = GetPokemonById(pokemon.Pokemon_Id) if not data else data
   return f"{pkmn.Name}{GetNameEmojis(pokemon, showGender, showShiny)}"
 
 
@@ -70,13 +72,13 @@ def GetNameEmojis(pokemon: Pokemon, showGender: bool, showShiny: bool):
     return f"{genderEmoji}{shinyEmoji}"
 
 
-def GetOwnedPokemonDescription(pokemon: Pokemon):
-  pkmn = GetPokemonById(pokemon.Pokemon_Id)
+def GetOwnedPokemonDescription(pokemon: Pokemon, pkmnData: PokemonData = None):
+  pkmn = GetPokemonById(pokemon.Pokemon_Id) if not pkmnData else pkmnData
   return f"Lvl. {pokemon.Level} ({pokemon.CurrentExp}/{NeededExperience(pokemon.Level, pkmn.Rarity, len(pkmn.EvolvesInto) > 0)}xp | H:{pokemon.Height} | W:{pokemon.Weight} | Types: {'/'.join(pkmn.Types)}"
 
 
-def GetPokemonImage(pokemon: Pokemon | PokemonData):
-  pkmn = GetPokemonById(pokemon.Pokemon_Id)
+def GetPokemonImage(pokemon: Pokemon, pkmnData: PokemonData = None):
+  pkmn = GetPokemonById(pokemon.Pokemon_Id) if not pkmnData else pkmnData
   if pokemon.IsShiny and pokemon.IsFemale:
       return pkmn.ShinySpriteFemale or pkmn.ShinySprite
   elif pokemon.IsShiny and not pokemon.IsFemale:
@@ -134,10 +136,6 @@ def GenerateSpawnPokemon(pokemon: PokemonData, level: int | None = None):
       'CurrentExp': 0
   })
 
-def GetSpawnList():
-  initList = pokemonda.GetPokemonByProperty([1, 2, 3], 'Rarity')
-  return [p for p in initList if CanSpawn(p)]
-
 def CanSpawn(pokemon: PokemonData):
   if pokemon.IsMega or pokemon.IsUltraBeast or pokemon.IsParadox or pokemon.IsLegendary or pokemon.IsMythical or pokemon.IsFossil:
     return False
@@ -176,10 +174,12 @@ def AddExperience(trainerPokemon: Pokemon, pkmnData: PokemonData, exp: int):
   while trainerPokemon.CurrentExp >= expNeeded and trainerPokemon.Level < 100:
     trainerPokemon.Level += 1
     trainerPokemon.CurrentExp -= expNeeded
+    expNeeded = NeededExperience(trainerPokemon.Level, pkmnData.Rarity, len(pkmnData.EvolvesInto) > 0)
 
   if trainerPokemon.Level == 100 and trainerPokemon.CurrentExp > expNeeded:
+    excess = trainerPokemon.CurrentExp - expNeeded
     trainerPokemon.CurrentExp = expNeeded
-    return
+    return excess
 
 def NeededExperience(level: int, rarity: int, canEvolve: bool):
   if rarity == 1:
@@ -190,8 +190,8 @@ def NeededExperience(level: int, rarity: int, canEvolve: bool):
     return 150 if level < 35 else 250
   if rarity == 4 or rarity == 5:
     return 250
-  if (rarity == 3 and not canEvolve) or rarity >= 8:
-    return 200
+  #if (rarity == 3 and not canEvolve) or rarity >= 8:
+  return 200
 
 def CanPokemonEvolve(pkmn: PokemonData, level: int):
   if pkmn.Rarity == 1 and len(pkmn.EvolvesInto) >= 1:
@@ -202,11 +202,11 @@ def CanPokemonEvolve(pkmn: PokemonData, level: int):
     return level >= 35
   return False
 
-def EvolvePokemon(initial: Pokemon, evolveId: int):
-  spawn = GenerateSpawnPokemon(GetPokemonById(evolveId))
+def EvolvePokemon(initial: Pokemon, evolve: PokemonData):
+  spawn = GenerateSpawnPokemon(evolve)
   return Pokemon({
       'Id': initial.Id,
-      'Pokemon_Id': evolveId,
+      'Pokemon_Id': evolve.Id,
       'Height': spawn.Height,
       'Weight': spawn.Weight,
       'IsShiny': initial.IsShiny,
@@ -217,13 +217,9 @@ def EvolvePokemon(initial: Pokemon, evolveId: int):
 
 def GetPokemonThatCanEvolve(ownedPokemon: list[Pokemon]):
   if not ownedPokemon:
-    return []
-  dataList = GetPokemonDataForOwned(ownedPokemon)
-  returnList = [p for p in ownedPokemon if CanPokemonEvolve(next(pk for pk in dataList if pk.Id == p.Pokemon_Id), p.Level)]
-  return returnList
-
-def GetPokemonDataForOwned(ownedList: list[Pokemon]):
-  return pokemonda.GetPokemonByProperty([p.Pokemon_Id for p in ownedList], 'Id')
+    return None
+  dataList = GetPokemonByIdList([p.Pokemon_Id for p in ownedPokemon])
+  return [p for p in ownedPokemon if CanPokemonEvolve(next(pk for pk in dataList if pk.Id == p.Pokemon_Id), p.Level)]
 
 #endregion
 
