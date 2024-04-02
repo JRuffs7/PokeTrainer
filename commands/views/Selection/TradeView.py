@@ -83,11 +83,13 @@ class TradeView(discord.ui.View):
 	def PrintPkmnDetails(self, pokemon: Pokemon, data: PokemonData):
 		pkmnData = t2a(
 			body=[
-				['Level:', f"{pokemon.Level}", '|', 'Height:', pokemon.Height],
-				['Color:',f"{data.Color}", '|','Weight:', pokemon.Weight], 
-				['Types:', f"{data.Types[0]}"f"{'/' + data.Types[1] if len(data.Types) > 1 else ''}", Merge.LEFT, Merge.LEFT, Merge.LEFT]], 
+				['Level:', f"{pokemon.Level}{f'({pokemon.CurrentExp}/{pokemonservice.NeededExperience(pokemon.Level, data.Rarity, len(data.EvolvesInto) > 0)})' if pokemon.Level < 100 else ''}"], 
+				['Height:', pokemon.Height],
+				['Weight:', pokemon.Weight],
+				['Color:',f"{data.Color}"],  
+				['Types:', f"{data.Types[0]}"f"{'/' + data.Types[1] if len(data.Types) > 1 else ''}"]], 
 			first_col_heading=False,
-			alignments=[Alignment.LEFT,Alignment.LEFT,Alignment.CENTER,Alignment.LEFT,Alignment.LEFT],
+			alignments=[Alignment.LEFT,Alignment.LEFT],
 			style=PresetStyle.plain,
 			cell_padding=0)
 		return f"**{pokemonservice.GetPokemonDisplayName(pokemon, data)}**\n```{pkmnData}```"
