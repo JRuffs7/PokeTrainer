@@ -31,9 +31,21 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
     return await discordservice_trainer.PrintTrainer(interaction, trainer, targetUser)
 
 
+  async def autofill_usepotion(self, inter: Interaction, current:str):
+    data = []
+    trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
+    ptnList = [itemservice.GetPotion(int(k)) for k in trainer.Potions if trainer.Potions[k] > 0]
+    ptnList.sort(key=lambda x: x.Id)
+    for ptn in ptnList:
+      if current.lower() in ptn.Name.lower():
+        data.append(app_commands.Choice(name=ptn.Name, value=ptn.Id))
+      if len(data) == 25:
+        break
+    return data
+
   @app_commands.command(name="usepotion",
                         description="Use a potion to restore trainer health.")
-  @app_commands.autocomplete(potion=autofill_potions)
+  @app_commands.autocomplete(potion=autofill_usepotion)
   @method_logger
   @trainer_check
   async def usepotion(self, inter: Interaction, potion: int):
@@ -105,9 +117,21 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
 
   #region TEAM
 
+  async def autofill_modify(self, inter: Interaction, current: str):
+    data = []
+    trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
+    pkmnList = pokemonservice.GetPokemonByIdList([p.Pokemon_Id for p in trainer.OwnedPokemon if p.Id not in trainer.Team])
+    pkmnList.sort(key=lambda x: x.Name)
+    for pkmn in pkmnList:
+      if current.lower() in pkmn.Name.lower():
+        data.append(app_commands.Choice(name=pkmn.Name, value=pkmn.Id))
+      if len(data) == 25:
+        break
+    return data
+
   @app_commands.command(name="modifyteam",
                         description="Add a specified Pokemon into a team slot or modify existing team.")
-  @app_commands.autocomplete(pokemon=autofill_pokemon)
+  @app_commands.autocomplete(pokemon=autofill_modify)
   @method_logger
   @trainer_check
   async def modifyteam(self, inter: Interaction, pokemon: int | None):

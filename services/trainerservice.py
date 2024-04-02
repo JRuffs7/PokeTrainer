@@ -9,7 +9,7 @@ from models.Egg import TrainerEgg
 from models.Event import Event
 from models.Item import Potion
 from models.Trainer import Trainer
-from models.Pokemon import Pokemon
+from models.Pokemon import Pokemon, PokemonData
 from models.enums import EventType, PokemonCount, StatCompare
 from services import gymservice, itemservice, pokemonservice
 
@@ -95,7 +95,8 @@ def EventEntry(trainer: Trainer, event: Event):
   #Pokemon Count Event
   if event.EventType == EventType.PokemonCount.value:
     if event.SubType <= 17:
-      return sum(PokemonCount(event.SubType).name.lower() in [t.lower() for t in pokemonservice.GetPokemonById(p.Pokemon_Id).Types] for p in trainer.OwnedPokemon)
+      dataList = pokemonservice.GetPokemonByIdList([p.Pokemon_Id for p in trainer.OwnedPokemon])
+      return sum(PokemonCount(event.SubType).name.lower() in [t.lower() for t in next(pk for pk in dataList if p.Pokemon_Id == pk.Id).Types] for p in trainer.OwnedPokemon)
     elif event.SubType == PokemonCount.Female.value:
       return sum(p.IsFemale for p in trainer.OwnedPokemon)
     elif event.SubType == PokemonCount.Male.value:
@@ -103,7 +104,8 @@ def EventEntry(trainer: Trainer, event: Event):
     elif event.SubType == PokemonCount.Shiny.value:
       return sum(p.IsShiny for p in trainer.OwnedPokemon)
     else:
-      return sum(pokemonservice.GetPokemonById(p.Pokemon_Id).IsLegendary for p in trainer.OwnedPokemon)
+      dataList = pokemonservice.GetPokemonByIdList([p.Pokemon_Id for p in trainer.OwnedPokemon])
+      return sum(next(pk for pk in dataList if p.Pokemon_Id == pk.Id).IsLegendary for p in trainer.OwnedPokemon)
   #Stat Compare Event
   else:
     heightBased = event.SubType in [StatCompare.Shortest.value, StatCompare.Tallest.value]
@@ -238,8 +240,8 @@ def TryAddToPokedex(trainer: Trainer, pokedexId: int):
   if pokedexId not in trainer.Pokedex:
     trainer.Pokedex.append(pokedexId)
 
-def Evolve(trainer: Trainer, initialPkmn: Pokemon, evolveId: int):
-  newPkmn = pokemonservice.EvolvePokemon(initialPkmn, evolveId)
+def Evolve(trainer: Trainer, initialPkmn: Pokemon, evolveMon: PokemonData):
+  newPkmn = pokemonservice.EvolvePokemon(initialPkmn, evolveMon)
   index = trainer.OwnedPokemon.index(initialPkmn)
   trainer.OwnedPokemon[index] = newPkmn
   TryAddToPokedex(trainer, pokemonservice.GetPokemonById(newPkmn.Pokemon_Id).PokedexId)
@@ -309,14 +311,9 @@ def TryCapture(reaction: str, trainer: Trainer, spawn: Pokemon):
   UpsertTrainer(trainer)
   return caught
 
-def TryWildFight(trainer: Trainer, wild: Pokemon):
-    if trainer.Health <= 0:
-      return None
-    
+def TryWildFight(trainer: Trainer, trainerPkmnData: PokemonData, wild: Pokemon, wildData: PokemonData):
     trainerPokemon = next(p for p in trainer.OwnedPokemon if p.Id == trainer.Team[0])
-    trainerPkmn = pokemonservice.GetPokemonById(trainerPokemon.Pokemon_Id)
-    wildPkmn = pokemonservice.GetPokemonById(wild.Pokemon_Id)
-    healthLost = pokemonservice.WildFight(trainerPkmn, wildPkmn, trainerPokemon.Level, wild.Level)
+    healthLost = pokemonservice.WildFight(trainerPkmnData, wildData, trainerPokemon.Level, wild.Level)
 
     #Hoenn Reward
     if HasRegionReward(trainer, 3) and choice(range(1, 101)) < 11:
@@ -325,16 +322,16 @@ def TryWildFight(trainer: Trainer, wild: Pokemon):
     trainer.Health -= healthLost
     trainer.Health = 0 if trainer.Health < 0 else trainer.Health
     if healthLost < 10 and trainer.Health > 0:
+      exp = wildData.Rarity*wild.Level*2 if wildData.Rarity <= 2 else wildData.Rarity*wild.Level
       pokemonservice.AddExperience(
         trainerPokemon, 
-        trainerPkmn, 
-        wildPkmn.Rarity*wild.Level*2 if wildPkmn.Rarity <= 2 else wildPkmn.Rarity*wild.Level)
+        trainerPkmnData, 
+        exp)
       trainer.Money += 50
       #Kanto Reward
       if HasRegionReward(trainer, 1) and len(trainer.Team) > 1:
         teamMember = next(p for p in trainer.OwnedPokemon if p.Id == trainer.Team[1])
         pkmn = pokemonservice.GetPokemonById(teamMember.Pokemon_Id)
-        exp = wildPkmn.Rarity*wild.Level*2 if wildPkmn.Rarity <= 2 else wildPkmn.Rarity*wild.Level
         pokemonservice.AddExperience(
           teamMember, 
           pkmn, 

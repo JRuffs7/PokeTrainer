@@ -18,6 +18,7 @@ class PokedexView(BasePaginationView):
     self.targetuser = targetUser
     self.trainer = trainer
     self.title = title
+    self.pokemondata = pokemonservice.GetPokemonByIdList([d.Pokemon_Id for d in data])
     super(PokedexView, self).__init__(interaction, pageLength, data)
 
   async def send(self, ephemeral: bool = False):
@@ -34,7 +35,7 @@ class PokedexView(BasePaginationView):
         self.SingleEmbedDesc(data[0]) if self.pageLength == 1 else self.ListEmbedDesc(data),
         TrainerColor)
     if self.pageLength == 1:
-      embed.set_image(url=pokemonservice.GetPokemonImage(data[0]))
+      embed.set_image(url=pokemonservice.GetPokemonImage(data[0],next(p for p in self.pokemondata if p.Id == data[0].Pokemon_Id)))
     else:
       embed.set_thumbnail(url=self.targetuser.display_avatar.url)
     embed.set_footer(text=f"{self.currentPage}/{ceil(len(self.data)/self.pageLength)}")
@@ -61,16 +62,16 @@ class PokedexView(BasePaginationView):
     await self.update_message(self.get_currentPage_data())
 
   def SingleEmbedDesc(self, pokemon: Pokemon):
-    pkmn = pokemonservice.GetPokemonById(pokemon.Pokemon_Id)
+    pkmn = next(p for p in self.pokemondata if p.Id == pokemon.Pokemon_Id)
     pkmnData = t2a(body=[['CurrentExp:', f"{pokemon.CurrentExp}/{pokemonservice.NeededExperience(pokemon.Level, pkmn.Rarity, len(pkmn.EvolvesInto) > 0)}", '|', 'Height:', pokemon.Height],
-                            ['Can Evolve:',f"{'Yes' if pokemonservice.CanTrainerPokemonEvolve(pokemon) else 'No'}", '|','Weight:', pokemon.Weight], 
+                            ['Can Evolve:',f"{'Yes' if pokemonservice.CanPokemonEvolve(pkmn, pokemon.Level) else 'No'}", '|','Weight:', pokemon.Weight], 
                             ['Types:', f"{'/'.join(pkmn.Types)}", Merge.LEFT, Merge.LEFT, Merge.LEFT]], 
                       first_col_heading=False,
                       alignments=[Alignment.LEFT,Alignment.LEFT,Alignment.CENTER,Alignment.LEFT,Alignment.LEFT],
                       style=PresetStyle.plain,
                       cell_padding=0)
-    return f"**__{pokemonservice.GetPokemonDisplayName(pokemon)} (Lvl. {pokemon.Level})__**\n```{pkmnData}```"
+    return f"**__{pokemonservice.GetPokemonDisplayName(pokemon, pkmn)} (Lvl. {pokemon.Level})__**\n```{pkmnData}```"
 
   def ListEmbedDesc(self, data: list[Pokemon]):
     newline = '\n'
-    return f"{newline.join([pokemonservice.GetPokemonDisplayName(x) + f' (Lvl. {x.Level})' for x in data])}"
+    return f"{newline.join([pokemonservice.GetPokemonDisplayName(x, next(p for p in self.pokemondata if p.Id == x.Pokemon_Id)) + f' (Lvl. {x.Level})' for x in data])}"

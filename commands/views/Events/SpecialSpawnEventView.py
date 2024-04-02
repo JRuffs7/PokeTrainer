@@ -23,7 +23,7 @@ class SpecialSpawnEventView(EventView):
 				title,
 				self.PokemonDesc(),
 				EventColor)
-		embed.set_image(url=pokemonservice.GetPokemonImage(pokemon))
+		embed.set_image(url=pokemonservice.GetPokemonImage(pokemon, self.pkmndata))
 		super().__init__(server, channel, embed)
 
 	@discord.ui.button(label=MasterBallReaction)
@@ -51,7 +51,7 @@ class SpecialSpawnEventView(EventView):
 
 	def CaptureDesc(self, userId: int):
 		pkmnType = 'starter' if self.pkmndata.IsStarter else 'Legendary' if self.pkmndata.IsLegendary else 'Ultra Beast' if self.pkmndata.IsUltraBeast else 'Paradox' if self.pkmndata.IsParadox else 'fossil' if self.pkmndata.IsFossil else 'Mythical'
-		return f'<@{userId}> used a Masterball and captured the {pkmnType} Pokemon {pokemonservice.GetPokemonDisplayName(self.pokemon)}!'
+		return f'<@{userId}> used a Masterball and captured the {pkmnType} Pokemon {pokemonservice.GetPokemonDisplayName(self.pokemon, self.pkmndata)}!'
 
 	def PokemonDesc(self):
 		pkmnData = t2a(
@@ -62,4 +62,4 @@ class SpecialSpawnEventView(EventView):
 			alignments=[Alignment.LEFT,Alignment.LEFT,Alignment.CENTER,Alignment.LEFT,Alignment.LEFT],
 			style=PresetStyle.plain,
 			cell_padding=0)
-		return f"{f'{pokemonservice.GetPokemonDisplayName(self.pokemon)} (Lvl. {self.pokemon.Level})'}```{pkmnData}```"
+		return f"{f'{pokemonservice.GetPokemonDisplayName(self.pokemon, self.pkmndata)} (Lvl. {self.pokemon.Level})'}```{pkmnData}```"

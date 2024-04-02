@@ -1,9 +1,7 @@
-from datetime import datetime
 import logging
 from discord import app_commands, Interaction
 from discord.ext import commands
 from typing import List
-from commands.autofills.autofills import autofill_pokemon
 from commands.views.Pagination.PokemonSearchView import PokemonSearchView
 from commands.views.Selection.CandyView import CandyView
 from commands.views.Selection.HatchView import HatchView
@@ -143,38 +141,55 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
 
   #region Evolution
 
+  async def autofill_evolve(self, inter: Interaction, current: str):
+    data = []
+    trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
+    evList = pokemonservice.GetPokemonThatCanEvolve([p for p in trainer.OwnedPokemon if p.Level >= 20])
+    pkmnList = pokemonservice.GetPokemonByIdList([e.Pokemon_Id for e in evList])
+    pkmnList.sort(key=lambda x: x.Name)
+    for pkmn in pkmnList:
+      if current.lower() in pkmn.Name.lower():
+        data.append(app_commands.Choice(name=pkmn.Name, value=pkmn.Id))
+      if len(data) == 25:
+        break
+    return data
+
   @app_commands.command(name="evolve",
                         description="Evolve your Pokemon.")
-  @app_commands.autocomplete(pokemon=autofill_pokemon)
+  @app_commands.autocomplete(pokemon=autofill_evolve)
   @method_logger
   @trainer_check
   async def evolve(self, inter: Interaction, pokemon: int | None):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
-    if inter.user.id == 197547442651004928 and inter.guild_id == 204074128309747713:
-      self.debugLog.debug(f'Evolve List Start: {datetime.now()}')
-    pokeList = [p for p in trainer.OwnedPokemon if pokemonservice.CanTrainerPokemonEvolve(p)]
-    if inter.user.id == 197547442651004928 and inter.guild_id == 204074128309747713:
-      self.debugLog.debug(f'Evolve List End: {datetime.now()}')
+    pokeList = pokemonservice.GetPokemonThatCanEvolve([p for p in trainer.OwnedPokemon if p.Level >= 20 and (p.Pokemon_Id == pokemon if pokemon else True)])
     if not pokeList:
-      return await discordservice_pokemon.PrintEvolveResponse(inter, 0)
-    
-    if pokemon:
-      pokeList = [p for p in pokeList if p.Pokemon_Id == pokemon]
-    if not pokeList:
-      return await discordservice_pokemon.PrintEvolveResponse(inter, 1, pokemonservice.GetPokemonById(pokemon).Name)
-
+      return await discordservice_pokemon.PrintEvolveResponse(inter, 1 if pokemon else 0, pokemonservice.GetPokemonById(pokemon).Name)
 
     evolveView = EvolveView(inter, trainer, pokeList)
     return await evolveView.send()
 
+
+  async def autofill_candy(self, inter: Interaction, current: str):
+    data = []
+    trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
+    pkmnList = pokemonservice.GetPokemonByIdList([p.Pokemon_Id for p in trainer.OwnedPokemon if p.Level < 100])
+    pkmnList.sort(key=lambda x: x.Name)
+    for pkmn in pkmnList:
+      if current.lower() in pkmn.Name.lower():
+        data.append(app_commands.Choice(name=pkmn.Name, value=pkmn.Id))
+      if len(data) == 25:
+        break
+    return data
+
+
   @app_commands.command(name="givecandy",
                         description="Give a candy to a Pokemon.")
-  @app_commands.autocomplete(pokemon=autofill_pokemon)
+  @app_commands.autocomplete(pokemon=autofill_candy)
   @method_logger
   @trainer_check
   async def givecandy(self, inter: Interaction, pokemon: int):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
-    pokeList = [p for p in trainer.OwnedPokemon if p.Pokemon_Id == pokemon]
+    pokeList = [p for p in trainer.OwnedPokemon if p.Pokemon_Id == pokemon and p.Level < 100]
     if not pokeList:
       return await discordservice_pokemon.PrintGiveCandyResponse(inter, 1, pokemonservice.GetPokemonById(pokemon).Name)
     candyList = [c for c in trainer.Candies if trainer.Candies[c] > 0]

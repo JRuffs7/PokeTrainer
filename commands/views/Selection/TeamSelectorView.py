@@ -68,9 +68,9 @@ class TeamSelectorView(discord.ui.View):
     #swapping/adding
     else:
       if self.adding and self.teamslotchoice == len(self.trainer.Team):
-        message = f"{next(pokemonservice.GetPokemonDisplayName(p) for p in self.trainer.OwnedPokemon if p.Id == self.pokemonchoice)} was added to the team!"
+        message = f"{pokemonservice.GetPokemonDisplayName(pkmn)} was added to the team!"
       else:
-        message = f"{next(pokemonservice.GetPokemonDisplayName(p) for p in self.trainer.OwnedPokemon if p.Id == self.pokemonchoice)} was swapped into slot {int(self.teamslotchoice) + 1}"
+        message = f"{pokemonservice.GetPokemonDisplayName(pkmn)} was swapped into slot {int(self.teamslotchoice) + 1}"
       trainerservice.SetTeamSlot(self.trainer, self.teamslotchoice, self.pokemonchoice)
       await self.message.edit(content=message, view=self)
 

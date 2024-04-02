@@ -68,11 +68,12 @@ async def PrintModifyTeam(interaction: Interaction, response: int, pkmnId: int):
 
 async def PrintStarter(interaction: Interaction, trainer: Trainer, server: str):
 	if trainer:
+		pkmnData = pokemonservice.GetPokemonById(trainer.OwnedPokemon[0].Pokemon_Id)
 		embed = discordservice.CreateEmbed(
 				f"{interaction.user.display_name}'s Journey Begins!",
-				f"Starter: {pokemonservice.GetPokemonDisplayName(trainer.OwnedPokemon[0])}\nStarting Money: ${trainer.Money}\nStarting Pokeballs: 5",
+				f"Starter: {pokemonservice.GetPokemonDisplayName(trainer.OwnedPokemon[0], pkmnData)}\nStarting Money: ${trainer.Money}\nStarting Pokeballs: 5",
 				TrainerColor)
-		embed.set_image(url=pokemonservice.GetPokemonImage(trainer.OwnedPokemon[0]))
+		embed.set_image(url=pokemonservice.GetPokemonImage(trainer.OwnedPokemon[0], pkmnData))
 		await discordservice.SendEmbed(interaction, embed)
 		embed2 = discordservice.CreateEmbed(
 					f"Welcome to PokeTrainer!",
