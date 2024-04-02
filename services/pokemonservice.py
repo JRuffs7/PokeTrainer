@@ -63,13 +63,9 @@ def IsSpecialPokemon(pokemon: PokemonData):
 
 def GetPokemonDisplayName(pokemon: Pokemon, data: PokemonData = None, showGender: bool = True, showShiny: bool = True):
   pkmn = GetPokemonById(pokemon.Pokemon_Id) if not data else data
-  return f"{pkmn.Name}{GetNameEmojis(pokemon, showGender, showShiny)}"
-
-
-def GetNameEmojis(pokemon: Pokemon, showGender: bool, showShiny: bool):
-    genderEmoji = f"{f' {FemaleSign}' if pokemon.IsFemale == True else f' {MaleSign}' if pokemon.IsFemale == False else ''}" if showGender else ""
-    shinyEmoji = f"{f'{ShinySign}' if pokemon.IsShiny else ''}" if showShiny else ""
-    return f"{genderEmoji}{shinyEmoji}"
+  genderEmoji = f"{f' {FemaleSign}' if pokemon.IsFemale == True else f' {MaleSign}' if pokemon.IsFemale == False else ''}" if showGender else ""
+  shinyEmoji = f"{f'{ShinySign}' if pokemon.IsShiny else ''}" if showShiny else ""
+  return f"{pkmn.Name}{genderEmoji}{shinyEmoji}"
 
 
 def GetOwnedPokemonDescription(pokemon: Pokemon, pkmnData: PokemonData = None):

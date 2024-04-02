@@ -1,5 +1,5 @@
 from discord import Interaction, app_commands
-from services import itemservice, pokemonservice, trainerservice, zoneservice
+from services import itemservice, pokemonservice, zoneservice
 
 
 async def autofill_pokemon(inter: Interaction, current: str):

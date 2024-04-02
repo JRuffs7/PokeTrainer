@@ -23,7 +23,7 @@ class SpecialSpawnEventView(EventView):
 				title,
 				self.PokemonDesc(),
 				EventColor)
-		embed.set_image(url=pokemonservice.GetPokemonImage(pokemon))
+		embed.set_image(url=pokemonservice.GetPokemonImage(pokemon, self.pkmndata))
 		super().__init__(server, channel, embed)
 
 	@discord.ui.button(label=MasterBallReaction)

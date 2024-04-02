@@ -34,7 +34,7 @@ class SpawnPokemonView(discord.ui.View):
 				self.GetTitle(),
 				self.PokemonDesc(),
 				PokemonColor)
-		embed.set_image(url=pokemonservice.GetPokemonImage(self.pokemon))
+		embed.set_image(url=pokemonservice.GetPokemonImage(self.pokemon, self.pkmndata))
 		embed.set_footer(text='Set Your Battle Pokemon Below')
 		await self.message.edit(content=f'Current Trainer HP: {self.TrainerHealthString(self.trainer)}', embed=embed, view=self)
 

@@ -35,7 +35,7 @@ class PokedexView(BasePaginationView):
         self.SingleEmbedDesc(data[0]) if self.pageLength == 1 else self.ListEmbedDesc(data),
         TrainerColor)
     if self.pageLength == 1:
-      embed.set_image(url=pokemonservice.GetPokemonImage(data[0]))
+      embed.set_image(url=pokemonservice.GetPokemonImage(data[0],next(p for p in self.pokemondata if p.Id == data[0].Pokemon_Id)))
     else:
       embed.set_thumbnail(url=self.targetuser.display_avatar.url)
     embed.set_footer(text=f"{self.currentPage}/{ceil(len(self.data)/self.pageLength)}")
