@@ -217,6 +217,12 @@ def GetPokemonThatCanEvolve(ownedPokemon: list[Pokemon]):
   dataList = GetPokemonByIdList([p.Pokemon_Id for p in ownedPokemon])
   return [p for p in ownedPokemon if CanPokemonEvolve(next(pk for pk in dataList if pk.Id == p.Pokemon_Id), p.Level)]
 
+def SimulateLevelGain(currLevel: int, currExp: int, rarity: int, canEvolve: bool, exp: int):
+  simPokemon = Pokemon({'Level': currLevel, 'CurrentExp': currExp})
+  simData = PokemonData({'Rarity': rarity, 'EvolvesInto': [1] if canEvolve else []})
+  AddExperience(simPokemon, simData, exp)
+  return simPokemon.Level - currLevel
+
 #endregion
 
 #region Fights

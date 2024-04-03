@@ -2,8 +2,11 @@ import logging
 from discord import app_commands, Interaction
 from discord.ext import commands
 from typing import List
+from commands.autofills.autofills import autofill_nonteam
+from commands.views.Pagination.DaycareView import DaycareView
 from commands.views.Pagination.PokemonSearchView import PokemonSearchView
 from commands.views.Selection.CandyView import CandyView
+from commands.views.Selection.DaycareAddView import DaycareAddView
 from commands.views.Selection.HatchView import HatchView
 from commands.views.SpawnPokemonView import SpawnPokemonView
 import discordbot
@@ -199,6 +202,30 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
     candyView = CandyView(inter, trainer, pokeList)
     return await candyView.send()
 
+
+  @app_commands.command(name="daycare",
+                        description="Add to or check on your daycare.")
+  @app_commands.autocomplete(pokemon=autofill_nonteam)
+  @method_logger
+  @trainer_check
+  async def daycare(self, inter: Interaction, pokemon: int|None):
+    trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
+
+    #Viewing Daycare
+    if not pokemon:
+      if len(trainer.Daycare) == 0:
+        return await discordservice_pokemon.PrintDaycareResponse(inter, 0, [])
+      return await DaycareView(inter, trainer).send()
+    
+    #Adding To Daycare
+    if len(trainer.Daycare) >= 2:
+      return await discordservice_pokemon.PrintDaycareResponse(inter, 1, [])
+    
+    pokeList = [p for p in trainer.OwnedPokemon if p.Pokemon_Id == pokemon]
+    if not pokeList:
+      return await discordservice_pokemon.PrintDaycareResponse(inter, 2, [pokemonservice.GetPokemonById(pokemon).Name])
+
+    return await DaycareAddView(inter, trainer, pokeList).send()
 
   #endregion
 

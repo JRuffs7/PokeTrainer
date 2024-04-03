@@ -22,6 +22,7 @@ logger = logging.getLogger('discord')
 
 
 async def StartBot():
+  os.remove('dataaccess/utility/cache.sqlite3')
 
   @discordBot.event
   async def on_ready():

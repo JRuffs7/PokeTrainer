@@ -19,6 +19,20 @@
 			"Body": "You do not own any {0} to give a candy to. Try again."
 		}
 	],
+	"daycare": [
+		{
+			"Title": "Daycare Empty",
+			"Body": "You have no Pokemon currently in your daycare. To add a Pokemon, specify one when running this command."
+		},
+		{
+			"Title": "Cannot Add To Daycare",
+			"Body": "You already have two Pokemon in the daycare. Run this command without specifying a Pokemon to remove one, then try again."
+		},
+		{
+			"Title": "Cannot Add To Daycare",
+			"Body": "You do not own any {0} to add to the daycare. Try again."
+		}
+	],
 	"hatch": [
 		{
 			"Title": "Nothing To Hatch",

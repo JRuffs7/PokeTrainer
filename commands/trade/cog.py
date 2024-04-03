@@ -27,7 +27,7 @@ class TradeCommands(commands.Cog, name="TradeCommands"):
 			data.append(app_commands.Choice(name='User did not start their journey',value=-1))
 			return data
 		
-		pkmnList = pokemonservice.GetPokemonByIdList([p.Pokemon_Id for p in trainer.OwnedPokemon if p.Id not in trainer.Team])
+		pkmnList = pokemonservice.GetPokemonByIdList([p.Pokemon_Id for p in trainer.OwnedPokemon if p.Id not in trainer.Team and p.Id not in trainer.Daycare])
 		pkmnList.sort(key=lambda x: x.Name)
 		for pkmn in pkmnList:
 			if current.lower() in pkmn.Name.lower():
