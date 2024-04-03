@@ -21,7 +21,6 @@ from services.utility import discordservice_pokemon
 class PokemonCommands(commands.Cog, name="PokemonCommands"):
 
   discordBot = discordbot.GetBot()
-  debugLog = logging.getLogger('debug')
 
   def __init__(self, bot: commands.Bot):
     self.bot = bot

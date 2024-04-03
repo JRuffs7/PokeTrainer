@@ -14,8 +14,6 @@ from models.enums import EventType, PokemonCount, StatCompare
 from services import gymservice, itemservice, pokemonservice
 
 captureLog = logging.getLogger('capture')
-debugLog = logging.getLogger('debug')
-
 
 #region Data
 
@@ -23,12 +21,7 @@ def CheckTrainer(serverId: int, userId: int):
   return trainerda.CheckTrainer(serverId, userId)
 
 def GetTrainer(serverId: int, userId: int):
-  if userId == 197547442651004928 and serverId == 204074128309747713:
-    debugLog.debug(f'Trainer Get Start: {datetime.now()}')
-  trainer = trainerda.GetTrainer(serverId, userId)
-  if userId == 197547442651004928 and serverId == 204074128309747713:
-    debugLog.debug(f'Trainer Get End: {datetime.now()}')
-  return trainer
+  return trainerda.GetTrainer(serverId, userId)
 
 def UpsertTrainer(trainer: Trainer):
   return trainerda.UpsertTrainer(trainer)
