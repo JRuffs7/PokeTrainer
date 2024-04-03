@@ -22,7 +22,7 @@ LOGGING_CONFIG = {
             'level': 'INFO',
             'class': 'logging.FileHandler',
             'filename': 'logs/discord.log',
-            'mode': 'a+',
+            'mode': 'w+',
             'formatter': 'verbose',
 			'encoding': 'utf-8'
         },
