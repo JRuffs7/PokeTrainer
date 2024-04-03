@@ -30,11 +30,11 @@
 		},
 		{
 			"Title": "Daily Reward",
-			"Body": "Thank you for using PokeTrainer. Here is your reward of **Pokeball x{0}** and **${1}**.\n\nHere is 1x Masterball for the recent accidental event cancellation.\n\nDon't forget to upvote the bot at\nhttps://top.gg/bot/1151657435073875988?s=0ff6c6ca7661b"
+			"Body": "Thank you for using PokeTrainer. Here is your reward of **Pokeball x{0}** and **${1}**.\n\nDon't forget to upvote the bot at\nhttps://top.gg/bot/1151657435073875988?s=0ff6c6ca7661b"
 		},
 		{
 			"Title": "Daily Reward",
-			"Body": "Thank you for using PokeTrainer. Here is your reward of **Pokeball x{0}** and **${1}**.\n\nHere is 1x Masterball for the recent accidental event cancellation.\n\nYou also obtained a {2}!\n\nDon't forget to upvote the bot at\nhttps://top.gg/bot/1151657435073875988?s=0ff6c6ca7661b"
+			"Body": "Thank you for using PokeTrainer. Here is your reward of **Pokeball x{0}** and **${1}**.\n\nYou also obtained a {2}!\n\nDon't forget to upvote the bot at\nhttps://top.gg/bot/1151657435073875988?s=0ff6c6ca7661b"
 		}
 	],
 	"modifyteam": [
