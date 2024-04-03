@@ -68,7 +68,7 @@ class SpawnPokemonView(discord.ui.View):
 
 		healthLost, candy = trainerservice.TryWildFight(updatedTrainer, trainerPkmnData, self.pokemon, self.pkmndata)
 		if healthLost >= 10 or updatedTrainer.Health == 0:
-			self.battleLog.info(f'{interaction.user.display_name} was defeated by a wild {pokemonservice.GetPokemonDisplayName(self.pokemon, self.pkmndata)}')
+			self.battleLog.info(f'{interaction.user.display_name} was defeated by a wild {self.pkmndata.Name}')
 			await self.message.delete()
 			return await interaction.followup.send(content=f'<@{self.interaction.user.id}> and {pokemonservice.GetPokemonDisplayName(trainerPkmn, trainerPkmnData)} were defeated by a wild **{pokemonservice.GetPokemonDisplayName(self.pokemon, self.pkmndata)} (Lvl. {self.pokemon.Level})** and lost {healthLost}hp.\nNo experience or money gained.')
 		else:
