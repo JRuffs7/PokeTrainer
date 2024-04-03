@@ -16,6 +16,7 @@ class Trainer:
   Team: list[str] = field(default_factory=list)
   Badges: list[int] = field(default_factory=list)
   Eggs: list[TrainerEgg] = field(default_factory=list)
+  Daycare: dict[str, str] = field(default_factory=dict)
   LastSpawnTime: str | None = None
   LastDaily: str | None = None
   CurrentZone: int = 0

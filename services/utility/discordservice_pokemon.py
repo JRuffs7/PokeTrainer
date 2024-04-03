@@ -53,3 +53,13 @@ async def PrintGiveCandyResponse(interaction: Interaction, response: int, pkmnna
 		color=PokemonColor, 
 		params=[pkmnname],
 		eph=True)
+
+async def PrintDaycareResponse(interaction: Interaction, response: int, pkmnname: str|None = None):
+	return await discordservice.SendCommandResponse(
+		interaction=interaction, 
+		filename=responseFile, 
+		command='daycare', 
+		responseInd=response, 
+		color=PokemonColor, 
+		params=[pkmnname],
+		eph=True)
