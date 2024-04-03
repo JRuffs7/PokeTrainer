@@ -86,6 +86,7 @@ def TryDaily(trainer: Trainer):
     else:
       ModifyItemList(trainer.Pokeballs, '1', 10)
       trainer.Money += 200
+    ModifyItemList(trainer.Pokeballs, '4', 1)
     addEgg = TryAddNewEgg(trainer)
     UpsertTrainer(trainer)
     return addEgg
