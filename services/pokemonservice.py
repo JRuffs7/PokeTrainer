@@ -24,9 +24,6 @@ def GetPokemonById(id: int):
 def GetPokemonByIdList(idList: list[int]):
   return pokemonda.GetPokemonByProperty(idList, 'Id')
 
-def GetPokedexCount():
-  return len(set(p.PokedexId for p in GetAllPokemon()))
-
 def GetPokemonColors():
   return pokemonda.GetUniquePokemonProperty('Color')
 

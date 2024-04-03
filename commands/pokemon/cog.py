@@ -154,7 +154,7 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
       dexType = "Pokedex" if not dex else "Form Dex" if dex == 1 else "Shiny Dex"
       data = pokemonservice.GetAllPokemon()
       data.sort(key=lambda x: x.PokedexId)
-      trainerCompletion = f"{len(trainer.Pokedex) if not dex else len(trainer.Formdex) if dex == 1 else len(trainer.Shinydex)}/{pokemonservice.GetPokedexCount() if not dex else len(data)}"
+      trainerCompletion = f"{len(trainer.Pokedex) if not dex else len(trainer.Formdex) if dex == 1 else len(trainer.Shinydex)}/{len(set(p.PokedexId for p in data)) if not dex else len(data)}"
       dexViewer = DexView(
         inter, 
         user if user else inter.user,

@@ -22,7 +22,7 @@ def CheckTrainer(serverId: int, userId: int):
 
 def GetTrainer(serverId: int, userId: int):
   trainer = trainerda.GetTrainer(serverId, userId)
-  if not trainer.Shinydex or not trainer.Formdex:
+  if (not trainer.Shinydex and any(p.IsShiny for p in trainer.OwnedPokemon)) or not trainer.Formdex:
     allPokemon = pokemonservice.GetAllPokemon()
     if not trainer.Shinydex:
       shinyLines = [pokemonservice.GetEvolutionLine(p.Pokemon_Id, allPokemon) for p in trainer.OwnedPokemon if p.IsShiny]
@@ -247,7 +247,7 @@ def TryAddToPokedex(trainer: Trainer, data: PokemonData, shiny: bool):
     trainer.Pokedex.append(data.PokedexId)
   if data.Id not in trainer.Formdex:
     trainer.Formdex.append(data.Id)
-  if shiny and data.Id not in trainer.Formdex:
+  if shiny and data.Id not in trainer.Shinydex:
     trainer.Shinydex.append(data.Id)
 
 def Evolve(trainer: Trainer, initialPkmn: Pokemon, evolveMon: PokemonData):
