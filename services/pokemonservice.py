@@ -15,7 +15,6 @@ from models.Pokemon import PokemonData, Pokemon
 def GetAllPokemon():
   return pokemonda.GetAllPokemon()
 
-
 def GetPokemonById(id: int):
   results = pokemonda.GetPokemonByProperty([id], 'Id')
   if results:
@@ -25,17 +24,14 @@ def GetPokemonById(id: int):
 def GetPokemonByIdList(idList: list[int]):
   return pokemonda.GetPokemonByProperty(idList, 'Id')
 
-def GetPokemonCount():
+def GetPokedexCount():
   return len(set(p.PokedexId for p in GetAllPokemon()))
-
 
 def GetPokemonColors():
   return pokemonda.GetUniquePokemonProperty('Color')
 
-
 def GetPokemonByColor(color: str):
   return pokemonda.GetPokemonByProperty([color], 'Color')
-
 
 def GetPokemonByType(type: str):
   pokeList = pokemonda.GetPokemonByType(type)
@@ -53,6 +49,15 @@ def GetPokemonByRarity(rarity: list[int]):
 
 def GetStarterPokemon():
   return [p for p in pokemonda.GetAllPokemon() if p.IsStarter]
+
+def GetEvolutionLine(pokemonId: int, pokemonData: list[PokemonData] | None):
+  pokemon = pokemonda.GetAllPokemon() if not pokemonData else pokemonData
+  idArray: list[int] = [pokemonId]
+  preEvo = next((p for p in pokemon if pokemonId in p.EvolvesInto), None)
+  while preEvo is not None:
+    idArray.append(preEvo.Id)
+    preEvo = next((p for p in pokemon if preEvo.Id in p.EvolvesInto), None)
+  return idArray
 
 def IsSpecialPokemon(pokemon: PokemonData):
   return pokemon.IsLegendary or pokemon.IsMythical or pokemon.IsUltraBeast

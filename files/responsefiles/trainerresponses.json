@@ -61,6 +61,12 @@
 			"Body": "You do not own any Eggs. Obtain an egg by using the **/daily** command."
 		}
 	],
+	"mypokemon": [
+		{
+			"Title": "No Pokemon Found",
+			"Body": "Trainer does not own any Pokemon that fit the filters selected. Try again."
+		}
+	],
 	"release": [
 		{
 			"Title": "Invalid Pokemon",

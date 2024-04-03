@@ -21,7 +21,19 @@ def CheckTrainer(serverId: int, userId: int):
   return trainerda.CheckTrainer(serverId, userId)
 
 def GetTrainer(serverId: int, userId: int):
-  return trainerda.GetTrainer(serverId, userId)
+  trainer = trainerda.GetTrainer(serverId, userId)
+  if not trainer.Shinydex or not trainer.Formdex:
+    allPokemon = pokemonservice.GetAllPokemon()
+    if not trainer.Shinydex:
+      shinyLines = [pokemonservice.GetEvolutionLine(p.Pokemon_Id, allPokemon) for p in trainer.OwnedPokemon if p.IsShiny]
+      for shinyLine in shinyLines:
+        trainer.Shinydex.extend([i for i in shinyLine if i not in trainer.Shinydex])
+    if not trainer.Formdex:
+      formLines = [pokemonservice.GetEvolutionLine(p.Pokemon_Id, allPokemon) for p in trainer.OwnedPokemon]
+      for formLine in formLines:
+        trainer.Formdex.extend([i for i in formLine if i not in trainer.Formdex])
+    UpsertTrainer(trainer)
+  return trainer
 
 def UpsertTrainer(trainer: Trainer):
   return trainerda.UpsertTrainer(trainer)

@@ -13,6 +13,8 @@ class Trainer:
   Candies: dict[str, int] = field(default_factory=dict)
   OwnedPokemon: list[Pokemon] = field(default_factory=list)
   Pokedex: list[int] = field(default_factory=list)
+  Shinydex: list[int] = field(default_factory=list)
+  Formdex: list[int] = field(default_factory=list)
   Team: list[str] = field(default_factory=list)
   Badges: list[int] = field(default_factory=list)
   Eggs: list[TrainerEgg] = field(default_factory=list)

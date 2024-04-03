@@ -9,18 +9,19 @@ responseFile = "files/responsefiles/trainerresponses.json"
 
 async def PrintTrainer(interaction: Interaction, trainer: Trainer, targetUser: Member):
 	#Stats Section
-	totalPkmn = pokemonservice.GetPokemonCount()
+	totalPkmn = pokemonservice.GetAllPokemon()
+	totalPkdx = len(set(p.PokedexId for p in totalPkmn))
 	totalBadges = len(gymservice.GetAllBadges())
 
 	healthString = f'HP: {trainer.Health}'
-	pokedexString = f'Pokedex: {len(trainer.Pokedex)}/{totalPkmn} ({round((len(trainer.Pokedex)*100)/totalPkmn)}%)'
-	caughtString = f'Pokemon Caught: {len(trainer.OwnedPokemon)}'
-	shinyString = f'Shiny Count: {len([x for x in trainer.OwnedPokemon if x.IsShiny])}'
+	pokedexString = f'Pokedex: {len(trainer.Pokedex)}/{totalPkdx} ({round((len(trainer.Pokedex)*100)/totalPkdx)}%)'
+	formdexString = f'Form Dex: {len(trainer.Formdex)}/{len(totalPkmn)} ({round((len(trainer.Formdex)*100)/len(totalPkmn))}%)'
+	shinydexString = f'Shiny Dex: {len(trainer.Shinydex)}/{len(totalPkmn)} ({round((len(trainer.Shinydex)*100)/len(totalPkmn))}%)'
 	badgeString = f'Gym Badges: {len(trainer.Badges)}/{totalBadges}'
 	zoneString = f'Current Zone: **{zoneservice.GetZone(trainer.CurrentZone).Name}**'
 
 	newLine = '\n'
-	stats = f'__Trainer Stats__\n{newLine.join([healthString, pokedexString, caughtString, shinyString, badgeString, zoneString])}'
+	stats = f'__Trainer Stats__\n{newLine.join([healthString, pokedexString, formdexString, shinydexString, badgeString, zoneString])}'
 
 	#Pokeball Section
 	pkblString = '\n'.join(f"{itemservice.GetPokeball(int(p)).Name}: {trainer.Pokeballs[p]}" for p in list(sorted(trainer.Pokeballs, key=lambda x: x)) if trainer.Pokeballs[p])
@@ -121,6 +122,16 @@ async def PrintMyEggs(interaction: Interaction):
 		interaction=interaction, 
 		filename=responseFile, 
 		command='myeggs', 
+		responseInd=0, 
+		color=TrainerColor, 
+		params=[],
+		eph=True)
+
+async def PrintMyPokemon(interaction: Interaction):
+	return await discordservice.SendCommandResponse(
+		interaction=interaction, 
+		filename=responseFile, 
+		command='mypokemon', 
 		responseInd=0, 
 		color=TrainerColor, 
 		params=[],
