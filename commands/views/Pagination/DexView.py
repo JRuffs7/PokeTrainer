@@ -12,10 +12,10 @@ from services.utility import discordservice
 class DexView(BasePaginationView):
 
 	def __init__(
-			self, interaction: discord.Interaction, targetUser: discord.Member, trainer: Trainer, dexType: int, pageLength: int, data: list[PokemonData], title: str):
+			self, interaction: discord.Interaction, targetUser: discord.Member, trainer: Trainer, dexType: int|None, pageLength: int, data: list[PokemonData], title: str):
 		self.targetuser = targetUser
 		self.dexType = dexType
-		self.trainerdex = trainer.Pokedex if dexType == 0 else trainer.Formdex if dexType == 1 else trainer.Shinydex
+		self.trainerdex = trainer.Pokedex if not dexType else trainer.Formdex if dexType == 1 else trainer.Shinydex
 		self.shinydex = trainer.Shinydex
 		self.title = title
 		super(DexView, self).__init__(interaction, pageLength, data)
@@ -60,10 +60,10 @@ class DexView(BasePaginationView):
 
 	def SingleEmbedDesc(self, pokemon: PokemonData):
 		if self.currentPage == 1:
-			return f"**__{pokemon.Name}__** {Checkmark if pokemon.Id in self.trainerdex else ''}"
+			return f"**__{pokemon.Name}__** {Checkmark if (pokemon.PokedexId if not self.dexType else pokemon.Id) in self.trainerdex else ''}"
 		return f"**__{pokemon.Name}__** {Checkmark if pokemon.Id in self.shinydex else ''}"
 
 	def ListEmbedDesc(self, data: list[PokemonData]):
 		newline = '\n'
-		dexList = [f'{x.Name} {Checkmark if (x.PokedexId if self.dexType == 0 else x.Id) in self.trainerdex else ""}' for x in data]
+		dexList = [f'{x.Name} {Checkmark if (x.PokedexId if not self.dexType else x.Id) in self.trainerdex else ""}' for x in data]
 		return f'{newline.join(dexList)}'

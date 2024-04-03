@@ -148,12 +148,12 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
   ])
   @app_commands.autocomplete(pokemon=autofill_pokemon)
   @method_logger
-  async def pokedex(self, inter: Interaction, user: Member|None, dex: int = 0, pokemon: int = None):
+  async def pokedex(self, inter: Interaction, user: Member|None, dex: int = None, pokemon: int = None):
     trainer = trainerservice.GetTrainer(inter.guild_id, user.id if user else inter.user.id)
     if not pokemon:
+      dexType = "Pokedex" if not dex else "Form Dex" if dex == 1 else "Shiny Dex"
       data = pokemonservice.GetAllPokemon()
       data.sort(key=lambda x: x.PokedexId)
-      dexType = "Pokedex" if not dex else "Form Dex" if dex == 1 else "Shiny Dex"
       trainerCompletion = f"{len(trainer.Pokedex) if not dex else len(trainer.Formdex) if dex == 1 else len(trainer.Shinydex)}/{pokemonservice.GetPokedexCount() if not dex else len(data)}"
       dexViewer = DexView(
         inter, 
@@ -164,15 +164,16 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
         data,
         f"{user.display_name if user else inter.user.display_name}'s {dexType} ({trainerCompletion})")
     else:
+      dexType = "Pokedex" if dex and dex == 0 else "Form Dex"
       data = pokemonservice.GetPokemonById(pokemon)
       dexViewer = DexView(
         inter, 
         user if user else inter.user,
         trainer,
-        1,
+        dex if dex and dex <= 1 else 1,
         1, 
         [data, data],
-        f"{user.display_name if user else inter.user.display_name}'s {data.Name} Data")
+        f"{user.display_name if user else inter.user.display_name}'s {data.Name} {dexType} Status")
     await dexViewer.send()
 
 
