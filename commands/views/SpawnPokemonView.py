@@ -102,7 +102,8 @@ class SpawnPokemonView(discord.ui.View):
 			await self.message.edit(content=f"Capture failed! Try again or fight.\nCurrent Trainer HP: {self.TrainerHealthString(updatedTrainer)}", view=self)
 
 	def GetTitle(self):
-		return f'{f"{Checkmark} " if self.pkmndata.PokedexId in self.trainer.Pokedex else ""}{pokemonservice.GetPokemonDisplayName(self.pokemon, self.pkmndata)} (Lvl. {self.pokemon.Level})'
+		hasCheckmark = (self.pkmndata.PokedexId in self.trainer.Pokedex) if not self.pokemon.IsShiny else (self.pkmndata.Id in self.trainer.Shinydex)
+		return f'{f"{Checkmark} " if hasCheckmark else ""}{pokemonservice.GetPokemonDisplayName(self.pokemon, self.pkmndata)} (Lvl. {self.pokemon.Level})'
 
 	def TrainerHealthString(self, trainer: Trainer):
 		return f"{trainer.Health}{WarningSign}" if trainer.Health < 10 else f"{trainer.Health}"

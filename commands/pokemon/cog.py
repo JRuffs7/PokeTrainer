@@ -173,7 +173,7 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
         dex if dex and dex <= 1 else 1,
         1, 
         [data, data],
-        f"{user.display_name if user else inter.user.display_name}'s {data.Name} {dexType} Status")
+        f"{user.display_name if user else inter.user.display_name}'s {data.Name} {dexType}")
     await dexViewer.send()
 
 
