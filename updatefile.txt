@@ -1,3 +1,0 @@
-- True Pokedex added. Get more information through **/help pokedex**
-- You can now view your Pokemon through **/mypokemon**
-Check out all the new updates using **/help update**
