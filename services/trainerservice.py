@@ -21,7 +21,19 @@ def CheckTrainer(serverId: int, userId: int):
   return trainerda.CheckTrainer(serverId, userId)
 
 def GetTrainer(serverId: int, userId: int):
-  return trainerda.GetTrainer(serverId, userId)
+  trainer = trainerda.GetTrainer(serverId, userId)
+  if (not trainer.Shinydex and any(p.IsShiny for p in trainer.OwnedPokemon)) or not trainer.Formdex:
+    allPokemon = pokemonservice.GetAllPokemon()
+    if not trainer.Shinydex:
+      shinyLines = [pokemonservice.GetEvolutionLine(p.Pokemon_Id, allPokemon) for p in trainer.OwnedPokemon if p.IsShiny]
+      for shinyLine in shinyLines:
+        trainer.Shinydex.extend([i for i in shinyLine if i not in trainer.Shinydex])
+    if not trainer.Formdex:
+      formLines = [pokemonservice.GetEvolutionLine(p.Pokemon_Id, allPokemon) for p in trainer.OwnedPokemon]
+      for formLine in formLines:
+        trainer.Formdex.extend([i for i in formLine if i not in trainer.Formdex])
+    UpsertTrainer(trainer)
+  return trainer
 
 def UpsertTrainer(trainer: Trainer):
   return trainerda.UpsertTrainer(trainer)
@@ -183,7 +195,7 @@ def TryHatchEgg(trainer: Trainer, eggId: str):
     newPokemon.IsShiny = choice(range(0, ShinyOdds)) == int(ShinyOdds/2)
   trainer.OwnedPokemon.append(newPokemon)
   trainer.Money += 50
-  TryAddToPokedex(trainer, pkmn.PokedexId)
+  TryAddToPokedex(trainer, pkmn, newPokemon.IsShiny)
   if len(trainer.Team) < 6:
     trainer.Team.append(newPokemon.Id)
   UpsertTrainer(trainer)
@@ -230,15 +242,19 @@ def GetPokedexList(trainer: Trainer, orderString: str, shiny: int):
         pokemonList.sort(key=lambda x: -x.IsShiny)
   return pokemonList
 
-def TryAddToPokedex(trainer: Trainer, pokedexId: int):
-  if pokedexId not in trainer.Pokedex:
-    trainer.Pokedex.append(pokedexId)
+def TryAddToPokedex(trainer: Trainer, data: PokemonData, shiny: bool):
+  if data.PokedexId not in trainer.Pokedex:
+    trainer.Pokedex.append(data.PokedexId)
+  if data.Id not in trainer.Formdex:
+    trainer.Formdex.append(data.Id)
+  if shiny and data.Id not in trainer.Shinydex:
+    trainer.Shinydex.append(data.Id)
 
 def Evolve(trainer: Trainer, initialPkmn: Pokemon, evolveMon: PokemonData):
   newPkmn = pokemonservice.EvolvePokemon(initialPkmn, evolveMon)
   index = trainer.OwnedPokemon.index(initialPkmn)
   trainer.OwnedPokemon[index] = newPkmn
-  TryAddToPokedex(trainer, pokemonservice.GetPokemonById(newPkmn.Pokemon_Id).PokedexId)
+  TryAddToPokedex(trainer, pokemonservice.GetPokemonById(newPkmn.Pokemon_Id), newPkmn.IsShiny)
   UpsertTrainer(trainer)
   return newPkmn
 
@@ -252,10 +268,10 @@ def TradePokemon(trainerOne: Trainer, pokemonOne: Pokemon, trainerTwo: Trainer, 
   trainerOne.OwnedPokemon = [p for p in trainerOne.OwnedPokemon if p.Id != pokemonOne.Id]
   trainerTwo.OwnedPokemon = [p for p in trainerTwo.OwnedPokemon if p.Id != pokemonTwo.Id]
   trainerOne.OwnedPokemon.append(pokemonTwo)
-  TryAddToPokedex(trainerOne, pokemonservice.GetPokemonById(pokemonTwo.Pokemon_Id).PokedexId)
+  TryAddToPokedex(trainerOne, pokemonservice.GetPokemonById(pokemonTwo.Pokemon_Id), pokemonTwo.IsShiny)
   UpsertTrainer(trainerOne)
   trainerTwo.OwnedPokemon.append(pokemonOne)
-  TryAddToPokedex(trainerTwo, pokemonservice.GetPokemonById(pokemonOne.Pokemon_Id).PokedexId)
+  TryAddToPokedex(trainerTwo, pokemonservice.GetPokemonById(pokemonOne.Pokemon_Id), pokemonOne.IsShiny)
   UpsertTrainer(trainerTwo)
 
 #endregion
@@ -308,7 +324,7 @@ def TryCapture(reaction: str, trainer: Trainer, spawn: Pokemon):
   if (HasRegionReward(trainer, 4) and choice(range(1, 101)) < 11) or pokemonservice.CaptureSuccess(pokeball, pokemon, spawn.Level):
     trainer.OwnedPokemon.append(spawn)
     trainer.Money += 25
-    TryAddToPokedex(trainer, pokemon.PokedexId)
+    TryAddToPokedex(trainer, pokemon, spawn.IsShiny)
     if len(trainer.Team) < 6:
       trainer.Team.append(spawn.Id)
     caught = True

@@ -1,9 +1,10 @@
 import logging
-from discord import app_commands, Interaction
+from discord import Member, app_commands, Interaction
 from discord.ext import commands
 from typing import List
-from commands.autofills.autofills import autofill_nonteam
+from commands.autofills.autofills import autofill_nonteam, autofill_pokemon
 from commands.views.Pagination.DaycareView import DaycareView
+from commands.views.Pagination.DexView import DexView
 from commands.views.Pagination.PokemonSearchView import PokemonSearchView
 from commands.views.Selection.CandyView import CandyView
 from commands.views.Selection.DaycareAddView import DaycareAddView
@@ -137,6 +138,44 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
       return await discordservice_pokemon.PrintPokeInfoResponse(inter, 2, [type])
     dexViewer = PokemonSearchView(inter, 10, pokemonList, f"List of {type} type Pokemon")
     await dexViewer.send()
+
+  @app_commands.command(name="pokedex",
+                        description="Gives a list of full or singular Pokedex completion.")
+  @app_commands.choices(dex=[
+      app_commands.Choice(name="Pokedex", value=0),
+      app_commands.Choice(name="Form Dex", value=1),
+      app_commands.Choice(name="Shiny Dex", value=2)
+  ])
+  @app_commands.autocomplete(pokemon=autofill_pokemon)
+  @method_logger
+  async def pokedex(self, inter: Interaction, user: Member|None, dex: int = None, pokemon: int = None):
+    trainer = trainerservice.GetTrainer(inter.guild_id, user.id if user else inter.user.id)
+    if not pokemon:
+      dexType = "Pokedex" if not dex else "Form Dex" if dex == 1 else "Shiny Dex"
+      data = pokemonservice.GetAllPokemon()
+      data.sort(key=lambda x: x.PokedexId)
+      trainerCompletion = f"{len(trainer.Pokedex) if not dex else len(trainer.Formdex) if dex == 1 else len(trainer.Shinydex)}/{len(set(p.PokedexId for p in data)) if not dex else len(data)}"
+      dexViewer = DexView(
+        inter, 
+        user if user else inter.user,
+        trainer,
+        dex,
+        20, 
+        data,
+        f"{user.display_name if user else inter.user.display_name}'s {dexType} ({trainerCompletion})")
+    else:
+      dexType = "Pokedex" if dex and dex == 0 else "Form Dex"
+      data = pokemonservice.GetPokemonById(pokemon)
+      dexViewer = DexView(
+        inter, 
+        user if user else inter.user,
+        trainer,
+        dex if dex and dex <= 1 else 1,
+        1, 
+        [data, data],
+        f"{user.display_name if user else inter.user.display_name}'s {data.Name} {dexType} Status")
+    await dexViewer.send()
+
 
   #endregion
 

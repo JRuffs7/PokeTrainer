@@ -11,7 +11,7 @@ from services import pokemonservice
 from services.utility import discordservice
 
 
-class PokedexView(BasePaginationView):
+class MyPokemonView(BasePaginationView):
 
   def __init__(
       self, interaction: discord.Interaction, targetUser: discord.Member, trainer: Trainer, pageLength: int, data: list[Pokemon], title: str):
@@ -19,11 +19,9 @@ class PokedexView(BasePaginationView):
     self.trainer = trainer
     self.title = title
     self.pokemondata = pokemonservice.GetPokemonByIdList([d.Pokemon_Id for d in data])
-    super(PokedexView, self).__init__(interaction, pageLength, data)
+    super(MyPokemonView, self).__init__(interaction, pageLength, data)
 
   async def send(self, ephemeral: bool = False):
-    if not self.data:
-      await self.interaction.followup.send("Target Trainer does not own any Pokemon that fit the filters.", ephemeral=True)
     await self.interaction.followup.send(view=self, ephemeral=ephemeral)
     self.message = await self.interaction.original_response()
     await self.update_message(self.data[:self.pageLength])
