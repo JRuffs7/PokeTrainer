@@ -8317,9 +8317,7 @@
     "IsDefault": true,
     "CaptureRate": 90,
     "Color": "White",
-    "EvolvesInto": [
-      862
-    ],
+    "EvolvesInto": [],
     "FemaleChance": 4,
     "Generation": 3,
     "IsStarter": false,
