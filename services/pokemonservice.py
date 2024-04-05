@@ -117,11 +117,9 @@ def GetSpecialSpawn():
 def GenerateSpawnPokemon(pokemon: PokemonData, level: int | None = None):
   shiny = choice(range(0, ShinyOdds)) == int(ShinyOdds / 2)
   height = round(
-      uniform(floor(
-          (pokemon.Height * 0.9)), ceil((pokemon.Height * 1.1))) / 10, 2)
+      uniform((pokemon.Height * 0.9), (pokemon.Height * 1.1)) / 10, 2)
   weight = round(
-      uniform(floor(
-          (pokemon.Weight * 0.9)), ceil((pokemon.Weight * 1.1))) / 10, 2)
+      uniform((pokemon.Weight * 0.9), (pokemon.Weight * 1.1)) / 10, 2)
   female = choice(range(0, 100)) < int(pokemon.FemaleChance / 8 * 100) if pokemon.FemaleChance >= 0 else None
   return Pokemon({
       'Id': uuid.uuid4().hex,
@@ -317,42 +315,3 @@ def RarityGroup(pokemon: PokemonData):
   return rarityGroup
 
 #endregion
-
-def GeneratePokemonSearchGroup(pokemonId):
-  pkmn = GetPokemonById(pokemonId)
-  if not pkmn:
-    return None
-  pkmnList: list[Pokemon] = []
-  pkmnList.append(Pokemon({
-    'Pokemon_Id': pokemonId,
-    'Height': pkmn.Height,
-    'Weight': pkmn.Weight,
-    'IsShiny': False,
-    'IsFemale': pkmn.FemaleChance == 8,
-  }))
-  if pkmn.ShinySprite:
-    pkmnList.append(Pokemon({
-    'Pokemon_Id': pokemonId,
-    'Height': pkmn.Height,
-    'Weight': pkmn.Weight,
-    'IsShiny': True,
-    'IsFemale': pkmn.FemaleChance == 8,
-  }))
-  if pkmn.SpriteFemale and pkmn.FemaleChance != 0:
-    pkmnList.append(Pokemon({
-      'Pokemon_Id': pokemonId,
-      'Height': pkmn.Height,
-      'Weight': pkmn.Weight,
-      'IsShiny': False,
-      'IsFemale': True,
-    }))
-  if pkmn.ShinySpriteFemale and pkmn.FemaleChance != 0:
-    pkmnList.append(Pokemon({
-      'Pokemon_Id': pokemonId,
-      'Height': pkmn.Height,
-      'Weight': pkmn.Weight,
-      'IsShiny': True,
-      'IsFemale': True,
-    }))
-  return pkmnList
-

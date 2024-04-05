@@ -5,7 +5,7 @@ import discord
 from table2ascii import table2ascii as t2a, PresetStyle, Alignment, Merge
 
 from commands.views.Selection.selectors.OwnedSelector import OwnedSelector
-from globals import Checkmark, FightReaction, GreatBallReaction, PokeballReaction, PokemonColor, UltraBallReaction, WarningSign
+from globals import Dexmark, FightReaction, Formmark, GreatBallReaction, PokeballReaction, PokemonColor, UltraBallReaction, WarningSign
 from models.Pokemon import Pokemon
 from models.Trainer import Trainer
 from services import pokemonservice, trainerservice
@@ -69,11 +69,11 @@ class SpawnPokemonView(discord.ui.View):
 		healthLost, candy = trainerservice.TryWildFight(updatedTrainer, trainerPkmnData, self.pokemon, self.pkmndata)
 		if healthLost >= 10 or updatedTrainer.Health == 0:
 			self.battleLog.info(f'{interaction.user.display_name} was defeated by a wild {self.pkmndata.Name}')
-			await self.message.delete()
+			await self.message.delete(delay=0.01)
 			return await interaction.followup.send(content=f'<@{self.interaction.user.id}> and {pokemonservice.GetPokemonDisplayName(trainerPkmn, trainerPkmnData)} were defeated by a wild **{pokemonservice.GetPokemonDisplayName(self.pokemon, self.pkmndata)} (Lvl. {self.pokemon.Level})** and lost {healthLost}hp.\nNo experience or money gained.')
 		else:
 			self.battleLog.info(f'{interaction.user.display_name} defeated a wild {self.pkmndata.Name}')
-			await self.message.delete()
+			await self.message.delete(delay=0.01)
 			battleMsg = f'<@{self.interaction.user.id}> defeated a wild **{pokemonservice.GetPokemonDisplayName(self.pokemon, self.pkmndata)} (Lvl. {self.pokemon.Level})**!'
 			expMsg = f'{pokemonservice.GetPokemonDisplayName(trainerPkmn, trainerPkmnData)} gained {self.pkmndata.Rarity*self.pokemon.Level*2 if self.pkmndata.Rarity <= 2 else self.pkmndata.Rarity*self.pokemon.Level}xp'
 			expShareMsg = f'{pokemonservice.GetPokemonDisplayName(next(p for p in updatedTrainer.OwnedPokemon if p.Id == updatedTrainer.Team[1]))} gained half exp. as well.' if trainerservice.HasRegionReward(updatedTrainer, 1) and len(updatedTrainer.Team) > 1 else ''
@@ -85,7 +85,7 @@ class SpawnPokemonView(discord.ui.View):
 	@discord.ui.button(label='💨')
 	async def run_button(self, interaction: discord.Interaction, button: discord.ui.Button):
 		await interaction.response.defer()
-		await self.message.delete()
+		await self.message.delete(delay=0.01)
 		await interaction.followup.send(content=f'Ran away from {pokemonservice.GetPokemonDisplayName(self.pokemon, self.pkmndata)}', ephemeral=True)
 			
 	async def TryCapture(self, interaction: discord.Interaction, label: str, ball: str):
@@ -96,14 +96,15 @@ class SpawnPokemonView(discord.ui.View):
 			await self.message.edit(content=f"You do not have any {ball}s. Buy some from the **/shop**, try another ball, or fight!\nCurrent Trainer HP: {self.TrainerHealthString(updatedTrainer)}", view=self)
 		elif trainerservice.TryCapture(label, updatedTrainer, self.pokemon):
 			self.captureLog.info(f'{interaction.guild.name} - {self.interaction.user.display_name} used {ball} and caught a {self.pkmndata.Name}{"-SHINY" if self.pokemon.IsShiny else ""}')
-			await self.message.delete()
+			await self.message.delete(delay=0.01)
 			await interaction.followup.send(content=f'<@{self.interaction.user.id}> used a {ball} and captured a wild **{pokemonservice.GetPokemonDisplayName(self.pokemon, self.pkmndata)} (Lvl. {self.pokemon.Level})**!\nAlso gained $25')
 		else:
 			await self.message.edit(content=f"Capture failed! Try again or fight.\nCurrent Trainer HP: {self.TrainerHealthString(updatedTrainer)}", view=self)
 
 	def GetTitle(self):
-		hasCheckmark = (self.pkmndata.PokedexId in self.trainer.Pokedex) if not self.pokemon.IsShiny else (self.pkmndata.Id in self.trainer.Shinydex)
-		return f'{f"{Checkmark} " if hasCheckmark else ""}{pokemonservice.GetPokemonDisplayName(self.pokemon, self.pkmndata)} (Lvl. {self.pokemon.Level})'
+		hasDexmark = Dexmark if ((self.pkmndata.PokedexId in self.trainer.Pokedex) if not self.pokemon.IsShiny else (self.pkmndata.Id in self.trainer.Shinydex)) else ''
+		hasFormmark = Formmark if ((self.pkmndata.Id in self.trainer.Formdex) if not self.pokemon.IsShiny else False) else ''
+		return f'{f"{hasDexmark}{hasFormmark} " if hasDexmark or hasFormmark else ""}{pokemonservice.GetPokemonDisplayName(self.pokemon, self.pkmndata)} (Lvl. {self.pokemon.Level})'
 
 	def TrainerHealthString(self, trainer: Trainer):
 		return f"{trainer.Health}{WarningSign}" if trainer.Health < 10 else f"{trainer.Health}"

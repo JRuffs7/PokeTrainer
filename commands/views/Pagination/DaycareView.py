@@ -57,7 +57,7 @@ class DaycareView(discord.ui.View):
 
 	async def remove_button(self, interaction: discord.Interaction):
 		await interaction.response.defer()
-		await self.message.delete()
+		await self.message.delete(delay=0.01)
 		pkmn = self.pokemon[self.currentPage]
 		data = next(p for p in self.pkmndata if p.Id == pkmn.Pokemon_Id)
 		timeAdded = datetime.strptime(self.trainer.Daycare.pop(pkmn.Id), DateFormat).replace(tzinfo=UTC)

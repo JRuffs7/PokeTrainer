@@ -50,7 +50,7 @@ class TradeView(discord.ui.View):
 			if inter.user.id != self.targettrainer.UserId:
 				return
 			self.clear_items()
-			await self.message.delete()
+			await self.message.delete(delay=0.01)
 			await inter.followup.send(content=f'<@{self.user.id}>\nTrade offer was rejected.', embed=None, view=self)
 
 
@@ -61,7 +61,7 @@ class TradeView(discord.ui.View):
 			if not self.userpkmnchoice or not self.targetpkmnchoice or inter.user.id != self.trainer.UserId:
 				return
 		
-			await self.message.delete()
+			await self.message.delete(delay=0.01)
 			self.remove_item(self.ownlist)
 			self.remove_item(self.targetlist)
 			self.initial = False
@@ -75,7 +75,7 @@ class TradeView(discord.ui.View):
 		else:
 			if inter.user.id != self.targettrainer.UserId:
 				return
-			await self.message.delete()
+			await self.message.delete(delay=0.01)
 			trainerservice.TradePokemon(self.trainer, self.userpkmnchoice, self.targettrainer, self.targetpkmnchoice)
 			await inter.followup.send(content=f'<@{self.user.id}> traded away **{pokemonservice.GetPokemonDisplayName(self.userpkmnchoice, self.userdata)}** to <@{self.targettrainer.UserId}> for **{pokemonservice.GetPokemonDisplayName(self.targetpkmnchoice, self.targetdata)}**')
 

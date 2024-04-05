@@ -1,9 +1,10 @@
 from math import ceil
 import discord
+from table2ascii import Alignment, Merge, PresetStyle, table2ascii as t2a
 
 from commands.views.Pagination.BasePaginationView import BasePaginationView
 
-from globals import Checkmark, TrainerColor
+from globals import Dexmark, TrainerColor
 from models.Pokemon import PokemonData
 from models.Trainer import Trainer
 from services.utility import discordservice
@@ -14,8 +15,8 @@ class DexView(BasePaginationView):
 	def __init__(
 			self, interaction: discord.Interaction, targetUser: discord.Member, trainer: Trainer, dexType: int|None, pageLength: int, data: list[PokemonData], title: str):
 		self.targetuser = targetUser
+		self.trainer = trainer
 		self.dexType = dexType
-		self.trainerdex = trainer.Pokedex if not dexType else trainer.Formdex if dexType == 1 else trainer.Shinydex
 		self.shinydex = trainer.Shinydex
 		self.title = title
 		super(DexView, self).__init__(interaction, pageLength, data)
@@ -59,11 +60,22 @@ class DexView(BasePaginationView):
 		await self.update_message(self.get_currentPage_data())
 
 	def SingleEmbedDesc(self, pokemon: PokemonData):
+		trainerdex = self.trainer.Pokedex if not self.dexType else self.trainer.Formdex
+		pkmnData = t2a(body=[['Rarity:', f'{pokemon.Rarity}', '|', 'Height:', pokemon.Height/10],
+                         ['Color:',f'{pokemon.Color}', '|','Weight:', pokemon.Weight/10], 
+                         ['Capture:',f'{pokemon.CaptureRate}/255', '|','Female:', f'{pokemon.FemaleChance}/8' if pokemon.FemaleChance >= 0 else 'N/A'], 
+                         ['Types:', f'{"/".join(pokemon.Types)}', Merge.LEFT, Merge.LEFT, Merge.LEFT]], 
+                      first_col_heading=False,
+                      alignments=[Alignment.LEFT,Alignment.LEFT,Alignment.CENTER,Alignment.LEFT,Alignment.LEFT],
+                      style=PresetStyle.plain,
+                      cell_padding=0) if pokemon.PokedexId in self.trainer.Pokedex else ''
+		dataString = f'\n```{pkmnData}```' if pkmnData else ''
 		if self.currentPage == 1:
-			return f"**__{pokemon.Name}__** {Checkmark if (pokemon.PokedexId if not self.dexType else pokemon.Id) in self.trainerdex else ''}"
-		return f"**__{pokemon.Name}__** {Checkmark if pokemon.Id in self.shinydex else ''}"
+			return f"**__{pokemon.Name}__** {Dexmark if (pokemon.PokedexId if not self.dexType else pokemon.Id) in trainerdex else ''}{dataString}"
+		return f"**__{pokemon.Name}__** {Dexmark if pokemon.Id in self.trainer.Shinydex else ''}{dataString}"
 
 	def ListEmbedDesc(self, data: list[PokemonData]):
+		trainerdex = self.trainer.Pokedex if not self.dexType else self.trainer.Formdex if self.dexType == 1 else self.trainer.Shinydex
 		newline = '\n'
-		dexList = [f'{x.Name} {Checkmark if (x.PokedexId if not self.dexType else x.Id) in self.trainerdex else ""}' for x in data]
+		dexList = [f'{x.Name} {Dexmark if (x.PokedexId if not self.dexType else x.Id) in trainerdex else ""}' for x in data]
 		return f'{newline.join(dexList)}'

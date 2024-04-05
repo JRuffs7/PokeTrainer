@@ -2,7 +2,7 @@ from math import ceil
 import discord
 from commands.views.Pagination.BasePaginationView import BasePaginationView
 
-from globals import Checkmark, TrainerColor
+from globals import Dexmark, TrainerColor
 from models.Egg import TrainerEgg
 from services import itemservice
 from services.utility import discordservice
@@ -54,7 +54,7 @@ class EggView(BasePaginationView):
 
 	def SingleEmbedDesc(self, egg: TrainerEgg):
 		eggData = itemservice.GetEgg(egg.EggId)
-		return f'**__{eggData.Name}{f" {Checkmark}" if egg.SpawnCount == eggData.SpawnsNeeded else ""}__**\nHatch Rarity: {", ".join([str(h) for h in eggData.Hatch])}\nProgress (/spawn): {egg.SpawnCount}/{eggData.SpawnsNeeded}'
+		return f'**__{eggData.Name}{f" {Dexmark}" if egg.SpawnCount == eggData.SpawnsNeeded else ""}__**\nHatch Rarity: {", ".join([str(h) for h in eggData.Hatch])}\nProgress (/spawn): {egg.SpawnCount}/{eggData.SpawnsNeeded}'
 
 	def ListEmbedDesc(self, data: list[TrainerEgg]):
-		return '\n'.join([f'{itemservice.GetEgg(egg.EggId).Name} ({egg.SpawnCount}/{itemservice.GetEgg(egg.EggId).SpawnsNeeded}){f" {Checkmark}" if egg.SpawnCount == itemservice.GetEgg(egg.EggId).SpawnsNeeded else ""}' for egg in data])
+		return '\n'.join([f'{itemservice.GetEgg(egg.EggId).Name} ({egg.SpawnCount}/{itemservice.GetEgg(egg.EggId).SpawnsNeeded}){f" {Dexmark}" if egg.SpawnCount == itemservice.GetEgg(egg.EggId).SpawnsNeeded else ""}' for egg in data])

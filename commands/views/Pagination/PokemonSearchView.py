@@ -1,19 +1,17 @@
 from math import ceil
 import discord
-from table2ascii import Alignment, Merge, PresetStyle, table2ascii as t2a
 
 from commands.views.Pagination.BasePaginationView import BasePaginationView
 from globals import PokemonColor
 from models.Pokemon import Pokemon, PokemonData
-from services import pokemonservice
 from services.utility import discordservice
 
 
 class PokemonSearchView(BasePaginationView):
 
-  def __init__(self, interaction: discord.Interaction, pageLength: int, dataList: list[Pokemon | PokemonData], title: str):
+  def __init__(self, interaction: discord.Interaction, dataList: list[Pokemon | PokemonData], title: str):
     self.title = title
-    super(PokemonSearchView, self).__init__(interaction, pageLength, dataList)
+    super(PokemonSearchView, self).__init__(interaction, 10, dataList)
 
   async def send(self):
     if not self.data:
@@ -25,11 +23,7 @@ class PokemonSearchView(BasePaginationView):
 
   async def update_message(self, data):
     self.update_buttons()
-    embed = discordservice.CreateEmbed(self.title, self.SingleDesc(data[0]) if self.pageLength == 1 else self.ListDesc(data), PokemonColor)
-    
-    if self.pageLength == 1:
-      embed.set_image(url=pokemonservice.GetPokemonImage(data[0]))
-
+    embed = discordservice.CreateEmbed(self.title, self.ListDesc(data), PokemonColor)
     embed.set_footer(text=f"{self.currentPage}/{ceil(len(self.data)/self.pageLength)}")
     await self.message.edit(embed=embed, view=self)
 
@@ -53,18 +47,6 @@ class PokemonSearchView(BasePaginationView):
     await self.button_click(interaction, button.custom_id)
     await self.update_message(self.get_currentPage_data())
 
-  def SingleDesc(self, pokemon: Pokemon):
-    pkmn = pokemonservice.GetPokemonById(pokemon.Pokemon_Id)
-    pkmnData = t2a(body=[['Rarity:', f"{pkmn.Rarity}", '|', 'Avg Height:', pokemon.Height/10],
-                         ['Color:',f"{pkmn.Color}", '|','Avg Weight:', pokemon.Weight/10], 
-                         ['Catch Rate:',f"{pkmn.CaptureRate}", '|','Female:', f'{pkmn.FemaleChance}/8' if pkmn.FemaleChance >= 0 else 'N/A'], 
-                         ['Types:', f"{'/'.join(pkmn.Types)}", Merge.LEFT, Merge.LEFT, Merge.LEFT]], 
-                      first_col_heading=False,
-                      alignments=[Alignment.LEFT,Alignment.LEFT,Alignment.CENTER,Alignment.LEFT,Alignment.LEFT],
-                      style=PresetStyle.plain,
-                      cell_padding=0)
-    return f"**__{pokemonservice.GetPokemonDisplayName(pokemon, pkmn, pokemon.IsFemale)}__**\n```{pkmnData}```"
-  
   def ListDesc(self, data: list[PokemonData]):
     newline = '\n'
     slash = '\\'
