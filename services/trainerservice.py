@@ -14,6 +14,7 @@ from models.enums import EventType, PokemonCount, StatCompare
 from services import gymservice, itemservice, pokemonservice
 
 captureLog = logging.getLogger('capture')
+updatedTrainers: list[str] = []
 
 #region Data
 
@@ -35,7 +36,8 @@ def GetTrainer(serverId: int, userId: int):
       formLines = [pokemonservice.GetEvolutionLine(p.Pokemon_Id, allPokemon) for p in trainer.OwnedPokemon]
       for formLine in formLines:
         trainer.Formdex.extend([i for i in formLine if i not in trainer.Formdex])
-  if trainer is not None:
+  if trainer is not None and f'{trainer.ServerId}{trainer.UserId}' not in updatedTrainers:
+    updatedTrainers.append(f'{trainer.ServerId}{trainer.UserId}')
     allPokemon = pokemonservice.GetAllPokemon() if not allPokemon else allPokemon
     for p in trainer.OwnedPokemon:
       data = next(po for po in allPokemon if po.Id == p.Pokemon_Id)
