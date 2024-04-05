@@ -1,3 +1,3 @@
-- Updated some Pokemon names such as Squawkabilly
-- Fixed a bug with **/starter**
-- Fixed a bug with Gender Events
+- Removed the **/pokeinfo** Single Pokemon command
+- Added Pokemon details to the **/pokedex** Pokemon command (if registered)
+- Fixed an internal error when deleting spawn messages
