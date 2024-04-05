@@ -22,8 +22,11 @@ def CheckTrainer(serverId: int, userId: int):
 
 def GetTrainer(serverId: int, userId: int):
   trainer = trainerda.GetTrainer(serverId, userId)
+  allPokemon = None
+  update = False
   if trainer is not None and ((not trainer.Shinydex and any(p.IsShiny for p in trainer.OwnedPokemon)) or not trainer.Formdex):
     allPokemon = pokemonservice.GetAllPokemon()
+    update = True
     if not trainer.Shinydex:
       shinyLines = [pokemonservice.GetEvolutionLine(p.Pokemon_Id, allPokemon) for p in trainer.OwnedPokemon if p.IsShiny]
       for shinyLine in shinyLines:
@@ -32,6 +35,23 @@ def GetTrainer(serverId: int, userId: int):
       formLines = [pokemonservice.GetEvolutionLine(p.Pokemon_Id, allPokemon) for p in trainer.OwnedPokemon]
       for formLine in formLines:
         trainer.Formdex.extend([i for i in formLine if i not in trainer.Formdex])
+  if trainer is not None:
+    allPokemon = pokemonservice.GetAllPokemon() if not allPokemon else allPokemon
+    for p in trainer.OwnedPokemon:
+      data = next(po for po in allPokemon if po.Id == p.Pokemon_Id)
+      if p.Height < (data.Height * 0.09):
+        update = True
+        p.Height = (data.Height * 0.09)
+      elif p.Height > (data.Height * 0.11):
+        update = True
+        p.Height = (data.Height * 0.11)
+      if p.Weight < (data.Weight * 0.09):
+        update = True
+        p.Weight = (data.Weight * 0.09)
+      elif p.Weight > (data.Weight * 0.11):
+        update = True
+        p.Weight = (data.Weight * 0.11)
+  if update:
     UpsertTrainer(trainer)
   return trainer
 
