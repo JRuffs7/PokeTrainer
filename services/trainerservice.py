@@ -103,9 +103,9 @@ def EventEntry(trainer: Trainer, event: Event):
       dataList = pokemonservice.GetPokemonByIdList([p.Pokemon_Id for p in trainer.OwnedPokemon])
       return sum(PokemonCount(event.SubType).name.lower() in [t.lower() for t in next(pk for pk in dataList if p.Pokemon_Id == pk.Id).Types] for p in trainer.OwnedPokemon)
     elif event.SubType == PokemonCount.Female.value:
-      return sum(p.IsFemale for p in trainer.OwnedPokemon)
+      return sum(p.IsFemale for p in trainer.OwnedPokemon if p.IsFemale is not None)
     elif event.SubType == PokemonCount.Male.value:
-      return sum(not p.IsFemale for p in trainer.OwnedPokemon)
+      return sum(not p.IsFemale for p in trainer.OwnedPokemon if p.IsFemale is not None)
     elif event.SubType == PokemonCount.Shiny.value:
       return sum(p.IsShiny for p in trainer.OwnedPokemon)
     else:
