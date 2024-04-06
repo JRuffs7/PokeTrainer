@@ -13,6 +13,7 @@ class HatchView(discord.ui.View):
 		self.interaction = interaction
 		self.user = interaction.user
 		self.trainer = trainer
+		self.hatchchoices = None
 		super().__init__(timeout=300)
 		self.hatchlist = HatchSelector(hatchable)
 		self.add_item(self.hatchlist)

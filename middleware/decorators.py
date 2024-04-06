@@ -14,6 +14,8 @@ def method_logger(function):
   @functools.wraps(function)
   async def wrapper(self, *args, **kwargs):
     try:
+      if not args[0].guild:
+        return
       cmdLog.info(f"{args[0].guild.name} - {function.__name__.upper()} command called")
       await args[0].response.defer(ephemeral=(function.__name__.lower() in EphemeralCommands))
       return await function(self, *args, **kwargs)
