@@ -20,14 +20,17 @@ class EventView(discord.ui.View):
 		super().__init__(timeout=3600)
 
 	async def send(self):
-		self.message = await self.channel.send(embed=self.embed, view=self, delete_after=3605)
-		self.server.CurrentEvent.MessageId = self.message.id
-		sentAt = datetime.now(UTC)+timedelta(minutes=60)
-		while datetime.now(UTC) < sentAt:
-			self.embed.set_footer(text=str(sentAt-datetime.now(UTC)).split('.',2)[0])
+		try:
+			self.message = await self.channel.send(embed=self.embed, view=self, delete_after=3605)
+			self.server.CurrentEvent.MessageId = self.message.id
+			sentAt = datetime.now(UTC)+timedelta(minutes=60)
+			while datetime.now(UTC) < sentAt:
+				self.embed.set_footer(text=str(sentAt-datetime.now(UTC)).split('.',2)[0])
+				await self.message.edit(embed=self.embed, view=self)
+				await asyncio.sleep(0.85)
+			self.embed.set_footer(text='Event ended.')
 			await self.message.edit(embed=self.embed, view=self)
-			await asyncio.sleep(0.85)
-		self.embed.set_footer(text='Event ended.')
-		await self.message.edit(embed=self.embed, view=self)
-		self.eventLog.info(f"{self.server.ServerName} - {self.server.CurrentEvent.EventName} Ended")
-		serverservice.UpsertServer(self.server)
+			self.eventLog.info(f"{self.server.ServerName} - {self.server.CurrentEvent.EventName} Ended")
+			await serverservice.EndEvent(self.server)
+		except Exception as e:
+			logger.error(f"EVENT ERROR FOR SERVER {self.server.ServerName}: {e}")

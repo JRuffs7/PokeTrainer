@@ -62,8 +62,8 @@ def PokemonCountEvent(server: Server):
   })
   UpsertServer(server)
 
-async def EndEvent(server: Server, messageId: int):
-  if not server.CurrentEvent or server.CurrentEvent.MessageId != messageId:
+async def EndEvent(server: Server):
+  if not server.CurrentEvent or not server.CurrentEvent.MessageId:
     return
   winners: list[tuple[int,int]] = []
   if server.CurrentEvent.EventEntries:

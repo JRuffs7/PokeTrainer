@@ -1,1 +1,2 @@
 - Updated trainer Pokemon that had height/weight calculated outside the 10% range
+- Updated event endings (behind the scenes work)
