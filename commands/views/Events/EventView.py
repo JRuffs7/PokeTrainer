@@ -8,6 +8,8 @@ from services import serverservice
 
 class EventView(discord.ui.View):
 
+	errLog = logging.getLogger('error')
+
 	def __init__(
 			self, server: Server, channel: discord.TextChannel, embed: discord.Embed):
 		self.eventLog = logging.getLogger('event')
@@ -33,4 +35,4 @@ class EventView(discord.ui.View):
 			self.eventLog.info(f"{self.server.ServerName} - {self.server.CurrentEvent.EventName} Ended")
 			await serverservice.EndEvent(self.server)
 		except Exception as e:
-			logger.error(f"EVENT ERROR FOR SERVER {self.server.ServerName}: {e}")
+			self.errLog.error(f"EVENT ERROR FOR SERVER {self.server.ServerName}: {e}")
