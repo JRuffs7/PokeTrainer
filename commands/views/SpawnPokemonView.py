@@ -45,18 +45,21 @@ class SpawnPokemonView(discord.ui.View):
 
 	@discord.ui.button(label=PokeballReaction)
 	async def pokeball_button(self, interaction: discord.Interaction, button: discord.ui.Button):
+		await interaction.response.defer()
 		if not self.pressed:
 			self.pressed = True
 			await self.TryCapture(interaction, button.label, "Pokeball")
 
 	@discord.ui.button(label=GreatBallReaction)
 	async def greatball_button(self, interaction: discord.Interaction, button: discord.ui.Button):
+		await interaction.response.defer()
 		if not self.pressed:
 			self.pressed = True
 			await self.TryCapture(interaction, button.label, "Greatball")
 
 	@discord.ui.button(label=UltraBallReaction)
 	async def ultraball_button(self, interaction: discord.Interaction, button: discord.ui.Button):
+		await interaction.response.defer()
 		if not self.pressed:
 			self.pressed = True
 			await self.TryCapture(interaction, button.label, "Ultraball")
@@ -68,8 +71,10 @@ class SpawnPokemonView(discord.ui.View):
 			self.pressed = True
 			updatedTrainer = trainerservice.GetTrainer(self.interaction.guild_id, self.interaction.user.id)
 			if updatedTrainer is None:
+				self.pressed = False
 				return await self.message.edit(content=f"Error fighting. Please try again.", view=self)
 			elif updatedTrainer.Health <= 0:
+				self.pressed = False
 				return await self.message.edit(content=f"You do not have any health! Restore with **/usepotion**. You can buy potions from the **/shop**", view=self)
 			
 			trainerPkmn = next(p for p in updatedTrainer.OwnedPokemon if p.Id == updatedTrainer.Team[0])
@@ -98,7 +103,6 @@ class SpawnPokemonView(discord.ui.View):
 		await interaction.followup.send(content=f'Ran away from {pokemonservice.GetPokemonDisplayName(self.pokemon, self.pkmndata)}', ephemeral=True)
 			
 	async def TryCapture(self, interaction: discord.Interaction, label: str, ball: str):
-		await interaction.response.defer()
 		updatedTrainer = trainerservice.GetTrainer(self.interaction.guild_id, self.interaction.user.id)
 		pokeballId = '1' if label == PokeballReaction else '2' if label == GreatBallReaction else '3' if label == UltraBallReaction else '4'
 		if updatedTrainer.Pokeballs[str(pokeballId)] <= 0:
