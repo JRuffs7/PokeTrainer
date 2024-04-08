@@ -1,4 +1,0 @@
-- Added logic around immunity during wild fights
-- Change details when ordering through **/mypokemon**
-- Fixed two bugs in regards to **/evolve**
-- Fixed a bug within **/shop**
