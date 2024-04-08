@@ -24,6 +24,7 @@ class SpawnPokemonView(discord.ui.View):
 		super().__init__(timeout=60)
 		self.teamslotview = OwnedSelector(trainerservice.GetTeam(trainer), 1, trainer.Team[0])
 		self.add_item(self.teamslotview)
+		self.pressed = False
 
 	async def send(self):
 		if not self.pokemon:
@@ -44,42 +45,50 @@ class SpawnPokemonView(discord.ui.View):
 
 	@discord.ui.button(label=PokeballReaction)
 	async def pokeball_button(self, interaction: discord.Interaction, button: discord.ui.Button):
-		await self.TryCapture(interaction, button.label, "Pokeball")
+		if not self.pressed:
+			self.pressed = True
+			await self.TryCapture(interaction, button.label, "Pokeball")
 
 	@discord.ui.button(label=GreatBallReaction)
 	async def greatball_button(self, interaction: discord.Interaction, button: discord.ui.Button):
-		await self.TryCapture(interaction, button.label, "Greatball")
+		if not self.pressed:
+			self.pressed = True
+			await self.TryCapture(interaction, button.label, "Greatball")
 
 	@discord.ui.button(label=UltraBallReaction)
 	async def ultraball_button(self, interaction: discord.Interaction, button: discord.ui.Button):
-		await self.TryCapture(interaction, button.label, "Ultraball")
+		if not self.pressed:
+			self.pressed = True
+			await self.TryCapture(interaction, button.label, "Ultraball")
 
 	@discord.ui.button(label=FightReaction, custom_id="fight")
 	async def fight_button(self, interaction: discord.Interaction, button: discord.ui.Button):
 		await interaction.response.defer()
-		updatedTrainer = trainerservice.GetTrainer(self.interaction.guild_id, self.interaction.user.id)
-		if updatedTrainer is None:
-			return await self.message.edit(content=f"Error fighting. Please try again.", view=self)
-		elif updatedTrainer.Health <= 0:
-			return await self.message.edit(content=f"You do not have any health! Restore with **/usepotion**. You can buy potions from the **/shop**", view=self)
-		
-		trainerPkmn = next(p for p in updatedTrainer.OwnedPokemon if p.Id == updatedTrainer.Team[0])
-		trainerPkmnData = pokemonservice.GetPokemonById(trainerPkmn.Pokemon_Id)
+		if not self.pressed:
+			self.pressed = True
+			updatedTrainer = trainerservice.GetTrainer(self.interaction.guild_id, self.interaction.user.id)
+			if updatedTrainer is None:
+				return await self.message.edit(content=f"Error fighting. Please try again.", view=self)
+			elif updatedTrainer.Health <= 0:
+				return await self.message.edit(content=f"You do not have any health! Restore with **/usepotion**. You can buy potions from the **/shop**", view=self)
+			
+			trainerPkmn = next(p for p in updatedTrainer.OwnedPokemon if p.Id == updatedTrainer.Team[0])
+			trainerPkmnData = pokemonservice.GetPokemonById(trainerPkmn.Pokemon_Id)
 
-		healthLost, candy = trainerservice.TryWildFight(updatedTrainer, trainerPkmnData, self.pokemon, self.pkmndata)
-		if healthLost >= 10 or updatedTrainer.Health == 0:
-			self.battleLog.info(f'{interaction.user.display_name} was defeated by a wild {self.pkmndata.Name}')
-			await self.message.delete(delay=0.01)
-			return await interaction.followup.send(content=f'<@{self.interaction.user.id}> and {pokemonservice.GetPokemonDisplayName(trainerPkmn, trainerPkmnData)} were defeated by a wild **{pokemonservice.GetPokemonDisplayName(self.pokemon, self.pkmndata)} (Lvl. {self.pokemon.Level})** and lost {healthLost}hp.\nNo experience or money gained.')
-		else:
-			self.battleLog.info(f'{interaction.user.display_name} defeated a wild {self.pkmndata.Name}')
-			await self.message.delete(delay=0.01)
-			battleMsg = f'<@{self.interaction.user.id}> defeated a wild **{pokemonservice.GetPokemonDisplayName(self.pokemon, self.pkmndata)} (Lvl. {self.pokemon.Level})**!'
-			expMsg = f'{pokemonservice.GetPokemonDisplayName(trainerPkmn, trainerPkmnData)} gained {self.pkmndata.Rarity*self.pokemon.Level*2 if self.pkmndata.Rarity <= 2 else self.pkmndata.Rarity*self.pokemon.Level}xp'
-			expShareMsg = f'{pokemonservice.GetPokemonDisplayName(next(p for p in updatedTrainer.OwnedPokemon if p.Id == updatedTrainer.Team[1]))} gained half exp. as well.' if trainerservice.HasRegionReward(updatedTrainer, 1) and len(updatedTrainer.Team) > 1 else ''
-			rewardMsg = f'Trainer lost {healthLost}hp and gained $50.{f" Found one **{candy.Name}**!" if candy else ""}'
-			newline = '\n'
-			return await interaction.followup.send(content=f'{newline.join([battleMsg, expMsg, expShareMsg, rewardMsg] if expShareMsg else [battleMsg, expMsg, rewardMsg])}')
+			healthLost, candy = trainerservice.TryWildFight(updatedTrainer, trainerPkmnData, self.pokemon, self.pkmndata)
+			if healthLost >= 10 or updatedTrainer.Health == 0:
+				self.battleLog.info(f'{interaction.user.display_name} was defeated by a wild {self.pkmndata.Name}')
+				await self.message.delete(delay=0.01)
+				return await interaction.followup.send(content=f'<@{self.interaction.user.id}> and {pokemonservice.GetPokemonDisplayName(trainerPkmn, trainerPkmnData)} were defeated by a wild **{pokemonservice.GetPokemonDisplayName(self.pokemon, self.pkmndata)} (Lvl. {self.pokemon.Level})** and lost {healthLost}hp.\nNo experience or money gained.')
+			else:
+				self.battleLog.info(f'{interaction.user.display_name} defeated a wild {self.pkmndata.Name}')
+				await self.message.delete(delay=0.01)
+				battleMsg = f'<@{self.interaction.user.id}> defeated a wild **{pokemonservice.GetPokemonDisplayName(self.pokemon, self.pkmndata)} (Lvl. {self.pokemon.Level})**!'
+				expMsg = f'{pokemonservice.GetPokemonDisplayName(trainerPkmn, trainerPkmnData)} gained {self.pkmndata.Rarity*self.pokemon.Level*2 if self.pkmndata.Rarity <= 2 else self.pkmndata.Rarity*self.pokemon.Level}xp'
+				expShareMsg = f'{pokemonservice.GetPokemonDisplayName(next(p for p in updatedTrainer.OwnedPokemon if p.Id == updatedTrainer.Team[1]))} gained half exp. as well.' if trainerservice.HasRegionReward(updatedTrainer, 1) and len(updatedTrainer.Team) > 1 else ''
+				rewardMsg = f'Trainer lost {healthLost}hp and gained $50.{f" Found one **{candy.Name}**!" if candy else ""}'
+				newline = '\n'
+				return await interaction.followup.send(content=f'{newline.join([battleMsg, expMsg, expShareMsg, rewardMsg] if expShareMsg else [battleMsg, expMsg, rewardMsg])}')
 			
 
 	@discord.ui.button(label='💨')
@@ -93,12 +102,14 @@ class SpawnPokemonView(discord.ui.View):
 		updatedTrainer = trainerservice.GetTrainer(self.interaction.guild_id, self.interaction.user.id)
 		pokeballId = '1' if label == PokeballReaction else '2' if label == GreatBallReaction else '3' if label == UltraBallReaction else '4'
 		if updatedTrainer.Pokeballs[str(pokeballId)] <= 0:
+			self.pressed = False
 			await self.message.edit(content=f"You do not have any {ball}s. Buy some from the **/shop**, try another ball, or fight!\nCurrent Trainer HP: {self.TrainerHealthString(updatedTrainer)}", view=self)
 		elif trainerservice.TryCapture(label, updatedTrainer, self.pokemon):
 			self.captureLog.info(f'{interaction.guild.name} - {self.interaction.user.display_name} used {ball} and caught a {self.pkmndata.Name}{"-SHINY" if self.pokemon.IsShiny else ""}')
 			await self.message.delete(delay=0.01)
 			await interaction.followup.send(content=f'<@{self.interaction.user.id}> used a {ball} and captured a wild **{pokemonservice.GetPokemonDisplayName(self.pokemon, self.pkmndata)} (Lvl. {self.pokemon.Level})**!\nAlso gained $25')
 		else:
+			self.pressed = False
 			await self.message.edit(content=f"Capture failed! Try again or fight.\nCurrent Trainer HP: {self.TrainerHealthString(updatedTrainer)}", view=self)
 
 	def GetTitle(self):
