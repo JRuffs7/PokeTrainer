@@ -266,7 +266,7 @@ def WildFight(attack: PokemonData, defend: PokemonData, attackLevel: int, defend
   # 1v3
   else:
     returnInd = 6 if immune else 4 if doubleAdv else 6 if doubleDis else 5
-  returnInd -= (levelAdvantage - levelDisadvantage)
+  returnInd -= (levelAdvantage - levelDisadvantage) if not immune else 0
   returnInd = 0 if returnInd < 0 else len(healthLost)-1 if returnInd >= len(healthLost) else returnInd
   return healthLost[returnInd] - (battleResult if not doubleAdv and not doubleDis else 0)
 
