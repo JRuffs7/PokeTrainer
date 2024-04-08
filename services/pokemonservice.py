@@ -232,6 +232,7 @@ def WildFight(attack: PokemonData, defend: PokemonData, attackLevel: int, defend
   battleResult = TypeMatch(attack.Types, defend.Types)
   doubleAdv = battleResult >= 2
   doubleDis = battleResult <= -2
+  immune = battleResult == -4
   attackGroup = RarityGroup(attack)
   defendGroup = RarityGroup(defend)
   levelAdvantage = 2 if attackLevel > (defendLevel*2) else 1 if attackLevel > (defendLevel*1.5) else 0
@@ -244,7 +245,9 @@ def WildFight(attack: PokemonData, defend: PokemonData, attackLevel: int, defend
 
   #legendary
   if attackGroup >= 8:
-    if defendGroup == 3:
+    if immune:
+      returnInd == 4
+    elif defendGroup == 3:
       returnInd = 2 if attackGroup == 10 else 3 if attackGroup == 9 else 4
     elif defendGroup == 2:
       returnInd = 1 if attackGroup == 10 else 2 if attackGroup == 9 else 3
@@ -252,21 +255,22 @@ def WildFight(attack: PokemonData, defend: PokemonData, attackLevel: int, defend
       returnInd = 0 if attackGroup == 10 else 1 if attackGroup == 9 else 2
   # 1v1 2v2 3v3
   elif attackGroup - defendGroup == 0:
-    returnInd = 2 if doubleAdv else 4 if doubleDis else 3
+    returnInd = 6 if immune else 2 if doubleAdv else 4 if doubleDis else 3
   # 3v2 2v1
   elif attackGroup - defendGroup == 1:
-    returnInd = 1 if doubleAdv else 3 if doubleDis else 2
+    returnInd = 5 if immune else 1 if doubleAdv else 3 if doubleDis else 2
   # 3v1
   elif attackGroup - defendGroup == 2:
-    returnInd = 0 if doubleAdv else 2 if doubleDis else 1
+    returnInd = 4 if immune else 0 if doubleAdv else 2 if doubleDis else 1
   # 1v2 2v3
   elif attackGroup - defendGroup == -1:
-    returnInd = 3 if doubleAdv else 5 if doubleDis else 4
+    returnInd = 6 if immune else 3 if doubleAdv else 5 if doubleDis else 4
   # 1v3
   else:
-    returnInd = 4 if doubleAdv else 6 if doubleDis else 5
+    returnInd = 6 if immune else 4 if doubleAdv else 6 if doubleDis else 5
   returnInd -= (levelAdvantage - levelDisadvantage)
-  return healthLost[0 if returnInd < 0 else returnInd] - (battleResult if not doubleAdv and not doubleDis else 0)
+  returnInd = 0 if returnInd < 0 else len(healthLost)-1 if returnInd >= len(healthLost) else returnInd
+  return healthLost[0 if returnInd < 0 else len(healthLost)-1 if returnInd >= len(healthLost) else returnInd] - (battleResult if not doubleAdv and not doubleDis else 0)
 
 def GymFight(attack: PokemonData, defend: PokemonData, attackLevel: int, gymID: int):
   battleResult = TypeMatch(attack.Types, defend.Types)

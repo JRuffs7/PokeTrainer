@@ -14,10 +14,11 @@ from services.utility import discordservice
 class MyPokemonView(BasePaginationView):
 
   def __init__(
-      self, interaction: discord.Interaction, targetUser: discord.Member, trainer: Trainer, pageLength: int, data: list[Pokemon], title: str):
+      self, interaction: discord.Interaction, targetUser: discord.Member, trainer: Trainer, pageLength: int, data: list[Pokemon], title: str, order: str = None):
     self.targetuser = targetUser
     self.trainer = trainer
     self.title = title
+    self.order = order
     self.pokemondata = pokemonservice.GetPokemonByIdList([d.Pokemon_Id for d in data])
     super(MyPokemonView, self).__init__(interaction, pageLength, data)
 
@@ -71,5 +72,17 @@ class MyPokemonView(BasePaginationView):
     return f"**__{pokemonservice.GetPokemonDisplayName(pokemon, pkmn)} (Lvl. {pokemon.Level})__**\n```{pkmnData}```"
 
   def ListEmbedDesc(self, data: list[Pokemon]):
+    namingArray = []
+    for x in data:
+      pkmnData = next(p for p in self.pokemondata if p.Id == x.Pokemon_Id)
+      if self.order == 'height':
+        detailStr = f'({x.Height}m)'
+      elif self.order == 'weight':
+        detailStr = f'({x.Weight}kg)'
+      elif self.order == 'dex':
+        detailStr = f'#{pkmnData.PokedexId}'
+      else:
+        detailStr = f'(Lvl. {x.Level})'
+      namingArray.append(pokemonservice.GetPokemonDisplayName(x, pkmnData) + f' {detailStr}')
     newline = '\n'
-    return f"{newline.join([pokemonservice.GetPokemonDisplayName(x, next(p for p in self.pokemondata if p.Id == x.Pokemon_Id)) + f' (Lvl. {x.Level})' for x in data])}"
+    return f"{newline.join(namingArray)}"

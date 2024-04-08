@@ -227,7 +227,8 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
       trainer,
       images.value if images else 10, 
       data,
-      f"{user.display_name if user else inter.user.display_name}'s Pokemon\n{sortString}")
+      f"{user.display_name if user else inter.user.display_name}'s Pokemon\n{sortString}",
+      order.value if order else None)
     await pokemonViewer.send()
       
 

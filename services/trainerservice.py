@@ -41,18 +41,18 @@ def GetTrainer(serverId: int, userId: int):
     allPokemon = pokemonservice.GetAllPokemon() if not allPokemon else allPokemon
     for p in trainer.OwnedPokemon:
       data = next(po for po in allPokemon if po.Id == p.Pokemon_Id)
-      if p.Height < (data.Height * 0.09):
+      if p.Height < round((data.Height * 0.09), 2):
         update = True
-        p.Height = (data.Height * 0.09)
-      elif p.Height > (data.Height * 0.11):
+        p.Height = round((data.Height * 0.09), 2)
+      elif p.Height > round((data.Height * 0.11), 2):
         update = True
-        p.Height = (data.Height * 0.11)
-      if p.Weight < (data.Weight * 0.09):
+        p.Height = round((data.Height * 0.11), 2)
+      if p.Weight < round((data.Weight * 0.09), 2):
         update = True
-        p.Weight = (data.Weight * 0.09)
-      elif p.Weight > (data.Weight * 0.11):
+        p.Weight = round((data.Weight * 0.09), 2)
+      elif p.Weight > round((data.Weight * 0.11), 2):
         update = True
-        p.Weight = (data.Weight * 0.11)
+        p.Weight = round((data.Weight * 0.11), 2)
   if update:
     UpsertTrainer(trainer)
   return trainer

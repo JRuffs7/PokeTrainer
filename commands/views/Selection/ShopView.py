@@ -16,6 +16,9 @@ class ShopView(discord.ui.View):
 		self.fullballList = itemservice.GetAllPokeballs()
 		self.fullptnList = itemservice.GetAllPotions()
 		self.fullcndylist = itemservice.GetAllCandies()
+		self.buysellchoice = None
+		self.itemchoice = None
+		self.amountchoice = None
 		super().__init__(timeout=300)
 		self.buysellview = BuySell()
 		self.add_item(self.buysellview)

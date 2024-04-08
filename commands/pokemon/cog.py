@@ -181,7 +181,8 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
     pokeList = pokemonservice.GetPokemonThatCanEvolve([p for p in trainer.OwnedPokemon if p.Level >= 20 and (p.Pokemon_Id == pokemon if pokemon else True)])
     if not pokeList:
-      return await discordservice_pokemon.PrintEvolveResponse(inter, 1 if pokemon else 0, pokemonservice.GetPokemonById(pokemon).Name)
+      pkmn = pokemonservice.GetPokemonById(pokemon)
+      return await discordservice_pokemon.PrintEvolveResponse(inter, 1 if pokemon else 0, pkmn.Name if pkmn else 'N/A')
 
     evolveView = EvolveView(inter, trainer, pokeList)
     return await evolveView.send()
