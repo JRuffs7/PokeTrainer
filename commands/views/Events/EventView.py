@@ -1,4 +1,5 @@
 import asyncio
+import os
 from datetime import UTC, datetime, timedelta
 import logging
 import discord
@@ -18,14 +19,15 @@ class EventView(discord.ui.View):
 		self.channel = channel
 		self.messagethread = None
 		self.embed = embed
-		self.embed.set_footer(text=timedelta(minutes=60))
-		super().__init__(timeout=3600)
+		self.eventTime = int(os.environ['EVENT_TIME'])
+		self.embed.set_footer(text=timedelta(minutes=self.eventTime))
+		super().__init__(timeout=self.eventTime*60)
 
 	async def send(self):
 		try:
-			self.message = await self.channel.send(embed=self.embed, view=self, delete_after=3605)
+			self.message = await self.channel.send(embed=self.embed, view=self, delete_after=(self.eventTime*60)+5)
 			self.server.CurrentEvent.MessageId = self.message.id
-			sentAt = datetime.now(UTC)+timedelta(minutes=60)
+			sentAt = datetime.now(UTC)+timedelta(minutes=self.eventTime)
 			while datetime.now(UTC) < sentAt:
 				self.embed.set_footer(text=str(sentAt-datetime.now(UTC)).split('.',2)[0])
 				await self.message.edit(embed=self.embed, view=self)

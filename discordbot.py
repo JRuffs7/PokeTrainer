@@ -27,7 +27,7 @@ async def StartBot():
   
   @discordBot.event
   async def on_ready():
-    logger.info(f"{discordBot.user} up and running")
+    logger.info(f"{discordBot.user} up and running - {os.environ['BUILD']}")
 
     syncLogger.info(f'Global Sync Command Startup')
     await discordBot.tree.sync()
@@ -73,23 +73,26 @@ async def StartBot():
       asyncio.run_coroutine_threadsafe(EventThread(choice(list(EventType)), server), discordBot.loop)
 
   async def EventThread(eventType: EventType, server: Server):
-    guild = discordBot.get_guild(server.ServerId)
-    if not guild:
-      return 
-    channel = guild.get_channel(server.ChannelId)
-    if not channel or not isinstance(channel, discord.TextChannel):
-      return
-    
-    match eventType:
-      case EventType.StatCompare:
-        serverservice.StatCompareEvent(server)
-        await UserEntryEventView(server, channel, discordBot.user.display_avatar.url).send()
-      case EventType.PokemonCount:
-        serverservice.PokemonCountEvent(server)
-        await UserEntryEventView(server, channel, discordBot.user.display_avatar.url).send()
-      case _:
-        spawnPkmn = serverservice.SpecialSpawnEvent(server)
-        await SpecialSpawnEventView(server, channel, spawnPkmn, 'Special Spawn Event').send()
+    try:
+      guild = discordBot.get_guild(server.ServerId)
+      if not guild:
+        return 
+      channel = guild.get_channel(server.ChannelId)
+      if not channel or not isinstance(channel, discord.TextChannel):
+        return
+      
+      match eventType:
+        case EventType.StatCompare:
+          serverservice.StatCompareEvent(server)
+          await UserEntryEventView(server, channel, discordBot.user.display_avatar.url).send()
+        case EventType.PokemonCount:
+          serverservice.PokemonCountEvent(server)
+          await UserEntryEventView(server, channel, discordBot.user.display_avatar.url).send()
+        case _:
+          spawnPkmn = serverservice.SpecialSpawnEvent(server)
+          await SpecialSpawnEventView(server, channel, spawnPkmn, 'Special Spawn Event').send()
+    except Exception as e:
+      print(f'{e}')
 
   for f in os.listdir("commands"):
     if os.path.exists(os.path.join("commands", f, "cog.py")):
