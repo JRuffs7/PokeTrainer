@@ -110,7 +110,7 @@ def GetSpecialSpawn():
   pkmn = None
   while not pkmn:
     pkmn = choice(pokemonList)
-    if pkmn.IsFossil and pkmn.EvolvesInto:
+    if pkmn.IsFossil and not pkmn.EvolvesInto:
       pkmn = None
   return GenerateSpawnPokemon(pkmn, 5 if pkmn.IsStarter or pkmn.IsFossil else 75 if pkmn.IsLegendary or pkmn.IsMythical else 40)
 
