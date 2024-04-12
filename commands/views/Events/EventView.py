@@ -1,5 +1,6 @@
 import asyncio
-from datetime import datetime, timedelta
+import os
+from datetime import UTC, datetime, timedelta
 import logging
 import discord
 
@@ -7,6 +8,8 @@ from models.Server import Server
 from services import serverservice
 
 class EventView(discord.ui.View):
+
+	errLog = logging.getLogger('error')
 
 	def __init__(
 			self, server: Server, channel: discord.TextChannel, embed: discord.Embed):
@@ -16,18 +19,22 @@ class EventView(discord.ui.View):
 		self.channel = channel
 		self.messagethread = None
 		self.embed = embed
-		self.embed.set_footer(text=timedelta(minutes=60))
-		super().__init__(timeout=3600)
+		self.eventTime = int(os.environ['EVENT_TIME'])
+		self.embed.set_footer(text=timedelta(minutes=self.eventTime))
+		super().__init__(timeout=self.eventTime*60)
 
 	async def send(self):
-		self.message = await self.channel.send(embed=self.embed, view=self, delete_after=3605)
-		self.server.CurrentEvent.MessageId = self.message.id
-		sentAt = datetime.utcnow()+timedelta(minutes=60)
-		while datetime.utcnow() < sentAt:
-			self.embed.set_footer(text=str(sentAt-datetime.utcnow()).split('.',2)[0])
+		try:
+			self.message = await self.channel.send(embed=self.embed, view=self, delete_after=(self.eventTime*60)+5)
+			self.server.CurrentEvent.MessageId = self.message.id
+			sentAt = datetime.now(UTC)+timedelta(minutes=self.eventTime)
+			while datetime.now(UTC) < sentAt:
+				self.embed.set_footer(text=str(sentAt-datetime.now(UTC)).split('.',2)[0])
+				await self.message.edit(embed=self.embed, view=self)
+				await asyncio.sleep(0.85)
+			self.embed.set_footer(text='Event ended.')
 			await self.message.edit(embed=self.embed, view=self)
-			await asyncio.sleep(0.85)
-		self.embed.set_footer(text='Event ended.')
-		await self.message.edit(embed=self.embed, view=self)
-		self.eventLog.info(f"{self.server.ServerName} - {self.server.CurrentEvent.EventName} Ended")
-		serverservice.UpsertServer(self.server)
+			self.eventLog.info(f"{self.server.ServerName} - {self.server.CurrentEvent.EventName} Ended")
+			await serverservice.EndEvent(self.server)
+		except Exception as e:
+			self.errLog.error(f"EVENT ERROR FOR SERVER {self.server.ServerName}: {e}")

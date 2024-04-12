@@ -1,9 +1,13 @@
-from discord import app_commands, Interaction
+import logging
+from discord import Member, app_commands, Interaction
 from discord.ext import commands
 from typing import List
-from commands.autofills.autofills import autofill_pokemon
+from commands.autofills.autofills import autofill_nonteam, autofill_pokemon
+from commands.views.Pagination.DaycareView import DaycareView
+from commands.views.Pagination.DexView import DexView
 from commands.views.Pagination.PokemonSearchView import PokemonSearchView
 from commands.views.Selection.CandyView import CandyView
+from commands.views.Selection.DaycareAddView import DaycareAddView
 from commands.views.Selection.HatchView import HatchView
 from commands.views.SpawnPokemonView import SpawnPokemonView
 import discordbot
@@ -61,15 +65,7 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
   async def filter_autocomplete(self, inter: Interaction, current: str) -> List[app_commands.Choice[str]]:
     search = inter.namespace['search']
     choiceList = []
-    if search == 'single':
-      searchList = pokemonservice.GetAllPokemon()
-      searchList.sort(key=lambda x: x.Name)
-      for pkmn in searchList:
-        if current.lower() in pkmn.Name.lower():
-          choiceList.append(app_commands.Choice(name=pkmn.Name, value=f"{pkmn.Id}"))
-          if len(choiceList) == 25:
-            break
-    elif search == 'color':
+    if search == 'color':
       searchList = list(pokemonservice.GetPokemonColors())
       searchList.sort()
       for color in searchList:
@@ -90,19 +86,13 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
   @app_commands.command(name="pokeinfo",
                         description="Gives information for a single, or list, of Pokemon.")
   @app_commands.choices(search=[
-      app_commands.Choice(name="Single Pokemon", value='single'),
       app_commands.Choice(name="Color", value="color"),
       app_commands.Choice(name="Type", value="type")
   ])
   @app_commands.autocomplete(filter=filter_autocomplete)
   @method_logger
-  async def pokeinfo(self,
-                      inter: Interaction,
-                      search: app_commands.Choice[str],
-                      filter: str):
-    if search.value == 'single' and filter.isnumeric():
-      await self.PokeInfoSingle(inter, int(filter))
-    elif search.value == 'color':
+  async def pokeinfo(self, inter: Interaction, search: app_commands.Choice[str], filter: str):
+    if search.value == 'color':
       await self.PokeInfoColor(inter, filter)
     elif search.value == 'type':
       await self.PokeInfoType(inter, filter)
@@ -110,21 +100,12 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
       return await discordservice_pokemon.PrintPokeInfoResponse(inter, 3, [])
     
 
-  async def PokeInfoSingle(self, inter: Interaction, pokemonId: int):
-    pokemonList = pokemonservice.GeneratePokemonSearchGroup(pokemonId)
-    if not pokemonList:
-      return await discordservice_pokemon.PrintPokeInfoResponse(inter, 0, [])
-    dexViewer = PokemonSearchView(inter, 1, pokemonList, 'Pokemon Search')
-    dexViewer.data = pokemonList
-    await dexViewer.send()
-    
-
   async def PokeInfoColor(self, inter: Interaction, color: str):
     pokemonList = pokemonservice.GetPokemonByColor(color)
     if not pokemonList:
       return await discordservice_pokemon.PrintPokeInfoResponse(inter, 1, [color])
     pokemonList.sort(key=lambda x: x.Name)
-    dexViewer = PokemonSearchView(inter, 10, pokemonList, f"List of {color} Pokemon")
+    dexViewer = PokemonSearchView(inter, pokemonList, f"List of {color} Pokemon")
     await dexViewer.send()
 
 
@@ -132,42 +113,102 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
     pokemonList = pokemonservice.GetPokemonByType(type.lower())
     if not pokemonList:
       return await discordservice_pokemon.PrintPokeInfoResponse(inter, 2, [type])
-    dexViewer = PokemonSearchView(inter, 10, pokemonList, f"List of {type} type Pokemon")
+    dexViewer = PokemonSearchView(inter, pokemonList, f"List of {type} type Pokemon")
     await dexViewer.send()
+
+  @app_commands.command(name="pokedex",
+                        description="Gives a list of full or singular Pokedex completion.")
+  @app_commands.choices(dex=[
+      app_commands.Choice(name="Pokedex", value=0),
+      app_commands.Choice(name="Form Dex", value=1),
+      app_commands.Choice(name="Shiny Dex", value=2)
+  ])
+  @app_commands.autocomplete(pokemon=autofill_pokemon)
+  @method_logger
+  async def pokedex(self, inter: Interaction, user: Member|None, dex: int = None, pokemon: int = None):
+    trainer = trainerservice.GetTrainer(inter.guild_id, user.id if user else inter.user.id)
+    if not pokemon:
+      dexType = "Pokedex" if not dex else "Form Dex" if dex == 1 else "Shiny Dex"
+      data = pokemonservice.GetAllPokemon()
+      data.sort(key=lambda x: x.PokedexId)
+      trainerCompletion = f"{len(trainer.Pokedex) if not dex else len(trainer.Formdex) if dex == 1 else len(trainer.Shinydex)}/{len(set(p.PokedexId for p in data)) if not dex else len(data)}"
+      dexViewer = DexView(
+        inter, 
+        user if user else inter.user,
+        trainer,
+        dex,
+        20, 
+        data,
+        f"{user.display_name if user else inter.user.display_name}'s {dexType} ({trainerCompletion})")
+    else:
+      dexType = "Pokedex" if dex and dex == 0 else "Form Dex"
+      data = pokemonservice.GetPokemonById(pokemon)
+      dexViewer = DexView(
+        inter, 
+        user if user else inter.user,
+        trainer,
+        dex if dex and dex <= 1 else 1,
+        1, 
+        [data, data],
+        f"{user.display_name if user else inter.user.display_name}'s {data.Name} {dexType}")
+    await dexViewer.send()
+
 
   #endregion
 
 
   #region Evolution
 
+  async def autofill_evolve(self, inter: Interaction, current: str):
+    data = []
+    trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
+    evList = pokemonservice.GetPokemonThatCanEvolve([p for p in trainer.OwnedPokemon if p.Level >= 20])
+    pkmnList = pokemonservice.GetPokemonByIdList([e.Pokemon_Id for e in evList])
+    pkmnList.sort(key=lambda x: x.Name)
+    for pkmn in pkmnList:
+      if current.lower() in pkmn.Name.lower():
+        data.append(app_commands.Choice(name=pkmn.Name, value=pkmn.Id))
+      if len(data) == 25:
+        break
+    return data
+
   @app_commands.command(name="evolve",
                         description="Evolve your Pokemon.")
-  @app_commands.autocomplete(pokemon=autofill_pokemon)
+  @app_commands.autocomplete(pokemon=autofill_evolve)
   @method_logger
   @trainer_check
   async def evolve(self, inter: Interaction, pokemon: int | None):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
-    pokeList = [p for p in trainer.OwnedPokemon if pokemonservice.CanTrainerPokemonEvolve(p)]
+    pokeList = pokemonservice.GetPokemonThatCanEvolve([p for p in trainer.OwnedPokemon if p.Level >= 20 and (p.Pokemon_Id == pokemon if pokemon else True)])
     if not pokeList:
-      return await discordservice_pokemon.PrintEvolveResponse(inter, 0)
-    
-    if pokemon:
-      pokeList = [p for p in pokeList if p.Pokemon_Id == pokemon]
-    if not pokeList:
-      return await discordservice_pokemon.PrintEvolveResponse(inter, 1, pokemonservice.GetPokemonById(pokemon).Name)
-
+      pkmn = pokemonservice.GetPokemonById(pokemon)
+      return await discordservice_pokemon.PrintEvolveResponse(inter, 1 if pokemon else 0, pkmn.Name if pkmn else 'N/A')
 
     evolveView = EvolveView(inter, trainer, pokeList)
     return await evolveView.send()
 
+
+  async def autofill_candy(self, inter: Interaction, current: str):
+    data = []
+    trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
+    pkmnList = pokemonservice.GetPokemonByIdList([p.Pokemon_Id for p in trainer.OwnedPokemon if p.Level < 100])
+    pkmnList.sort(key=lambda x: x.Name)
+    for pkmn in pkmnList:
+      if current.lower() in pkmn.Name.lower():
+        data.append(app_commands.Choice(name=pkmn.Name, value=pkmn.Id))
+      if len(data) == 25:
+        break
+    return data
+
+
   @app_commands.command(name="givecandy",
                         description="Give a candy to a Pokemon.")
-  @app_commands.autocomplete(pokemon=autofill_pokemon)
+  @app_commands.autocomplete(pokemon=autofill_candy)
   @method_logger
   @trainer_check
   async def givecandy(self, inter: Interaction, pokemon: int):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
-    pokeList = [p for p in trainer.OwnedPokemon if p.Pokemon_Id == pokemon]
+    pokeList = [p for p in trainer.OwnedPokemon if p.Pokemon_Id == pokemon and p.Level < 100]
     if not pokeList:
       return await discordservice_pokemon.PrintGiveCandyResponse(inter, 1, pokemonservice.GetPokemonById(pokemon).Name)
     candyList = [c for c in trainer.Candies if trainer.Candies[c] > 0]
@@ -177,6 +218,30 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
     candyView = CandyView(inter, trainer, pokeList)
     return await candyView.send()
 
+
+  @app_commands.command(name="daycare",
+                        description="Add to or check on your daycare.")
+  @app_commands.autocomplete(pokemon=autofill_nonteam)
+  @method_logger
+  @trainer_check
+  async def daycare(self, inter: Interaction, pokemon: int|None):
+    trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
+
+    #Viewing Daycare
+    if not pokemon:
+      if len(trainer.Daycare) == 0:
+        return await discordservice_pokemon.PrintDaycareResponse(inter, 0, [])
+      return await DaycareView(inter, trainer).send()
+    
+    #Adding To Daycare
+    if len(trainer.Daycare) >= 2:
+      return await discordservice_pokemon.PrintDaycareResponse(inter, 1, [])
+    
+    pokeList = [p for p in trainer.OwnedPokemon if p.Pokemon_Id == pokemon]
+    if not pokeList:
+      return await discordservice_pokemon.PrintDaycareResponse(inter, 2, [pokemonservice.GetPokemonById(pokemon).Name])
+
+    return await DaycareAddView(inter, trainer, pokeList).send()
 
   #endregion
 

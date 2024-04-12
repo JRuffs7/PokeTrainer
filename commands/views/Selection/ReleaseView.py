@@ -38,7 +38,7 @@ class ReleaseView(discord.ui.View):
 		await inter.response.defer()
 		if self.pokemonchoices:
 			pokemon = trainerservice.ReleasePokemon(trainerservice.GetTrainer(inter.guild_id, inter.user.id), self.pokemonchoices)
-			await self.message.delete()
+			await self.message.delete(delay=0.01)
 			await inter.followup.send(content=f"You have released {len(self.pokemonchoices)} {pokemon}",ephemeral=True)
 
 

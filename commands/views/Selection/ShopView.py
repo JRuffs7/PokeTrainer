@@ -16,6 +16,9 @@ class ShopView(discord.ui.View):
 		self.fullballList = itemservice.GetAllPokeballs()
 		self.fullptnList = itemservice.GetAllPotions()
 		self.fullcndylist = itemservice.GetAllCandies()
+		self.buysellchoice = None
+		self.itemchoice = None
+		self.amountchoice = None
 		super().__init__(timeout=300)
 		self.buysellview = BuySell()
 		self.add_item(self.buysellview)
@@ -40,10 +43,10 @@ class ShopView(discord.ui.View):
 			self.candyList = [itemservice.GetCandy(int(i)) for i in self.trainer.Candies if self.trainer.Candies[i] > 0]
 
 		self.buysellview = BuySell(self.buysellchoice)
-		self.itemview = ItemChoice(self.ballList, self.potionList, self.candyList, self.buysellchoice == 'buy')
+		self.itemview = ItemChoice(self.ballList, self.potionList, self.candyList, choice == 'buy')
 		self.add_item(self.buysellview)
 		self.add_item(self.itemview)
-		await self.message.edit(view=self)
+		await self.message.edit(content=f"Money: ${self.trainer.Money}", view=self)
 
 	@button_check
 	async def ItemSelection(self, inter: discord.Interaction, choice: str):
@@ -55,22 +58,22 @@ class ShopView(discord.ui.View):
 			if type(item) is not discord.ui.Button:
 				self.remove_item(item)
 
-		self.itemchoice = choice
+		self.itemchoice = next(i for i in (self.fullballList if choice[0] == 'b' else self.fullptnList if choice[0] == 'p' else self.fullcndylist) if i.Id == int(choice[1:]))
 		self.amountchoice = None
-		itemId = int(choice[1:])
-		item = next(i for i in (self.fullballList if choice[0] == 'b' else self.fullptnList if choice[0] == 'p' else self.candyList) if i.Id == itemId)
+		trainerList = self.trainer.Pokeballs if choice[0] == 'b' else self.trainer.Potions if choice[0] == 'p' else self.trainer.Candies
 		if self.buysellchoice == 'buy':
-			maxAmount = self.trainer.Money // item.BuyAmount
+			maxAmount = self.trainer.Money // self.itemchoice.BuyAmount
 		else:
-			maxAmount = self.trainer.Pokeballs[choice[1:]] if choice[0] == 'b' else self.trainer.Potions[choice[1:]] if choice[0] == 'p' else self.trainer.Candies[choice[1:]]
+			maxAmount = trainerList[choice[1:]]
 
 		self.buysellview = BuySell(self.buysellchoice)
-		self.itemview = ItemChoice(self.ballList, self.potionList, self.candyList, self.buysellchoice == 'buy', self.itemchoice)
+		self.itemview = ItemChoice(self.ballList, self.potionList, self.candyList, self.buysellchoice == 'buy', choice)
 		self.amountview = AmountSelector(maxAmount)
 		self.add_item(self.buysellview)
 		self.add_item(self.itemview)
 		self.add_item(self.amountview)
-		await self.message.edit(view=self)
+		currOwned = trainerList[choice[1:]] if choice[1:] in trainerList else 0
+		await self.message.edit(content=f"Money: ${self.trainer.Money}\nYou currently have {currOwned} {self.itemchoice.Name}(s)", view=self)
 
 	@button_check
 	async def AmountSelection(self, inter: discord.Interaction, choice: str):
@@ -92,18 +95,17 @@ class ShopView(discord.ui.View):
 												button: discord.ui.Button):
 		await inter.response.defer()
 		if self.buysellchoice and self.itemchoice and self.amountchoice:
-			item = next(i for i in (self.fullballList if self.itemchoice[0] == 'b' else self.fullptnList if self.itemchoice[0] == 'p' else self.fullcndylist) if i.Id == int(self.itemchoice[1:]))
 			buying = self.buysellchoice == 'buy'
 			trainerservice.ModifyItemList(
-				self.trainer.Pokeballs if self.itemchoice[0] == 'b' else self.trainer.Potions if self.itemchoice[0] == 'p' else self.trainer.Candies, 
-				self.itemchoice[1:], 
+				self.trainer.Pokeballs if self.itemchoice.__class__.__name__ == 'Pokeball' else self.trainer.Potions if self.itemchoice.__class__.__name__ == 'Potion' else self.trainer.Candies, 
+				str(self.itemchoice.Id), 
 				self.amountchoice if buying else (0 - self.amountchoice),
 				)
-			self.trainer.Money += (0 - (self.amountchoice)*item.BuyAmount) if buying else ((self.amountchoice)*item.SellAmount)
+			self.trainer.Money += (0 - (self.amountchoice)*self.itemchoice.BuyAmount) if buying else ((self.amountchoice)*self.itemchoice.SellAmount)
 			trainerservice.UpsertTrainer(self.trainer)
 
 			self.clear_items()
-			message = f"{item.Name} x{self.amountchoice} purchased for ${(self.amountchoice)*item.BuyAmount}" if buying else f"{item.Name} x{self.amountchoice} sold for ${(self.amountchoice)*item.SellAmount}"
+			message = f"{self.itemchoice.Name} x{self.amountchoice} purchased for ${(self.amountchoice)*self.itemchoice.BuyAmount}" if buying else f"{self.itemchoice.Name} x{self.amountchoice} sold for ${(self.amountchoice)*self.itemchoice.SellAmount}"
 			await self.message.edit(content=f"{message}\nYou now have **${self.trainer.Money}**", view=self)
 
 

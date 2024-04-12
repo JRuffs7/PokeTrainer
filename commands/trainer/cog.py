@@ -1,8 +1,8 @@
 from discord import Member, app_commands, Interaction
 from discord.ext import commands
-from commands.autofills.autofills import autofill_pokemon, autofill_potions, autofill_zones
+from commands.autofills.autofills import autofill_nonteam, autofill_zones
 from commands.views.Pagination.EggView import EggView
-from commands.views.Pagination.PokedexView import PokedexView
+from commands.views.Pagination.MyPokemonView import MyPokemonView
 from commands.views.Selection.TeamSelectorView import TeamSelectorView
 from commands.views.Selection.ReleaseView import ReleaseView
 from commands.views.Pagination.BadgeView import BadgeView
@@ -31,9 +31,21 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
     return await discordservice_trainer.PrintTrainer(interaction, trainer, targetUser)
 
 
+  async def autofill_usepotion(self, inter: Interaction, current:str):
+    data = []
+    trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
+    ptnList = [itemservice.GetPotion(int(k)) for k in trainer.Potions if trainer.Potions[k] > 0]
+    ptnList.sort(key=lambda x: x.Id)
+    for ptn in ptnList:
+      if current.lower() in ptn.Name.lower():
+        data.append(app_commands.Choice(name=ptn.Name, value=ptn.Id))
+      if len(data) == 25:
+        break
+    return data
+
   @app_commands.command(name="usepotion",
                         description="Use a potion to restore trainer health.")
-  @app_commands.autocomplete(potion=autofill_potions)
+  @app_commands.autocomplete(potion=autofill_usepotion)
   @method_logger
   @trainer_check
   async def usepotion(self, inter: Interaction, potion: int):
@@ -53,7 +65,11 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
   async def daily(self, interaction: Interaction):
     trainer = trainerservice.GetTrainer(interaction.guild_id, interaction.user.id)
     dailyResult = trainerservice.TryDaily(trainer)
-    return await discordservice_trainer.PrintDaily(interaction, dailyResult >= 0, itemservice.GetEgg(dailyResult).Name if dailyResult > 0 else None)
+    return await discordservice_trainer.PrintDaily(
+      interaction, 
+      dailyResult >= 0, 
+      trainerservice.HasRegionReward(trainer, 5),
+      itemservice.GetEgg(dailyResult).Name if dailyResult > 0 else None)
 
   @app_commands.command(name="myeggs",
                         description="View your eggs progress.")
@@ -103,7 +119,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
 
   @app_commands.command(name="modifyteam",
                         description="Add a specified Pokemon into a team slot or modify existing team.")
-  @app_commands.autocomplete(pokemon=autofill_pokemon)
+  @app_commands.autocomplete(pokemon=autofill_nonteam)
   @method_logger
   @trainer_check
   async def modifyteam(self, inter: Interaction, pokemon: int | None):
@@ -126,7 +142,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
   @trainer_check
   async def myteam(self, inter: Interaction):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
-    teamViewer = PokedexView(
+    teamViewer = MyPokemonView(
       inter,
       inter.user,
       trainer, 
@@ -175,7 +191,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
 
   #region POKEDEX
 
-  @app_commands.command(name="pokedex",
+  @app_commands.command(name="mypokemon",
                         description="Displays you or the target users current Pokedex.")
   @app_commands.choices(images=[
       app_commands.Choice(name="Yes", value=1)
@@ -193,29 +209,32 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
   ])
   @method_logger
   @trainer_check
-  async def pokedex(self, inter: Interaction,
+  async def mypokemon(self, inter: Interaction,
                     images: app_commands.Choice[int] | None,
                     order: app_commands.Choice[str] | None,
                     shiny: app_commands.Choice[int] | None,
                     user: Member | None):
     trainer = trainerservice.GetTrainer(inter.guild_id, user.id if user else inter.user.id)
     data = trainerservice.GetPokedexList(trainer, order.value if order else 'default', shiny.value if shiny else 0)
+    if not data:
+      return await discordservice_trainer.PrintMyPokemon(inter)
     sortString = f'Sort: {order.name}' if order else ''
     sortString += f' | ' if order and shiny else ''
     sortString += f'{shiny.name}' if shiny else ''
-    dexViewer = PokedexView(
+    pokemonViewer = MyPokemonView(
       inter, 
       user if user else inter.user,
       trainer,
       images.value if images else 10, 
       data,
-      f"{user.display_name if user else inter.user.display_name}'s Pokedex ({len(trainer.Pokedex)}/{pokemonservice.GetPokemonCount()})\n{sortString}")
-    await dexViewer.send()
+      f"{user.display_name if user else inter.user.display_name}'s Pokemon\n{sortString}",
+      order.value if order else None)
+    await pokemonViewer.send()
       
 
   @app_commands.command(name="release",
                         description="Choose a Pokemon to release.")
-  @app_commands.autocomplete(pokemon=autofill_pokemon)
+  @app_commands.autocomplete(pokemon=autofill_nonteam)
   @method_logger
   @trainer_check
   async def release(self, inter: Interaction,

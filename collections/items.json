@@ -47,7 +47,7 @@
       "Name": "Super Potion",
       "Description": "Heals trainer for 40 HP.",
       "BuyAmount": 250,
-      "SellAmount": 150,
+      "SellAmount": 125,
       "HealingAmount": 40
     },
     {
@@ -55,7 +55,7 @@
       "Name": "Hyper Potion",
       "Description": "Heals trainer for 80 HP.",
       "BuyAmount": 450,
-      "SellAmount": 250,
+      "SellAmount": 225,
       "HealingAmount": 80
     },
     {
@@ -89,7 +89,7 @@
       "Name": "Large Candy",
       "Description": "Provide a Pokemon with 40 exp.",
       "BuyAmount": 250,
-      "SellAmount": 250,
+      "SellAmount": 125,
       "Experience": 40
     }
   ]

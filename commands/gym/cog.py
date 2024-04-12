@@ -3,6 +3,7 @@ from discord.ext import commands
 from commands.views.GymLeaderView import GymLeaderView
 
 from commands.views.GymView import GymView
+from globals import region_name
 from middleware.decorators import method_logger, trainer_check
 from services import trainerservice, gymservice
 from services.utility import discordservice_gym
@@ -39,7 +40,7 @@ class GymCommands(commands.Cog, name="GymCommands"):
             if trainer is not None and ldr.BadgeId not in trainer.Badges and not nextDone:
                 nextGym = True
                 nextDone = True
-            if current.lower() in ldr.Name.lower():
+            if current.lower() in ldr.Name.lower() or current.lower() in region_name(ldr.Generation).lower():
                 data.append(app_commands.Choice(name=f'{ldr.Name} (Your Next)' if nextGym else ldr.Name, value=ldr.BadgeId))
                 if len(data) == 25:
                     break

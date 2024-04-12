@@ -32,10 +32,13 @@ def GymLeaderFight(trainer: Trainer, leader: GymLeader):
 	while trainerInd < len(trainerTeam) and leaderInd < len(leaderTeam):
 		trainerFighter = trainerTeam[trainerInd]
 		leaderFighter = leaderTeam[leaderInd]
-		fight = pokemonservice.GymFight(trainerFighter['Pokemon'], leaderFighter, trainerFighter['Level'])
+		fight = pokemonservice.GymFight(trainerFighter['Pokemon'], leaderFighter, trainerFighter['Level'], leader.BadgeId)
 		fightResults.append(fight)
 		if fight:
-			expList[trainerFighter['Id']] = 50*pokemonservice.RarityGroup(leaderTeam[leaderInd]) 
+			if trainerFighter['Id'] in expList:
+				expList[trainerFighter['Id']] += 50*pokemonservice.RarityGroup(leaderTeam[leaderInd])
+			else:
+				expList[trainerFighter['Id']] = 50*pokemonservice.RarityGroup(leaderTeam[leaderInd])
 			leaderInd += 1
 		else:
 			trainerInd += 1
@@ -63,6 +66,9 @@ def GetGymLeaderByBadge(badgeId: int):
 
 def GetAllBadges():
 	return gymda.GetAllBadges()
+
+def GetBadgesByRegion(region: int):
+	return [b for b in gymda.GetAllBadges() if b.Generation == region]
 
 def GetBadgeById(badgeId: int):
 	return next((b for b in GetAllBadges() if b.Id == badgeId),None)

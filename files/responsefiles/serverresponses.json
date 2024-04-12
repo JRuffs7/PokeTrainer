@@ -1,4 +1,10 @@
 {
+	"invite": [
+		{
+			"Title": "Invite Server",
+			"Body": "Use this link below to add PokeTrainer to another discord server!\n\n[Invite PokeTrainer](https://discord.com/oauth2/authorize?client_id=1151657435073875988&permissions=395674216512&scope=bot)"
+		}
+	],
 	"register": [
 		{
 			"Title": "Server Registered",

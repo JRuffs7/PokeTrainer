@@ -9,12 +9,12 @@ from models.Egg import TrainerEgg
 from models.Event import Event
 from models.Item import Potion
 from models.Trainer import Trainer
-from models.Pokemon import Pokemon
+from models.Pokemon import Pokemon, PokemonData
 from models.enums import EventType, PokemonCount, StatCompare
-from services import itemservice, pokemonservice
+from services import gymservice, itemservice, pokemonservice
 
 captureLog = logging.getLogger('capture')
-
+updatedTrainers: list[str] = []
 
 #region Data
 
@@ -22,7 +22,40 @@ def CheckTrainer(serverId: int, userId: int):
   return trainerda.CheckTrainer(serverId, userId)
 
 def GetTrainer(serverId: int, userId: int):
-  return trainerda.GetTrainer(serverId, userId)
+  trainer = trainerda.GetTrainer(serverId, userId)
+  allPokemon = None
+  update = False
+  if trainer is not None and ((not trainer.Shinydex and any(p.IsShiny for p in trainer.OwnedPokemon)) or not trainer.Formdex):
+    allPokemon = pokemonservice.GetAllPokemon()
+    update = True
+    if not trainer.Shinydex:
+      shinyLines = [pokemonservice.GetEvolutionLine(p.Pokemon_Id, allPokemon) for p in trainer.OwnedPokemon if p.IsShiny]
+      for shinyLine in shinyLines:
+        trainer.Shinydex.extend([i for i in shinyLine if i not in trainer.Shinydex])
+    if not trainer.Formdex:
+      formLines = [pokemonservice.GetEvolutionLine(p.Pokemon_Id, allPokemon) for p in trainer.OwnedPokemon]
+      for formLine in formLines:
+        trainer.Formdex.extend([i for i in formLine if i not in trainer.Formdex])
+  if trainer is not None and f'{trainer.ServerId}{trainer.UserId}' not in updatedTrainers:
+    updatedTrainers.append(f'{trainer.ServerId}{trainer.UserId}')
+    allPokemon = pokemonservice.GetAllPokemon() if not allPokemon else allPokemon
+    for p in trainer.OwnedPokemon:
+      data = next(po for po in allPokemon if po.Id == p.Pokemon_Id)
+      if p.Height < round((data.Height * 0.09), 2):
+        update = True
+        p.Height = round((data.Height * 0.09), 2)
+      elif p.Height > round((data.Height * 0.11), 2):
+        update = True
+        p.Height = round((data.Height * 0.11), 2)
+      if p.Weight < round((data.Weight * 0.09), 2):
+        update = True
+        p.Weight = round((data.Weight * 0.09), 2)
+      elif p.Weight > round((data.Weight * 0.11), 2):
+        update = True
+        p.Weight = round((data.Weight * 0.11), 2)
+  if update:
+    UpsertTrainer(trainer)
+  return trainer
 
 def UpsertTrainer(trainer: Trainer):
   return trainerda.UpsertTrainer(trainer)
@@ -72,8 +105,14 @@ def TryUsePotion(trainer: Trainer, potion: Potion):
 def TryDaily(trainer: Trainer):
   if (not trainer.LastDaily or datetime.strptime(trainer.LastDaily, ShortDateFormat).date() < datetime.now(UTC).date()) or trainer.UserId in AdminList:
     trainer.LastDaily = datetime.now(UTC).strftime(ShortDateFormat)
-    ModifyItemList(trainer.Pokeballs, '1', 10)
-    trainer.Money += 200
+
+    #Unova Reward
+    if HasRegionReward(trainer, 5):
+      ModifyItemList(trainer.Pokeballs, '1', 20)
+      trainer.Money += 500
+    else:
+      ModifyItemList(trainer.Pokeballs, '1', 10)
+      trainer.Money += 200
     addEgg = TryAddNewEgg(trainer)
     UpsertTrainer(trainer)
     return addEgg
@@ -83,15 +122,17 @@ def EventEntry(trainer: Trainer, event: Event):
   #Pokemon Count Event
   if event.EventType == EventType.PokemonCount.value:
     if event.SubType <= 17:
-      return sum(PokemonCount(event.SubType).name.lower() in [t.lower() for t in pokemonservice.GetPokemonById(p.Pokemon_Id).Types] for p in trainer.OwnedPokemon)
+      dataList = pokemonservice.GetPokemonByIdList([p.Pokemon_Id for p in trainer.OwnedPokemon])
+      return sum(PokemonCount(event.SubType).name.lower() in [t.lower() for t in next(pk for pk in dataList if p.Pokemon_Id == pk.Id).Types] for p in trainer.OwnedPokemon)
     elif event.SubType == PokemonCount.Female.value:
-      return sum(p.IsFemale for p in trainer.OwnedPokemon)
+      return sum(p.IsFemale for p in trainer.OwnedPokemon if p.IsFemale is not None)
     elif event.SubType == PokemonCount.Male.value:
-      return sum(not p.IsFemale for p in trainer.OwnedPokemon)
+      return sum(not p.IsFemale for p in trainer.OwnedPokemon if p.IsFemale is not None)
     elif event.SubType == PokemonCount.Shiny.value:
       return sum(p.IsShiny for p in trainer.OwnedPokemon)
     else:
-      return sum(pokemonservice.GetPokemonById(p.Pokemon_Id).IsLegendary for p in trainer.OwnedPokemon)
+      dataList = pokemonservice.GetPokemonByIdList([p.Pokemon_Id for p in trainer.OwnedPokemon])
+      return sum(next(pk for pk in dataList if p.Pokemon_Id == pk.Id).IsLegendary for p in trainer.OwnedPokemon)
   #Stat Compare Event
   else:
     heightBased = event.SubType in [StatCompare.Shortest.value, StatCompare.Tallest.value]
@@ -114,6 +155,19 @@ def ModifyItemList(itemDict: dict[str, int], itemId: str, amount: int):
     newAmount = 0
   itemDict.update({ itemId: newAmount })
 
+def HasRegionReward(trainer: Trainer, region: int):
+  return max([b.Id for b in gymservice.GetBadgesByRegion(region)]) in trainer.Badges
+
+def TryGetCandy():
+  if choice(range(1,101)) < 20:
+    randCandy = choice(range(1,101))
+    if randCandy < 10:
+      return itemservice.GetCandy(1) #Rare Candy
+    elif randCandy < 40:
+      return itemservice.GetCandy(3) #Large Candy
+    return itemservice.GetCandy(2) #Small Candy
+  return None
+
 #endregion
 
 #region Eggs
@@ -121,7 +175,13 @@ def ModifyItemList(itemDict: dict[str, int], itemId: str, amount: int):
 def TryAddNewEgg(trainer: Trainer):
   if(len(trainer.Eggs) < 5):
     randId = choice(range(1, 101))
-    newEggId = 1 if randId <= 65 else 2 if randId <= 95 else 3
+
+    #Johta Reward
+    if HasRegionReward(trainer, 2):
+      newEggId = 1 if randId <= 50 else 2 if randId <= 90 else 3
+    else:
+      newEggId = 1 if randId <= 65 else 2 if randId <= 95 else 3
+
     trainer.Eggs.append(TrainerEgg.from_dict({
       'Id': uuid.uuid4().hex,
       'EggId': newEggId
@@ -157,6 +217,7 @@ def TryHatchEgg(trainer: Trainer, eggId: str):
     newPokemon.IsShiny = choice(range(0, ShinyOdds)) == int(ShinyOdds/2)
   trainer.OwnedPokemon.append(newPokemon)
   trainer.Money += 50
+  TryAddToPokedex(trainer, pkmn, newPokemon.IsShiny)
   if len(trainer.Team) < 6:
     trainer.Team.append(newPokemon.Id)
   UpsertTrainer(trainer)
@@ -171,6 +232,7 @@ def GetPokedexList(trainer: Trainer, orderString: str, shiny: int):
   if shiny == 1:
     pokemonList = [p for p in pokemonList if p.IsShiny]
 
+  pkmnDataList = pokemonservice.GetPokemonByIdList([p.Pokemon_Id for p in pokemonList])
   match orderString:
     case "height":
       if shiny == 2:
@@ -179,14 +241,14 @@ def GetPokedexList(trainer: Trainer, orderString: str, shiny: int):
         pokemonList.sort(key=lambda x: x.Height)
     case "dex":
       if shiny == 2:
-        pokemonList.sort(key=lambda x: (-x.IsShiny,pokemonservice.GetPokemonById(x.Pokemon_Id).PokedexId,x.Pokemon_Id))
+        pokemonList.sort(key=lambda x: (-x.IsShiny,next(p for p in pkmnDataList if p.Id == x.Pokemon_Id).PokedexId,x.Pokemon_Id))
       else:
-        pokemonList.sort(key=lambda x: (pokemonservice.GetPokemonById(x.Pokemon_Id).PokedexId,x.Pokemon_Id))
+        pokemonList.sort(key=lambda x: (next(p for p in pkmnDataList if p.Id == x.Pokemon_Id).PokedexId,x.Pokemon_Id))
     case "name":
       if shiny == 2:
-        pokemonList.sort(key=lambda x: (-x.IsShiny,pokemonservice.GetPokemonById(x.Pokemon_Id).Name))
+        pokemonList.sort(key=lambda x: (-x.IsShiny,next(p for p in pkmnDataList if p.Id == x.Pokemon_Id).Name))
       else:
-        pokemonList.sort(key=lambda x: pokemonservice.GetPokemonById(x.Pokemon_Id).Name)
+        pokemonList.sort(key=lambda x: next(p for p in pkmnDataList if p.Id == x.Pokemon_Id).Name)
     case "weight":
       if shiny == 2:
         pokemonList.sort(key=lambda x: (-x.IsShiny,x.Weight))
@@ -202,15 +264,19 @@ def GetPokedexList(trainer: Trainer, orderString: str, shiny: int):
         pokemonList.sort(key=lambda x: -x.IsShiny)
   return pokemonList
 
-def TryAddToPokedex(trainer: Trainer, pokedexId: int):
-  if pokedexId not in trainer.Pokedex:
-    trainer.Pokedex.append(pokedexId)
+def TryAddToPokedex(trainer: Trainer, data: PokemonData, shiny: bool):
+  if data.PokedexId not in trainer.Pokedex:
+    trainer.Pokedex.append(data.PokedexId)
+  if data.Id not in trainer.Formdex:
+    trainer.Formdex.append(data.Id)
+  if shiny and data.Id not in trainer.Shinydex:
+    trainer.Shinydex.append(data.Id)
 
-def Evolve(trainer: Trainer, initialPkmn: Pokemon, evolveId: int):
-  newPkmn = pokemonservice.EvolvePokemon(initialPkmn, evolveId)
+def Evolve(trainer: Trainer, initialPkmn: Pokemon, evolveMon: PokemonData):
+  newPkmn = pokemonservice.EvolvePokemon(initialPkmn, evolveMon)
   index = trainer.OwnedPokemon.index(initialPkmn)
   trainer.OwnedPokemon[index] = newPkmn
-  TryAddToPokedex(trainer, pokemonservice.GetPokemonById(newPkmn.Pokemon_Id).PokedexId)
+  TryAddToPokedex(trainer, pokemonservice.GetPokemonById(newPkmn.Pokemon_Id), newPkmn.IsShiny)
   UpsertTrainer(trainer)
   return newPkmn
 
@@ -219,6 +285,16 @@ def ReleasePokemon(trainer: Trainer, pokemonIds: list[str]):
   trainer.OwnedPokemon = [p for p in trainer.OwnedPokemon if p.Id not in pokemonIds]
   UpsertTrainer(trainer)
   return pokemonservice.GetPokemonById(released.Pokemon_Id).Name
+
+def TradePokemon(trainerOne: Trainer, pokemonOne: Pokemon, trainerTwo: Trainer, pokemonTwo: Pokemon):
+  trainerOne.OwnedPokemon = [p for p in trainerOne.OwnedPokemon if p.Id != pokemonOne.Id]
+  trainerTwo.OwnedPokemon = [p for p in trainerTwo.OwnedPokemon if p.Id != pokemonTwo.Id]
+  trainerOne.OwnedPokemon.append(pokemonTwo)
+  TryAddToPokedex(trainerOne, pokemonservice.GetPokemonById(pokemonTwo.Pokemon_Id), pokemonTwo.IsShiny)
+  UpsertTrainer(trainerOne)
+  trainerTwo.OwnedPokemon.append(pokemonOne)
+  TryAddToPokedex(trainerTwo, pokemonservice.GetPokemonById(pokemonOne.Pokemon_Id), pokemonOne.IsShiny)
+  UpsertTrainer(trainerTwo)
 
 #endregion
 
@@ -265,35 +341,49 @@ def TryCapture(reaction: str, trainer: Trainer, spawn: Pokemon):
   pokeball = itemservice.GetPokeball(1 if reaction == PokeballReaction else 2 if reaction == GreatBallReaction else 3 if reaction == UltraBallReaction else 4)
   pokemon = pokemonservice.GetPokemonById(spawn.Pokemon_Id)
   ModifyItemList(trainer.Pokeballs, str(pokeball.Id), -1)
-  if pokemonservice.CaptureSuccess(pokeball, pokemon, spawn.Level):
+
+  #Sinnoh Reward
+  if (HasRegionReward(trainer, 4) and choice(range(1, 101)) < 11) or pokemonservice.CaptureSuccess(pokeball, pokemon, spawn.Level):
     trainer.OwnedPokemon.append(spawn)
     trainer.Money += 25
-    TryAddToPokedex(trainer, pokemon.PokedexId)
+    TryAddToPokedex(trainer, pokemon, spawn.IsShiny)
     if len(trainer.Team) < 6:
       trainer.Team.append(spawn.Id)
     caught = True
   UpsertTrainer(trainer)
   return caught
 
-def TryWildFight(trainer: Trainer, wild: Pokemon):
-    if trainer.Health <= 0:
-      return None
-    
+def TryWildFight(trainer: Trainer, trainerPkmnData: PokemonData, wild: Pokemon, wildData: PokemonData):
     trainerPokemon = next(p for p in trainer.OwnedPokemon if p.Id == trainer.Team[0])
-    trainerPkmn = pokemonservice.GetPokemonById(trainerPokemon.Pokemon_Id)
-    wildPkmn = pokemonservice.GetPokemonById(wild.Pokemon_Id)
-    healthLost = pokemonservice.WildFight(trainerPkmn, wildPkmn, trainerPokemon.Level, wild.Level)
-    if healthLost > trainer.Health:
-      healthLost = trainer.Health
+    healthLost = pokemonservice.WildFight(trainerPkmnData, wildData, trainerPokemon.Level, wild.Level)
+
+    #Hoenn Reward
+    if HasRegionReward(trainer, 3) and choice(range(1, 101)) < 11:
+      healthLost = 0
+      
     trainer.Health -= healthLost
     trainer.Health = 0 if trainer.Health < 0 else trainer.Health
     if healthLost < 10 and trainer.Health > 0:
+      exp = wildData.Rarity*wild.Level*2 if wildData.Rarity <= 2 else wildData.Rarity*wild.Level
       pokemonservice.AddExperience(
         trainerPokemon, 
-        trainerPkmn, 
-        wildPkmn.Rarity*wild.Level*2 if wildPkmn.Rarity <= 2 else wildPkmn.Rarity*wild.Level)
+        trainerPkmnData, 
+        exp)
       trainer.Money += 50
+      #Kanto Reward
+      if HasRegionReward(trainer, 1) and len(trainer.Team) > 1:
+        teamMember = next(p for p in trainer.OwnedPokemon if p.Id == trainer.Team[1])
+        pkmn = pokemonservice.GetPokemonById(teamMember.Pokemon_Id)
+        pokemonservice.AddExperience(
+          teamMember, 
+          pkmn, 
+          int(exp/2))
+
+    candy = TryGetCandy() if healthLost < 10 else None
+    if candy:
+      ModifyItemList(trainer.Candies, str(candy.Id), 1)
+    
     UpsertTrainer(trainer)
-    return healthLost
+    return (healthLost,candy)
 
 #endregion

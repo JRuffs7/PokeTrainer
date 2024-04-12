@@ -16,13 +16,15 @@ LOGGING_CONFIG = {
             'filename': 'logs/command.log',
             'mode': 'a+',
             'formatter': 'verbose',
+			'encoding': 'utf-8'
         },
         'discord': {
             'level': 'INFO',
             'class': 'logging.FileHandler',
             'filename': 'logs/discord.log',
-            'mode': 'a+',
+            'mode': 'w+',
             'formatter': 'verbose',
+			'encoding': 'utf-8'
         },
         'battle': {
             'level': 'INFO',
@@ -30,6 +32,7 @@ LOGGING_CONFIG = {
             'filename': 'logs/battle.log',
             'mode': 'a+',
             'formatter': 'verbose',
+			'encoding': 'utf-8'
         },
         'capture': {
             'level': 'INFO',
@@ -37,6 +40,7 @@ LOGGING_CONFIG = {
             'filename': 'logs/capture.log',
             'mode': 'a+',
             'formatter': 'verbose',
+			'encoding': 'utf-8'
         },
         'error': {
             'level': 'INFO',
@@ -44,6 +48,7 @@ LOGGING_CONFIG = {
             'filename': 'logs/errors.log',
             'mode': 'w+',
             'formatter': 'verbose',
+			'encoding': 'utf-8'
         },
         'event': {
             'level': 'INFO',
@@ -51,6 +56,15 @@ LOGGING_CONFIG = {
             'filename': 'logs/event.log',
             'mode': 'a+',
             'formatter': 'verbose',
+			'encoding': 'utf-8'
+        },
+        'debug': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'logs/debug.log',
+            'mode': 'w+',
+            'formatter': 'verbose',
+			'encoding': 'utf-8'
         }
     },
     'loggers': {
@@ -59,7 +73,8 @@ LOGGING_CONFIG = {
         'capture': { 'handlers': ['capture'], 'level': 'INFO', 'propagate': False },
         'battle': { 'handlers': ['battle'], 'level': 'INFO', 'propagate': False },
         'error': { 'handlers': ['error'], 'level': 'INFO', 'propagate': False },
-        'event': { 'handlers': ['event'], 'level': 'INFO', 'propagate': False }
+        'event': { 'handlers': ['event'], 'level': 'INFO', 'propagate': False },
+        'debug': { 'handlers': ['debug'], 'level': 'DEBUG', 'propagate': False }
     },
 }
 

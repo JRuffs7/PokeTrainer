@@ -54,5 +54,13 @@ class ServerCommands(commands.Cog, name="ServerCommands"):
     return await discordservice_server.PrintUnregisterResponse(inter)
 
 
+  @app_commands.command(
+      name="invite",
+      description="Invite this bot to another server!"
+  )
+  @method_logger
+  async def invite(self, inter: Interaction):
+    return await discordservice_server.PrintInviteResponse(inter)
+
 async def setup(bot: commands.Bot):
   await bot.add_cog(ServerCommands(bot))

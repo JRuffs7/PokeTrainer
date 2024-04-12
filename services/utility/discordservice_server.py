@@ -49,6 +49,16 @@ async def PrintUnregisterResponse(interaction: Interaction):
 		params=[],
 		eph=True)
 
+async def PrintInviteResponse(interaction: Interaction):
+	return await discordservice.SendCommandResponse(
+		interaction=interaction, 
+		filename=responseFile, 
+		command='invite', 
+		responseInd=0, 
+		color=ServerColor, 
+		params=[],
+		eph=True)
+
 async def PrintEventWinners(server: Server, winners: list[tuple[int,int]]):
 	bot = discordbot.GetBot()
 	if server.CurrentEvent.ThreadId:

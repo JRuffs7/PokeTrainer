@@ -1,5 +1,4 @@
 from dataaccess import eggda, itemda
-from models.Item import Candy
 
 
 def GetAllPokeballs():

@@ -26,15 +26,15 @@
 	"daily": [
 		{
 			"Title": "Already Claimed",
-			"Body": "You have already claimed your reward for the day! Daily rewards reset at midnight UTC.\n\nDon't forget to upvote the bot at\nhttps://top.gg/bot/1151657435073875988?s=0ff6c6ca7661b"
+			"Body": "You have already claimed your reward for the day! Daily rewards reset at midnight UTC.\n\nDon't forget to upvote the bot at\nhttps://top.gg/bot/1151657435073875988"
 		},
 		{
 			"Title": "Daily Reward",
-			"Body": "Thank you for using PokeTrainer. Here is your reward of **Pokeball x10** and **$200**.\n\nDon't forget to upvote the bot at\nhttps://top.gg/bot/1151657435073875988?s=0ff6c6ca7661b"
+			"Body": "Thank you for using PokeTrainer. Here is your reward of **Pokeball x{0}** and **${1}**.\n\nDon't forget to upvote the bot at\nhttps://top.gg/bot/1151657435073875988"
 		},
 		{
 			"Title": "Daily Reward",
-			"Body": "Thank you for using PokeTrainer. Here is your reward of **Pokeball x10** and **$200**.\n\nYou also obtained a {0}!\n\nDon't forget to upvote the bot at\nhttps://top.gg/bot/1151657435073875988?s=0ff6c6ca7661b"
+			"Body": "Thank you for using PokeTrainer. Here is your reward of **Pokeball x{0}** and **${1}**.\n\nYou also obtained a {2}!\n\nDon't forget to upvote the bot at\nhttps://top.gg/bot/1151657435073875988"
 		}
 	],
 	"modifyteam": [
@@ -59,6 +59,12 @@
 		{
 			"Title": "No Eggs Owned",
 			"Body": "You do not own any Eggs. Obtain an egg by using the **/daily** command."
+		}
+	],
+	"mypokemon": [
+		{
+			"Title": "No Pokemon Found",
+			"Body": "Trainer does not own any Pokemon that fit the filters selected. Try again."
 		}
 	],
 	"release": [

@@ -55,7 +55,7 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 			return
 		trainer = trainerservice.GetTrainer(ctx.guild.id, user.id if user else ctx.author.id)
 		if trainer:
-			trainerservice.ModifyItemList(trainer.Pokeballs, str(type), amount)
+			trainerservice.ModifyItemList(trainer.Pokeballs, str(type) if -1 < type < 5 else '1', amount)
 			trainerservice.UpsertTrainer(trainer)
 			
 	@commands.command(name="addpotion")
@@ -65,7 +65,17 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 			return
 		trainer = trainerservice.GetTrainer(ctx.guild.id, user.id if user else ctx.author.id)
 		if trainer:
-			trainerservice.ModifyItemList(trainer.Potions, str(type) if type == 1 or type == 2 or type == 3 else '1', amount)
+			trainerservice.ModifyItemList(trainer.Potions, str(type) if -1 < type < 5 else '1', amount)
+			trainerservice.UpsertTrainer(trainer)
+
+	@commands.command(name="addcandy")
+	@is_bot_admin
+	async def addcandy(self, ctx: commands.Context, type: int, amount: int, user: Member = None):
+		if not ctx.guild:
+			return
+		trainer = trainerservice.GetTrainer(ctx.guild.id, user.id if user else ctx.author.id)
+		if trainer:
+			trainerservice.ModifyItemList(trainer.Candies, str(type) if 0 < type < 4 else '1', amount)
 			trainerservice.UpsertTrainer(trainer)
 			
 	@commands.command(name="addbadge")

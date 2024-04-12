@@ -5,4 +5,5 @@ from models.Egg import Egg
 eggFile = "collections/eggs.json"
 
 def GetAllEggs():
-  return [Egg(e) for e in GetJson(eggFile)]
+  eggs = GetJson(eggFile)
+  return [Egg(e) for e in eggs]

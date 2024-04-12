@@ -7,11 +7,12 @@ import discord
 from discord.ext import commands, tasks
 from commands.views.Events.SpecialSpawnEventView import SpecialSpawnEventView
 from commands.views.Events.UserEntryEventView import UserEntryEventView
-from globals import eventtimes
+from globals import HelpColor, eventtimes
 from models.Server import Server
 from models.enums import EventType
 
 from services import serverservice
+from services.utility import discordservice
 
 intents = discord.Intents.all()
 discordBot = commands.Bot(command_prefix='~',
@@ -19,14 +20,51 @@ discordBot = commands.Bot(command_prefix='~',
                           help_command=None,
                           intents=intents)
 logger = logging.getLogger('discord')
+syncLogger = logging.getLogger('command')
 
 
 async def StartBot():
-
+  
   @discordBot.event
   async def on_ready():
-    logger.info(f"{discordBot.user} up and running")
+    logger.info(f"{discordBot.user} up and running - {os.environ['BUILD']}")
+
+    syncLogger.info(f'Global Sync Command Startup')
+    await discordBot.tree.sync()
+    syncLogger.info(f'Syncing complete.')
+
+    try:
+      os.remove('dataaccess/utility/cache.sqlite3')
+    except Exception as e:
+      pass
+
+    try:
+      updateStr = ''
+      with open('updatefile.txt', 'r') as file:
+          updateStr = file.read()
+      os.remove('updatefile.txt')
+      if updateStr:
+        updateStr += "\n\nCheck out recent updates in more detail by using **/help update**\n\nDon't forget to upvote at https://top.gg/bot/1151657435073875988"
+        allServers = serverservice.GetAllServers()
+        for server in allServers:
+          asyncio.run_coroutine_threadsafe(MessageThread(discordservice.CreateEmbed('New Update', updateStr, HelpColor), server), discordBot.loop)
+    except FileNotFoundError:
+      pass
+    except Exception as e:
+      logger.error(e)
+      pass
     event_loop.start()
+
+  async def MessageThread(embed: discord.Embed, server: Server):
+    guild = discordBot.get_guild(server.ServerId)
+    if not guild:
+      return 
+    channel = guild.get_channel(server.ChannelId)
+    if not channel or not isinstance(channel, discord.TextChannel):
+      return
+    
+    return await channel.send(embed=embed)
+
 
   @tasks.loop(time=eventtimes)
   async def event_loop():
@@ -35,29 +73,26 @@ async def StartBot():
       asyncio.run_coroutine_threadsafe(EventThread(choice(list(EventType)), server), discordBot.loop)
 
   async def EventThread(eventType: EventType, server: Server):
-    guild = discordBot.get_guild(server.ServerId)
-    if not guild:
-      return 
-    channel = guild.get_channel(server.ChannelId)
-    if not channel or not isinstance(channel, discord.TextChannel):
-      return
-    
-    match eventType:
-      case EventType.StatCompare:
-        serverservice.StatCompareEvent(server)
-        await UserEntryEventView(server, channel, discordBot.user.display_avatar.url).send()
-      case EventType.PokemonCount:
-        serverservice.PokemonCountEvent(server)
-        await UserEntryEventView(server, channel, discordBot.user.display_avatar.url).send()
-      case _:
-        spawnPkmn = serverservice.SpecialSpawnEvent(server)
-        await SpecialSpawnEventView(server, channel, spawnPkmn, 'Special Spawn Event').send()
-
-  @discordBot.event
-  async def on_message_delete(message: discord.Message):
-    if not message.guild or message.author.id != discordBot.user.id:
-      return
-    await serverservice.EndEvent(serverservice.GetServer(message.guild.id), message.id)
+    try:
+      guild = discordBot.get_guild(server.ServerId)
+      if not guild:
+        return 
+      channel = guild.get_channel(server.ChannelId)
+      if not channel or not isinstance(channel, discord.TextChannel):
+        return
+      
+      match eventType:
+        case EventType.StatCompare:
+          serverservice.StatCompareEvent(server)
+          await UserEntryEventView(server, channel, discordBot.user.display_avatar.url).send()
+        case EventType.PokemonCount:
+          serverservice.PokemonCountEvent(server)
+          await UserEntryEventView(server, channel, discordBot.user.display_avatar.url).send()
+        case _:
+          spawnPkmn = serverservice.SpecialSpawnEvent(server)
+          await SpecialSpawnEventView(server, channel, spawnPkmn, 'Special Spawn Event').send()
+    except Exception as e:
+      print(f'{e}')
 
   for f in os.listdir("commands"):
     if os.path.exists(os.path.join("commands", f, "cog.py")):

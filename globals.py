@@ -10,6 +10,7 @@ PokemonColor: discord.Colour = discord.Colour.pink()
 EventColor: discord.Colour = discord.Colour.dark_red()
 BattleColor: discord.Colour = discord.Colour.dark_orange()
 HelpColor: discord.Colour = discord.Colour.default()
+TradeColor: discord.Colour = discord.Colour.yellow()
 
 PokeballReaction = "🔴"
 GreatBallReaction = "🔵"
@@ -19,7 +20,8 @@ FightReaction = "⚔️"
 MaleSign = "🟦"
 FemaleSign = "🟥"
 ShinySign = "✨"
-Checkmark = "✅"
+Dexmark = "✅"
+Formmark = "☑️"
 WarningSign = "⚠️"
 DateFormat = '%m/%d/%y %H:%M:%S'
 ShortDateFormat = '%m/%d/%Y'
@@ -42,7 +44,10 @@ EphemeralCommands = [
     'evolve',
     'hatch',
     'givecandy',
-    'changezone'
+    'changezone',
+    'invite',
+    'trade',
+    'daycare'
 ]
 
 
