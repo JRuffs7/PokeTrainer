@@ -34207,8 +34207,8 @@
     "Name": "Icy Snow Vivillon",
     "PokedexId": 666,
     "Height": 12,
-    "Sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/666.png",
-    "ShinySprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/666.png",
+    "Sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/666-icy-snow.png",
+    "ShinySprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/666-icy-snow.png",
     "SpriteFemale": null,
     "ShinySpriteFemale": null,
     "Types": [

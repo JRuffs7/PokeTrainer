@@ -1,3 +1,1 @@
-- Updated Paradox Pokemon to be rarity 5
-- Fixed a bug with Voltage gym leaders team members
-- Fixed evolved fossil Pokemon spawning in events
+- Fixed the images for Icy Snow Vivillon
