@@ -1,2 +1,2 @@
 - Fixed the images for Icy Snow Vivillon
-- Set 'Select Amount' maximum to 25 for **/givecandy** and **/shop**
+- Raised 'Select Amount' maximum to 25 for **/givecandy** and **/shop**
