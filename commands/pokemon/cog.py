@@ -3,6 +3,7 @@ from discord import Member, app_commands, Interaction
 from discord.ext import commands
 from typing import List
 from commands.autofills.autofills import autofill_nonteam, autofill_pokemon
+from commands.views.BattleSimView import BattleSimView
 from commands.views.Pagination.DaycareView import DaycareView
 from commands.views.Pagination.DexView import DexView
 from commands.views.Pagination.PokemonSearchView import PokemonSearchView
@@ -99,7 +100,6 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
     else:
       return await discordservice_pokemon.PrintPokeInfoResponse(inter, 3, [])
     
-
   async def PokeInfoColor(self, inter: Interaction, color: str):
     pokemonList = pokemonservice.GetPokemonByColor(color)
     if not pokemonList:
@@ -108,13 +108,13 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
     dexViewer = PokemonSearchView(inter, pokemonList, f"List of {color} Pokemon")
     await dexViewer.send()
 
-
   async def PokeInfoType(self, inter: Interaction, type: str):
     pokemonList = pokemonservice.GetPokemonByType(type.lower())
     if not pokemonList:
       return await discordservice_pokemon.PrintPokeInfoResponse(inter, 2, [type])
     dexViewer = PokemonSearchView(inter, pokemonList, f"List of {type} type Pokemon")
     await dexViewer.send()
+
 
   @app_commands.command(name="pokedex",
                         description="Gives a list of full or singular Pokedex completion.")
@@ -153,6 +153,24 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
         f"{user.display_name if user else inter.user.display_name}'s {data.Name} {dexType}")
     await dexViewer.send()
 
+
+  @app_commands.command(name="battlesim",
+                        description="Simulates a wild/gym battle between two Pokemon.")
+  @app_commands.choices(battle=[
+      app_commands.Choice(name="Gym Battle", value=0),
+      app_commands.Choice(name="Wild Battle", value=1)
+  ])
+  @app_commands.autocomplete(attacker=autofill_pokemon)
+  @app_commands.autocomplete(defender=autofill_pokemon)
+  @method_logger
+  async def battlesim(self, inter: Interaction, battle: int, attacker: int, defender: int):
+    attackMon = pokemonservice.GetPokemonById(attacker)
+    defendMon = pokemonservice.GetPokemonById(defender)
+    if not attackMon or not defendMon:
+      return await discordservice_pokemon.PrintBattleSimResponse(inter, 0, [])
+    if not pokemonservice.CanSpawn(defendMon) and battle == 1:
+      return await discordservice_pokemon.PrintBattleSimResponse(inter, 1, [defendMon.Name])
+    await BattleSimView(inter, attackMon, defendMon, battle == 0).send()
 
   #endregion
 

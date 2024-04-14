@@ -1,4 +1,14 @@
 {
+	"battlesim": [
+		{
+			"Title": "Cannot Simulate Battle",
+			"Body": "One or both Pokemon inputs were incorrect. Select from the provided list and try again."
+		},
+		{
+			"Title": "Cannot Simulate Battle",
+			"Body": "{0} is not a spawnable Pokemon that you can fight. Use **/help spawn** for more information."
+		}
+	],
 	"evolve": [
 		{
 			"Title": "Cannot Evolve",

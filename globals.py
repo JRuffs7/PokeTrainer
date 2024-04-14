@@ -23,6 +23,9 @@ ShinySign = "✨"
 Dexmark = "✅"
 Formmark = "☑️"
 WarningSign = "⚠️"
+GreenCircle = "🟢"
+BlueDiamond = "🔹"
+WhiteCircle = "⚪"
 DateFormat = '%m/%d/%y %H:%M:%S'
 ShortDateFormat = '%m/%d/%Y'
 
@@ -47,7 +50,8 @@ EphemeralCommands = [
     'changezone',
     'invite',
     'trade',
-    'daycare'
+    'daycare',
+    'battlesim'
 ]
 
 
