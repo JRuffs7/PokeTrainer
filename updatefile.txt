@@ -1,3 +1,1 @@
-- Added battle simulations! Use **/help battlesim** for details
-- Raised 'Select Amount' maximum to 25 for **/givecandy** and **/shop**
-- Fixed the images for Icy Snow Vivillon
+- Updated descriptions of scenarios within **/battlesim**

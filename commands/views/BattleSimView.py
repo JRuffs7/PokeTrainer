@@ -34,9 +34,11 @@ class BattleSimView(discord.ui.View):
 		await self.message.edit(content=None, embed=embed, view=self)
 
 	def CreateEmbedDesc(self):
-		return f'__**TYPE MATCHUP(S)**__\n{self.TypeMatchup()}\n\n__**RARITY MATCHUP**__\n{self.RarityMatchup()}\n\n__**LEVEL ASSISTANCE**__\n{self.GetLevelString()}'
+		typeString, typePass = self.TypeMatchup()
+		rarityString, rarityPass = self.RarityMatchup()
+		return f'__**TYPE MATCHUP(S)**__\n{typeString}\n\n__**RARITY MATCHUP**__\n{rarityString}\n\n__**LEVEL ASSISTANCE**__\n\n{self.GetLevelString(typePass, rarityPass)}'
 
-	def TypeMatchup(self):
+	def TypeMatchup(self) -> tuple[str, bool]:
 		defendGroup = pokemonservice.RarityGroup(self.defenddata)
 		defendGroup = defendGroup % 7 if defendGroup < 10 else defendGroup
 		passString = 'The attacking Pokemon **passes** the type matchup.'
@@ -51,19 +53,23 @@ class BattleSimView(discord.ui.View):
 		typeResult = pokemonservice.TypeMatch(self.attackdata.Types, self.defenddata.Types)
 
 		if self.attackdata.Rarity >= 8 and typeResult != -5 and not self.gymbattle:
-			return 'Typing for Legendaries/Mythicals/Ultra Beasts against wild Pokemon often does not effect the outcome.'
+			return ('Typing for Legendaries/Mythicals/Ultra Beasts against wild Pokemon often does not effect the outcome.', False)
 		
 		if self.gymbattle:
+			needAssistance: bool = False
 			if typeResult == 1 and pokemonservice.IsSpecialPokemon(self.defenddata) and pokemonservice.IsSpecialPokemon(self.attackdata) and len(self.attackdata.Types) == 1:
 				expl = passLegRarityString
 			elif typeResult == 1 and not pokemonservice.IsSpecialPokemon(self.defenddata):
+				needAssistance = True
 				expl = passLevelString
+			elif typeResult >= 2:
+				expl = passString
 			else:
-				expl = passString if typeResult >= 2 else failString
-			return '\n'.join([self.GetTypeMatchString(), expl])
+				expl = failString
+			return ('\n'.join([self.GetTypeMatchString(), expl]), needAssistance)
 		else:
 			expl = doubleAdvString if typeResult >= 2 else immuneString if typeResult == -5 else doubleDisadvString if typeResult <= -2 else evenString
-			return '\n'.join([self.GetTypeMatchString(), expl])
+			return ('\n'.join([self.GetTypeMatchString(), expl]), True)
 
 	def GetTypeMatchString(self):
 		if len(self.attackdata.Types) == 1 and len(self.defenddata.Types) == 1:
@@ -95,7 +101,7 @@ class BattleSimView(discord.ui.View):
 			res4Str = f'{self.EmojiLookup[fightB2]} `{self.attackdata.Types[1]} vs {self.defenddata.Types[1]}`'
 			return '\n'.join([res1Str, res2Str, res3Str, res4Str])
 
-	def RarityMatchup(self):
+	def RarityMatchup(self) -> tuple[str, bool]:
 		attackGroup = pokemonservice.RarityGroup(self.attackdata)
 		attackGroup = attackGroup % 7 if attackGroup < 10 and self.gymbattle else attackGroup
 		defendGroup = pokemonservice.RarityGroup(self.defenddata)
@@ -105,22 +111,31 @@ class BattleSimView(discord.ui.View):
 
 		if self.gymbattle:
 			if attackGroup == defendGroup-1 and not pokemonservice.IsSpecialPokemon(self.defenddata):
-				return f'{groupStr}\nThe attacking Pokemon **passes** the rarity matchup if they also have level assistance.'
-			return f'{groupStr}\nThe attacking Pokemon {"**passes**" if attackGroup >= defendGroup else "**fails**"} the rarity matchup.'
+				return (f'{groupStr}\nThe attacking Pokemon **passes** the rarity matchup if they also have level assistance.', True)
+			return (f'{groupStr}\nThe attacking Pokemon {"**passes**" if attackGroup >= defendGroup else "**fails**"} the rarity matchup.', False)
 		else:
-			return f'{groupStr}\nThis will be a **{"disadvantage" if attackGroup < defendGroup else "advantage" if attackGroup > defendGroup else "neutral"}** rarity matchup.'
+			return (f'{groupStr}\nThis will be a **{"disadvantage" if attackGroup < defendGroup else "advantage" if attackGroup > defendGroup else "neutral"}** rarity matchup.', True)
 		
-	def GetLevelString(self):
+	def GetLevelString(self, typeAssist: bool, rarityAssist: bool):
 		attackGroup = pokemonservice.RarityGroup(self.attackdata)
 		attackGroup = attackGroup % 7 if attackGroup < 10 else attackGroup
 		defendGroup = pokemonservice.RarityGroup(self.defenddata)
 		defendGroup = defendGroup % 7 if defendGroup < 10 else defendGroup
 		if not self.gymbattle:
-			return f'Level advantages are given for the following scenarios:\n```Major Advantage - Attack Level DOUBLE the Defense Level\nMinor Advantage - Attack Level 1.5x the Defense Level```\nThis can also work in reverse with Major/Minor Disadvantage.\n\nIf both Pokemon are under Level 10, only Minor Advantage is given with a level discrepancy of at least 3.\n\n**Potential Health Lost (No Level Assistance): {pokemonservice.WildFight(self.attackdata, self.defenddata, 5 if attackGroup == 1 else 25 if attackGroup == 2 else 35, 5 if defendGroup == 1 else 25 if defendGroup == 2 else 35)}**'
+			return f'Level advantages are given for the following scenarios:\n```Major Advantage - Attack Level > Defense Level x 2\nMinor Advantage - Attack Level > Defense Level x 1.5```\nThis can also work in reverse with Major/Minor Disadvantage.\n\nIf both Pokemon are under Level 10, only Minor Advantage is given with a level discrepancy of at least 3.\n\n**Potential Health Lost (No Level Assistance): {pokemonservice.WildFight(self.attackdata, self.defenddata, 5 if attackGroup == 1 else 25 if attackGroup == 2 else 35, 5 if defendGroup == 1 else 25 if defendGroup == 2 else 35)}**'
 		else:
 			defendGroup = pokemonservice.RarityGroup(self.defenddata)
 			defendGroup = defendGroup % 7 if defendGroup < 10 else defendGroup
 			if defendGroup < 10:
-				return f'\nType Assistance:\n- The attacking Pokemon will only gain typing assistance if they are at least Level {23 if defendGroup == 1 else 38 if defendGroup == 2 else 53}\n\nRarity Assistance:\n- The attacking Pokemon will only gain rarity assistance if they are at least Level {19 if defendGroup == 1 else 32 if defendGroup == 2 else 44}'
+				typeAssistStr = f'Type Assistance:\n- The attacking Pokemon will only gain typing assistance if they are Level {23 if defendGroup == 1 else 38 if defendGroup == 2 else 53}+'
+				rarityAssistStr = f'Rarity Assistance:\n- The attacking Pokemon will only gain rarity assistance if they are Level {19 if defendGroup == 1 else 32 if defendGroup == 2 else 44}+'
+				if typeAssist and rarityAssist:
+					return f'{typeAssistStr}\n\n{rarityAssistStr}'
+				elif typeAssist:
+					return f'{typeAssistStr}'
+				elif rarityAssist:
+					return f'{rarityAssistStr}'
+				else:
+					return 'This matchup does not qualify for any Level Assistance.'
 			else:
 				return f'The defending Pokemon will be Level 100, giving no room for level assistance.'
