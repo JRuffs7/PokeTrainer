@@ -55,6 +55,14 @@ async def StartBot():
       pass
     event_loop.start()
 
+
+  @discordBot.event
+  async def on_command_error(ctx, error):
+    if isinstance(error, CommandNotFound):
+        return
+    raise error
+
+
   async def MessageThread(embed: discord.Embed, server: Server):
     guild = discordBot.get_guild(server.ServerId)
     if not guild:

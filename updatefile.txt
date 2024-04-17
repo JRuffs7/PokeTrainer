@@ -1,1 +1,2 @@
 - Updated descriptions of scenarios within **/battlesim**
+- Handle certain non-existent command errors
