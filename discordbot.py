@@ -5,6 +5,7 @@ from random import choice
 
 import discord
 from discord.ext import commands, tasks
+from discord.ext.commands import CommandNotFound
 from commands.views.Events.SpecialSpawnEventView import SpecialSpawnEventView
 from commands.views.Events.UserEntryEventView import UserEntryEventView
 from globals import HelpColor, eventtimes
