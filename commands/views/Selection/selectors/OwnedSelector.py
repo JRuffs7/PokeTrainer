@@ -20,4 +20,5 @@ class OwnedSelector(discord.ui.Select):
         super().__init__(options=options, max_values=max_select, min_values=1, placeholder='Select Pokemon', custom_id=(customId if customId else uuid.uuid4().hex))
     
     async def callback(self, inter: discord.Interaction):
+        await inter.response.defer()
         await self.view.PokemonSelection(inter, self.values)

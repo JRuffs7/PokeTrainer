@@ -40,7 +40,6 @@ class SpawnPokemonView(discord.ui.View):
 		await self.message.edit(content=f'Current Trainer HP: {self.TrainerHealthString(self.trainer)}', embed=embed, view=self)
 
 	async def PokemonSelection(self, inter: discord.Interaction, choice: list[str]):
-		await inter.response.defer()
 		trainerservice.SetTeamSlot(self.trainer, 0, choice[0])
 
 	@discord.ui.button(label=PokeballReaction)

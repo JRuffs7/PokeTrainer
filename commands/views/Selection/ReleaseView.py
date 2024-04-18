@@ -19,7 +19,6 @@ class ReleaseView(discord.ui.View):
 
 
 	async def PokemonSelection(self, inter: discord.Interaction, choices: list[str]):
-		await inter.response.defer()
 		self.pokemonchoices = choices
 
 
