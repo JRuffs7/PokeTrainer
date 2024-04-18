@@ -35,12 +35,10 @@ class TeamSelectorView(discord.ui.View):
 
   @button_check
   async def PokemonSelection(self, inter: discord.Interaction, choice: str):
-    await inter.response.defer()
     self.pokemonchoice = choice[0]
 
   @button_check
   async def TeamSlotSelection(self, inter: discord.Interaction, choice: str):
-    await inter.response.defer()
     self.teamslotchoice = int(choice)
 
 

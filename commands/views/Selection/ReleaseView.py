@@ -27,7 +27,6 @@ class ReleaseView(discord.ui.View):
 	@button_check
 	async def cancel_button(self, inter: discord.Interaction,
 												button: discord.ui.Button):
-		await inter.response.defer()
 		self.clear_items()
 		await self.message.edit(content='Canceled release.')
 
@@ -35,7 +34,6 @@ class ReleaseView(discord.ui.View):
 	@button_check
 	async def submit_button(self, inter: discord.Interaction,
 												button: discord.ui.Button):
-		await inter.response.defer()
 		if self.pokemonchoices:
 			pokemon = trainerservice.ReleasePokemon(trainerservice.GetTrainer(inter.guild_id, inter.user.id), self.pokemonchoices)
 			await self.message.delete(delay=0.01)

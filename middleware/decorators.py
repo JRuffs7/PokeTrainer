@@ -16,8 +16,8 @@ def method_logger(function):
     try:
       if not args[0].guild:
         return
-      cmdLog.info(f"{args[0].guild.name} - {function.__name__.upper()} command called")
       await args[0].response.defer(ephemeral=(function.__name__.lower() in EphemeralCommands))
+      cmdLog.info(f"{args[0].guild.name} - {function.__name__.upper()} command called")
       return await function(self, *args, **kwargs)
     except:
       # log the exception
@@ -77,8 +77,9 @@ def trainer_check(function):
 
 
 def button_check(f):
-	async def wrapper(self,*args):
-		if args[0].user.id == self.user.id:
-			return await f(self, *args) 
-		return await args[0].response.defer()
-	return wrapper
+  async def wrapper(self,*args):
+    await args[0].response.defer()
+    if args[0].user.id == self.user.id:
+      return await f(self, *args) 
+    return 
+  return wrapper

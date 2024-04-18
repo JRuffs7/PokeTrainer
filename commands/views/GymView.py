@@ -43,7 +43,6 @@ class GymView(discord.ui.View):
 	@button_check
 	async def next_button(self, inter: discord.Interaction,
 										button: discord.ui.Button):
-		await inter.response.defer()
 		await self.message.delete(delay=0.01)
 		if self.battlewon:
 			await inter.followup.send(content=f'<@{self.interaction.user.id}> defeated {self.leader.Name} and obtained the {gymservice.GetBadgeById(self.leader.BadgeId).Name} Badge!\nWon ${self.leader.Reward} and gained exp.')

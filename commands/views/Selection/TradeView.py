@@ -32,7 +32,6 @@ class TradeView(discord.ui.View):
 
 	@button_check
 	async def PokemonSelection(self, inter: discord.Interaction, choice: list[str]):
-		await inter.response.defer()
 		if inter.data['custom_id'] == 'ownedTradeList':
 			self.userpkmnchoice = next(p for p in self.usertradelist if p.Id == choice[0])
 		else:

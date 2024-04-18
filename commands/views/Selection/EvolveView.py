@@ -21,12 +21,10 @@ class EvolveView(discord.ui.View):
 
 	@button_check
 	async def EvolveSelection(self, inter: discord.Interaction, choice: str):
-		await inter.response.defer()
 		self.evolvechoice = pokemonservice.GetPokemonById(int(choice))
 
 	@button_check
 	async def PokemonSelection(self, inter: discord.Interaction, choice: list[str]):
-		await inter.response.defer()
 		for item in self.children:
 			if type(item) is not discord.ui.Button:
 				self.remove_item(item)
@@ -45,7 +43,6 @@ class EvolveView(discord.ui.View):
 	@button_check
 	async def cancel_button(self, inter: discord.Interaction,
 												button: discord.ui.Button):
-		await inter.response.defer()
 		self.clear_items()
 		await self.message.edit(content='Canceled evolution.', view=self)
 
@@ -53,7 +50,6 @@ class EvolveView(discord.ui.View):
 	@button_check
 	async def submit_button(self, inter: discord.Interaction,
 												button: discord.ui.Button):
-		await inter.response.defer()
 		if self.pokemonchoice and self.evolvechoice:
 			evolvedPokemon = trainerservice.Evolve(self.trainer, self.pokemonchoice, self.evolvechoice)
 			self.clear_items()

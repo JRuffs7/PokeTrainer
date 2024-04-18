@@ -22,20 +22,17 @@ class DaycareAddView(discord.ui.View):
 
 	@button_check
 	async def PokemonSelection(self, inter: discord.Interaction, choices: list[str]):
-		await inter.response.defer()
 		self.pokemonchoices = choices
 
 	@discord.ui.button(label="Cancel", style=discord.ButtonStyle.red)
 	@button_check
 	async def cancel_button(self, inter: discord.Interaction, button: discord.ui.Button):
-		await inter.response.defer()
 		self.clear_items()
 		await self.message.edit(content='Did not add to daycare.', view=self)
 
 	@discord.ui.button(label="Submit", style=discord.ButtonStyle.green)
 	@button_check
 	async def submit_button(self, inter: discord.Interaction, button: discord.ui.Button):
-		await inter.response.defer()
 		if not self.pokemonchoices:
 			return
 		

@@ -54,7 +54,6 @@ class BasePaginationView(discord.ui.View):
 
 	@button_check
 	async def button_click(self, interaction: discord.Interaction, custom_id: str):
-		await interaction.response.defer()
 		match custom_id:
 			case "next":
 				self.currentPage += 1

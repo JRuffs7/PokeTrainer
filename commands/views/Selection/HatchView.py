@@ -20,14 +20,12 @@ class HatchView(discord.ui.View):
 
 	@button_check
 	async def EggSelection(self, inter: discord.Interaction, choices: list[str]):
-		await inter.response.defer()
 		self.hatchchoices = choices
 
 	@discord.ui.button(label="Cancel", style=discord.ButtonStyle.red)
 	@button_check
 	async def cancel_button(self, inter: discord.Interaction,
 												button: discord.ui.Button):
-		await inter.response.defer()
 		self.clear_items()
 		await self.message.edit(content='Canceled hatching.', view=self)
 
@@ -35,7 +33,6 @@ class HatchView(discord.ui.View):
 	@button_check
 	async def submit_button(self, inter: discord.Interaction,
 												button: discord.ui.Button):
-		await inter.response.defer()
 		if self.hatchchoices:
 			hatchResults: dict[int,str] = {}
 			for i in self.hatchchoices:

@@ -25,7 +25,6 @@ class ShopView(discord.ui.View):
 
 	@button_check
 	async def BuySellSelection(self, inter: discord.Interaction, choice: str):
-		await inter.response.defer()
 		for item in self.children:
 			if type(item) is not discord.ui.Button:
 				self.remove_item(item)
@@ -50,7 +49,6 @@ class ShopView(discord.ui.View):
 
 	@button_check
 	async def ItemSelection(self, inter: discord.Interaction, choice: str):
-		await inter.response.defer()
 		if choice == '-1':
 			return
 		
@@ -77,7 +75,6 @@ class ShopView(discord.ui.View):
 
 	@button_check
 	async def AmountSelection(self, inter: discord.Interaction, choice: str):
-		await inter.response.defer()
 		self.amountchoice = int(choice)
 
 
@@ -85,7 +82,6 @@ class ShopView(discord.ui.View):
 	@button_check
 	async def cancel_button(self, inter: discord.Interaction,
 												button: discord.ui.Button):
-		await inter.response.defer()
 		self.clear_items()
 		await self.message.edit(content='You left the shop.', view=self)
 
@@ -93,7 +89,6 @@ class ShopView(discord.ui.View):
 	@button_check
 	async def submit_button(self, inter: discord.Interaction,
 												button: discord.ui.Button):
-		await inter.response.defer()
 		if self.buysellchoice and self.itemchoice and self.amountchoice:
 			buying = self.buysellchoice == 'buy'
 			trainerservice.ModifyItemList(

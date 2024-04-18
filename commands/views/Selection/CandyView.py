@@ -23,8 +23,6 @@ class CandyView(discord.ui.View):
 
 	@button_check
 	async def PokemonSelection(self, inter: discord.Interaction, choices: list[str]):
-		await inter.response.defer()
-		
 		for item in self.children:
 			if type(item) is not discord.ui.Button:
 				self.remove_item(item)
@@ -39,9 +37,7 @@ class CandyView(discord.ui.View):
 		await self.message.edit(view=self)
 
 	@button_check
-	async def ItemSelection(self, inter: discord.Interaction, choice: str):
-		await inter.response.defer()
-		
+	async def ItemSelection(self, inter: discord.Interaction, choice: str):		
 		for item in self.children:
 			if type(item) is not discord.ui.Button:
 				self.remove_item(item)
@@ -58,14 +54,12 @@ class CandyView(discord.ui.View):
 
 	@button_check
 	async def AmountSelection(self, inter: discord.Interaction, choice: str):
-		await inter.response.defer()
 		self.amountchoice = int(choice)
 
 	@discord.ui.button(label="Cancel", style=discord.ButtonStyle.red)
 	@button_check
 	async def cancel_button(self, inter: discord.Interaction,
 												button: discord.ui.Button):
-		await inter.response.defer()
 		self.clear_items()
 		await self.message.edit(content='Did not give any candies.', view=self)
 
@@ -73,7 +67,6 @@ class CandyView(discord.ui.View):
 	@button_check
 	async def submit_button(self, inter: discord.Interaction,
 												button: discord.ui.Button):
-		await inter.response.defer()
 		if self.pokemonchoice and self.candychoice and self.amountchoice:
 			#Rare Candy
 			pkmnData = pokemonservice.GetPokemonById(self.pokemonchoice.Pokemon_Id)
