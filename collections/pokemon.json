@@ -27277,7 +27277,15 @@
     "CaptureRate": 200,
     "Color": "White",
     "EvolvesInto": [
-      869
+      869,
+      10346,
+      10347,
+      10348,
+      10349,
+      10350,
+      10351,
+      10352,
+      10353
     ],
     "FemaleChance": 8,
     "Generation": 8,
