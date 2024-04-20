@@ -1,7 +1,0 @@
-- Spawned Pokemon will now run away after the alotted interaction time (60s)
-- Updated descriptions of scenarios within **/battlesim**
-- Update names for different Maushold forms
-- Fixed a bug where Tandemaus could not evolve into the Maushold (Three) Form
-- Update names for different Dudunsparce forms
-- Commands with a display will be deleted after timing out (usually 5m)
-- Handle non-existent command errors
