@@ -12,4 +12,5 @@ class AmountSelector(discord.ui.Select):
 			super().__init__(options=options, max_values=1, min_values=1, placeholder='Choose Amount')
 	
 	async def callback(self, inter: discord.Interaction):
+		await inter.response.defer()
 		await self.view.AmountSelection(inter, self.values[0])

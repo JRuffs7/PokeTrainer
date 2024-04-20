@@ -29,4 +29,5 @@ class TeamChoice(discord.ui.Select):
 		super().__init__(options=options, max_values=1, min_values=1, placeholder='Select Team Slot')
 
 	async def callback(self, inter: discord.Interaction):
+		await inter.response.defer()
 		await self.view.TeamSlotSelection(inter, self.values[0])

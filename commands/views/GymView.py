@@ -4,7 +4,7 @@ import discord
 from table2ascii import table2ascii as t2a, PresetStyle, Alignment
 
 from globals import BattleColor
-from middleware.decorators import button_check
+from middleware.decorators import defer
 from models.Gym import GymLeader
 from models.Trainer import Trainer
 from services import gymservice, trainerservice
@@ -24,6 +24,10 @@ class GymView(discord.ui.View):
 		self.battleresults = battleResults
 		self.battlewon = battleResults.count(True) == len(self.leader.Team)
 		super().__init__(timeout=300)
+
+	async def on_timeout(self):
+		await self.message.delete()
+		return await super().on_timeout()
     
 	async def send(self):
 		await self.interaction.followup.send(view=self, ephemeral=True)
@@ -40,7 +44,7 @@ class GymView(discord.ui.View):
 		await self.message.edit(embed=embed, view=self)
 
 	@discord.ui.button(label="Next", style=discord.ButtonStyle.secondary)
-	@button_check
+	@defer
 	async def next_button(self, inter: discord.Interaction,
 										button: discord.ui.Button):
 		await self.message.delete(delay=0.01)

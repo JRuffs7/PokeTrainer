@@ -2,7 +2,7 @@ from datetime import UTC, datetime
 import discord
 from commands.views.Selection.selectors.OwnedSelector import OwnedSelector
 from globals import DateFormat
-from middleware.decorators import button_check
+from middleware.decorators import defer
 
 from models.Pokemon import Pokemon
 from services import pokemonservice, trainerservice
@@ -20,18 +20,21 @@ class DaycareAddView(discord.ui.View):
 		self.ownlist = OwnedSelector(pokemon, 2 - len(trainer.Daycare))
 		self.add_item(self.ownlist)
 
-	@button_check
+	async def on_timeout(self):
+		await self.message.delete()
+		return await super().on_timeout()
+
 	async def PokemonSelection(self, inter: discord.Interaction, choices: list[str]):
 		self.pokemonchoices = choices
 
 	@discord.ui.button(label="Cancel", style=discord.ButtonStyle.red)
-	@button_check
+	@defer
 	async def cancel_button(self, inter: discord.Interaction, button: discord.ui.Button):
 		self.clear_items()
 		await self.message.edit(content='Did not add to daycare.', view=self)
 
 	@discord.ui.button(label="Submit", style=discord.ButtonStyle.green)
-	@button_check
+	@defer
 	async def submit_button(self, inter: discord.Interaction, button: discord.ui.Button):
 		if not self.pokemonchoices:
 			return
@@ -43,7 +46,6 @@ class DaycareAddView(discord.ui.View):
 		trainerservice.UpsertTrainer(self.trainer)
 		self.clear_items()
 		await self.message.edit(content=f'Added {" and ".join([pokemonservice.GetPokemonDisplayName(p) for p in pkmnList])} to your daycare.', view=self)
-
 
 	async def send(self):
 		await self.interaction.followup.send(view=self)

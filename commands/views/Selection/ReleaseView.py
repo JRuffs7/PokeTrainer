@@ -1,7 +1,7 @@
 import discord
 
 from typing import List
-from middleware.decorators import button_check
+from middleware.decorators import defer
 
 from services import trainerservice
 from models.Pokemon import Pokemon
@@ -17,27 +17,28 @@ class ReleaseView(discord.ui.View):
 		super().__init__(timeout=300)
 		self.add_item(OwnedSelector(pokeList))
 
+	async def on_timeout(self):
+		await self.message.delete()
+		return await super().on_timeout()
 
 	async def PokemonSelection(self, inter: discord.Interaction, choices: list[str]):
 		self.pokemonchoices = choices
 
-
 	@discord.ui.button(label="Cancel", style=discord.ButtonStyle.red)
-	@button_check
+	@defer
 	async def cancel_button(self, inter: discord.Interaction,
 												button: discord.ui.Button):
 		self.clear_items()
 		await self.message.edit(content='Canceled release.')
 
 	@discord.ui.button(label="Submit", style=discord.ButtonStyle.green)
-	@button_check
+	@defer
 	async def submit_button(self, inter: discord.Interaction,
 												button: discord.ui.Button):
 		if self.pokemonchoices:
 			pokemon = trainerservice.ReleasePokemon(trainerservice.GetTrainer(inter.guild_id, inter.user.id), self.pokemonchoices)
 			await self.message.delete(delay=0.01)
 			await inter.followup.send(content=f"You have released {len(self.pokemonchoices)} {pokemon}",ephemeral=True)
-
 
 	async def send(self):
 		await self.interaction.followup.send(content="Choose Pokemon to release", view=self, ephemeral=True)

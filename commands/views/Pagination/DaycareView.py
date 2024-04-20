@@ -2,6 +2,7 @@ from datetime import UTC, datetime
 import discord
 
 from globals import DateFormat, TrainerColor
+from middleware.decorators import defer
 from models.Pokemon import Pokemon, PokemonData
 from models.Trainer import Trainer
 from services import pokemonservice, trainerservice
@@ -29,6 +30,10 @@ class DaycareView(discord.ui.View):
 			self.nextBtn.callback = self.page_button
 			self.add_item(self.nextBtn)
 
+	async def on_timeout(self):
+		await self.message.delete()
+		return await super().on_timeout()
+
 	async def send(self):
 		await self.interaction.followup.send(view=self)
 		self.message = await self.interaction.original_response()
@@ -45,8 +50,8 @@ class DaycareView(discord.ui.View):
 		embed.set_footer(text=f'{self.currentPage+1}/{len(self.trainer.Daycare)}')
 		await self.message.edit(embed=embed, view=self)
 
+	@defer
 	async def page_button(self, interaction: discord.Interaction):
-		await interaction.response.defer()
 		if interaction.data['custom_id'] == 'prev':
 			self.currentPage = 0
 		else:
@@ -55,8 +60,8 @@ class DaycareView(discord.ui.View):
 		self.nextBtn.disabled = self.currentPage == 1
 		await self.update_message()
 
+	@defer
 	async def remove_button(self, interaction: discord.Interaction):
-		await interaction.response.defer()
 		await self.message.delete(delay=0.01)
 		pkmn = self.pokemon[self.currentPage]
 		data = next(p for p in self.pkmndata if p.Id == pkmn.Pokemon_Id)
@@ -65,8 +70,6 @@ class DaycareView(discord.ui.View):
 		pokemonservice.AddExperience(pkmn, data, 10*hoursSpent)
 		trainerservice.UpsertTrainer(self.trainer)
 		await interaction.followup.send(content=f'{pokemonservice.GetPokemonDisplayName(pkmn, data)} has been removed from the daycare and is now Level {pkmn.Level}!', ephemeral=True)
-
-
 
 	def Description(self, pokemon: Pokemon, pkmnData: PokemonData):
 		timeAdded = datetime.strptime(self.trainer.Daycare[pokemon.Id], DateFormat).replace(tzinfo=UTC)

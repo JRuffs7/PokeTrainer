@@ -76,10 +76,8 @@ def trainer_check(function):
   return wrapper
 
 
-def button_check(f):
+def defer(f):
   async def wrapper(self,*args):
     await args[0].response.defer()
-    if args[0].user.id == self.user.id:
-      return await f(self, *args) 
-    return 
+    return await f(self, *args) 
   return wrapper

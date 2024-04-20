@@ -3,6 +3,7 @@ import discord
 from table2ascii import table2ascii as t2a, PresetStyle, Alignment, Merge
 
 from globals import BattleColor
+from middleware.decorators import defer
 from models.Gym import GymLeader
 from services import gymservice, pokemonservice
 from services.utility import discordservice
@@ -18,6 +19,10 @@ class GymLeaderView(discord.ui.View):
 		self.prev_button.disabled = True
 		if not defeated:
 			self.next_button.disabled = True
+
+	async def on_timeout(self):
+		await self.message.delete()
+		return await super().on_timeout()
 
 	async def send(self):
 		if not self.leader:
@@ -38,6 +43,7 @@ class GymLeaderView(discord.ui.View):
 		await self.message.edit(embed=embed, view=self)
 
 	@discord.ui.button(label="<", style=discord.ButtonStyle.primary, custom_id="previous")
+	@defer
 	async def prev_button(self, interaction: discord.Interaction, button: discord.ui.Button):
 		await interaction.response.defer()
 		self.next_button.disabled = False
@@ -46,6 +52,7 @@ class GymLeaderView(discord.ui.View):
 		
 
 	@discord.ui.button(label=">", style=discord.ButtonStyle.primary, custom_id="next")
+	@defer
 	async def next_button(self, interaction: discord.Interaction, button: discord.ui.Button):
 		await interaction.response.defer()
 		self.prev_button.disabled = False

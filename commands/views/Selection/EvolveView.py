@@ -1,5 +1,5 @@
 import discord
-from middleware.decorators import button_check
+from middleware.decorators import defer
 
 from services import trainerservice, pokemonservice
 from models.Pokemon import Pokemon
@@ -19,11 +19,13 @@ class EvolveView(discord.ui.View):
 		self.ownlist = OwnedSelector(evolveMon, 1)
 		self.add_item(self.ownlist)
 
-	@button_check
+	async def on_timeout(self):
+		await self.message.delete()
+		return await super().on_timeout()
+
 	async def EvolveSelection(self, inter: discord.Interaction, choice: str):
 		self.evolvechoice = pokemonservice.GetPokemonById(int(choice))
 
-	@button_check
 	async def PokemonSelection(self, inter: discord.Interaction, choice: list[str]):
 		for item in self.children:
 			if type(item) is not discord.ui.Button:
@@ -38,23 +40,21 @@ class EvolveView(discord.ui.View):
 		self.add_item(self.evlist)
 		await self.message.edit(view=self)
 
-
 	@discord.ui.button(label="Cancel", style=discord.ButtonStyle.red)
-	@button_check
+	@defer
 	async def cancel_button(self, inter: discord.Interaction,
 												button: discord.ui.Button):
 		self.clear_items()
 		await self.message.edit(content='Canceled evolution.', view=self)
 
 	@discord.ui.button(label="Submit", style=discord.ButtonStyle.green)
-	@button_check
+	@defer
 	async def submit_button(self, inter: discord.Interaction,
 												button: discord.ui.Button):
 		if self.pokemonchoice and self.evolvechoice:
 			evolvedPokemon = trainerservice.Evolve(self.trainer, self.pokemonchoice, self.evolvechoice)
 			self.clear_items()
 			await self.message.edit(content=f"**{pokemonservice.GetPokemonDisplayName(self.pokemonchoice, self.pkmnChoiceData)}** evolved into **{pokemonservice.GetPokemonDisplayName(evolvedPokemon, self.evolvechoice)}**", view=self)
-
 
 	async def send(self):
 		await self.interaction.followup.send(view=self)

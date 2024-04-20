@@ -2,7 +2,7 @@ import discord
 
 from commands.views.Selection.selectors.TeamSelectors import TeamChoice
 from commands.views.Selection.selectors.OwnedSelector import OwnedSelector
-from middleware.decorators import button_check
+from middleware.decorators import defer
 from models.Trainer import Trainer
 
 from services import pokemonservice, trainerservice
@@ -26,33 +26,33 @@ class TeamSelectorView(discord.ui.View):
     ] if idFilter else self.currentteam
     if idFilter:
       self.modifypokemonlist.sort(key=lambda x: (x.Pokemon_Id, -x.IsShiny))
-
     super().__init__(timeout=300)
     self.ownedselectview = OwnedSelector(self.modifypokemonlist, 1)
     self.teamslotview = TeamChoice(self.currentteam, idFilter is not None)
     self.add_item(self.ownedselectview)
     self.add_item(self.teamslotview)
 
-  @button_check
+  async def on_timeout(self):
+    await self.message.delete()
+    return await super().on_timeout()
+
   async def PokemonSelection(self, inter: discord.Interaction, choice: str):
     self.pokemonchoice = choice[0]
 
-  @button_check
   async def TeamSlotSelection(self, inter: discord.Interaction, choice: str):
     self.teamslotchoice = int(choice)
 
-
   @discord.ui.button(label="Cancel", style=discord.ButtonStyle.red)
+  @defer
   async def cancel_button(self, inter: discord.Interaction,
                         button: discord.ui.Button):
-    await inter.response.defer()
     self.clear_items()
     await self.message.edit(content='Canceled team editing.', view=self)
 
   @discord.ui.button(label="Submit", style=discord.ButtonStyle.green)
+  @defer
   async def submit_button(self, inter: discord.Interaction,
                         button: discord.ui.Button):
-    await inter.response.defer()
     if not self.pokemonchoice or self.teamslotchoice is None:
       return
 
@@ -71,7 +71,6 @@ class TeamSelectorView(discord.ui.View):
         message = f"{pokemonservice.GetPokemonDisplayName(pkmn)} was swapped into slot {int(self.teamslotchoice) + 1}"
       trainerservice.SetTeamSlot(self.trainer, self.teamslotchoice, self.pokemonchoice)
       await self.message.edit(content=message, view=self)
-
 
   async def send(self):
     await self.interaction.followup.send(view=self, ephemeral=True)

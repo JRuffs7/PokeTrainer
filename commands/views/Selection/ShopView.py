@@ -1,6 +1,6 @@
 import discord
 from commands.views.Selection.selectors.GenericSelector import AmountSelector
-from middleware.decorators import button_check
+from middleware.decorators import defer
 
 from services import itemservice, trainerservice
 from models.Trainer import Trainer
@@ -23,7 +23,10 @@ class ShopView(discord.ui.View):
 		self.buysellview = BuySell()
 		self.add_item(self.buysellview)
 
-	@button_check
+	async def on_timeout(self):
+		await self.message.delete()
+		return await super().on_timeout()
+
 	async def BuySellSelection(self, inter: discord.Interaction, choice: str):
 		for item in self.children:
 			if type(item) is not discord.ui.Button:
@@ -47,7 +50,6 @@ class ShopView(discord.ui.View):
 		self.add_item(self.itemview)
 		await self.message.edit(content=f"Money: ${self.trainer.Money}", view=self)
 
-	@button_check
 	async def ItemSelection(self, inter: discord.Interaction, choice: str):
 		if choice == '-1':
 			return
@@ -73,20 +75,18 @@ class ShopView(discord.ui.View):
 		currOwned = trainerList[choice[1:]] if choice[1:] in trainerList else 0
 		await self.message.edit(content=f"Money: ${self.trainer.Money}\nYou currently have {currOwned} {self.itemchoice.Name}(s)", view=self)
 
-	@button_check
 	async def AmountSelection(self, inter: discord.Interaction, choice: str):
 		self.amountchoice = int(choice)
 
-
 	@discord.ui.button(label="Cancel", style=discord.ButtonStyle.red)
-	@button_check
+	@defer
 	async def cancel_button(self, inter: discord.Interaction,
 												button: discord.ui.Button):
 		self.clear_items()
 		await self.message.edit(content='You left the shop.', view=self)
 
 	@discord.ui.button(label="Submit", style=discord.ButtonStyle.green)
-	@button_check
+	@defer
 	async def submit_button(self, inter: discord.Interaction,
 												button: discord.ui.Button):
 		if self.buysellchoice and self.itemchoice and self.amountchoice:
@@ -102,7 +102,6 @@ class ShopView(discord.ui.View):
 			self.clear_items()
 			message = f"{self.itemchoice.Name} x{self.amountchoice} purchased for ${(self.amountchoice)*self.itemchoice.BuyAmount}" if buying else f"{self.itemchoice.Name} x{self.amountchoice} sold for ${(self.amountchoice)*self.itemchoice.SellAmount}"
 			await self.message.edit(content=f"{message}\nYou now have **${self.trainer.Money}**", view=self)
-
 
 	async def send(self):
 		await self.interaction.followup.send(content=f"Money: ${self.trainer.Money}", view=self, ephemeral=True)

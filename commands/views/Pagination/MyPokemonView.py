@@ -42,23 +42,23 @@ class MyPokemonView(BasePaginationView):
 
   @discord.ui.button(label="|<", style=discord.ButtonStyle.green, custom_id="first")
   async def first_page_button(self, interaction: discord.Interaction, button: discord.ui.Button):
-    await self.button_click(interaction, button.custom_id)
-    await self.update_message(self.get_currentPage_data())
+    if await self.button_click(interaction, button.custom_id):
+      await self.update_message(self.get_currentPage_data())
 
   @discord.ui.button(label="<", style=discord.ButtonStyle.primary, custom_id="previous")
   async def prev_button(self, interaction: discord.Interaction, button: discord.ui.Button):
-    await self.button_click(interaction, button.custom_id)
-    await self.update_message(self.get_currentPage_data())
+    if await self.button_click(interaction, button.custom_id):
+      await self.update_message(self.get_currentPage_data())
 
   @discord.ui.button(label=">", style=discord.ButtonStyle.primary, custom_id="next")
   async def next_button(self, interaction: discord.Interaction, button: discord.ui.Button):
-    await self.button_click(interaction, button.custom_id)
-    await self.update_message(self.get_currentPage_data())
+    if await self.button_click(interaction, button.custom_id):
+      await self.update_message(self.get_currentPage_data())
 
   @discord.ui.button(label=">|", style=discord.ButtonStyle.green, custom_id="last")
   async def last_page_button(self, interaction: discord.Interaction, button: discord.ui.Button):
-    await self.button_click(interaction, button.custom_id)
-    await self.update_message(self.get_currentPage_data())
+    if await self.button_click(interaction, button.custom_id):
+      await self.update_message(self.get_currentPage_data())
 
   def SingleEmbedDesc(self, pokemon: Pokemon):
     pkmn = next(p for p in self.pokemondata if p.Id == pokemon.Pokemon_Id)

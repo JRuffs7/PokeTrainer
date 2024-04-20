@@ -1,7 +1,7 @@
 import discord
-from table2ascii import table2ascii as t2a, PresetStyle, Alignment, Merge
+from table2ascii import table2ascii as t2a, PresetStyle, Alignment
 from globals import TradeColor
-from middleware.decorators import button_check
+from middleware.decorators import defer
 
 from models.Trainer import Trainer
 from services import trainerservice, pokemonservice
@@ -29,8 +29,10 @@ class TradeView(discord.ui.View):
 		self.add_item(self.ownlist)
 		self.add_item(self.targetlist)
 
+	async def on_timeout(self):
+		await self.message.delete()
+		return await super().on_timeout()
 
-	@button_check
 	async def PokemonSelection(self, inter: discord.Interaction, choice: list[str]):
 		if inter.data['custom_id'] == 'ownedTradeList':
 			self.userpkmnchoice = next(p for p in self.usertradelist if p.Id == choice[0])
@@ -38,8 +40,8 @@ class TradeView(discord.ui.View):
 			self.targetpkmnchoice = next(p for p in self.targettradelist if p.Id == choice[0])
 
 	@discord.ui.button(label='Reject', style=discord.ButtonStyle.red)
+	@defer
 	async def cancel_button(self, inter: discord.Interaction, button: discord.ui.Button):
-		await inter.response.defer()
 		if self.initial:
 			if inter.user.id != self.trainer.UserId:
 				return
@@ -54,8 +56,8 @@ class TradeView(discord.ui.View):
 
 
 	@discord.ui.button(label='Accept', style=discord.ButtonStyle.green)
+	@defer
 	async def submit_button(self, inter: discord.Interaction, button: discord.ui.Button):
-		await inter.response.defer()
 		if self.initial:
 			if not self.userpkmnchoice or not self.targetpkmnchoice or inter.user.id != self.trainer.UserId:
 				return
@@ -78,7 +80,6 @@ class TradeView(discord.ui.View):
 			trainerservice.TradePokemon(self.trainer, self.userpkmnchoice, self.targettrainer, self.targetpkmnchoice)
 			await inter.followup.send(content=f'<@{self.user.id}> traded away **{pokemonservice.GetPokemonDisplayName(self.userpkmnchoice, self.userdata)}** to <@{self.targettrainer.UserId}> for **{pokemonservice.GetPokemonDisplayName(self.targetpkmnchoice, self.targetdata)}**')
 
-
 	def PrintPkmnDetails(self, pokemon: Pokemon, data: PokemonData):
 		pkmnData = t2a(
 			body=[
@@ -92,7 +93,6 @@ class TradeView(discord.ui.View):
 			style=PresetStyle.plain,
 			cell_padding=0)
 		return f"**{pokemonservice.GetPokemonDisplayName(pokemon, data)}**\n```{pkmnData}```"
-
 
 	async def send(self):
 		await self.interaction.followup.send(view=self)

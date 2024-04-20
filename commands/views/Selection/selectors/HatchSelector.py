@@ -16,4 +16,5 @@ class HatchSelector(discord.ui.Select):
         super().__init__(options=options, max_values=len(data), min_values=1, placeholder='Hatch Egg(s)...')
     
     async def callback(self, inter: discord.Interaction):
+        await inter.response.defer()
         await self.view.EggSelection(inter, self.values)

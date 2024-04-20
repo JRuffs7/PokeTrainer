@@ -21,6 +21,10 @@ class BattleSimView(discord.ui.View):
 		self.defenddata = defendData
 		self.gymbattle = gymBattle
 		super().__init__(timeout=300)
+
+	async def on_timeout(self):
+		await self.message.delete()
+		return await super().on_timeout()
     
 	async def send(self):
 		await self.interaction.followup.send(content="Processing...")

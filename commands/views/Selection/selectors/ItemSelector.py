@@ -16,5 +16,6 @@ class ItemSelector(discord.ui.Select):
         super().__init__(options=options, max_values=1, min_values=1, placeholder='Pick One...')
     
     async def callback(self, inter: discord.Interaction):
+        await inter.response.defer()
         await self.view.ItemSelection(inter, self.values[0])
       

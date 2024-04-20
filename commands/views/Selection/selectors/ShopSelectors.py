@@ -22,6 +22,7 @@ class BuySell(discord.ui.Select):
 		super().__init__(options=options, max_values=1, min_values=1, placeholder='Buy/Sell')
 	
 	async def callback(self, inter: discord.Interaction):
+		await inter.response.defer()
 		await self.view.BuySellSelection(inter, self.values[0])
         
 class ItemChoice(discord.ui.Select):
@@ -57,5 +58,6 @@ class ItemChoice(discord.ui.Select):
 		super().__init__(options=options, max_values=1, min_values=1, placeholder='Choose Item')
 	
 	async def callback(self, inter: discord.Interaction):
+		await inter.response.defer()
 		await self.view.ItemSelection(inter, self.values[0])
       

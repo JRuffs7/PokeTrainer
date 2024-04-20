@@ -1,7 +1,7 @@
 from math import ceil
 import discord
 
-from middleware.decorators import button_check
+from middleware.decorators import defer
 
 
 class BasePaginationView(discord.ui.View):
@@ -21,6 +21,10 @@ class BasePaginationView(discord.ui.View):
 			self.prev_button.disabled = True
 			self.next_button.disabled = True
 			self.last_page_button.disabled = True
+
+	async def on_timeout(self):
+		await self.message.delete()
+		return await super().on_timeout()
 
 	def update_buttons(self):
 		if self.currentPage == 1:
@@ -52,8 +56,10 @@ class BasePaginationView(discord.ui.View):
 			until_item = len(self.data)
 		return self.data[from_item:until_item]
 
-	@button_check
+	@defer
 	async def button_click(self, interaction: discord.Interaction, custom_id: str):
+		if interaction.user.id != self.user.id:
+			return False
 		match custom_id:
 			case "next":
 				self.currentPage += 1
@@ -63,3 +69,4 @@ class BasePaginationView(discord.ui.View):
 				self.currentPage = ceil(len(self.data)/self.pageLength)
 			case _:
 				self.currentPage = 1
+		return True

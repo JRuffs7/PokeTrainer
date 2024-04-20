@@ -1,4 +1,3 @@
-import asyncio
 import logging
 import discord
 
@@ -6,6 +5,7 @@ from table2ascii import table2ascii as t2a, PresetStyle, Alignment, Merge
 
 from commands.views.Selection.selectors.OwnedSelector import OwnedSelector
 from globals import Dexmark, FightReaction, Formmark, GreatBallReaction, PokeballReaction, PokemonColor, UltraBallReaction, WarningSign
+from middleware.decorators import defer
 from models.Pokemon import Pokemon
 from models.Trainer import Trainer
 from services import pokemonservice, trainerservice
@@ -26,6 +26,10 @@ class SpawnPokemonView(discord.ui.View):
 		self.add_item(self.teamslotview)
 		self.pressed = False
 
+	async def on_timeout(self):
+		await self.message.edit(content=f'{pokemonservice.GetPokemonDisplayName(self.pokemon, self.pkmndata)} (Lvl. {self.pokemon.Level}) ran away!', embed=None, view=None)
+		return await super().on_timeout()
+
 	async def send(self):
 		if not self.pokemon:
 			return await self.interaction.followup.send("Failed to spawn a Pokemon. Please try again.", ephemeral=True)
@@ -43,29 +47,29 @@ class SpawnPokemonView(discord.ui.View):
 		trainerservice.SetTeamSlot(self.trainer, 0, choice[0])
 
 	@discord.ui.button(label=PokeballReaction)
+	@defer
 	async def pokeball_button(self, interaction: discord.Interaction, button: discord.ui.Button):
-		await interaction.response.defer()
 		if not self.pressed:
 			self.pressed = True
 			await self.TryCapture(interaction, button.label, "Pokeball")
 
 	@discord.ui.button(label=GreatBallReaction)
+	@defer
 	async def greatball_button(self, interaction: discord.Interaction, button: discord.ui.Button):
-		await interaction.response.defer()
 		if not self.pressed:
 			self.pressed = True
 			await self.TryCapture(interaction, button.label, "Greatball")
 
 	@discord.ui.button(label=UltraBallReaction)
+	@defer
 	async def ultraball_button(self, interaction: discord.Interaction, button: discord.ui.Button):
-		await interaction.response.defer()
 		if not self.pressed:
 			self.pressed = True
 			await self.TryCapture(interaction, button.label, "Ultraball")
 
 	@discord.ui.button(label=FightReaction, custom_id="fight")
+	@defer
 	async def fight_button(self, interaction: discord.Interaction, button: discord.ui.Button):
-		await interaction.response.defer()
 		if not self.pressed:
 			self.pressed = True
 			updatedTrainer = trainerservice.GetTrainer(self.interaction.guild_id, self.interaction.user.id)
@@ -96,8 +100,8 @@ class SpawnPokemonView(discord.ui.View):
 			
 
 	@discord.ui.button(label='💨')
+	@defer
 	async def run_button(self, interaction: discord.Interaction, button: discord.ui.Button):
-		await interaction.response.defer()
 		await self.message.delete(delay=0.01)
 		await interaction.followup.send(content=f'Ran away from {pokemonservice.GetPokemonDisplayName(self.pokemon, self.pkmndata)}', ephemeral=True)
 			
