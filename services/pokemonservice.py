@@ -21,6 +21,9 @@ def GetPokemonById(id: int):
     return results.pop()
   return None
 
+def GetPokemonByPokedexId(dexId: int):
+  return pokemonda.GetPokemonByProperty([dexId], 'PokedexId')
+
 def GetPokemonByIdList(idList: list[int]):
   return pokemonda.GetPokemonByProperty(idList, 'Id')
 

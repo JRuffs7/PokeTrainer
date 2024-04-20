@@ -277,6 +277,10 @@ def Evolve(trainer: Trainer, initialPkmn: Pokemon, evolveMon: PokemonData):
   index = trainer.OwnedPokemon.index(initialPkmn)
   trainer.OwnedPokemon[index] = newPkmn
   TryAddToPokedex(trainer, pokemonservice.GetPokemonById(newPkmn.Pokemon_Id), newPkmn.IsShiny)
+  if evolveMon.PokedexId == 869 and initialPkmn.IsShiny:
+    for p in pokemonservice.GetPokemonByPokedexId(869):
+      if p.Id not in trainer.Shinydex:
+        trainer.Shinydex.append(p.Id)
   UpsertTrainer(trainer)
   return newPkmn
 
