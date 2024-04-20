@@ -45,7 +45,7 @@ async def StartBot():
           updateStr = file.read()
       os.remove('updatefile.txt')
       if updateStr:
-        updateStr += "\n\nCheck out recent updates in more detail by using **/help update**\n\nDon't forget to upvote at https://top.gg/bot/1151657435073875988"
+        updateStr += "\n\nCheck out recent updates in more detail by using **/help update**\n\nFeel free to report any issues to the [Discord Server](https://discord.com/invite/W9T4K7fyYu)\n\nDon't forget to upvote at https://top.gg/bot/1151657435073875988"
         allServers = serverservice.GetAllServers()
         for server in allServers:
           asyncio.run_coroutine_threadsafe(MessageThread(discordservice.CreateEmbed('New Update', updateStr, HelpColor), server), discordBot.loop)
