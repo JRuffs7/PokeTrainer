@@ -1,0 +1,8 @@
+- Update Event infrastructure
+- Updated images and Pokedex logic for the different Alcremie forms
+- Fixed a bug when running **/pokedex** for users without a trainer
+
+**NOTE: If PokeTrainer is not an admin in your server, please make sure it has the following permissions for Event cleanup:**
+- Send Messages In Threads
+- Create Private/Public Threads
+- Manage Threads

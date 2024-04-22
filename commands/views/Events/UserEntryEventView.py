@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import UTC, datetime
 import discord
 
 from commands.views.Events.EventView import EventView
@@ -47,7 +47,7 @@ class UserEntryEventView(EventView):
 	async def SendToThread(self, interaction: discord.Interaction, enter: bool):
 		if not self.messagethread or not interaction.guild.get_channel_or_thread(self.messagethread.id):
 			self.messagethread = await self.message.create_thread(
-				name=f"{self.server.CurrentEvent.EventName}-{datetime.utcnow().strftime(ShortDateFormat)}",
+				name=f"{self.server.CurrentEvent.EventName}-{datetime.now(UTC).strftime(ShortDateFormat)}",
 				auto_archive_duration=60)
 			self.server.CurrentEvent.ThreadId = self.messagethread.id
 		await self.messagethread.send(f'<@{interaction.user.id}> has entered the event.' if enter else f'<@{interaction.user.id}> has left the event.')

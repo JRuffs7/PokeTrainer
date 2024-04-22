@@ -5,7 +5,7 @@ import discord
 from table2ascii import table2ascii as t2a, PresetStyle, Alignment, Merge
 from commands.views.Events.EventView import EventView
 
-from globals import EventColor, MasterBallReaction
+from globals import EventColor, MasterBallReaction, ShortDateFormat
 from middleware.decorators import trainer_check
 from models.Pokemon import Pokemon
 from models.Server import Server
@@ -14,13 +14,13 @@ from services.utility import discordservice
 
 class SpecialSpawnEventView(EventView):
 
-	def __init__(self, server: Server, channel: discord.TextChannel, pokemon: Pokemon, title: str):
+	def __init__(self, server: Server, channel: discord.TextChannel, pokemon: Pokemon):
 		self.captureLog = logging.getLogger('capture')
 		self.pokemon = pokemon
 		self.pkmndata = pokemonservice.GetPokemonById(pokemon.Pokemon_Id)
 		self.userentries = []
 		embed = discordservice.CreateEmbed(
-				title,
+				'Special Spawn Event',
 				self.PokemonDesc(),
 				EventColor)
 		embed.set_image(url=pokemonservice.GetPokemonImage(pokemon, self.pkmndata))
@@ -39,7 +39,7 @@ class SpecialSpawnEventView(EventView):
 		elif trainerservice.TryCapture(MasterBallReaction, trainer, self.pokemon):
 			if not self.messagethread or not interaction.guild.get_channel_or_thread(self.messagethread.id):
 				self.messagethread = await self.message.create_thread(
-					name=f"{self.pkmndata.Name}-{datetime.now(UTC).strftime('%m/%d/%Y')}",
+					name=f"{self.pkmndata.Name}-{datetime.now(UTC).strftime(ShortDateFormat)}",
 					auto_archive_duration=60)
 				self.server.CurrentEvent.ThreadId = self.messagethread.id
 				serverservice.UpsertServer(self.server)

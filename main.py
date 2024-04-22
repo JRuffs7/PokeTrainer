@@ -1,10 +1,12 @@
 import asyncio
+from datetime import UTC, datetime, timedelta
 import sys
 
 import discordbot
 from logs.logsetup import override_loglevels
 from webserver import keep_alive
 from dotenv import load_dotenv
+from globals import DateFormat, eventtimes
 
 
 async def main():
@@ -14,6 +16,9 @@ if len(sys.argv) == 2 and sys.argv[1] == 'prodbuild':
   load_dotenv('.env')
 else:
   load_dotenv('.env.local')
+  eventtimes.clear()
+  eventtimes.append((datetime.now(UTC)+timedelta(seconds=5)).time())
+  print([e.strftime(DateFormat) for e in eventtimes])
 keep_alive()
 override_loglevels()
 

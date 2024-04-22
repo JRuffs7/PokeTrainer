@@ -1,4 +1,5 @@
 import asyncio
+import calendar
 import os
 from datetime import UTC, datetime, timedelta
 import logging
@@ -20,21 +21,20 @@ class EventView(discord.ui.View):
 		self.messagethread = None
 		self.embed = embed
 		self.eventTime = int(os.environ['EVENT_TIME'])
-		self.embed.set_footer(text=timedelta(minutes=self.eventTime))
 		super().__init__(timeout=self.eventTime*60)
 
-	async def send(self):
+	async def on_timeout(self):
 		try:
-			self.message = await self.channel.send(embed=self.embed, view=self, delete_after=(self.eventTime*60)+5)
-			self.server.CurrentEvent.MessageId = self.message.id
-			sentAt = datetime.now(UTC)+timedelta(minutes=self.eventTime)
-			while datetime.now(UTC) < sentAt:
-				self.embed.set_footer(text=str(sentAt-datetime.now(UTC)).split('.',2)[0])
-				await self.message.edit(embed=self.embed, view=self)
-				await asyncio.sleep(0.85)
-			self.embed.set_footer(text='Event ended.')
-			await self.message.edit(embed=self.embed, view=self)
 			self.eventLog.info(f"{self.server.ServerName} - {self.server.CurrentEvent.EventName} Ended")
+			self.embed.title = self.server.CurrentEvent.EventName
+			self.embed.set_footer(text='Event has ended.')
+			await self.message.edit(embed=self.embed, view=self)
 			await serverservice.EndEvent(self.server)
+			return await super().on_timeout()
 		except Exception as e:
 			self.errLog.error(f"EVENT ERROR FOR SERVER {self.server.ServerName}: {e}")
+
+	async def send(self):
+		timestamp = calendar.timegm((datetime.now(UTC)+timedelta(minutes=self.eventTime)).timetuple())
+		self.embed.title += f' (Ends <t:{timestamp}:R>)'
+		self.message = await self.channel.send(embed=self.embed, view=self, delete_after=(self.eventTime*60)+10)

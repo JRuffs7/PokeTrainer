@@ -125,6 +125,7 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
   ])
   @app_commands.autocomplete(pokemon=autofill_pokemon)
   @method_logger
+  @trainer_check
   async def pokedex(self, inter: Interaction, user: Member|None, dex: int = None, pokemon: int = None):
     trainer = trainerservice.GetTrainer(inter.guild_id, user.id if user else inter.user.id)
     if not pokemon:

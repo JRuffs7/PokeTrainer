@@ -5,7 +5,6 @@ from dataclasses import dataclass, field, fields
 class Event:
 	EventName: str = ''
 	EventType: int = 0
-	MessageId: int = 0
 	ThreadId: int|None = None
 	SubType: int|None = None
 	EventEntries: dict[str, str] = field(default_factory=dict)
