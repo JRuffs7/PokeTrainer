@@ -22,6 +22,7 @@ discordBot = commands.Bot(command_prefix='~',
                           intents=intents)
 logger = logging.getLogger('discord')
 syncLogger = logging.getLogger('command')
+errorLogger = logging.getLogger('error')
 
 
 async def StartBot():
@@ -52,7 +53,7 @@ async def StartBot():
     except FileNotFoundError:
       pass
     except Exception as e:
-      logger.error(e)
+      errorLogger.error(e)
       pass
     event_loop.start()
 
@@ -101,7 +102,7 @@ async def StartBot():
           spawnPkmn = serverservice.SpecialSpawnEvent(server)
           await SpecialSpawnEventView(server, channel, spawnPkmn).send()
     except Exception as e:
-      print(f'{e}')
+      errorLogger.error(f'Server ({server.ServerName}) Event Exception: {e}')
 
   for f in os.listdir("commands"):
     if os.path.exists(os.path.join("commands", f, "cog.py")):
