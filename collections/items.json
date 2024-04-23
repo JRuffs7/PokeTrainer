@@ -79,7 +79,7 @@
     {
       "Id": 2,
       "Name": "Small Candy",
-      "Description": "Provide a Pokemon with 15 exp.",
+      "Description": "Provide a Pokemon with 15 XP.",
       "BuyAmount": 100,
       "SellAmount": 50,
       "Experience": 15
@@ -87,7 +87,7 @@
     {
       "Id": 3,
       "Name": "Large Candy",
-      "Description": "Provide a Pokemon with 40 exp.",
+      "Description": "Provide a Pokemon with 40 XP.",
       "BuyAmount": 250,
       "SellAmount": 125,
       "Experience": 40

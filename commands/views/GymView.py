@@ -49,7 +49,7 @@ class GymView(discord.ui.View):
 										button: discord.ui.Button):
 		await self.message.delete(delay=0.01)
 		if self.battlewon:
-			await inter.followup.send(content=f'<@{self.interaction.user.id}> defeated {self.leader.Name} and obtained the {gymservice.GetBadgeById(self.leader.BadgeId).Name} Badge!\nWon ${self.leader.Reward} and gained exp.')
+			await inter.followup.send(content=f'<@{self.interaction.user.id}> defeated {self.leader.Name} and obtained the {gymservice.GetBadgeById(self.leader.BadgeId).Name} Badge!\nWon ${self.leader.Reward} and gained XP.')
 		else:
 			await inter.followup.send(content=f'<@{self.interaction.user.id}> was defeated by {self.leader.Name}.\nLost ${int(self.leader.Reward/2)}.')
 
