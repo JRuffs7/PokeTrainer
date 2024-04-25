@@ -102,7 +102,7 @@ def TryUsePotion(trainer: Trainer, potion: Potion):
   trainerda.UpsertTrainer(trainer)
   return (True, (trainer.Health - preHealth))
 
-def TryDaily(trainer: Trainer):
+def TryDaily(trainer: Trainer, freeMasterball: bool):
   if (not trainer.LastDaily or datetime.strptime(trainer.LastDaily, ShortDateFormat).date() < datetime.now(UTC).date()) or trainer.UserId in AdminList:
     trainer.LastDaily = datetime.now(UTC).strftime(ShortDateFormat)
 
@@ -113,6 +113,10 @@ def TryDaily(trainer: Trainer):
     else:
       ModifyItemList(trainer.Pokeballs, '1', 10)
       trainer.Money += 200
+      
+    if freeMasterball:
+      ModifyItemList(trainer.Pokeballs, '4', 1)
+
     addEgg = TryAddNewEgg(trainer)
     UpsertTrainer(trainer)
     return addEgg

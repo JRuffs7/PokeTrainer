@@ -84,6 +84,11 @@ async def StartBot():
 
   async def EventThread(eventType: EventType, server: Server):
     try:
+      server.ServerName = (await discordBot.fetch_guild(server.ServerId,with_counts=False)).name
+    except:
+      errorLogger.error(f'Server ({server.ServerName}) Get Name: {e}')
+
+    try:
       guild = discordBot.get_guild(server.ServerId)
       if not guild:
         return 
@@ -102,7 +107,7 @@ async def StartBot():
           spawnPkmn = serverservice.SpecialSpawnEvent(server)
           await SpecialSpawnEventView(server, channel, spawnPkmn).send()
     except Exception as e:
-      errorLogger.error(f'Server ({server.ServerName}) Event Exception: {e}')
+      errorLogger.error(f'Server ({server.ServerName}) Event: {e}')
 
   for f in os.listdir("commands"):
     if os.path.exists(os.path.join("commands", f, "cog.py")):

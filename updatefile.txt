@@ -1,4 +1,2 @@
-- Update grammar around XP and EXP
-- Changes made to address Event mishaps
-
-The recent issues with events has been noticed and this update will attempt to solve some of the problems arising across servers. If problems persist, please report to the discord below.
+- This is another update to resolve problems with events for multiple servers
+- To make up for any missing rewards, everyone can claim 1x Masterball on **April 26th 2024** through your **/daily** rewards.
