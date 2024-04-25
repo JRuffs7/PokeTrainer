@@ -1,7 +1,7 @@
 import discord
 from middleware.decorators import defer
 
-from services import trainerservice, pokemonservice
+from services import itemservice, trainerservice, pokemonservice
 from models.Pokemon import Pokemon
 from models.Trainer import Trainer
 from commands.views.Selection.selectors.OwnedSelector import OwnedSelector
@@ -35,7 +35,7 @@ class EvolveView(discord.ui.View):
 		self.pkmnChoiceData = pokemonservice.GetPokemonById(self.pokemonchoice.Pokemon_Id)
 		self.evolvechoice = None
 		self.ownlist = OwnedSelector(self.evolveMon, 1, choice[0])
-		self.evlist = EvolveSelector(pokemonservice.GetPokemonByIdList([p for p in self.pkmnChoiceData.EvolvesInto]))
+		self.evlist = EvolveSelector(pokemonservice.GetPokemonByIdList(pokemonservice.AvailableEvolutions(self.pokemonchoice, self.pkmnChoiceData, [itemservice.GetItem(int(i)) for i in self.trainer.EvolutionItems if self.trainer.EvolutionItems[i] > 0])))
 		self.add_item(self.ownlist)
 		self.add_item(self.evlist)
 		await self.message.edit(view=self)

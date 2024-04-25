@@ -11,6 +11,7 @@ class Trainer:
   Pokeballs: dict[str, int] = field(default_factory=dict)
   Potions: dict[str, int] = field(default_factory=dict)
   Candies: dict[str, int] = field(default_factory=dict)
+  EvolutionItems: dict[str, int] = field(default_factory=dict)
   OwnedPokemon: list[Pokemon] = field(default_factory=list)
   Pokedex: list[int] = field(default_factory=list)
   Shinydex: list[int] = field(default_factory=list)

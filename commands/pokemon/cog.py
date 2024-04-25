@@ -181,7 +181,7 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
   async def autofill_evolve(self, inter: Interaction, current: str):
     data = []
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
-    evList = pokemonservice.GetPokemonThatCanEvolve([p for p in trainer.OwnedPokemon if p.Level >= 20])
+    evList = pokemonservice.GetPokemonThatCanEvolve(trainer, [p for p in trainer.OwnedPokemon])
     pkmnList = pokemonservice.GetPokemonByIdList([e.Pokemon_Id for e in evList])
     pkmnList.sort(key=lambda x: x.Name)
     for pkmn in pkmnList:
@@ -198,7 +198,7 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
   @trainer_check
   async def evolve(self, inter: Interaction, pokemon: int | None):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
-    pokeList = pokemonservice.GetPokemonThatCanEvolve([p for p in trainer.OwnedPokemon if p.Level >= 20 and (p.Pokemon_Id == pokemon if pokemon else True)])
+    pokeList = pokemonservice.GetPokemonThatCanEvolve(trainer, [p for p in trainer.OwnedPokemon if (p.Pokemon_Id == pokemon if pokemon else True)])
     if not pokeList:
       pkmn = pokemonservice.GetPokemonById(pokemon)
       return await discordservice_pokemon.PrintEvolveResponse(inter, 1 if pokemon else 0, pkmn.Name if pkmn else 'N/A')

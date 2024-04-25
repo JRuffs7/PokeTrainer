@@ -92,5 +92,266 @@
       "SellAmount": 125,
       "Experience": 40
     }
+  ],
+  "Evolution": [
+    {
+      "Id": 80,
+      "Name": "Sun Stone",
+      "Description": "Stone used to evolve Pokemon.",
+      "BuyAmount": 5000,
+      "SellAmount": 2500
+    },
+    {
+      "Id": 81,
+      "Name": "Moon Stone",
+      "Description": "Stone used to evolve Pokemon.",
+      "BuyAmount": 5000,
+      "SellAmount": 2500
+    },
+    {
+      "Id": 82,
+      "Name": "Fire Stone",
+      "Description": "Stone used to evolve Pokemon.",
+      "BuyAmount": 5000,
+      "SellAmount": 2500
+    },
+    {
+      "Id": 83,
+      "Name": "Thunder Stone",
+      "Description": "Stone used to evolve Pokemon.",
+      "BuyAmount": 5000,
+      "SellAmount": 2500
+    },
+    {
+      "Id": 84,
+      "Name": "Water Stone",
+      "Description": "Stone used to evolve Pokemon.",
+      "BuyAmount": 5000,
+      "SellAmount": 2500
+    },
+    {
+      "Id": 85,
+      "Name": "Leaf Stone",
+      "Description": "Stone used to evolve Pokemon.",
+      "BuyAmount": 5000,
+      "SellAmount": 2500
+    },
+    {
+      "Id": 107,
+      "Name": "Shiny Stone",
+      "Description": "Stone used to evolve Pokemon.",
+      "BuyAmount": 5000,
+      "SellAmount": 2500
+    },
+    {
+      "Id": 108,
+      "Name": "Dusk Stone",
+      "Description": "Stone used to evolve Pokemon.",
+      "BuyAmount": 5000,
+      "SellAmount": 2500
+    },
+    {
+      "Id": 109,
+      "Name": "Dawn Stone",
+      "Description": "Stone used to evolve Pokemon.",
+      "BuyAmount": 5000,
+      "SellAmount": 2500
+    },
+    {
+      "Id": 110,
+      "Name": "Oval Stone",
+      "Description": "Stone used to evolve Pokemon.",
+      "BuyAmount": 5000,
+      "SellAmount": 2500
+    },
+    {
+      "Id": 198,
+      "Name": "King's Rock",
+      "Description": "Item used to evolve Pokemon.",
+      "BuyAmount": 5000,
+      "SellAmount": 2500
+    },
+    {
+      "Id": 203,
+      "Name": "Deep Sea Tooth",
+      "Description": "Item used to evolve Pokemon.",
+      "BuyAmount": 5000,
+      "SellAmount": 2500
+    },
+    {
+      "Id": 204,
+      "Name": "Deep Sea Scale",
+      "Description": "Item used to evolve Pokemon.",
+      "BuyAmount": 5000,
+      "SellAmount": 2500
+    },
+    {
+      "Id": 210,
+      "Name": "Metal Coat",
+      "Description": "Item used to evolve Pokemon.",
+      "BuyAmount": 5000,
+      "SellAmount": 2500
+    },
+    {
+      "Id": 212,
+      "Name": "Dragon Scale",
+      "Description": "Item used to evolve Pokemon.",
+      "BuyAmount": 5000,
+      "SellAmount": 2500
+    },
+    {
+      "Id": 229,
+      "Name": "Upgrade",
+      "Description": "Item used to evolve Pokemon.",
+      "BuyAmount": 5000,
+      "SellAmount": 2500
+    },
+    {
+      "Id": 298,
+      "Name": "Protector",
+      "Description": "Item used to evolve Pokemon.",
+      "BuyAmount": 5000,
+      "SellAmount": 2500
+    },
+    {
+      "Id": 299,
+      "Name": "Electirizer",
+      "Description": "Item used to evolve Pokemon.",
+      "BuyAmount": 5000,
+      "SellAmount": 2500
+    },
+    {
+      "Id": 300,
+      "Name": "Magmarizer",
+      "Description": "Item used to evolve Pokemon.",
+      "BuyAmount": 5000,
+      "SellAmount": 2500
+    },
+    {
+      "Id": 301,
+      "Name": "Dubious Disc",
+      "Description": "Item used to evolve Pokemon.",
+      "BuyAmount": 5000,
+      "SellAmount": 2500
+    },
+    {
+      "Id": 302,
+      "Name": "Reaper Cloth",
+      "Description": "Item used to evolve Pokemon.",
+      "BuyAmount": 5000,
+      "SellAmount": 2500
+    },
+    {
+      "Id": 303,
+      "Name": "Razor Claw",
+      "Description": "Item used to evolve Pokemon.",
+      "BuyAmount": 5000,
+      "SellAmount": 2500
+    },
+    {
+      "Id": 304,
+      "Name": "Razor Fang",
+      "Description": "Item used to evolve Pokemon.",
+      "BuyAmount": 5000,
+      "SellAmount": 2500
+    },
+    {
+      "Id": 686,
+      "Name": "Whipped Dream",
+      "Description": "Item used to evolve Pokemon.",
+      "BuyAmount": 5000,
+      "SellAmount": 2500
+    },
+    {
+      "Id": 687,
+      "Name": "Sachet",
+      "Description": "Item used to evolve Pokemon.",
+      "BuyAmount": 5000,
+      "SellAmount": 2500
+    },
+    {
+      "Id": 885,
+      "Name": "Ice Stone",
+      "Description": "Stone used to evolve Pokemon.",
+      "BuyAmount": 5000,
+      "SellAmount": 2500
+    },
+    {
+      "Id": 1167,
+      "Name": "Strawberry Sweet",
+      "Description": "Item used to evolve Pokemon.",
+      "BuyAmount": 5000,
+      "SellAmount": 2500
+    },
+    {
+      "Id": 1174,
+      "Name": "Sweet Apple",
+      "Description": "Item used to evolve Pokemon.",
+      "BuyAmount": 5000,
+      "SellAmount": 2500
+    },
+    {
+      "Id": 1175,
+      "Name": "Tart Apple",
+      "Description": "Item used to evolve Pokemon.",
+      "BuyAmount": 5000,
+      "SellAmount": 2500
+    },
+    {
+      "Id": 1311,
+      "Name": "Cracked Pot",
+      "Description": "Item used to evolve Pokemon.",
+      "BuyAmount": 5000,
+      "SellAmount": 2500
+    },
+    {
+      "Id": 1312,
+      "Name": "Chipped Pot",
+      "Description": "Item used to evolve Pokemon.",
+      "BuyAmount": 5000,
+      "SellAmount": 2500
+    },
+    {
+      "Id": 1633,
+      "Name": "Galarica Cuff",
+      "Description": "Item used to evolve Pokemon.",
+      "BuyAmount": 5000,
+      "SellAmount": 2500
+    },
+    {
+      "Id": 1643,
+      "Name": "Galarica Wreath",
+      "Description": "Item used to evolve Pokemon.",
+      "BuyAmount": 5000,
+      "SellAmount": 2500
+    },
+    {
+      "Id": 1677,
+      "Name": "Malicious Armor",
+      "Description": "Item used to evolve Pokemon.",
+      "BuyAmount": 5000,
+      "SellAmount": 2500
+    },
+    {
+      "Id": 2045,
+      "Name": "Auspicious Armor",
+      "Description": "Item used to evolve Pokemon.",
+      "BuyAmount": 5000,
+      "SellAmount": 2500
+    },
+    {
+      "Id": 10001,
+      "Name": "Black Augurite",
+      "Description": "Item used to evolve Pokemon.",
+      "BuyAmount": 5000,
+      "SellAmount": 2500
+    },
+    {
+      "Id": 10002,
+      "Name": "Peat Block",
+      "Description": "Item used to evolve Pokemon.",
+      "BuyAmount": 5000,
+      "SellAmount": 2500
+    }
   ]
 }
