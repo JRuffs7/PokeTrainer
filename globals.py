@@ -60,10 +60,10 @@ AdminList = [
 ]
 
 eventtimes = [
-  datetime.strptime('03:00:00', '%H:%M:%S').time(),
-  datetime.strptime('09:00:00', '%H:%M:%S').time(),
-  datetime.strptime('15:00:00', '%H:%M:%S').time(),
-  datetime.strptime('21:00:00', '%H:%M:%S').time()
+  datetime.strptime('02:00:00', '%H:%M:%S').time(),
+  datetime.strptime('08:00:00', '%H:%M:%S').time(),
+  datetime.strptime('14:00:00', '%H:%M:%S').time(),
+  datetime.strptime('20:00:00', '%H:%M:%S').time()
 ]
 
 freemasterball = datetime(2024,4,26)
