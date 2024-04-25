@@ -80,7 +80,7 @@ async def StartBot():
   async def event_loop():
     allServers = serverservice.GetAllServers()
     for server in allServers:
-      asyncio.run_coroutine_threadsafe(EventThread(choice(list(EventType)), server), discordBot.loop)
+      await EventThread(choice(list(EventType)), server)
 
   async def EventThread(eventType: EventType, server: Server):
     try:

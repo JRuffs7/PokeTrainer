@@ -43,8 +43,8 @@ class SpecialSpawnEventView(EventView):
 					auto_archive_duration=60)
 				self.server.CurrentEvent.ThreadId = self.messagethread.id
 				serverservice.UpsertServer(self.server)
+				self.eventLog.info(f"{self.server.ServerName} - Created Thread")
 			await self.messagethread.send(self.CaptureDesc(interaction.user.id))
-			self.eventLog.info(f"{self.server.ServerName} - {interaction.user.display_name} participated")
 			self.captureLog.info(f'{self.server.ServerName} - {interaction.user.display_name} used Masterball and caught a {self.pkmndata.Name}')
 			return await interaction.followup.send(content=f"You captured a {self.pkmndata.Name}!\nYou used 1x Masterball and gained $25.", ephemeral=True)
 		else:

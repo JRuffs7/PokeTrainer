@@ -64,8 +64,8 @@ async def PrintEventWinners(server: Server, winners: list[tuple[int,int]]):
 	if server.CurrentEvent.ThreadId:
 		try:
 			await bot.get_channel(server.CurrentEvent.ThreadId).delete()
-		except:
-			errorLog.error('Failed to delete thread')
+		except Exception as e:
+			errorLog.error(f'ERROR {server.ServerName} Delete Thread: {e}')
 
 	if winners:
 		guild = bot.get_guild(server.ServerId)
