@@ -21,7 +21,7 @@ class EventView(discord.ui.View):
 		self.eventTime = int(os.environ['EVENT_TIME'])
 		super().__init__(timeout=self.eventTime*60)
 
-	async def on_timeout(self):
+	async def endevent(self):
 		try:
 			self.embed.title = self.server.CurrentEvent.EventName
 			self.embed.set_footer(text='Event has ended.')
@@ -29,7 +29,6 @@ class EventView(discord.ui.View):
 			await serverservice.EndEvent(self.server)
 			await self.message.delete()
 			self.eventLog.info(f"{self.server.ServerName} - Event Ended")
-			return await super().on_timeout()
 		except Exception as e:
 			self.eventLog.error(f"SERVER {self.server.ServerName}: {e}")
 
@@ -37,3 +36,5 @@ class EventView(discord.ui.View):
 		timestamp = calendar.timegm((datetime.now(UTC)+timedelta(minutes=self.eventTime)).timetuple())
 		self.embed.title += f' (Ends <t:{timestamp}:R>)'
 		self.message = await self.channel.send(embed=self.embed, view=self)
+		await asyncio.sleep(self.eventTime*60)
+		await self.endevent()
