@@ -8,7 +8,7 @@ class EvolveSelector(discord.ui.Select):
             data = data[:25]
         options=[discord.SelectOption(
             label=f"{d.Name}",
-            description= f"Types: {'/'.join(d.Types) if d.Types else ''} | Rarity: {d.Rarity}",
+            description= f"Types: {'/'.join(d.Types) if d.Types else ''} | Rarity: {d.Rarity}" if d.Id != -1 else 'Random Evolution From This Line',
             value=f'{d.Id}'
             ) for d in data
         ]

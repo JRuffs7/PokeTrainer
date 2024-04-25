@@ -35,7 +35,11 @@ class EvolveView(discord.ui.View):
 		self.pkmnChoiceData = pokemonservice.GetPokemonById(self.pokemonchoice.Pokemon_Id)
 		self.evolvechoice = None
 		self.ownlist = OwnedSelector(self.evolveMon, 1, choice[0])
-		self.evlist = EvolveSelector(pokemonservice.GetPokemonByIdList(pokemonservice.AvailableEvolutions(self.pokemonchoice, self.pkmnChoiceData, [itemservice.GetItem(int(i)) for i in self.trainer.EvolutionItems if self.trainer.EvolutionItems[i] > 0])))
+		availableList = pokemonservice.GetPokemonByIdList(pokemonservice.AvailableEvolutions(self.pokemonchoice, self.pkmnChoiceData, [itemservice.GetItem(int(i)) for i in self.trainer.EvolutionItems if self.trainer.EvolutionItems[i] > 0]))
+		if self.pkmnChoiceData.RandomEvolve and len(availableList) > 1:
+			pokemonservice.GetRandomEvolveList(self.pkmnChoiceData, availableList)
+
+		self.evlist = EvolveSelector()
 		self.add_item(self.ownlist)
 		self.add_item(self.evlist)
 		await self.message.edit(view=self)

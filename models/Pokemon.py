@@ -18,6 +18,7 @@ class PokemonData:
   CaptureRate: int
   Color: str
   EvolvesInto: list[EvolveData]
+  RandomEvolve: bool
   FemaleChance: int | None
   Generation: int
   Name: str
