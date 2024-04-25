@@ -225,16 +225,13 @@ def AvailableEvolutions(pokemon: Pokemon, pkmnData: PokemonData, items: list[Ite
   return evolveIdList
 
 def GetRandomEvolveList(pkmn: PokemonData, evolveIds: list[int]):
-  returnObj = {}
-  levelEvolves = [p.EvolveID for p in pkmn.EvolvesInto if p.EvolveLevel]
-  genderEvolves = [p.EvolveID for p in pkmn.EvolvesInto if p.GenderNeeded]
-  itemEvolves = [p.EvolveID for p in pkmn.EvolvesInto if p.ItemNeeded]
-  if len([e for e in evolveIds if e in levelEvolves]) > 1:
-    returnObj["-1"] = {'Display': 'Random Evolution', 'IDs': [e for e in evolveIds if e in levelEvolves]}
-  if len([e for e in evolveIds if e in genderEvolves]) > 1:
-    returnObj["-1"] = {'Display': 'Random Evolution', 'IDs': [e for e in evolveIds if e in levelEvolves]}
-  if len([e for e in evolveIds if e in levelEvolves]) > 1:
-    returnObj["-1"] = {'Display': 'Random Evolution', 'IDs': [e for e in evolveIds if e in levelEvolves]}
+  levelEvolves = [p.EvolveID for p in pkmn.EvolvesInto if p.EvolveLevel and p.EvolveID in evolveIds]
+  if len(levelEvolves) > 1:
+    return levelEvolves
+  
+  itemEvolves = [p.EvolveID for p in pkmn.EvolvesInto if p.ItemNeeded and p.EvolveID in evolveIds]
+  itemIDs = [i for i in itemEvolves if i['ID'] in evolveIds]
+
 
 
 def EvolvePokemon(initial: Pokemon, evolve: PokemonData):
