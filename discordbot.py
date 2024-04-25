@@ -80,34 +80,30 @@ async def StartBot():
   async def event_loop():
     allServers = serverservice.GetAllServers()
     for server in allServers:
-      await EventThread(choice(list(EventType)), server)
+      try:
+        await EventThread(choice(list(EventType)), server)
+      except Exception as e:
+        errorLogger.error(f'Server ({server.ServerName}) Event: {e}')
+        continue
 
   async def EventThread(eventType: EventType, server: Server):
-    try:
-      server.ServerName = (await discordBot.fetch_guild(server.ServerId,with_counts=False)).name
-    except:
-      errorLogger.error(f'Server ({server.ServerName}) Get Name: {e}')
-
-    try:
-      guild = discordBot.get_guild(server.ServerId)
-      if not guild:
-        return 
-      channel = guild.get_channel(server.ChannelId)
-      if not channel or not isinstance(channel, discord.TextChannel):
-        return
-      
-      match eventType:
-        case EventType.StatCompare:
-          serverservice.StatCompareEvent(server)
-          await UserEntryEventView(server, channel, discordBot.user.display_avatar.url).send()
-        case EventType.PokemonCount:
-          serverservice.PokemonCountEvent(server)
-          await UserEntryEventView(server, channel, discordBot.user.display_avatar.url).send()
-        case _:
-          spawnPkmn = serverservice.SpecialSpawnEvent(server)
-          await SpecialSpawnEventView(server, channel, spawnPkmn).send()
-    except Exception as e:
-      errorLogger.error(f'Server ({server.ServerName}) Event: {e}')
+    guild = discordBot.get_guild(server.ServerId)
+    if not guild:
+      return 
+    channel = guild.get_channel(server.ChannelId)
+    if not channel or not isinstance(channel, discord.TextChannel):
+      return
+    
+    match eventType:
+      case EventType.StatCompare:
+        serverservice.StatCompareEvent(server)
+        await UserEntryEventView(server, channel, discordBot.user.display_avatar.url).send()
+      case EventType.PokemonCount:
+        serverservice.PokemonCountEvent(server)
+        await UserEntryEventView(server, channel, discordBot.user.display_avatar.url).send()
+      case _:
+        spawnPkmn = serverservice.SpecialSpawnEvent(server)
+        await SpecialSpawnEventView(server, channel, spawnPkmn).send()
 
   for f in os.listdir("commands"):
     if os.path.exists(os.path.join("commands", f, "cog.py")):
