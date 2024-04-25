@@ -1,5 +1,7 @@
+from datetime import datetime
 from discord import Member, app_commands, Interaction
 from discord.ext import commands
+from globals import freemasterball
 from commands.autofills.autofills import autofill_nonteam, autofill_zones
 from commands.views.Pagination.EggView import EggView
 from commands.views.Pagination.MyPokemonView import MyPokemonView
@@ -64,11 +66,13 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
   @trainer_check
   async def daily(self, interaction: Interaction):
     trainer = trainerservice.GetTrainer(interaction.guild_id, interaction.user.id)
-    dailyResult = trainerservice.TryDaily(trainer)
+    freeMasterball = datetime.today().date() == freemasterball.date()
+    dailyResult = trainerservice.TryDaily(trainer, freeMasterball)
     return await discordservice_trainer.PrintDaily(
       interaction, 
       dailyResult >= 0, 
       trainerservice.HasRegionReward(trainer, 5),
+      freeMasterball,
       itemservice.GetEgg(dailyResult).Name if dailyResult > 0 else None)
 
   @app_commands.command(name="myeggs",

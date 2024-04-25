@@ -108,12 +108,13 @@ async def PrintRelease(interaction: Interaction, name: str):
 		params=[name],
 		eph=True)
 
-async def PrintDaily(interaction: Interaction, success: bool, boosted: bool, eggName: str|None):
+async def PrintDaily(interaction: Interaction, success: bool, boosted: bool, freeMasterball: bool, eggName: str|None):
+	responseID = 0 if not success else 1 if not eggName else 2
 	return await discordservice.SendCommandResponse(
 		interaction=interaction, 
 		filename=responseFile, 
 		command='daily', 
-		responseInd=0 if not success else 1 if not eggName else 2, 
+		responseInd=responseID+2 if freeMasterball else responseID, 
 		color=TrainerColor, 
 		params=['20' if boosted else '10', '500' if boosted else '200', eggName])
 
