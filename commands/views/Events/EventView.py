@@ -10,8 +10,6 @@ from services import serverservice
 
 class EventView(discord.ui.View):
 
-	errLog = logging.getLogger('error')
-
 	def __init__(
 			self, server: Server, channel: discord.TextChannel, embed: discord.Embed):
 		self.eventLog = logging.getLogger('event')
@@ -25,16 +23,17 @@ class EventView(discord.ui.View):
 
 	async def on_timeout(self):
 		try:
-			self.eventLog.info(f"{self.server.ServerName} - {self.server.CurrentEvent.EventName} Ended")
 			self.embed.title = self.server.CurrentEvent.EventName
 			self.embed.set_footer(text='Event has ended.')
 			await self.message.edit(embed=self.embed, view=self)
 			await serverservice.EndEvent(self.server)
+			await self.message.delete()
+			self.eventLog.info(f"{self.server.ServerName} - Event Ended")
 			return await super().on_timeout()
 		except Exception as e:
-			self.errLog.error(f"EVENT ERROR FOR SERVER {self.server.ServerName}: {e}")
+			self.eventLog.error(f"SERVER {self.server.ServerName}: {e}")
 
 	async def send(self):
 		timestamp = calendar.timegm((datetime.now(UTC)+timedelta(minutes=self.eventTime)).timetuple())
 		self.embed.title += f' (Ends <t:{timestamp}:R>)'
-		self.message = await self.channel.send(embed=self.embed, view=self, delete_after=(self.eventTime*60)+10)
+		self.message = await self.channel.send(embed=self.embed, view=self)

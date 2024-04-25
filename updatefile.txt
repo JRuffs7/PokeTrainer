@@ -1,1 +1,4 @@
 - Update grammar around XP and EXP
+- Changes made to address Event mishaps
+
+The recent issues with events has been noticed and this update will attempt to solve some of the problems arising across servers. If problems persist, please report to the discord below.

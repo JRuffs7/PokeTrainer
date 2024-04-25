@@ -1,13 +1,19 @@
+import logging
 from discord import Embed, Interaction
 
 from dataaccess.utility.jsonreader import GetJson
+
+errorLogger = logging.getLogger('error')
 
 async def SendEmbed(interaction: Interaction, embed: Embed, eph: bool = False):
   return await interaction.followup.send(embed=embed, ephemeral=eph)
 
 
 async def SendDMs(interaction: Interaction, embedList: list[Embed]):
-  return await interaction.user.send(embeds=embedList)
+  try:
+    return await interaction.user.send(embeds=embedList)
+  except Exception as e:
+    errorLogger.error(f'DM Error: {e}')
 
 
 async def SendCommandResponse(interaction: Interaction, filename: str, command: str, responseInd: int, color, params: list=[], eph: bool=False):

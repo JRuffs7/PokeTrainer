@@ -18,7 +18,6 @@ else:
   load_dotenv('.env.local')
   eventtimes.clear()
   eventtimes.append((datetime.now(UTC)+timedelta(seconds=5)).time())
-  print([e.strftime(DateFormat) for e in eventtimes])
 keep_alive()
 override_loglevels()
 
