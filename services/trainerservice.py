@@ -25,6 +25,7 @@ def GetTrainer(serverId: int, userId: int):
   trainer = trainerda.GetTrainer(serverId, userId)
   allPokemon = None
   update = False
+  #update dex's
   if trainer is not None and ((not trainer.Shinydex and any(p.IsShiny for p in trainer.OwnedPokemon)) or not trainer.Formdex):
     allPokemon = pokemonservice.GetAllPokemon()
     update = True
@@ -36,6 +37,7 @@ def GetTrainer(serverId: int, userId: int):
       formLines = [pokemonservice.GetEvolutionLine(p.Pokemon_Id, allPokemon) for p in trainer.OwnedPokemon]
       for formLine in formLines:
         trainer.Formdex.extend([i for i in formLine if i not in trainer.Formdex])
+  #update pokemon stats
   if trainer is not None and f'{trainer.ServerId}{trainer.UserId}' not in updatedTrainers:
     updatedTrainers.append(f'{trainer.ServerId}{trainer.UserId}')
     allPokemon = pokemonservice.GetAllPokemon() if not allPokemon else allPokemon
@@ -53,6 +55,12 @@ def GetTrainer(serverId: int, userId: int):
       elif p.Weight > round((data.Weight * 0.11), 2):
         update = True
         p.Weight = round((data.Weight * 0.11), 2)
+      if data.FemaleChance == 8 and not p.IsFemale:
+        update = True
+        p.IsFemale = True
+      elif data.FemaleChance == 0 and p.IsFemale:
+        update = True
+        p.IsFemale = False
   if update:
     UpsertTrainer(trainer)
   return trainer
