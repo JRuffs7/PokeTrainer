@@ -100,7 +100,7 @@ async def StartBot():
           await UserEntryEventView(server, channel, discordBot.user.display_avatar.url).send()
         case _:
           spawnPkmn = serverservice.SpecialSpawnEvent(server)
-          await SpecialSpawnEventView(server, channel, spawnPkmn, 'Special Spawn Event').send()
+          await SpecialSpawnEventView(server, channel, spawnPkmn).send()
     except Exception as e:
       errorLogger.error(f'Server {server.ServerName} Event: {e}')
 
