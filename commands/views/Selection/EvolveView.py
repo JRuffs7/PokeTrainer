@@ -48,19 +48,21 @@ class EvolveView(discord.ui.View):
 				availableList.insert(0, PokemonData({'Id': -1, 'Name': 'Random Evolution', 'EvolvesInto': []}))
 		evolveListData = []
 		for a in availableList:
-			desc: list[str] = []
+			desc: str
 			if a.Id == -1:
 				randPkmn = pokemonservice.GetPokemonByIdList(self.randomidlist) if len(self.randomidlist) < 5 else []
-				desc = [r.Name for r in randPkmn] if randPkmn else ['Evolve into a random evolution in this line.']
+				desc = " | ".join([r.Name for r in randPkmn]) if randPkmn else 'Evolve into a random evolution in this line.'
 			else:
+				descArr: list[str] = []
 				evolutionData = next(p for p in self.pkmnChoiceData.EvolvesInto if p.EvolveID == a.Id)
 				if evolutionData.EvolveLevel:
-					desc.append(f'Level {evolutionData.EvolveLevel}')
+					descArr.append(f'Level {evolutionData.EvolveLevel}')
 				if evolutionData.GenderNeeded:
-					desc.append('Female' if evolutionData.GenderNeeded == 1 else 'Male')
+					descArr.append('Female' if evolutionData.GenderNeeded == 1 else 'Male')
 				if evolutionData.ItemNeeded:
-					desc.append(itemservice.GetItem(evolutionData.ItemNeeded).Name)
-			evolveListData.append({'Pokemon': a, 'Description': f'{" | ".join(desc)}'})
+					descArr.append(itemservice.GetItem(evolutionData.ItemNeeded).Name)
+				desc = f'Reqs: {" | ".join(descArr)}'
+			evolveListData.append({'Pokemon': a, 'Description': desc})
 		self.evlist = EvolveSelector(evolveListData)
 		self.add_item(self.ownlist)
 		self.add_item(self.evlist)

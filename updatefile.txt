@@ -1,0 +1,3 @@
+- Massive overhaul to evolutions including items, correct levels, and genders. Check out **/help evolutions** for more details.
+- Updated specific gender Pokemon to be correct (such as correcting male Nidoqueen). You may see a slight change in your male/female count.
+- Update **/mypokemon** and **/myteam** image views to have *Evolve: -* for any Pokemon without an evolution.

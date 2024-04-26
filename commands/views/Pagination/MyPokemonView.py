@@ -63,7 +63,7 @@ class MyPokemonView(BasePaginationView):
   def SingleEmbedDesc(self, pokemon: Pokemon):
     pkmn = next(p for p in self.pokemondata if p.Id == pokemon.Pokemon_Id)
     pkmnData = t2a(body=[['Exp:', f"{pokemon.CurrentExp}/{pokemonservice.NeededExperience(pokemon.Level, pkmn.Rarity, pkmn.EvolvesInto)}", '|', 'Height:', pokemon.Height],
-                            ['Evolve:',f"{'Yes' if pokemonservice.CanPokemonEvolve(pokemon, pkmn, [itemservice.GetItem(int(i)) for i in self.trainer.EvolutionItems if self.trainer.EvolutionItems[i] > 0]) else 'No'}", '|','Weight:', pokemon.Weight], 
+                            ['Evolve:',f"{'-' if not pkmn.EvolvesInto else 'Yes' if pokemonservice.CanPokemonEvolve(pokemon, pkmn, [itemservice.GetItem(int(i)) for i in self.trainer.EvolutionItems if self.trainer.EvolutionItems[i] > 0]) else 'No'}", '|','Weight:', pokemon.Weight], 
                             ['Types:', f"{'/'.join(pkmn.Types)}", Merge.LEFT, Merge.LEFT, Merge.LEFT]], 
                       first_col_heading=False,
                       alignments=[Alignment.LEFT,Alignment.LEFT,Alignment.CENTER,Alignment.LEFT,Alignment.LEFT],
