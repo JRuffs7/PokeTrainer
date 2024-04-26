@@ -9,7 +9,7 @@ from models.Egg import TrainerEgg
 from models.Event import Event
 from models.Item import Potion
 from models.Trainer import Trainer
-from models.Pokemon import Pokemon, PokemonData
+from models.Pokemon import EvolveData, Pokemon, PokemonData
 from models.enums import EventType, PokemonCount, StatCompare
 from services import gymservice, itemservice, pokemonservice
 
@@ -276,12 +276,15 @@ def TryAddToPokedex(trainer: Trainer, data: PokemonData, shiny: bool):
   if shiny and data.Id not in trainer.Shinydex:
     trainer.Shinydex.append(data.Id)
 
-def Evolve(trainer: Trainer, initialPkmn: Pokemon, evolveMon: PokemonData):
-  newPkmn = pokemonservice.EvolvePokemon(initialPkmn, evolveMon)
+def Evolve(trainer: Trainer, initialPkmn: Pokemon, evolveMon: EvolveData):
+  newData = pokemonservice.GetPokemonById(evolveMon.EvolveID)
+  newPkmn = pokemonservice.EvolvePokemon(initialPkmn, newData)
   index = trainer.OwnedPokemon.index(initialPkmn)
   trainer.OwnedPokemon[index] = newPkmn
-  TryAddToPokedex(trainer, pokemonservice.GetPokemonById(newPkmn.Pokemon_Id), newPkmn.IsShiny)
-  if evolveMon.PokedexId == 869 and initialPkmn.IsShiny:
+  if evolveMon.ItemNeeded:
+    ModifyItemList(trainer.EvolutionItems, str(evolveMon.ItemNeeded), -1)
+  TryAddToPokedex(trainer, newData, newPkmn.IsShiny)
+  if newData.PokedexId == 869 and initialPkmn.IsShiny:
     for p in pokemonservice.GetPokemonByPokedexId(869):
       if p.Id not in trainer.Shinydex:
         trainer.Shinydex.append(p.Id)

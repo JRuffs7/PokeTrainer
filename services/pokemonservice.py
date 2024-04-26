@@ -228,11 +228,10 @@ def GetRandomEvolveList(pkmn: PokemonData, evolveIds: list[int]):
   levelEvolves = [p.EvolveID for p in pkmn.EvolvesInto if p.EvolveLevel and p.EvolveID in evolveIds]
   if len(levelEvolves) > 1:
     return levelEvolves
-  
   itemEvolves = [p.EvolveID for p in pkmn.EvolvesInto if p.ItemNeeded and p.EvolveID in evolveIds]
-  itemIDs = [i for i in itemEvolves if i['ID'] in evolveIds]
-
-
+  if len(itemEvolves) > 1:
+    return itemEvolves
+  return None
 
 def EvolvePokemon(initial: Pokemon, evolve: PokemonData):
   spawn = GenerateSpawnPokemon(evolve)
