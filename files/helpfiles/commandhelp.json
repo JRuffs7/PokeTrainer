@@ -121,6 +121,12 @@
       "ShortString": "Buy or sell items.",
       "HelpString": "Proper command usage: **/shop**\n\nProvides the trainer with the ability to buy items from the shop, or sell items from their inventory.\n\nTo purchase an item, select the 'Buy' option. When purchasing items, the only possible choices are what is affordable, your current funds displayed above the cancel and submit buttons (i.e. If the trainer has $300, they will NOT see Ultraball, Hyper Potion, or Max Potion). The selections will have the prices labeled next to their names. After selecting the item, they may choose how many they wish to buy. Again, it will only allow you to buy what you can afford.\n\nTo sell items, select the 'Sell' option on the dirst dropdown. The second dropdown will populate with the current items in your inventory and their sale price. Once an item is selected, it will ask how many you wish to sell.\n\nAfter either operation, you will receive a confirmation of the sale and your new current funds.",
       "RequiresAdmin": false
+    },
+    {
+      "Name": "specialshop",
+      "ShortString": "Buy or sell evolution items.",
+      "HelpString": "Proper command usage: **/specialshop**\n\nProvides the trainer with the ability to buy special evolution items from a rotating daily shop, or sell the evolution items they already own.\n\nTo purchase an item, select the 'Buy' option. When purchasing items, the only possible choices are what is affordable, your current funds displayed above the cancel and submit buttons. The selections will have the prices labeled next to their names. Special items can only be bought once per rotation, and only one of each item is available.\n\nTo sell items, select the 'Sell' option on the dirst dropdown. The second dropdown will populate with the current items in your inventory and their sale price. Once an item is selected, it will ask how many you wish to sell.\n\nAfter either operation, you will receive a confirmation of the sale and your new current funds.\n\nA new rotation of the shop will be available every day at midnight UTC.",
+      "RequiresAdmin": false
     }
   ],
   "Pokemon": [
