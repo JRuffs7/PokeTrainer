@@ -1,6 +1,7 @@
 from dataclasses import dataclass, field, fields
 from models.Egg import TrainerEgg
 from models.Pokemon import Pokemon
+from models.Shop import SpecialShop
 
 @dataclass
 class Trainer:
@@ -22,6 +23,7 @@ class Trainer:
   Daycare: dict[str, str] = field(default_factory=dict)
   LastSpawnTime: str | None = None
   LastDaily: str | None = None
+  Shop: SpecialShop | None = field(default_factory=lambda: None)
   CurrentZone: int = 0
 
   @classmethod
@@ -30,6 +32,7 @@ class Trainer:
     returnObj = cls(**{k: v for k, v in dict.items() if k in field_names})
     returnObj.OwnedPokemon = [Pokemon(p) for p in returnObj.OwnedPokemon]
     returnObj.Eggs = [TrainerEgg.from_dict(e) for e in returnObj.Eggs]
+    returnObj.Shop = SpecialShop(returnObj.Shop) if returnObj.Shop else None
     return returnObj
 
   # def __init__(cls, dict):

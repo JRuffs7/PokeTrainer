@@ -1,13 +1,14 @@
 
 from datetime import UTC, datetime, timedelta
 import logging
-from random import choice
+from random import choice, sample
 import uuid
 from dataaccess import trainerda
 from globals import AdminList, GreatBallReaction, PokeballReaction, ShinyOdds, UltraBallReaction, DateFormat, ShortDateFormat
 from models.Egg import TrainerEgg
 from models.Event import Event
 from models.Item import Potion
+from models.Shop import SpecialShop
 from models.Trainer import Trainer
 from models.Pokemon import EvolveData, Pokemon, PokemonData
 from models.enums import EventType, PokemonCount, StatCompare
@@ -129,6 +130,14 @@ def TryDaily(trainer: Trainer, freeMasterball: bool):
     UpsertTrainer(trainer)
     return addEgg
   return -1
+
+def SpecialShopCheck(trainer: Trainer):
+  if not trainer.Shop:
+    trainer.Shop = SpecialShop({'LastRecycle': datetime.now(UTC).strftime(ShortDateFormat), 'ItemIds': [i.Id for i in sample(itemservice.GetAllItems(), 4)]})
+  elif datetime.strptime(trainer.Shop.LastRecycle, ShortDateFormat).date() < datetime.now(UTC).date():
+    trainer.Shop.LastRecycle = datetime.now(UTC).strftime(ShortDateFormat)
+    trainer.Shop.ItemIds = [i.Id for i in sample(itemservice.GetAllItems(), 4)]
+  UpsertTrainer(trainer)
 
 def EventEntry(trainer: Trainer, event: Event):
   #Pokemon Count Event
