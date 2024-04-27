@@ -8,7 +8,7 @@ from models.enums import SpecialSpawn
 
 from services import itemservice, typeservice
 from dataaccess import pokemonda
-from globals import FemaleSign, MaleSign, ShinyOdds, ShinySign
+from globals import FemaleSign, MaleSign, ShinyOdds, ShinySign, to_dict
 from models.Pokemon import EvolveData, PokemonData, Pokemon
 
 #region Data
@@ -254,9 +254,9 @@ def GetPokemonThatCanEvolve(trainer: Trainer, ownedPokemon: list[Pokemon]):
 
 def SimulateLevelGain(currLevel: int, currExp: int, rarity: int, evData: list[EvolveData], exp: int):
   simPokemon = Pokemon({'Level': currLevel, 'CurrentExp': currExp})
-  simData = PokemonData({'Rarity': rarity, 'EvolvesInto': evData})
+  simData = PokemonData({'Rarity': rarity, 'EvolvesInto': to_dict(evData)})
   AddExperience(simPokemon, simData, exp)
-  return simPokemon.Level - currLevel
+  return simPokemon.Level
 
 #endregion
 

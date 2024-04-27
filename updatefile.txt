@@ -1,6 +1,7 @@
-- Massive overhaul to evolutions including items, correct levels, and genders. Check out **/help evolutions** for more details.
-- Added a new rotating shop for evolution items. Check out **/help specialshop** for more details.
+- Added a special rotating shop for evolution items. Check out **/help specialshop** for more details.
 - Changed display of **/trainer** information
 - New command for displaying inventory. Check out **/help inventory** for more details.
 - Updated specific gender Pokemon to be correct (such as correcting male Nidoqueen). You may see a slight change in your male/female count.
-- Update **/mypokemon** and **/myteam** image views to have *Evolve: -* for any Pokemon without an evolution.
+- Update **/mypokemon** and **/myteam** image views to have **Evolve: -** for any Pokemon without an evolution.
+### Massive overhaul to evolutions including items, correct levels, and genders. Check out __/help evolutions__ for more details.
+!!Please report any incorrect evolutions or issues with evolving to the discord!!

@@ -1,7 +1,7 @@
 from datetime import UTC, datetime
 import discord
 
-from globals import DateFormat, TrainerColor, to_dict
+from globals import DateFormat, TrainerColor
 from middleware.decorators import defer
 from models.Pokemon import Pokemon, PokemonData
 from models.Trainer import Trainer
@@ -74,5 +74,5 @@ class DaycareView(discord.ui.View):
 	def Description(self, pokemon: Pokemon, pkmnData: PokemonData):
 		timeAdded = datetime.strptime(self.trainer.Daycare[pokemon.Id], DateFormat).replace(tzinfo=UTC)
 		hoursSpent = int((datetime.now(UTC) - timeAdded).total_seconds()//3600)
-		levelsGained = pokemonservice.SimulateLevelGain(pokemon.Level, pokemon.CurrentExp, pkmnData.Rarity, to_dict(pkmnData.EvolvesInto), 10*hoursSpent)
-		return f'**__{pokemonservice.GetPokemonDisplayName(pokemon, pkmnData)}__**\n\nLevel: {pokemon.Level} -> {(pokemon.Level + levelsGained)}'
+		simLevel = pokemonservice.SimulateLevelGain(pokemon.Level, pokemon.CurrentExp, pkmnData.Rarity, pkmnData.EvolvesInto, 10*hoursSpent)
+		return f'**__{pokemonservice.GetPokemonDisplayName(pokemon, pkmnData)}__**\n\nLevel: {pokemon.Level} -> {simLevel}'
