@@ -7,15 +7,13 @@ from models.Trainer import Trainer
 from commands.views.Selection.selectors.ShopSelectors import BuySell, ItemChoice
 
 
-class ShopView(discord.ui.View):
+class SpecialShopView(discord.ui.View):
   
 	def __init__(self, interaction: discord.Interaction, trainer: Trainer):
 		self.interaction = interaction
 		self.user = interaction.user
 		self.trainer = trainer
-		self.fullballList = itemservice.GetAllPokeballs()
-		self.fullptnList = itemservice.GetAllPotions()
-		self.fullcndylist = itemservice.GetAllCandies()
+		self.fullitemlist = itemservice.GetAllItems()
 		self.buysellchoice = None
 		self.itemchoice = None
 		self.amountchoice = None
@@ -36,16 +34,12 @@ class ShopView(discord.ui.View):
 		self.itemchoice = None
 		self.amountchoice = None
 		if choice == 'buy':
-			self.ballList = [b for b in self.fullballList if b.BuyAmount and b.BuyAmount <= self.trainer.Money]
-			self.potionList = [p for p in self.fullptnList if p.BuyAmount and p.BuyAmount <= self.trainer.Money]
-			self.candyList = []
+			self.itemlist = [i for i in self.fullitemlist if i.Id in self.trainer.Shop.ItemIds and i.BuyAmount <= self.trainer.Money]
 		else:
-			self.ballList = [itemservice.GetPokeball(int(i)) for i in self.trainer.Pokeballs if self.trainer.Pokeballs[i] > 0]
-			self.potionList = [itemservice.GetPotion(int(i)) for i in self.trainer.Potions if self.trainer.Potions[i] > 0]
-			self.candyList = [itemservice.GetCandy(int(i)) for i in self.trainer.Candies if self.trainer.Candies[i] > 0]
+			self.itemlist = [itemservice.GetItem(int(i)) for i in self.trainer.EvolutionItems if self.trainer.EvolutionItems[i] > 0]
 
 		self.buysellview = BuySell(self.buysellchoice)
-		self.itemview = ItemChoice(self.ballList, self.potionList, self.candyList, choice == 'buy')
+		self.itemview = ItemChoice(self.itemlist, [], [], choice == 'buy')
 		self.add_item(self.buysellview)
 		self.add_item(self.itemview)
 		await self.message.edit(content=f"Money: ${self.trainer.Money}", view=self)
@@ -57,22 +51,19 @@ class ShopView(discord.ui.View):
 		for item in self.children:
 			if type(item) is not discord.ui.Button:
 				self.remove_item(item)
-
-		self.itemchoice = next(i for i in (self.fullballList if choice[0] == 'b' else self.fullptnList if choice[0] == 'p' else self.fullcndylist) if i.Id == int(choice[1:]))
-		self.amountchoice = None
-		trainerList = self.trainer.Pokeballs if choice[0] == 'b' else self.trainer.Potions if choice[0] == 'p' else self.trainer.Candies
-		if self.buysellchoice == 'buy':
-			maxAmount = self.trainer.Money // self.itemchoice.BuyAmount
-		else:
-			maxAmount = trainerList[choice[1:]]
-
+		
+		self.itemchoice = next(i for i in self.fullitemlist if i.Id == int(choice[1:]))
+		self.amountchoice = 1
 		self.buysellview = BuySell(self.buysellchoice)
-		self.itemview = ItemChoice(self.ballList, self.potionList, self.candyList, self.buysellchoice == 'buy', choice)
-		self.amountview = AmountSelector(maxAmount)
+		self.itemview = ItemChoice(self.itemlist, [], [], self.buysellchoice == 'buy', choice)
 		self.add_item(self.buysellview)
 		self.add_item(self.itemview)
-		self.add_item(self.amountview)
-		currOwned = trainerList[choice[1:]] if choice[1:] in trainerList else 0
+
+		if self.buysellchoice != 'buy':
+			self.amountchoice = None
+			self.amountview = AmountSelector(self.trainer.EvolutionItems[choice[1:]])
+			self.add_item(self.amountview)
+		currOwned = self.trainer.EvolutionItems[choice[1:]] if choice[1:] in self.trainer.EvolutionItems else 0
 		await self.message.edit(content=f"Money: ${self.trainer.Money}\nYou currently have {currOwned} {self.itemchoice.Name}(s)", view=self)
 
 	async def AmountSelection(self, inter: discord.Interaction, choice: str):
@@ -92,11 +83,13 @@ class ShopView(discord.ui.View):
 		if self.buysellchoice and self.itemchoice and self.amountchoice:
 			buying = self.buysellchoice == 'buy'
 			trainerservice.ModifyItemList(
-				self.trainer.Pokeballs if self.itemchoice.__class__.__name__ == 'Pokeball' else self.trainer.Potions if self.itemchoice.__class__.__name__ == 'Potion' else self.trainer.Candies, 
+				self.trainer.EvolutionItems, 
 				str(self.itemchoice.Id), 
 				self.amountchoice if buying else (0 - self.amountchoice),
-				)
+			)
 			self.trainer.Money += (0 - (self.amountchoice)*self.itemchoice.BuyAmount) if buying else ((self.amountchoice)*self.itemchoice.SellAmount)
+			if buying:
+				self.trainer.Shop.ItemIds.remove(self.itemchoice.Id)
 			trainerservice.UpsertTrainer(self.trainer)
 
 			for item in self.children:

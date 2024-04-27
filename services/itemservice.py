@@ -1,6 +1,10 @@
 from dataaccess import eggda, itemda
 
 
+def GetAllItems():
+  return itemda.GetAllItems()
+
+
 def GetAllPokeballs():
   return itemda.GetAllPokeballs()
 
@@ -11,6 +15,10 @@ def GetAllPotions():
 
 def GetAllCandies():
   return itemda.GetAllCandies()
+
+
+def GetItem(id: int):
+  return next(i for i in itemda.GetAllItems() if i.Id == id)
 
 
 def GetPokeball(id: int):

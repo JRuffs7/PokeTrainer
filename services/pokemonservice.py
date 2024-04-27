@@ -1,14 +1,15 @@
 import uuid
 from math import ceil, floor
 from random import choice, uniform
-from models.Item import Pokeball
+from models.Item import Item, Pokeball
+from models.Trainer import Trainer
 from models.Zone import Zone
 from models.enums import SpecialSpawn
 
-from services import typeservice
+from services import itemservice, typeservice
 from dataaccess import pokemonda
-from globals import FemaleSign, MaleSign, ShinyOdds, ShinySign
-from models.Pokemon import PokemonData, Pokemon
+from globals import FemaleSign, MaleSign, ShinyOdds, ShinySign, to_dict
+from models.Pokemon import EvolveData, PokemonData, Pokemon
 
 #region Data
 
@@ -53,10 +54,10 @@ def GetStarterPokemon():
 def GetEvolutionLine(pokemonId: int, pokemonData: list[PokemonData] | None):
   pokemon = pokemonda.GetAllPokemon() if not pokemonData else pokemonData
   idArray: list[int] = [pokemonId]
-  preEvo = next((p for p in pokemon if pokemonId in p.EvolvesInto), None)
+  preEvo = next((p for p in pokemon if pokemonId in [e.EvolveID for e in p.EvolvesInto]), None)
   while preEvo is not None:
     idArray.append(preEvo.Id)
-    preEvo = next((p for p in pokemon if preEvo.Id in p.EvolvesInto), None)
+    preEvo = next((p for p in pokemon if preEvo.Id in [e.EvolveID for e in p.EvolvesInto]), None)
   return idArray
 
 def IsSpecialPokemon(pokemon: PokemonData):
@@ -75,7 +76,7 @@ def GetPokemonDisplayName(pokemon: Pokemon, data: PokemonData = None, showGender
 
 def GetOwnedPokemonDescription(pokemon: Pokemon, pkmnData: PokemonData = None):
   pkmn = GetPokemonById(pokemon.Pokemon_Id) if not pkmnData else pkmnData
-  return f"Lvl. {pokemon.Level} ({pokemon.CurrentExp}/{NeededExperience(pokemon.Level, pkmn.Rarity, len(pkmn.EvolvesInto) > 0)}xp | H:{pokemon.Height} | W:{pokemon.Weight} | Types: {'/'.join(pkmn.Types)}"
+  return f"Lvl. {pokemon.Level} ({pokemon.CurrentExp}/{NeededExperience(pokemon.Level, pkmn.Rarity, pkmn.EvolvesInto)}xp | H:{pokemon.Height} | W:{pokemon.Weight} | Types: {'/'.join(pkmn.Types)}"
 
 
 def GetPokemonImage(pokemon: Pokemon, pkmnData: PokemonData = None):
@@ -169,37 +170,68 @@ def CaptureSuccess(pokeball: Pokeball, pokemon: PokemonData, level: int):
 
 def AddExperience(trainerPokemon: Pokemon, pkmnData: PokemonData, exp: int):
   trainerPokemon.CurrentExp += exp
-  expNeeded = NeededExperience(trainerPokemon.Level, pkmnData.Rarity, len(pkmnData.EvolvesInto) > 0)
+  expNeeded = NeededExperience(trainerPokemon.Level, pkmnData.Rarity, pkmnData.EvolvesInto)
   while trainerPokemon.CurrentExp >= expNeeded and trainerPokemon.Level < 100:
     trainerPokemon.Level += 1
     trainerPokemon.CurrentExp -= expNeeded
-    expNeeded = NeededExperience(trainerPokemon.Level, pkmnData.Rarity, len(pkmnData.EvolvesInto) > 0)
+    expNeeded = NeededExperience(trainerPokemon.Level, pkmnData.Rarity, pkmnData.EvolvesInto)
 
   if trainerPokemon.Level == 100 and trainerPokemon.CurrentExp > expNeeded:
     excess = trainerPokemon.CurrentExp - expNeeded
     trainerPokemon.CurrentExp = expNeeded
     return excess
 
-def NeededExperience(level: int, rarity: int, canEvolve: bool):
+def NeededExperience(level: int, rarity: int, evolveData: list[EvolveData]):
+  evLevels = [e.EvolveLevel for e in evolveData if e.EvolveLevel]
+  nextEvolve = min(evLevels) if evLevels else None
   if rarity == 1:
-    return 50 if level < 20 else 150 if level < 35 else 250
+    if nextEvolve:
+      return 50 if level < nextEvolve else 150 if level < (nextEvolve*1.5) else 250
+    return 50 if level < 25 else 150 if level < 35 else 250
   if rarity == 2:
+    if nextEvolve:
+      return 100 if level < nextEvolve else 250
     return 100 if level < 30 else 250
-  if rarity == 3 and canEvolve:
+  if rarity == 3 and evolveData:
+    if nextEvolve:
+      return 150 if level < nextEvolve else 250
     return 150 if level < 35 else 250
   if rarity == 4 or rarity == 5:
     return 250
   #if (rarity == 3 and not canEvolve) or rarity >= 8:
   return 200
 
-def CanPokemonEvolve(pkmn: PokemonData, level: int):
-  if pkmn.Rarity == 1 and len(pkmn.EvolvesInto) >= 1:
-    return level >= 20
-  elif pkmn.Rarity == 2 and len(pkmn.EvolvesInto) >= 1:
-    return level >= 30
-  elif pkmn.Rarity == 3 and len(pkmn.EvolvesInto) >= 1:
-    return level >= 35
+def CanPokemonEvolve(pokemon: Pokemon, pkmn: PokemonData, items: list[Item]):
+  for evData in pkmn.EvolvesInto:
+    if evData.EvolveLevel and pokemon.Level < evData.EvolveLevel:
+      continue
+    if evData.GenderNeeded and ((evData.GenderNeeded == 1 and not pokemon.IsFemale) or (evData.GenderNeeded == 2 and pokemon.IsFemale)):
+      continue
+    if evData.ItemNeeded and (evData.ItemNeeded not in [i.Id for i in items]):
+      continue
+    return True
   return False
+
+def AvailableEvolutions(pokemon: Pokemon, pkmnData: PokemonData, items: list[Item]):
+  evolveIdList = []
+  for evData in pkmnData.EvolvesInto:
+    if evData.EvolveLevel and pokemon.Level < evData.EvolveLevel:
+      continue
+    if evData.GenderNeeded and ((evData.GenderNeeded == 1 and not pokemon.IsFemale) or (evData.GenderNeeded == 2 and pokemon.IsFemale)):
+      continue
+    if evData.ItemNeeded and (evData.ItemNeeded not in [i.Id for i in items]):
+      continue
+    evolveIdList.append(evData.EvolveID)
+  return evolveIdList
+
+def GetRandomEvolveList(pkmn: PokemonData, evolveIds: list[int]):
+  levelEvolves = [p.EvolveID for p in pkmn.EvolvesInto if p.EvolveLevel and p.EvolveID in evolveIds]
+  if len(levelEvolves) > 1:
+    return levelEvolves
+  itemEvolves = [p.EvolveID for p in pkmn.EvolvesInto if p.ItemNeeded and p.EvolveID in evolveIds]
+  if len(itemEvolves) > 1:
+    return itemEvolves
+  return None
 
 def EvolvePokemon(initial: Pokemon, evolve: PokemonData):
   spawn = GenerateSpawnPokemon(evolve)
@@ -214,17 +246,17 @@ def EvolvePokemon(initial: Pokemon, evolve: PokemonData):
       'CurrentExp': initial.CurrentExp
     })
 
-def GetPokemonThatCanEvolve(ownedPokemon: list[Pokemon]):
+def GetPokemonThatCanEvolve(trainer: Trainer, ownedPokemon: list[Pokemon]):
   if not ownedPokemon:
     return None
   dataList = GetPokemonByIdList([p.Pokemon_Id for p in ownedPokemon])
-  return [p for p in ownedPokemon if CanPokemonEvolve(next(pk for pk in dataList if pk.Id == p.Pokemon_Id), p.Level)]
+  return [p for p in ownedPokemon if CanPokemonEvolve(p, next(pk for pk in dataList if pk.Id == p.Pokemon_Id), [itemservice.GetItem(int(i)) for i in trainer.EvolutionItems if trainer.EvolutionItems[i] > 0])]
 
-def SimulateLevelGain(currLevel: int, currExp: int, rarity: int, canEvolve: bool, exp: int):
+def SimulateLevelGain(currLevel: int, currExp: int, rarity: int, evData: list[EvolveData], exp: int):
   simPokemon = Pokemon({'Level': currLevel, 'CurrentExp': currExp})
-  simData = PokemonData({'Rarity': rarity, 'EvolvesInto': [1] if canEvolve else []})
+  simData = PokemonData({'Rarity': rarity, 'EvolvesInto': to_dict(evData)})
   AddExperience(simPokemon, simData, exp)
-  return simPokemon.Level - currLevel
+  return simPokemon.Level
 
 #endregion
 

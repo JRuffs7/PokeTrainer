@@ -1,3 +1,13 @@
+class EvolveData:
+  EvolveID: int
+  EvolveLevel: int|None
+  GenderNeeded: int|None
+  ItemNeeded: int|None
+
+  def __init__(self, dict):
+    vars(self).update(dict)
+
+
 class PokemonData:
   #Form Properties
   Id: int
@@ -7,7 +17,8 @@ class PokemonData:
   #Species Properties
   CaptureRate: int
   Color: str
-  EvolvesInto: list[int]
+  EvolvesInto: list[EvolveData]
+  RandomEvolve: bool
   FemaleChance: int | None
   Generation: int
   Name: str
@@ -31,6 +42,7 @@ class PokemonData:
 
   def __init__(self, dict):
     vars(self).update(dict)
+    self.EvolvesInto = [EvolveData(e) for e in self.EvolvesInto]
 
 
 class Pokemon:

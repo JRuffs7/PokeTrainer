@@ -77,14 +77,14 @@ class CandyView(discord.ui.View):
 					pokemonservice.AddExperience(
 						self.pokemonchoice, 
 						pkmnData, 
-						(pokemonservice.NeededExperience(self.pokemonchoice.Level, pkmnData.Rarity, len(pkmnData.EvolvesInto) > 0) - self.pokemonchoice.CurrentExp))
+						(pokemonservice.NeededExperience(self.pokemonchoice.Level, pkmnData.Rarity, pkmnData.EvolvesInto) - self.pokemonchoice.CurrentExp))
 					num += 1
 				message = f"{pokemonservice.GetPokemonDisplayName(self.pokemonchoice, pkmnData)} gained {num} level(s)."
 				trainerservice.ModifyItemList(self.trainer.Candies, str(self.candychoice.Id), (0-num))
 			else:
 				num = 0
 				while num < self.amountchoice and self.pokemonchoice.Level < 100:
-					nextLevel = pokemonservice.NeededExperience(self.pokemonchoice.Level, pkmnData.Rarity, len(pkmnData.EvolvesInto) > 0) - self.pokemonchoice.CurrentExp
+					nextLevel = pokemonservice.NeededExperience(self.pokemonchoice.Level, pkmnData.Rarity, pkmnData.EvolvesInto) - self.pokemonchoice.CurrentExp
 					numToUse = ceil(nextLevel/self.candychoice.Experience)
 					numToUse = self.amountchoice - num if numToUse > self.amountchoice - num else numToUse
 					pokemonservice.AddExperience(
