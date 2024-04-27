@@ -52,7 +52,8 @@ EphemeralCommands = [
     'trade',
     'daycare',
     'battlesim',
-    'specialshop'
+    'specialshop',
+    'inventory'
 ]
 
 

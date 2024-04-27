@@ -1,6 +1,7 @@
 from datetime import datetime
 from discord import Member, app_commands, Interaction
 from discord.ext import commands
+from commands.views.Pagination.InventoryView import InventoryView
 from globals import freemasterball
 from commands.autofills.autofills import autofill_nonteam, autofill_zones
 from commands.views.Pagination.EggView import EggView
@@ -116,6 +117,15 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
     else:
       await discordservice_trainer.PrintChangeZone(inter, 1, ['/'.join(zoneTypes), zoneData.Name])
     
+
+  @app_commands.command(name="inventory",
+                        description="Displays trainer inventory.")
+  @method_logger
+  @trainer_check
+  async def inventory(self,
+                    interaction: Interaction):
+    trainer = trainerservice.GetTrainer(interaction.guild_id, interaction.user.id)
+    return await InventoryView(interaction, trainer).send()
 
   #endregion
 

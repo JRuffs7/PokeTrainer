@@ -1,50 +1,48 @@
+from datetime import UTC, datetime
 from models.Item import Potion
 from models.Trainer import Trainer
 from services import itemservice, pokemonservice, gymservice, zoneservice
 from services.utility import discordservice
 from discord import Interaction, Member
-from globals import HelpColor, TrainerColor
+from globals import HelpColor, ShortDateFormat, TrainerColor
 
 responseFile = "files/responsefiles/trainerresponses.json"
 
 async def PrintTrainer(interaction: Interaction, trainer: Trainer, targetUser: Member):
 	#Stats Section
+	healthString = f'HP: {trainer.Health}'
+	zoneString = f'Current Zone: **{zoneservice.GetZone(trainer.CurrentZone).Name}**'
+	if not trainer.LastDaily or datetime.strptime(trainer.LastDaily, ShortDateFormat).date() < datetime.now(UTC).date():
+		dailyString = f'Daily Reward: **Ready**'
+	else:
+		dailyString = 'Daily Reward: On cooldown'
+	if not trainer.Shop or datetime.strptime(trainer.Shop.LastRecycle, ShortDateFormat).date() < datetime.now(UTC).date():
+		shopString = f'Sp. Shop Refresh: **Ready**'
+	else:
+		shopString = 'Sp. Shop Refresh: On cooldown'
+
+	newLine = '\n'
+	stats = f'__Trainer Stats__\n{newLine.join([healthString, zoneString, dailyString, shopString])}'
+
+	#Dex Section
 	totalPkmn = pokemonservice.GetAllPokemon()
 	totalPkdx = len(set(p.PokedexId for p in totalPkmn))
-	totalBadges = len(gymservice.GetAllBadges())
-
-	healthString = f'HP: {trainer.Health}'
 	pokedexString = f'Pokedex: {len(trainer.Pokedex)}/{totalPkdx} ({round((len(trainer.Pokedex)*100)/totalPkdx)}%)'
 	formdexString = f'Form Dex: {len(trainer.Formdex)}/{len(totalPkmn)} ({round((len(trainer.Formdex)*100)/len(totalPkmn))}%)'
 	shinydexString = f'Shiny Dex: {len(trainer.Shinydex)}/{len(totalPkmn)} ({round((len(trainer.Shinydex)*100)/len(totalPkmn))}%)'
-	badgeString = f'Gym Badges: {len(trainer.Badges)}/{totalBadges}'
-	zoneString = f'Current Zone: **{zoneservice.GetZone(trainer.CurrentZone).Name}**'
+	badgeString = f'Gym Badges: {len(trainer.Badges)}/{len(gymservice.GetAllBadges())}'
+	dex = f'__Completion__\n{newLine.join([pokedexString, formdexString, shinydexString, badgeString])}'
 
-	newLine = '\n'
-	stats = f'__Trainer Stats__\n{newLine.join([healthString, pokedexString, formdexString, shinydexString, badgeString, zoneString])}'
-
-	#Pokeball Section
-	pkblString = '\n'.join(f"{itemservice.GetPokeball(int(p)).Name}: {trainer.Pokeballs[p]}" for p in list(sorted(trainer.Pokeballs, key=lambda x: x)) if trainer.Pokeballs[p])
-	pkbl = f'{pkblString}' if pkblString else ''
-
-	#Potion Section
-	ptnString = '\n'.join(f"{itemservice.GetPotion(int(p)).Name}: {trainer.Potions[p]}" for p in list(sorted(trainer.Potions, key=lambda x: x)) if trainer.Potions[p])
-	ptn = f'{ptnString}' if ptnString else ''
-
-	#Candy Section
-	cndString = '\n'.join(f"{itemservice.GetCandy(int(c)).Name}: {trainer.Candies[c]}" for c in list(sorted(trainer.Candies, key=lambda x: x)) if trainer.Candies[c])
-	candy = f'{cndString}' if cndString else ''
-
-
-	newLine = '\n\n'
-	inventory = f"__Inventory__\n{newLine.join(s for s in [pkbl,ptn,candy] if s)}\n\n${trainer.Money}"
+	#Other Section
+	eggString = f'Eggs: {len(trainer.Eggs)}/5'
+	daycareString = f'Daycare: {len(trainer.Daycare)}/2'
+	other = f'__Other__\n{newLine.join([eggString, daycareString])}'
 
 	embed = discordservice.CreateEmbed(
 			f"{targetUser.display_name}'s Trainer Info", 
-			f"{stats}\n\n{inventory}", 
+			f"{stats}\n\n{dex}\n\n{other}", 
 			TrainerColor)
 	embed.set_thumbnail(url=targetUser.display_avatar.url)
-
 	return await interaction.followup.send(embed=embed)
 
 async def PrintUsePotion(interaction: Interaction, potion: Potion | None, result: tuple[bool, int]):
