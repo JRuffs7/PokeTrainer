@@ -1,3 +1,4 @@
-- You can now **/nickname** your Pokemon!
-- When viewing **/mypokemon**, the *name* sort will sort by nickname
+- You can now **/nickname** your Pokemon! Check out **/help nickname** for more details
+- When viewing **/mypokemon**, the *name* sort will use a Pokemon's nickname if they have one
+- Add two new filters to **/mypokemon** for specific *Pokemon* and *Type*. Check out **/help mypokemon** for more details
 - Behind-the-scenes architecture changes to determine hidden/public commands

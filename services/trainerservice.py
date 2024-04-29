@@ -248,12 +248,17 @@ def TryHatchEgg(trainer: Trainer, eggId: str):
 
 #region Pokedex
 
-def GetPokedexList(trainer: Trainer, orderString: str, shiny: int):
+def GetPokedexList(trainer: Trainer, orderString: str, shiny: int, pokemonID: int|None, type: str|None):
   pokemonList = [p for p in trainer.OwnedPokemon]
+  if pokemonID:
+    pokemonList = [p for p in pokemonList if p.Pokemon_Id == pokemonID]
   if shiny == 1:
     pokemonList = [p for p in pokemonList if p.IsShiny]
 
   pkmnDataList = pokemonservice.GetPokemonByIdList([p.Pokemon_Id for p in pokemonList])
+  if type:
+    pokemonList = [p for p in pokemonList if type.lower() in [t.lower() for t in next(po for po in pkmnDataList if po.Id == p.Pokemon_Id).Types]]
+
   match orderString:
     case "height":
       if shiny == 2:

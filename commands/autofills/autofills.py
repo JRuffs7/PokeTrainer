@@ -1,5 +1,5 @@
 from discord import Interaction, app_commands
-from services import itemservice, pokemonservice, trainerservice, zoneservice
+from services import itemservice, pokemonservice, trainerservice, typeservice, zoneservice
 
 
 async def autofill_pokemon(inter: Interaction, current: str):
@@ -13,6 +13,16 @@ async def autofill_pokemon(inter: Interaction, current: str):
 			break
 	return data
 
+async def autofill_types(inter: Interaction, current: str):
+	choiceList = []
+	searchList = typeservice.GetAllTypes()
+	searchList.sort(key=lambda x: x.Name)
+	for type in searchList:
+		if current.lower() in type.Name.lower():
+				choiceList.append(app_commands.Choice(name=type.Name, value=type.Name))
+				if len(choiceList) == 25:
+					break
+	return choiceList
 
 async def autofill_potions(inter: Interaction, current: str):
 	data: list[app_commands.Choice] = []

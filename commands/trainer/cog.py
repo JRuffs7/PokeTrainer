@@ -3,7 +3,7 @@ from discord import Member, app_commands, Interaction
 from discord.ext import commands
 from commands.views.Pagination.InventoryView import InventoryView
 from globals import freemasterball
-from commands.autofills.autofills import autofill_nonteam, autofill_zones
+from commands.autofills.autofills import autofill_nonteam, autofill_owned, autofill_types, autofill_zones
 from commands.views.Pagination.EggView import EggView
 from commands.views.Pagination.MyPokemonView import MyPokemonView
 from commands.views.Selection.TeamSelectorView import TeamSelectorView
@@ -207,6 +207,8 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
 
   @app_commands.command(name="mypokemon",
                         description="Displays you or the target users current Pokedex.")
+  @app_commands.autocomplete(pokemon=autofill_owned)
+  @app_commands.autocomplete(type=autofill_types)
   @app_commands.choices(images=[
       app_commands.Choice(name="Yes", value=1)
   ])
@@ -224,12 +226,14 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
   @method_logger(False)
   @trainer_check
   async def mypokemon(self, inter: Interaction,
+                    pokemon: int | None,
+                    type: str | None,
                     images: app_commands.Choice[int] | None,
                     order: app_commands.Choice[str] | None,
                     shiny: app_commands.Choice[int] | None,
                     user: Member | None):
     trainer = trainerservice.GetTrainer(inter.guild_id, user.id if user else inter.user.id)
-    data = trainerservice.GetPokedexList(trainer, order.value if order else 'default', shiny.value if shiny else 0)
+    data = trainerservice.GetPokedexList(trainer, order.value if order else 'default', shiny.value if shiny else 0, pokemon, type)
     if not data:
       return await discordservice_trainer.PrintMyPokemon(inter)
     sortString = f'Sort: {order.name}' if order else ''
