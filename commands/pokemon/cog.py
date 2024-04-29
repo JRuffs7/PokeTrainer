@@ -2,7 +2,7 @@ import logging
 from discord import Member, app_commands, Interaction
 from discord.ext import commands
 from typing import List
-from commands.autofills.autofills import autofill_nonteam, autofill_pokemon
+from commands.autofills.autofills import autofill_nonteam, autofill_owned, autofill_pokemon
 from commands.views.BattleSimView import BattleSimView
 from commands.views.Pagination.DaycareView import DaycareView
 from commands.views.Pagination.DexView import DexView
@@ -10,6 +10,7 @@ from commands.views.Pagination.PokemonSearchView import PokemonSearchView
 from commands.views.Selection.CandyView import CandyView
 from commands.views.Selection.DaycareAddView import DaycareAddView
 from commands.views.Selection.HatchView import HatchView
+from commands.views.Selection.NicknameView import NicknameView
 from commands.views.SpawnPokemonView import SpawnPokemonView
 import discordbot
 
@@ -32,7 +33,7 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
     
   @app_commands.command(name="spawn",
                         description="Spawn an Pokemon to capture or fight.")
-  @method_logger
+  @method_logger(True)
   @trainer_check
   async def spawn(self, inter: Interaction):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
@@ -48,7 +49,7 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
 
   @app_commands.command(name="hatch",
                         description="Hatch one or more of your eggs.")
-  @method_logger
+  @method_logger(True)
   @trainer_check
   async def hatch(self, inter: Interaction):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
@@ -91,7 +92,7 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
       app_commands.Choice(name="Type", value="type")
   ])
   @app_commands.autocomplete(filter=filter_autocomplete)
-  @method_logger
+  @method_logger(True)
   async def pokeinfo(self, inter: Interaction, search: app_commands.Choice[str], filter: str):
     if search.value == 'color':
       await self.PokeInfoColor(inter, filter)
@@ -124,7 +125,7 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
       app_commands.Choice(name="Shiny Dex", value=2)
   ])
   @app_commands.autocomplete(pokemon=autofill_pokemon)
-  @method_logger
+  @method_logger(False)
   @trainer_check
   async def pokedex(self, inter: Interaction, user: Member|None, dex: int = None, pokemon: int = None):
     trainer = trainerservice.GetTrainer(inter.guild_id, user.id if user else inter.user.id)
@@ -163,7 +164,7 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
   ])
   @app_commands.autocomplete(attacker=autofill_pokemon)
   @app_commands.autocomplete(defender=autofill_pokemon)
-  @method_logger
+  @method_logger(True)
   async def battlesim(self, inter: Interaction, battle: int, attacker: int, defender: int):
     attackMon = pokemonservice.GetPokemonById(attacker)
     defendMon = pokemonservice.GetPokemonById(defender)
@@ -172,6 +173,17 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
     if not pokemonservice.CanSpawn(defendMon) and battle == 1:
       return await discordservice_pokemon.PrintBattleSimResponse(inter, 1, [defendMon.Name])
     await BattleSimView(inter, attackMon, defendMon, battle == 0).send()
+
+
+  @app_commands.command(name="nickname",
+                        description="Nickname one of your Pokemon.")
+  @app_commands.autocomplete(pokemon=autofill_owned)
+  @method_logger(True)
+  @trainer_check
+  async def nickname(self, inter: Interaction, pokemon: int):
+    trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
+    pkmnList = [p for p in trainer.OwnedPokemon if p.Pokemon_Id == pokemon]
+    await NicknameView(inter, trainer, pkmnList).send()
 
   #endregion
 
@@ -194,7 +206,7 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
   @app_commands.command(name="evolve",
                         description="Evolve your Pokemon.")
   @app_commands.autocomplete(pokemon=autofill_evolve)
-  @method_logger
+  @method_logger(True)
   @trainer_check
   async def evolve(self, inter: Interaction, pokemon: int | None):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
@@ -223,7 +235,7 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
   @app_commands.command(name="givecandy",
                         description="Give a candy to a Pokemon.")
   @app_commands.autocomplete(pokemon=autofill_candy)
-  @method_logger
+  @method_logger(True)
   @trainer_check
   async def givecandy(self, inter: Interaction, pokemon: int):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
@@ -241,7 +253,7 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
   @app_commands.command(name="daycare",
                         description="Add to or check on your daycare.")
   @app_commands.autocomplete(pokemon=autofill_nonteam)
-  @method_logger
+  @method_logger(True)
   @trainer_check
   async def daycare(self, inter: Interaction, pokemon: int|None):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)

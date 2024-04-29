@@ -14,7 +14,7 @@ class ShopCommands(commands.Cog, name="ShopCommands"):
 
   @app_commands.command(name="shop",
                         description="Buy or sell items.")
-  @method_logger
+  @method_logger(True)
   @trainer_check
   async def shop(self, inter: Interaction):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
@@ -23,7 +23,7 @@ class ShopCommands(commands.Cog, name="ShopCommands"):
 
   @app_commands.command(name="specialshop",
                         description="Special store for evolution items.")
-  @method_logger
+  @method_logger(True)
   @trainer_check
   async def specialshop(self, inter: Interaction):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)

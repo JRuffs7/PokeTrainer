@@ -33,7 +33,7 @@ class HelpCommands(commands.Cog, name="HelpCommands"):
       name="help",
       description="Sends a full help doc as a DM, or single command in the channel")
   @app_commands.autocomplete(command=command_autofill)
-  @method_logger
+  @method_logger(True)
   async def help(self, 
                  inter: Interaction, 
                  command: str | None):

@@ -41,5 +41,5 @@ class ReleaseView(discord.ui.View):
 			await inter.followup.send(content=f"You have released {len(self.pokemonchoices)} {pokemon}",ephemeral=True)
 
 	async def send(self):
-		await self.interaction.followup.send(content="Choose Pokemon to release", view=self, ephemeral=True)
+		await self.interaction.followup.send(view=self)
 		self.message = await self.interaction.original_response()

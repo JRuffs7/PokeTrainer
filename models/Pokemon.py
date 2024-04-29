@@ -1,3 +1,6 @@
+from dataclasses import dataclass, fields
+
+
 class EvolveData:
   EvolveID: int
   EvolveLevel: int|None
@@ -45,15 +48,23 @@ class PokemonData:
     self.EvolvesInto = [EvolveData(e) for e in self.EvolvesInto]
 
 
+@dataclass
 class Pokemon:
-  Id: str
-  Pokemon_Id: int
-  Height: float
-  Weight: float
-  IsShiny: bool
-  IsFemale: bool|None
-  Level: int
-  CurrentExp: int
+  Id: str = ''
+  Pokemon_Id: int = 0
+  Nickname: str|None = None
+  Height: float = 0
+  Weight: float = 0
+  IsShiny: bool = False
+  IsFemale: bool|None = None
+  Level: int = 0
+  CurrentExp: int = 0
 
-  def __init__(self, dict):
-    vars(self).update(dict)
+  @classmethod
+  def from_dict(cls, dict):
+    field_names = {field.name for field in fields(cls)}
+    returnObj = cls(**{k: v for k, v in dict.items() if k in field_names})
+    return returnObj
+
+  # def __init__(self, dict):
+  #   vars(self).update(dict)

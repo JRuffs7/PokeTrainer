@@ -267,9 +267,9 @@ def GetPokedexList(trainer: Trainer, orderString: str, shiny: int):
         pokemonList.sort(key=lambda x: (next(p for p in pkmnDataList if p.Id == x.Pokemon_Id).PokedexId,x.Pokemon_Id))
     case "name":
       if shiny == 2:
-        pokemonList.sort(key=lambda x: (-x.IsShiny,next(p for p in pkmnDataList if p.Id == x.Pokemon_Id).Name))
+        pokemonList.sort(key=lambda x: (-x.IsShiny,(x.Nickname if x.Nickname else next(p for p in pkmnDataList if p.Id == x.Pokemon_Id).Name)))
       else:
-        pokemonList.sort(key=lambda x: next(p for p in pkmnDataList if p.Id == x.Pokemon_Id).Name)
+        pokemonList.sort(key=lambda x: (x.Nickname if x.Nickname else next(p for p in pkmnDataList if p.Id == x.Pokemon_Id).Name))
     case "weight":
       if shiny == 2:
         pokemonList.sort(key=lambda x: (-x.IsShiny,x.Weight))

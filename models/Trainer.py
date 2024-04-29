@@ -30,7 +30,7 @@ class Trainer:
   def from_dict(cls, dict):
     field_names = {field.name for field in fields(cls)}
     returnObj = cls(**{k: v for k, v in dict.items() if k in field_names})
-    returnObj.OwnedPokemon = [Pokemon(p) for p in returnObj.OwnedPokemon]
+    returnObj.OwnedPokemon = [Pokemon.from_dict(p) for p in returnObj.OwnedPokemon]
     returnObj.Eggs = [TrainerEgg.from_dict(e) for e in returnObj.Eggs]
     returnObj.Shop = SpecialShop(returnObj.Shop) if returnObj.Shop else None
     return returnObj

@@ -24,7 +24,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
 
   @app_commands.command(name="trainer",
                         description="Displays trainer info.")
-  @method_logger
+  @method_logger(False)
   @trainer_check
   async def trainer(self,
                         interaction: Interaction,
@@ -49,7 +49,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
   @app_commands.command(name="usepotion",
                         description="Use a potion to restore trainer health.")
   @app_commands.autocomplete(potion=autofill_usepotion)
-  @method_logger
+  @method_logger(True)
   @trainer_check
   async def usepotion(self, inter: Interaction, potion: int):
     if potion not in [p.Id for p in itemservice.GetAllPotions()]:
@@ -63,7 +63,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
 
   @app_commands.command(name="daily",
                         description="Claim your daily reward.")
-  @method_logger
+  @method_logger(False)
   @trainer_check
   async def daily(self, interaction: Interaction):
     trainer = trainerservice.GetTrainer(interaction.guild_id, interaction.user.id)
@@ -81,7 +81,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
   @app_commands.choices(images=[
       app_commands.Choice(name="Yes", value=1)
   ])
-  @method_logger
+  @method_logger(False)
   @trainer_check
   async def myeggs(self, inter: Interaction,
                    images: app_commands.Choice[int] | None,
@@ -100,7 +100,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
   @app_commands.command(name="changezone",
                         description="Change a zone to spawn specific types.")
   @app_commands.autocomplete(zone=autofill_zones)
-  @method_logger
+  @method_logger(True)
   @trainer_check
   async def changezone(self, inter: Interaction, zone: int):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
@@ -120,7 +120,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
 
   @app_commands.command(name="inventory",
                         description="Displays trainer inventory.")
-  @method_logger
+  @method_logger(True)
   @trainer_check
   async def inventory(self,
                     interaction: Interaction):
@@ -134,7 +134,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
   @app_commands.command(name="modifyteam",
                         description="Add a specified Pokemon into a team slot or modify existing team.")
   @app_commands.autocomplete(pokemon=autofill_nonteam)
-  @method_logger
+  @method_logger(True)
   @trainer_check
   async def modifyteam(self, inter: Interaction, pokemon: int | None):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
@@ -152,7 +152,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
 
   @app_commands.command(name="myteam",
                         description="View your current team.")
-  @method_logger
+  @method_logger(True)
   @trainer_check
   async def myteam(self, inter: Interaction):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
@@ -180,7 +180,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
   @app_commands.choices(images=[
       app_commands.Choice(name="Yes", value=1)
   ])
-  @method_logger
+  @method_logger(False)
   @trainer_check
   async def badges(self, inter: Interaction, 
                    region: app_commands.Choice[int] | None, 
@@ -221,7 +221,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
       app_commands.Choice(name="Shiny Only", value=1),
       app_commands.Choice(name="Shiny First", value=2)
   ])
-  @method_logger
+  @method_logger(False)
   @trainer_check
   async def mypokemon(self, inter: Interaction,
                     images: app_commands.Choice[int] | None,
@@ -249,7 +249,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
   @app_commands.command(name="release",
                         description="Choose a Pokemon to release.")
   @app_commands.autocomplete(pokemon=autofill_nonteam)
-  @method_logger
+  @method_logger(True)
   @trainer_check
   async def release(self, inter: Interaction,
                     pokemon: int):
@@ -279,7 +279,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
   @app_commands.command(name="starter",
                         description="Choose a Pokemon to start your trainer!")
   @app_commands.autocomplete(pokemon=starter_autocomplete)
-  @method_logger
+  @method_logger(False)
   async def starter(self, inter: Interaction, pokemon: int):
     if pokemon not in [p.Id for p in pokemonservice.GetStarterPokemon()]:
       return await discordservice_trainer.PrintStarter(inter, None, inter.guild.name)

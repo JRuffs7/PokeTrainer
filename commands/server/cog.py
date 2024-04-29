@@ -12,7 +12,7 @@ class ServerCommands(commands.Cog, name="ServerCommands"):
 
   @app_commands.command(name="register",
                         description="Register your server for PokeTrainer events. Current channel will be used for any events.")
-  @method_logger
+  @method_logger(True)
   @is_admin
   async def register(self, inter: Interaction):
     if inter.guild:
@@ -21,7 +21,7 @@ class ServerCommands(commands.Cog, name="ServerCommands"):
 
   @app_commands.command(name="server",
                         description="(Admin only) Display server details.")
-  @method_logger
+  @method_logger(True)
   @is_admin
   @server_check
   async def server(self, inter: Interaction):
@@ -32,7 +32,7 @@ class ServerCommands(commands.Cog, name="ServerCommands"):
       name="swapchannel",
       description=
       "(Admin only) Toggles the current channel for PokeTrainer spawns")
-  @method_logger
+  @method_logger(True)
   @is_admin
   @server_check
   async def swapchannel(self, inter: Interaction):
@@ -45,7 +45,7 @@ class ServerCommands(commands.Cog, name="ServerCommands"):
       name="unregister",
       description="(Admin only) Stop PokeTrainer from operating in your server"
   )
-  @method_logger
+  @method_logger(True)
   @is_admin
   @server_check
   async def unregister(self, inter: Interaction):
@@ -58,7 +58,7 @@ class ServerCommands(commands.Cog, name="ServerCommands"):
       name="invite",
       description="Invite this bot to another server!"
   )
-  @method_logger
+  @method_logger(False)
   async def invite(self, inter: Interaction):
     return await discordservice_server.PrintInviteResponse(inter)
 

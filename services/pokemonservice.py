@@ -67,11 +67,15 @@ def IsSpecialPokemon(pokemon: PokemonData):
 
 #region Display
 
-def GetPokemonDisplayName(pokemon: Pokemon, data: PokemonData = None, showGender: bool = True, showShiny: bool = True):
-  pkmn = GetPokemonById(pokemon.Pokemon_Id) if not data else data
+def GetPokemonDisplayName(pokemon: Pokemon, pkmn: PokemonData = None, showGender: bool = True, showShiny: bool = True):
+  if not pokemon.Nickname:
+    data = GetPokemonById(pokemon.Pokemon_Id) if not pkmn else pkmn
+    name = data.Name
+  else:
+    name = pokemon.Nickname
   genderEmoji = f"{f' {FemaleSign}' if pokemon.IsFemale == True else f' {MaleSign}' if pokemon.IsFemale == False else ''}" if showGender else ""
   shinyEmoji = f"{f'{ShinySign}' if pokemon.IsShiny else ''}" if showShiny else ""
-  return f"{pkmn.Name}{genderEmoji}{shinyEmoji}"
+  return f"{name}{genderEmoji}{shinyEmoji}"
 
 
 def GetOwnedPokemonDescription(pokemon: Pokemon, pkmnData: PokemonData = None):
@@ -125,7 +129,7 @@ def GenerateSpawnPokemon(pokemon: PokemonData, level: int | None = None):
   weight = round(
       uniform((pokemon.Weight * 0.9), (pokemon.Weight * 1.1)) / 10, 2)
   female = choice(range(0, 100)) < int(pokemon.FemaleChance / 8 * 100) if pokemon.FemaleChance >= 0 else None
-  return Pokemon({
+  return Pokemon.from_dict({
       'Id': uuid.uuid4().hex,
       'Pokemon_Id': pokemon.Id,
       'Height': height if height > 0.00 else 0.01,
@@ -235,9 +239,10 @@ def GetRandomEvolveList(pkmn: PokemonData, evolveIds: list[int]):
 
 def EvolvePokemon(initial: Pokemon, evolve: PokemonData):
   spawn = GenerateSpawnPokemon(evolve)
-  return Pokemon({
+  return Pokemon.from_dict({
       'Id': initial.Id,
       'Pokemon_Id': evolve.Id,
+      'Nickname': initial.Nickname,
       'Height': spawn.Height,
       'Weight': spawn.Weight,
       'IsShiny': initial.IsShiny,
@@ -253,7 +258,7 @@ def GetPokemonThatCanEvolve(trainer: Trainer, ownedPokemon: list[Pokemon]):
   return [p for p in ownedPokemon if CanPokemonEvolve(p, next(pk for pk in dataList if pk.Id == p.Pokemon_Id), [itemservice.GetItem(int(i)) for i in trainer.EvolutionItems if trainer.EvolutionItems[i] > 0])]
 
 def SimulateLevelGain(currLevel: int, currExp: int, rarity: int, evData: list[EvolveData], exp: int):
-  simPokemon = Pokemon({'Level': currLevel, 'CurrentExp': currExp})
+  simPokemon = Pokemon.from_dict({'Level': currLevel, 'CurrentExp': currExp})
   simData = PokemonData({'Rarity': rarity, 'EvolvesInto': to_dict(evData)})
   AddExperience(simPokemon, simData, exp)
   return simPokemon.Level

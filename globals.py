@@ -29,34 +29,6 @@ WhiteCircle = "⚪"
 DateFormat = '%m/%d/%y %H:%M:%S'
 ShortDateFormat = '%m/%d/%Y'
 
-EphemeralCommands = [
-    'myteam',
-    'shop',
-    'help',
-    'register',
-    'server',
-    'swapchannel',
-    'unregister',
-    'modifyteam',
-    'release',
-    'spawn',
-    'usepotion',
-    'gymbattle',
-    'pokeinfo',
-    'gyminfo',
-    'evolve',
-    'hatch',
-    'givecandy',
-    'changezone',
-    'invite',
-    'trade',
-    'daycare',
-    'battlesim',
-    'specialshop',
-    'inventory'
-]
-
-
 AdminList = [
   215624857793069056
 ]
