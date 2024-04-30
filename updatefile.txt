@@ -1,4 +1,1 @@
-- Add two new filters to **/mypokemon** for *Legendary* and *Gender*. Check out **/help mypokemon** for more details
-- Fixed a bug for stat comparison events
-- Re-architecture around event submission
-NOTE: If your **/mypokemon** command is failing after this update, restart discord and it should be fixed.
+- You can now view all items in the **/shop** and **/specialshop** regardless if you can afford them

@@ -34,7 +34,7 @@ class SpecialShopView(discord.ui.View):
 		self.itemchoice = None
 		self.amountchoice = None
 		if choice == 'buy':
-			self.itemlist = [i for i in self.fullitemlist if i.Id in self.trainer.Shop.ItemIds and i.BuyAmount <= self.trainer.Money]
+			self.itemlist = [i for i in self.fullitemlist if i.Id in self.trainer.Shop.ItemIds]
 		else:
 			self.itemlist = [itemservice.GetItem(int(i)) for i in self.trainer.EvolutionItems if self.trainer.EvolutionItems[i] > 0]
 
@@ -58,6 +58,9 @@ class SpecialShopView(discord.ui.View):
 		self.itemview = ItemChoice(self.itemlist, [], [], self.buysellchoice == 'buy', choice)
 		self.add_item(self.buysellview)
 		self.add_item(self.itemview)
+
+		if self.buysellchoice == 'buy' and self.itemchoice.BuyAmount > self.trainer.Money:
+			return await self.message.edit(content=f"Money: ${self.trainer.Money}\nYou cannot afford this item.", view=self)
 
 		if self.buysellchoice != 'buy':
 			self.amountchoice = None

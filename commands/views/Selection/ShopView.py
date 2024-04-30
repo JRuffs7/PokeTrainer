@@ -36,8 +36,8 @@ class ShopView(discord.ui.View):
 		self.itemchoice = None
 		self.amountchoice = None
 		if choice == 'buy':
-			self.ballList = [b for b in self.fullballList if b.BuyAmount and b.BuyAmount <= self.trainer.Money]
-			self.potionList = [p for p in self.fullptnList if p.BuyAmount and p.BuyAmount <= self.trainer.Money]
+			self.ballList = [b for b in self.fullballList if b.BuyAmount]
+			self.potionList = [p for p in self.fullptnList if p.BuyAmount]
 			self.candyList = []
 		else:
 			self.ballList = [itemservice.GetPokeball(int(i)) for i in self.trainer.Pokeballs if self.trainer.Pokeballs[i] > 0]
@@ -60,17 +60,22 @@ class ShopView(discord.ui.View):
 
 		self.itemchoice = next(i for i in (self.fullballList if choice[0] == 'b' else self.fullptnList if choice[0] == 'p' else self.fullcndylist) if i.Id == int(choice[1:]))
 		self.amountchoice = None
+
+		self.buysellview = BuySell(self.buysellchoice)
+		self.itemview = ItemChoice(self.ballList, self.potionList, self.candyList, self.buysellchoice == 'buy', choice)
+		self.add_item(self.buysellview)
+		self.add_item(self.itemview)
+		
+		if self.buysellchoice == 'buy' and self.itemchoice.BuyAmount > self.trainer.Money:
+			return await self.message.edit(content=f"Money: ${self.trainer.Money}\nYou cannot afford this item.", view=self)
+		
 		trainerList = self.trainer.Pokeballs if choice[0] == 'b' else self.trainer.Potions if choice[0] == 'p' else self.trainer.Candies
 		if self.buysellchoice == 'buy':
 			maxAmount = self.trainer.Money // self.itemchoice.BuyAmount
 		else:
 			maxAmount = trainerList[choice[1:]]
 
-		self.buysellview = BuySell(self.buysellchoice)
-		self.itemview = ItemChoice(self.ballList, self.potionList, self.candyList, self.buysellchoice == 'buy', choice)
 		self.amountview = AmountSelector(maxAmount)
-		self.add_item(self.buysellview)
-		self.add_item(self.itemview)
 		self.add_item(self.amountview)
 		currOwned = trainerList[choice[1:]] if choice[1:] in trainerList else 0
 		await self.message.edit(content=f"Money: ${self.trainer.Money}\nYou currently have {currOwned} {self.itemchoice.Name}(s)", view=self)
