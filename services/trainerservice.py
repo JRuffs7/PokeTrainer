@@ -140,31 +140,24 @@ def SpecialShopCheck(trainer: Trainer):
   UpsertTrainer(trainer)
 
 def EventEntry(trainer: Trainer, event: Event):
+  isStatCompare = event.EventType == EventType.StatCompare.value
+  heightBased = event.SubType in [StatCompare.Shortest.value, StatCompare.Tallest.value]
+  dexEntries = GetPokedexList(
+    trainer,
+    ('height' if heightBased else 'weight') if isStatCompare else 'default',
+    1 if not isStatCompare and event.SubType == PokemonCount.Shiny.value else 0,
+    None,
+    PokemonCount(event.SubType).name if not isStatCompare and event.SubType <= 17 else None,
+    2 if isStatCompare else 1 if event.SubType == PokemonCount.Legendary.value else 0,
+    0 if isStatCompare else 1 if event.SubType == PokemonCount.Female.value else 2 if event.SubType == PokemonCount.Male.value else 0)
+  
   #Pokemon Count Event
   if event.EventType == EventType.PokemonCount.value:
-    if event.SubType <= 17:
-      dataList = pokemonservice.GetPokemonByIdList([p.Pokemon_Id for p in trainer.OwnedPokemon])
-      return sum(PokemonCount(event.SubType).name.lower() in [t.lower() for t in next(pk for pk in dataList if p.Pokemon_Id == pk.Id).Types] for p in trainer.OwnedPokemon)
-    elif event.SubType == PokemonCount.Female.value:
-      return sum(p.IsFemale for p in trainer.OwnedPokemon if p.IsFemale is not None)
-    elif event.SubType == PokemonCount.Male.value:
-      return sum(not p.IsFemale for p in trainer.OwnedPokemon if p.IsFemale is not None)
-    elif event.SubType == PokemonCount.Shiny.value:
-      return sum(p.IsShiny for p in trainer.OwnedPokemon)
-    else:
-      dataList = pokemonservice.GetPokemonByIdList([p.Pokemon_Id for p in trainer.OwnedPokemon])
-      return sum(next(pk for pk in dataList if p.Pokemon_Id == pk.Id).IsLegendary for p in trainer.OwnedPokemon)
+    return len(dexEntries)
   #Stat Compare Event
-  else:
-    heightBased = event.SubType in [StatCompare.Shortest.value, StatCompare.Tallest.value]
-    ordered = GetPokedexList(
-      trainer, 
-      'height' if heightBased else 'weight',
-      0
-    )
-    if event.SubType in [StatCompare.Tallest.value, StatCompare.Heaviest.value]:
-      ordered.reverse()
-    return ordered[0]
+  if isStatCompare and event.SubType in [StatCompare.Tallest.value, StatCompare.Heaviest.value]:
+    dexEntries.reverse()
+  return dexEntries[0]
 
 def EventWinner(trainer: Trainer, ballId: int):
   ModifyItemList(trainer.Pokeballs, str(ballId), 1 if ballId == 4 else 5 if ballId == 3 else 10)
@@ -248,16 +241,21 @@ def TryHatchEgg(trainer: Trainer, eggId: str):
 
 #region Pokedex
 
-def GetPokedexList(trainer: Trainer, orderString: str, shiny: int, pokemonID: int|None, type: str|None):
+def GetPokedexList(trainer: Trainer, orderString: str, shiny: int|None, pokemonID: int|None, type: str|None, legendary: int|None, gender: int):
   pokemonList = [p for p in trainer.OwnedPokemon]
   if pokemonID:
     pokemonList = [p for p in pokemonList if p.Pokemon_Id == pokemonID]
   if shiny == 1:
     pokemonList = [p for p in pokemonList if p.IsShiny]
+  if gender:
+    pokemonList = [p for p in pokemonList if p.IsFemale is not None and (p.IsFemale if gender == 1 else not p.IsFemale)]
 
   pkmnDataList = pokemonservice.GetPokemonByIdList([p.Pokemon_Id for p in pokemonList])
   if type:
-    pokemonList = [p for p in pokemonList if type.lower() in [t.lower() for t in next(po for po in pkmnDataList if po.Id == p.Pokemon_Id).Types]]
+    pkmnDataList = [p for p in pkmnDataList if type.lower() in [t.lower() for t in p.Types]]
+  if legendary:
+    pkmnDataList = [p for p in pkmnDataList if ((p.IsLegendary or p.IsMythical or p.IsUltraBeast) if legendary == 1 else not (p.IsLegendary or p.IsMythical or p.IsUltraBeast))]
+  pokemonList = [p for p in pokemonList if p.Pokemon_Id in [po.Id for po in pkmnDataList]]
 
   match orderString:
     case "height":

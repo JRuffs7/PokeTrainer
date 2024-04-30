@@ -223,6 +223,14 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
       app_commands.Choice(name="Shiny Only", value=1),
       app_commands.Choice(name="Shiny First", value=2)
   ])
+  @app_commands.choices(legendary=[
+      app_commands.Choice(name="Legendary Only", value=1),
+      app_commands.Choice(name="Exclude Legendary", value=2)
+  ])
+  @app_commands.choices(gender=[
+      app_commands.Choice(name="Female Only", value=1),
+      app_commands.Choice(name="Male Only", value=2)
+  ])
   @method_logger(False)
   @trainer_check
   async def mypokemon(self, inter: Interaction,
@@ -231,21 +239,32 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
                     images: app_commands.Choice[int] | None,
                     order: app_commands.Choice[str] | None,
                     shiny: app_commands.Choice[int] | None,
+                    legendary: app_commands.Choice[int] | None,
+                    gender: app_commands.Choice[int] | None,
                     user: Member | None):
     trainer = trainerservice.GetTrainer(inter.guild_id, user.id if user else inter.user.id)
-    data = trainerservice.GetPokedexList(trainer, order.value if order else 'default', shiny.value if shiny else 0, pokemon, type)
+    data = trainerservice.GetPokedexList(trainer, 
+                                         order.value if order else 'default', 
+                                         shiny.value if shiny else 0, 
+                                         pokemon, type, 
+                                         legendary.value if legendary else None, 
+                                         gender.value if gender else 0)
     if not data:
       return await discordservice_trainer.PrintMyPokemon(inter)
-    sortString = f'Sort: {order.name}' if order else ''
-    sortString += f' | ' if order and shiny else ''
-    sortString += f'{shiny.name}' if shiny else ''
+    sortString = [f'Sort: {order.name}'] if order else []
+    if shiny and shiny.value == 1:
+      sortString.append('Shiny')
+    if legendary:
+      sortString.append('Legendary')
+    if gender:
+      sortString.append(gender.name)
     pokemonViewer = MyPokemonView(
       inter, 
       user if user else inter.user,
       trainer,
       images.value if images else 10, 
       data,
-      f"{user.display_name if user else inter.user.display_name}'s Pokemon\n{sortString}",
+      f"{user.display_name if user else inter.user.display_name}'s Pokemon\n{' | '.join(sortString)}",
       order.value if order else None)
     await pokemonViewer.send()
       
