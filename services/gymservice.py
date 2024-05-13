@@ -24,6 +24,8 @@ def GetBattleTeam(team: list[int]):
 
 
 def GymLeaderFight(trainer: Trainer, leader: GymLeader):
+	if leader.BadgeId not in trainer.GymAttempts:
+		trainer.GymAttempts.append(leader.BadgeId)
 	trainerTeam = [{ 'Pokemon': pokemonservice.GetPokemonById(t.Pokemon_Id), 'Id': t.Id, 'Level': t.Level } for t in trainerservice.GetTeam(trainer)]
 	leaderTeam = GetBattleTeam(leader.Team)
 	fightResults: list[bool] = []

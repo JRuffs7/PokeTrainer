@@ -62,6 +62,12 @@ def GetTrainer(serverId: int, userId: int):
       elif data.FemaleChance == 0 and p.IsFemale:
         update = True
         p.IsFemale = False
+  #update gymattempts
+  if trainer is not None:
+    for badge in trainer.Badges:
+      if badge not in trainer.GymAttempts:
+        trainer.GymAttempts.append(badge)
+        update = True
   if update:
     UpsertTrainer(trainer)
   return trainer
