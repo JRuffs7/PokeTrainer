@@ -56,9 +56,6 @@ class BattleSimView(discord.ui.View):
 
 		typeResult = pokemonservice.TypeMatch(self.attackdata.Types, self.defenddata.Types)
 
-		if self.attackdata.Rarity >= 8 and typeResult != -5 and not self.gymbattle:
-			return ('Typing for Legendaries/Mythicals/Ultra Beasts against wild Pokemon often does not effect the outcome.', False)
-		
 		if self.gymbattle:
 			needAssistance: bool = False
 			if typeResult == 1 and pokemonservice.IsSpecialPokemon(self.defenddata) and pokemonservice.IsSpecialPokemon(self.attackdata) and len(self.attackdata.Types) == 1:
@@ -107,9 +104,9 @@ class BattleSimView(discord.ui.View):
 
 	def RarityMatchup(self) -> tuple[str, bool]:
 		attackGroup = pokemonservice.RarityGroup(self.attackdata)
-		attackGroup = attackGroup % 7 if attackGroup < 10 and self.gymbattle else attackGroup
+		attackGroup = attackGroup if attackGroup == 10 and self.gymbattle else attackGroup % 7
 		defendGroup = pokemonservice.RarityGroup(self.defenddata)
-		defendGroup = defendGroup % 7 if defendGroup < 10 and self.gymbattle else defendGroup
+		defendGroup = defendGroup if defendGroup == 10 and self.gymbattle else defendGroup % 7
 		emoji = self.EmojiLookup[-1 if attackGroup < defendGroup else 1 if attackGroup > defendGroup else 0]
 		groupStr = f'{emoji} `Attack Rarity {self.attackdata.Rarity} vs Defend Rarity {self.defenddata.Rarity}`\n{emoji} `Group {attackGroup} vs Group {defendGroup}`'
 
@@ -122,9 +119,9 @@ class BattleSimView(discord.ui.View):
 		
 	def GetLevelString(self, typeAssist: bool, rarityAssist: bool):
 		attackGroup = pokemonservice.RarityGroup(self.attackdata)
-		attackGroup = attackGroup % 7 if attackGroup < 10 else attackGroup
+		attackGroup = attackGroup if attackGroup == 10 and self.gymbattle else attackGroup % 7
 		defendGroup = pokemonservice.RarityGroup(self.defenddata)
-		defendGroup = defendGroup % 7 if defendGroup < 10 else defendGroup
+		defendGroup = defendGroup if attackGroup == 10 and self.gymbattle else defendGroup % 7
 		if not self.gymbattle:
 			return f'Level advantages are given for the following scenarios:\n```Major Advantage - Attack Level > Defense Level x 2\nMinor Advantage - Attack Level > Defense Level x 1.5```\nThis can also work in reverse with Major/Minor Disadvantage.\n\nIf both Pokemon are under Level 10, only Minor Advantage is given with a level discrepancy of at least 3.\n\n**Potential Health Lost (No Level Assistance): {pokemonservice.WildFight(self.attackdata, self.defenddata, 5 if attackGroup == 1 else 25 if attackGroup == 2 else 35, 5 if defendGroup == 1 else 25 if defendGroup == 2 else 35)}**'
 		else:

@@ -273,7 +273,7 @@ def WildFight(attack: PokemonData, defend: PokemonData, attackLevel: int, defend
   doubleAdv = battleResult >= 2
   doubleDis = battleResult <= -2
   immune = battleResult == -5
-  attackGroup = RarityGroup(attack)
+  attackGroup = RarityGroup(attack) % 7
   defendGroup = RarityGroup(defend)
   levelAdvantage = 2 if attackLevel > (defendLevel*2) else 1 if attackLevel > (defendLevel*1.5) else 0
   levelDisadvantage = 2 if defendLevel > (attackLevel*2) else 1 if defendLevel > (attackLevel*1.5) else 0
@@ -281,18 +281,7 @@ def WildFight(attack: PokemonData, defend: PokemonData, attackLevel: int, defend
     levelAdvantage = 1 if attackLevel > (defendLevel + 3) else 0 
     levelDisadvantage = 1 if defendLevel > (attackLevel + 3) else 0 
   
-  #legendary
-  if attackGroup >= 8:
-    if immune:
-      returnInd = 4
-    elif defendGroup == 3:
-      returnInd = 2 if attackGroup == 10 else 3 if attackGroup == 9 else 4
-    elif defendGroup == 2:
-      returnInd = 1 if attackGroup == 10 else 2 if attackGroup == 9 else 3
-    else:
-      returnInd = 0 if attackGroup == 10 else 1 if attackGroup == 9 else 2
-  # 1v1 2v2 3v3
-  elif attackGroup - defendGroup == 0:
+  if attackGroup - defendGroup == 0:
     returnInd = 6 if immune else 2 if doubleAdv else 4 if doubleDis else 3
   # 3v2 2v1
   elif attackGroup - defendGroup == 1:
@@ -308,7 +297,9 @@ def WildFight(attack: PokemonData, defend: PokemonData, attackLevel: int, defend
     returnInd = 6 if immune else 4 if doubleAdv else 6 if doubleDis else 5
   returnInd -= (levelAdvantage - levelDisadvantage) if not immune else 0
   returnInd = 0 if returnInd < 0 else len(healthLost)-1 if returnInd >= len(healthLost) else returnInd
-  return healthLost[returnInd] - (battleResult if not doubleAdv and not doubleDis else 0)
+  lost = healthLost[returnInd] - battleResult
+  lost = lost - (1 if attack.Rarity == 10 else 0)
+  return lost if lost > 0 else 1
 
 def GymFight(attack: PokemonData, defend: PokemonData, attackLevel: int, gymID: int):
   battleResult = TypeMatch(attack.Types, defend.Types)

@@ -30,21 +30,30 @@ class GymCommands(commands.Cog, name="GymCommands"):
 
     
     async def gymleader_autocomplete(self, inter: Interaction, current: str) -> list[app_commands.Choice[str]]:
-        data = []
-        trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
-        leaderList = [l for l in gymservice.GetAllGymLeaders()]
-        leaderList.sort(key=lambda x: x.BadgeId)
-        nextDone = False
-        for ldr in leaderList:
-            nextGym = False
-            if trainer is not None and ldr.BadgeId not in trainer.Badges and not nextDone:
-                nextGym = True
-                nextDone = True
-            if current.lower() in ldr.Name.lower() or current.lower() in region_name(ldr.Generation).lower():
-                data.append(app_commands.Choice(name=f'{ldr.Name} (Your Next)' if nextGym else ldr.Name, value=ldr.BadgeId))
-                if len(data) == 25:
-                    break
-        return data
+        try:
+            data = []
+            trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
+            leaderList = [l for l in gymservice.GetAllGymLeaders()]
+            leaderList.sort(key=lambda x: x.BadgeId)
+            if trainer:
+                nextGym = next((l for l in leaderList if l.BadgeId not in trainer.Badges), None)
+            else:
+                nextGym = None
+            
+            if nextGym:
+                leaderInd = leaderList.index(nextGym)
+                displayList = leaderList[leaderInd:]+leaderList[0:leaderInd]
+            else:
+                displayList = leaderList
+            for ldr in displayList:
+                name = f'{ldr.Name} (Your Next)' if nextGym.BadgeId == ldr.BadgeId else ldr.Name
+                if current.lower() in ldr.Name.lower() or current.lower() in region_name(ldr.Generation).lower():
+                    data.append(app_commands.Choice(name=name, value=ldr.BadgeId))
+                    if len(data) == 25:
+                        break
+            return data
+        except Exception as e:
+            print(e)
 
     @app_commands.command(name="gyminfo",
                         description="Get information about a specific gym leader.")

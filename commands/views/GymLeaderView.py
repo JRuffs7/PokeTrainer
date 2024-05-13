@@ -16,9 +16,15 @@ class GymLeaderView(discord.ui.View):
 		self.leader = leader
 		self.defeated = defeated
 		super().__init__()
-		self.prev_button.disabled = True
+		self.prevBtn = discord.ui.Button(label="<", style=discord.ButtonStyle.primary, disabled=True, custom_id='prev')
+		self.prevBtn.callback = self.page_button
+		self.add_item(self.prevBtn)
+		self.nextBtn = discord.ui.Button(label=">", style=discord.ButtonStyle.primary, disabled=False, custom_id='next')
+		self.nextBtn.callback = self.page_button
+		self.add_item(self.nextBtn)
+		self.prevBtn.disabled = True
 		if not defeated:
-			self.next_button.disabled = True
+			self.nextBtn.disabled = True
 
 	async def on_timeout(self):
 		await self.message.delete()
@@ -33,7 +39,7 @@ class GymLeaderView(discord.ui.View):
 
 	async def update_message(self, showTeam: bool):
 		embed = discordservice.CreateEmbed(
-				self.leader.Name,
+				self.leader.Name if not showTeam else f"{self.leader.Name}'s Team",
 				self.GymLeaderDesc() if not showTeam else self.LeaderTeamDesc(),
 				BattleColor)
 		if not showTeam:
@@ -42,22 +48,16 @@ class GymLeaderView(discord.ui.View):
 			embed.set_thumbnail(url=self.leader.Sprite)
 		await self.message.edit(embed=embed, view=self)
 
-	@discord.ui.button(label="<", style=discord.ButtonStyle.primary, custom_id="previous")
 	@defer
-	async def prev_button(self, interaction: discord.Interaction, button: discord.ui.Button):
-		await interaction.response.defer()
-		self.next_button.disabled = False
-		self.prev_button.disabled = True
-		await self.update_message(False)
-		
-
-	@discord.ui.button(label=">", style=discord.ButtonStyle.primary, custom_id="next")
-	@defer
-	async def next_button(self, interaction: discord.Interaction, button: discord.ui.Button):
-		await interaction.response.defer()
-		self.prev_button.disabled = False
-		self.next_button.disabled = True
-		await self.update_message(True)
+	async def page_button(self, interaction: discord.Interaction):
+		if interaction.data['custom_id'] == 'prev':
+			self.prevBtn.disabled = True
+			self.nextBtn.disabled = False
+			await self.update_message(False)
+		else:
+			self.prevBtn.disabled = False
+			self.nextBtn.disabled = True
+			await self.update_message(True)
 
 	def GymLeaderDesc(self):
 		badge = gymservice.GetBadgeById(self.leader.BadgeId)

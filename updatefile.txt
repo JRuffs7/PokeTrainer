@@ -1,1 +1,5 @@
 - You can now view all items in the **/shop** and **/specialshop** regardless if you can afford them
+- Updated the autofill for **/gyminfo** to show your next gym leader first in the list
+- Fixed an issue with **/gyminfo**
+- Legendary Pokemon no longer ignore type matchups for wild encounters. Rather, you lose 1 less HP when using a fully evolved Legendary
+- Command **/battlesim** updated to reflect new Legendary battle rules
