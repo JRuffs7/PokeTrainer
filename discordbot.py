@@ -99,8 +99,8 @@ async def StartBot():
           serverservice.PokemonCountEvent(server)
           await UserEntryEventView(server, channel, discordBot.user.display_avatar.url).send()
         case _:
-          spawnPkmn = serverservice.SpecialSpawnEvent(server)
-          await SpecialSpawnEventView(server, channel, spawnPkmn).send()
+          spawnPkmn, wishUsers = serverservice.SpecialSpawnEvent(server)
+          await SpecialSpawnEventView(server, channel, spawnPkmn).send(wishUsers)
     except Exception as e:
       errorLogger.error(f'Server {server.ServerName} Event: {e}')
 

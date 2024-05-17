@@ -2,11 +2,12 @@ import logging
 from discord import Member, app_commands, Interaction
 from discord.ext import commands
 from typing import List
-from commands.autofills.autofills import autofill_nonteam, autofill_owned, autofill_pokemon
+from commands.autofills.autofills import autofill_nonteam, autofill_owned, autofill_pokemon, autofill_special
 from commands.views.BattleSimView import BattleSimView
 from commands.views.Pagination.DaycareView import DaycareView
 from commands.views.Pagination.DexView import DexView
 from commands.views.Pagination.PokemonSearchView import PokemonSearchView
+from commands.views.Pagination.WishlistView import WishlistView
 from commands.views.Selection.CandyView import CandyView
 from commands.views.Selection.DaycareAddView import DaycareAddView
 from commands.views.Selection.HatchView import HatchView
@@ -58,6 +59,34 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
       await HatchView(inter, trainer, hatchable).send()
     else:
       return await discordservice_pokemon.PrintHatchResponse(inter, 0 if trainer.Eggs else 1)
+
+  @app_commands.command(name="wishlist",
+                        description="Add to or view your special spawn wishlist.")
+  @app_commands.autocomplete(pokemon=autofill_special)
+  @method_logger(True)
+  @trainer_check
+  async def wishlist(self, inter: Interaction, pokemon: int = None):
+    trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
+
+    #Viewing Wishlist
+    if not pokemon:
+      if len(trainer.Wishlist) == 0:
+        return await discordservice_pokemon.PrintWishlistResponse(inter, 1, [])
+      return await WishlistView(inter, trainer).send()
+    
+    #Adding To Wishlist
+    if len(trainer.Wishlist) >= 5:
+      return await discordservice_pokemon.PrintWishlistResponse(inter, 2, [])
+    
+    pkmn = pokemonservice.GetPokemonById(pokemon)
+    if not pkmn or not pokemonservice.IsSpecialSpawn(pkmn):
+      return await discordservice_pokemon.PrintWishlistResponse(inter, 4, pkmn.Name if pkmn else 'N/A')
+
+    return await discordservice_pokemon.PrintWishlistResponse(
+      inter, 
+      0 if trainerservice.TryAddWishlist(trainer, pokemon) else 3,
+      pokemonservice.GetPokemonById(pokemon).Name
+    )
 
   #endregion
 

@@ -5,6 +5,7 @@ from datetime import UTC, datetime, timedelta
 import logging
 import discord
 
+from globals import ShortDateFormat
 from models.Server import Server
 from services import serverservice
 
@@ -32,9 +33,17 @@ class EventView(discord.ui.View):
 		except Exception as e:
 			self.eventLog.error(f"SERVER {self.server.ServerName}: {e}")
 
-	async def send(self):
+	async def send(self, wishUsers: list[int] = None):
 		timestamp = calendar.timegm((datetime.now(UTC)+timedelta(minutes=self.eventTime)).timetuple())
 		self.embed.title += f' (Ends <t:{timestamp}:R>)'
 		self.message = await self.channel.send(embed=self.embed, view=self)
+		if wishUsers:
+			self.messagethread = await self.message.create_thread(
+				name=f"{self.server.CurrentEvent.EventName}-{datetime.now(UTC).strftime(ShortDateFormat)}",
+				auto_archive_duration=60)
+			self.server.CurrentEvent.ThreadId = self.messagethread.id
+			serverservice.UpsertServer(self.server)
+			self.eventLog.info(f"{self.server.ServerName} - Created Thread")
+			await self.messagethread.send(f"Wish list: {', '.join([f'<@{u}>' for u in wishUsers])}")
 		await asyncio.sleep(self.eventTime*60)
 		await self.endevent()

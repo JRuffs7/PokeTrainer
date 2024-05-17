@@ -15,11 +15,11 @@ def GetSingleDoc(collection, filters):
     return None
 
 
-def GetManyDocs(collection, filters):
+def GetManyDocs(collection, filters, fields):
   try:
     with MongoClient(os.environ.get('MONGO_CONN_STRING')) as cluster:
       coll = cluster[os.environ.get('MONGO_DB_NAME')][collection]
-      return list(coll.find(filters, {'_id': False}))
+      return list(coll.find(filters, fields))
   except Exception as e:
     errorLog.error(f"Mongo Exception: {e}")
     return None

@@ -5,6 +5,7 @@ from flask import json
 ShinyOdds: int = 3000
 ServerColor: discord.Colour = discord.Colour.blue()
 ErrorColor: discord.Colour = discord.Colour.red()
+SuccessColor: discord.Colour = discord.Colour.green()
 TrainerColor: discord.Colour = discord.Colour.purple()
 PokemonColor: discord.Colour = discord.Colour.pink()
 EventColor: discord.Colour = discord.Colour.dark_red()

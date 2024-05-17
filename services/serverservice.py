@@ -1,4 +1,4 @@
-from dataaccess import serverda
+from dataaccess import serverda, trainerda
 from models.Event import Event
 from models.enums import EventType, StatCompare
 from models.Server import Server
@@ -38,11 +38,11 @@ def DeleteServer(server: Server):
 def SpecialSpawnEvent(server: Server):
   specialPokemon = pokemonservice.GetSpecialSpawn()
   server.CurrentEvent = Event.from_dict({
-    'EventName': f'{pokemonservice.GetPokemonDisplayName(specialPokemon, False, False)} Spawn Event',
+    'EventName': f'{pokemonservice.GetPokemonDisplayName(specialPokemon, None, False, False)} Spawn Event',
     'EventType': EventType.SpecialSpawn.value,
   })
   UpsertServer(server)
-  return specialPokemon
+  return (specialPokemon, trainerda.GetWishlistTrainers(server.ServerId, specialPokemon.Pokemon_Id))
 
 def StatCompareEvent(server: Server):
   comparison = eventservice.GetRandomStatCompare()
