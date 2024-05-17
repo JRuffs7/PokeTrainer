@@ -61,21 +61,19 @@ async def PrintInviteResponse(interaction: Interaction):
 
 async def PrintEventWinners(server: Server, winners: list[tuple[int,int]]):
 	bot = discordbot.GetBot()
-	if server.CurrentEvent.ThreadId:
-		try:
-			await bot.get_channel(server.CurrentEvent.ThreadId).delete()
-		except Exception as e:
-			errorLog.error(f'ERROR {server.ServerName} Delete Thread: {e}')
+	try:
+		if winners:
+			guild = bot.get_guild(server.ServerId)
+			if not guild:
+				return 
+			channel = guild.get_channel(server.ChannelId)
+			if not channel or not isinstance(channel, TextChannel):
+				return
+			
+			winText = '\n'.join([f'<@{w[0]}> - {"1x Masterball" if w[1] == 4 else "5x Ultraball" if w[1] == 3 else "10x Greatball"}' for w in winners])
+			message = f'Congratulations to the winners of the {server.CurrentEvent.EventName}!\n\n{winText}'
 
-	if winners:
-		guild = bot.get_guild(server.ServerId)
-		if not guild:
-			return 
-		channel = guild.get_channel(server.ChannelId)
-		if not channel or not isinstance(channel, TextChannel):
-			return
-		
-		winText = '\n'.join([f'<@{w[0]}> - {"1x Masterball" if w[1] == 4 else "5x Ultraball" if w[1] == 3 else "10x Greatball"}' for w in winners])
-		message = f'Congratulations to the winners of the {server.CurrentEvent.EventName}!\n\n{winText}'
-
-		await channel.send(message)
+			await channel.send(message)
+	except Exception as e:
+		errorLog.error(f"SERVER {server.ServerName}: {e}")
+		raise Exception

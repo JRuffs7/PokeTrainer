@@ -13,6 +13,7 @@ class EventView(discord.ui.View):
 
 	def __init__(
 			self, server: Server, channel: discord.TextChannel, embed: discord.Embed):
+		self.errorLog = logging.getLogger('error')
 		self.eventLog = logging.getLogger('event')
 		self.eventLog.info(f"{server.ServerName} - {server.CurrentEvent.EventName} Begins")
 		self.server = server
@@ -29,9 +30,12 @@ class EventView(discord.ui.View):
 			await self.message.edit(embed=self.embed, view=self)
 			await serverservice.EndEvent(self.server)
 			await self.message.delete()
+			if self.messagethread:
+				await self.messagethread.delete()
 			self.eventLog.info(f"{self.server.ServerName} - Event Ended")
 		except Exception as e:
-			self.eventLog.error(f"SERVER {self.server.ServerName}: {e}")
+			self.errorLog.error(f"SERVER {self.server.ServerName}: {e}")
+			serverservice.DeleteServer(self.server)
 
 	async def send(self, wishUsers: list[int] = None):
 		timestamp = calendar.timegm((datetime.now(UTC)+timedelta(minutes=self.eventTime)).timetuple())

@@ -84,9 +84,12 @@ async def EndEvent(server: Server):
   for tup in winners:
     trainerservice.EventWinner(trainerservice.GetTrainer(server.ServerId, tup[0]), tup[1])
 
-  await discordservice_server.PrintEventWinners(server, winners)
-  server.CurrentEvent = None
-  UpsertServer(server)
+  try:
+    await discordservice_server.PrintEventWinners(server, winners)
+    server.CurrentEvent = None
+    UpsertServer(server)
+  except:
+    DeleteServer(server)
 
 #endregion
 

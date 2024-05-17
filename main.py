@@ -17,7 +17,7 @@ if len(sys.argv) == 2 and sys.argv[1] == 'prodbuild':
 else:
   load_dotenv('.env.local')
   eventtimes.clear()
-  eventtimes.append((datetime.now(UTC)+timedelta(seconds=5)).time())
+  eventtimes.append((datetime.now(UTC)+timedelta(seconds=15)).time())
 keep_alive()
 override_loglevels()
 
