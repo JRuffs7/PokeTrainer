@@ -1,0 +1,1 @@
+- Added a **/wishlist** for special spawn events. Use **/help wishlist** for more details.

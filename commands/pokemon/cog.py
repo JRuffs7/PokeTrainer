@@ -78,6 +78,10 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
     if len(trainer.Wishlist) >= 5:
       return await discordservice_pokemon.PrintWishlistResponse(inter, 2, [])
     
+    pkmn = pokemonservice.GetPokemonById(pokemon)
+    if not pkmn or not pokemonservice.IsSpecialSpawn(pkmn):
+      return await discordservice_pokemon.PrintWishlistResponse(inter, 4, pkmn.Name if pkmn else 'N/A')
+
     return await discordservice_pokemon.PrintWishlistResponse(
       inter, 
       0 if trainerservice.TryAddWishlist(trainer, pokemon) else 3,

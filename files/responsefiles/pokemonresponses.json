@@ -93,6 +93,10 @@
 		{
 			"Title": "Cannot Add To Wish List",
 			"Body": "You already have **{0}** added to your wish list."
+		},
+		{
+			"Title": "Cannot Add To Wish List",
+			"Body": "The Pokemon **{0}** cannot be spawned through events."
 		}
 	]
 }
