@@ -1,4 +1,3 @@
-
 from datetime import UTC, datetime, timedelta
 import logging
 from random import choice, sample
@@ -422,5 +421,12 @@ def TryWildFight(trainer: Trainer, trainerPkmnData: PokemonData, wild: Pokemon, 
     
     UpsertTrainer(trainer)
     return (healthLost,candy)
+
+def TryAddWishlist(trainer: Trainer, pokemonId: int):
+  if len(trainer.Wishlist) >= 5 or pokemonId in trainer.Wishlist:
+    return False
+  trainer.Wishlist.append(pokemonId)
+  UpsertTrainer(trainer)
+  return True
 
 #endregion

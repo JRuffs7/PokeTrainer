@@ -75,13 +75,14 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
       return await WishlistView(inter, trainer).send()
     
     #Adding To Wishlist
-    if len(trainer.Daycare) >= 5:
+    if len(trainer.Wishlist) >= 5:
       return await discordservice_pokemon.PrintWishlistResponse(inter, 2, [])
     
-    if pokemon in trainer.Wishlist:
-      return await discordservice_pokemon.PrintWishlistResponse(inter, 3, [pokemonservice.GetPokemonById(pokemon).Name])
-
-    return await discordservice_pokemon.PrintWishlistResponse(inter, 0, [pokemonservice.GetPokemonById(pokemon).Name])
+    return await discordservice_pokemon.PrintWishlistResponse(
+      inter, 
+      0 if trainerservice.TryAddWishlist(trainer, pokemon) else 3,
+      pokemonservice.GetPokemonById(pokemon).Name
+    )
 
   #endregion
 

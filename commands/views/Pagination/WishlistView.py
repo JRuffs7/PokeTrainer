@@ -49,11 +49,11 @@ class WishlistView(discord.ui.View):
 	@defer
 	async def page_button(self, interaction: discord.Interaction):
 		if interaction.data['custom_id'] == 'prev':
-			self.currentPage = 0
+			self.currentPage -= 1
 		else:
-			self.currentPage = 1
+			self.currentPage += 1
 		self.prevBtn.disabled = self.currentPage == 0
-		self.nextBtn.disabled = self.currentPage == 1
+		self.nextBtn.disabled = self.currentPage == len(self.pokemon)-1
 		await self.update_message()
 
 	@defer
