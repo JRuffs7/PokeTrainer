@@ -1,1 +1,2 @@
-- Added a **/wishlist** for special spawn events. Use **/help wishlist** for more details.
+- Added a **/wishlist** for special spawn events. Use **/help wishlist** for more details
+- After attempting a gym leader for the first time, you only get 2x experience instead of 5x

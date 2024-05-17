@@ -24,8 +24,6 @@ def GetBattleTeam(team: list[int]):
 
 
 def GymLeaderFight(trainer: Trainer, leader: GymLeader):
-	if leader.BadgeId not in trainer.GymAttempts:
-		trainer.GymAttempts.append(leader.BadgeId)
 	trainerTeam = [{ 'Pokemon': pokemonservice.GetPokemonById(t.Pokemon_Id), 'Id': t.Id, 'Level': t.Level } for t in trainerservice.GetTeam(trainer)]
 	leaderTeam = GetBattleTeam(leader.Team)
 	fightResults: list[bool] = []
@@ -39,9 +37,9 @@ def GymLeaderFight(trainer: Trainer, leader: GymLeader):
 		if fight:
 			group = pokemonservice.RarityGroup(leaderTeam[leaderInd])
 			if trainerFighter['Id'] in expList:
-				expList[trainerFighter['Id']] += 5*(15 if group == 1 else 25 if group == 2 else 35)
+				expList[trainerFighter['Id']] += (15 if group == 1 else 25 if group == 2 else 35)*(5 if leader.BadgeId not in trainer.GymAttempts else 2)
 			else:
-				expList[trainerFighter['Id']] = 5*(15 if group == 1 else 25 if group == 2 else 35)
+				expList[trainerFighter['Id']] = (15 if group == 1 else 25 if group == 2 else 35)*(5 if leader.BadgeId not in trainer.GymAttempts else 2)
 			leaderInd += 1
 		else:
 			trainerInd += 1
@@ -56,6 +54,8 @@ def GymLeaderFight(trainer: Trainer, leader: GymLeader):
 		trainer.Badges.append(leader.BadgeId)
 	else:
 		trainer.Money -= int(leader.Reward/2)
+	if leader.BadgeId not in trainer.GymAttempts:
+		trainer.GymAttempts.append(leader.BadgeId)
 	trainerservice.UpsertTrainer(trainer)
 	return fightResults
 
