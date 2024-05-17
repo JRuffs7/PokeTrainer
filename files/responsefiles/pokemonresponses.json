@@ -6,27 +6,7 @@
 		},
 		{
 			"Title": "Cannot Simulate Battle",
-			"Body": "{0} is not a spawnable Pokemon that you can fight. Use **/help spawn** for more information."
-		}
-	],
-	"evolve": [
-		{
-			"Title": "Cannot Evolve",
-			"Body": "You have no Pokemon currently able to evolve. Level your Pokemon up by fighting gym leaders using **/gymbattle** and wild Pokemon using **/spawn**."
-		},
-		{
-			"Title": "Cannot Evolve",
-			"Body": "You do not own any {0} that are able to evolve. Level your Pokemon up by fighting gym leaders using **/gymbattle** and wild Pokemon using **/spawn**."
-		}
-	],
-	"givecandy": [
-		{
-			"Title": "No Candies",
-			"Body": "You do not have any candies to give to your Pokemon. You can buy some through the **/shop**."
-		},
-		{
-			"Title": "Cannot Give Candy",
-			"Body": "You do not own any {0} to give a candy to. Try again."
+			"Body": "**{0}** is not a spawnable Pokemon that you can fight. Use **/help spawn** for more information."
 		}
 	],
 	"daycare": [
@@ -40,7 +20,27 @@
 		},
 		{
 			"Title": "Cannot Add To Daycare",
-			"Body": "You do not own any {0} to add to the daycare. Try again."
+			"Body": "You do not own any **{0}** to add to the daycare. Try again."
+		}
+	],
+	"evolve": [
+		{
+			"Title": "Cannot Evolve",
+			"Body": "You have no Pokemon currently able to evolve. Level your Pokemon up by fighting gym leaders using **/gymbattle** and wild Pokemon using **/spawn**."
+		},
+		{
+			"Title": "Cannot Evolve",
+			"Body": "You do not own any **{0}** that are able to evolve. Level your Pokemon up by fighting gym leaders using **/gymbattle** and wild Pokemon using **/spawn**."
+		}
+	],
+	"givecandy": [
+		{
+			"Title": "No Candies",
+			"Body": "You do not have any candies to give to your Pokemon. You can buy some through the **/shop**."
+		},
+		{
+			"Title": "Cannot Give Candy",
+			"Body": "You do not own any **{0}** to give a candy to. Try again."
 		}
 	],
 	"hatch": [
@@ -60,11 +60,11 @@
 		},
 		{
 			"Title": "No Results",
-			"Body": "There seem to be no Pokemon categorized under the color {0}. Try again using the given prompts and filters."
+			"Body": "There seem to be no Pokemon categorized under the color **{0}**. Try again using the given prompts and filters."
 		},
 		{
 			"Title": "No Results",
-			"Body": "There seem to be no Pokemon categorized under the type {0}. Try again using the given prompts and filters."
+			"Body": "There seem to be no Pokemon categorized under the type **{0}**. Try again using the given prompts and filters."
 		},
 		{
 			"Title": "No Results",
@@ -75,6 +75,24 @@
 		{
 			"Title": "Unable to Spawn",
 			"Body": "You must wait at least 1 minutes in between spawns.\nYour last spawn was at {0} UTC"
+		}
+	],
+	"wishlist": [
+		{
+			"Title": "Successfully Added To Wish List",
+			"Body": "**{0}** has just been added to your wish list."
+		},
+		{
+			"Title": "Wish List Empty",
+			"Body": "You have no Pokemon currently in your wish list. To add a Pokemon, specify one when running this command."
+		},
+		{
+			"Title": "Cannot Add To Wish List",
+			"Body": "You already have five Pokemon in the wish list. Run this command without specifying a Pokemon to remove one, then try again."
+		},
+		{
+			"Title": "Cannot Add To Wish List",
+			"Body": "You already have **{0}** added to your wish list."
 		}
 	]
 }

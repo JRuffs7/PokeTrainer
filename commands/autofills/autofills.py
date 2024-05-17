@@ -13,6 +13,17 @@ async def autofill_pokemon(inter: Interaction, current: str):
 			break
 	return data
 
+async def autofill_special(inter: Interaction, current: str):
+	data = []
+	pokemonList = [p for p in pokemonservice.GetAllPokemon() if pokemonservice.IsSpecialSpawn(p)]
+	pokemonList.sort(key=lambda x: x.Name)
+	for pkmn in pokemonList:
+		if current.lower() in pkmn.Name.lower():
+			data.append(app_commands.Choice(name=pkmn.Name, value=pkmn.Id))
+		if len(data) == 25:
+			break
+	return data
+
 async def autofill_types(inter: Interaction, current: str):
 	choiceList = []
 	searchList = typeservice.GetAllTypes()

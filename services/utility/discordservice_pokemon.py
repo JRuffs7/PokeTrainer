@@ -1,4 +1,4 @@
-from globals import PokemonColor
+from globals import ErrorColor, PokemonColor, SuccessColor
 from services.utility import discordservice
 from discord import Interaction
 
@@ -72,4 +72,14 @@ async def PrintBattleSimResponse(interaction: Interaction, response: int, params
 		responseInd=response, 
 		color=PokemonColor, 
 		params=params,
+		eph=True)
+
+async def PrintWishlistResponse(interaction: Interaction, response: int, pkmnname: str|None = None):
+	return await discordservice.SendCommandResponse(
+		interaction=interaction, 
+		filename=responseFile, 
+		command='wishlist', 
+		responseInd=response, 
+		color=ErrorColor if response else SuccessColor, 
+		params=[pkmnname],
 		eph=True)

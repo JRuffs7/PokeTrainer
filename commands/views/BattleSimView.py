@@ -58,9 +58,9 @@ class BattleSimView(discord.ui.View):
 
 		if self.gymbattle:
 			needAssistance: bool = False
-			if typeResult == 1 and pokemonservice.IsSpecialPokemon(self.defenddata) and pokemonservice.IsSpecialPokemon(self.attackdata) and len(self.attackdata.Types) == 1:
+			if typeResult == 1 and pokemonservice.IsLegendaryPokemon(self.defenddata) and pokemonservice.IsLegendaryPokemon(self.attackdata) and len(self.attackdata.Types) == 1:
 				expl = passLegRarityString
-			elif typeResult == 1 and not pokemonservice.IsSpecialPokemon(self.defenddata):
+			elif typeResult == 1 and not pokemonservice.IsLegendaryPokemon(self.defenddata):
 				needAssistance = True
 				expl = passLevelString
 			elif typeResult >= 2:
@@ -111,7 +111,7 @@ class BattleSimView(discord.ui.View):
 		groupStr = f'{emoji} `Attack Rarity {self.attackdata.Rarity} vs Defend Rarity {self.defenddata.Rarity}`\n{emoji} `Group {attackGroup} vs Group {defendGroup}`'
 
 		if self.gymbattle:
-			if attackGroup == defendGroup-1 and not pokemonservice.IsSpecialPokemon(self.defenddata):
+			if attackGroup == defendGroup-1 and not pokemonservice.IsLegendaryPokemon(self.defenddata):
 				return (f'{groupStr}\nThe attacking Pokemon **passes** the rarity matchup if they also have level assistance.', True)
 			return (f'{groupStr}\nThe attacking Pokemon {"**passes**" if attackGroup >= defendGroup else "**fails**"} the rarity matchup.', False)
 		else:

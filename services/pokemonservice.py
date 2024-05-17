@@ -60,8 +60,11 @@ def GetEvolutionLine(pokemonId: int, pokemonData: list[PokemonData] | None):
     preEvo = next((p for p in pokemon if preEvo.Id in [e.EvolveID for e in p.EvolvesInto]), None)
   return idArray
 
-def IsSpecialPokemon(pokemon: PokemonData):
+def IsLegendaryPokemon(pokemon: PokemonData):
   return pokemon.IsLegendary or pokemon.IsMythical or pokemon.IsUltraBeast
+
+def IsSpecialSpawn(pokemon: PokemonData):
+  return IsLegendaryPokemon(pokemon) or pokemon.IsParadox or pokemon.IsStarter or (pokemon.IsFossil and pokemon.EvolvesInto)
 
 #endregion
 
@@ -310,7 +313,7 @@ def GymFight(attack: PokemonData, defend: PokemonData, attackLevel: int, gymID: 
   defendLevel = 100 if gymID >= 1000 else 15 if defendGroup == 1 else 25 if defendGroup == 2 else 35 if defendGroup == 3 else 100
   doubleAdv = battleResult >= 2 or (battleResult > 0 and attackLevel > defendLevel*1.5 and attackGroup >= defendGroup)
 
-  if IsSpecialPokemon(defend) and len(attack.Types) == 1:
+  if IsLegendaryPokemon(defend) and len(attack.Types) == 1:
     return battleResult >= 1 and attackGroup >= defendGroup
 
   return doubleAdv and (attackGroup >= defendGroup or (attackGroup == defendGroup-1 and attackLevel > defendLevel*1.25))
@@ -343,7 +346,7 @@ def TypeMatch(attackTypes: list[str], defendTypes: list[str]):
 
 def RarityGroup(pokemon: PokemonData):
   rarityGroup = 1 if pokemon.Rarity <= 2 else 2 if pokemon.Rarity == 3 else 3
-  if IsSpecialPokemon(pokemon):
+  if IsLegendaryPokemon(pokemon):
     rarityGroup = pokemon.Rarity
   return rarityGroup
 
