@@ -18,7 +18,7 @@ def GetServer(serverId: int) -> Server|None:
 
 def GetAllServers() -> list[Server]:
   serverList: list[Server] = []
-  servs = mongodb.GetManyDocs(collection, {})
+  servs = mongodb.GetManyDocs(collection, {}, {'_id':0})
   for s in servs if servs else []:
     if s:
       server = Server.from_dict(s)

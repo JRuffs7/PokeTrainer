@@ -28,6 +28,13 @@ def GetTrainer(serverId: int, userId: int) -> Trainer|None:
       sqliteda.Save('Trainer', key, trainer)
   return trainer
 
+def GetWishlistTrainers(serverId: int, pokemonId: int) -> list[int]:
+  train = mongodb.GetManyDocs(
+    collection, 
+    { 'ServerId': serverId, 'Wishlist': pokemonId },
+    { 'UserId': 1, '_id': 0 })
+  trainer = [int(t['UserId']) for t in train] if train else []
+  return trainer
 
 def UpsertTrainer(trainer: Trainer):
   sqliteda.Save('Trainer', f'{trainer.ServerId}{trainer.UserId}', trainer)
