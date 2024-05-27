@@ -20,13 +20,15 @@ def method_logger(eph: bool = False):
         await args[0].response.defer(ephemeral=eph)
         cmdLog.info(f"{args[0].guild.name} - {function.__name__.upper()} command called")
         return await function(self, *args, **kwargs)
-      except:
-        # log the exception
-        err = f"There was an exception in command '{function.__name__.upper()}'"
-        errLog.exception(f"\nERROR - {function.__name__.upper()}\n{err}\n\n")
-        
-        # re-raise the exception
-        raise
+      except Exception as e:
+        errorStr = str(e)
+        if '404' in errorStr:
+          # log the exception
+          errLog.exception(f"\nERROR - 404 exception in command '{function.__name__.upper()}'\n")
+          return
+        else:
+          # log the exception
+          errLog.exception(f"\nERROR - {function.__name__.upper()}\n{errorStr}\n")
     return wrapper
   return inner_decor
 
