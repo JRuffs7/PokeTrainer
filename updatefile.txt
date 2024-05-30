@@ -1,5 +1,0 @@
-- Added a **/wishlist** for special spawn events. Use **/help wishlist** for more details
-- After attempting a gym leader for the first time, you only get 2x experience instead of 5x
-## NOTE TO ADMINS
-- If PokeTrainer does not have correct permissions in your server for events, it will be removed from the event/notification list. This is to prevent unnecessary traffic and permission error warnings from Discord. 
-- A list of permissions can be seen through **/help register** and you may **/register** your server again at any time.
