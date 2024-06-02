@@ -308,7 +308,7 @@
 			"Amount": 100,
 			"Action": "Fight",
 			"Type": "",
-			"Description": "Defeat 100 Pokemon"
+			"Description": "Win 100 Wild Battles"
 		},
 		{
 			"Id": 2,
@@ -319,14 +319,14 @@
 		},
 		{
 			"Id": 3,
-			"Amount": 5,
+			"Amount": 25,
 			"Action": "Release",
 			"Type": "",
 			"Description": "Release 25 Pokemon"
 		},
 		{
 			"Id": 4,
-			"Amount": 10,
+			"Amount": 5,
 			"Action": "Trade",
 			"Type": "",
 			"Description": "Initiate And Complete 5 Trades"
