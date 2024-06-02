@@ -56,6 +56,7 @@ def GymLeaderFight(trainer: Trainer, leader: GymLeader):
 		trainer.Money -= int(leader.Reward/2)
 	if leader.BadgeId not in trainer.GymAttempts:
 		trainer.GymAttempts.append(leader.BadgeId)
+	trainerservice.TryAddMissionProgress(trainer, 'Gym', '')
 	trainerservice.UpsertTrainer(trainer)
 	return fightResults
 

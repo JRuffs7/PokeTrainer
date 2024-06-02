@@ -1,7 +1,7 @@
 from datetime import UTC, datetime
 from models.Item import Potion
 from models.Trainer import Trainer
-from services import itemservice, pokemonservice, gymservice, zoneservice
+from services import missionservice, pokemonservice, gymservice, zoneservice
 from services.utility import discordservice
 from discord import Interaction, Member
 from globals import HelpColor, ShortDateFormat, TrainerColor
@@ -9,10 +9,11 @@ from globals import HelpColor, ShortDateFormat, TrainerColor
 responseFile = "files/responsefiles/trainerresponses.json"
 
 async def PrintTrainer(interaction: Interaction, trainer: Trainer, targetUser: Member):
+	newDay = datetime.strptime(trainer.LastDaily, ShortDateFormat).date() < datetime.now(UTC).date() if trainer.LastDaily else True
 	#Stats Section
 	healthString = f'HP: {trainer.Health}'
 	zoneString = f'Current Zone: **{zoneservice.GetZone(trainer.CurrentZone).Name}**'
-	if not trainer.LastDaily or datetime.strptime(trainer.LastDaily, ShortDateFormat).date() < datetime.now(UTC).date():
+	if newDay:
 		dailyString = f'Daily Reward: **Ready**'
 	else:
 		dailyString = 'Daily Reward: On cooldown'
@@ -23,6 +24,27 @@ async def PrintTrainer(interaction: Interaction, trainer: Trainer, targetUser: M
 
 	newLine = '\n'
 	stats = f'__Trainer Stats__\n{newLine.join([healthString, zoneString, dailyString, shopString])}'
+
+	#Mission Section
+	dailyMission = missionservice.GetDailyMission(trainer.DailyMission.MissionId) if trainer.DailyMission else None
+	weeklyMission = missionservice.GetWeeklyMission(trainer.WeeklyMission.MissionId) if trainer.WeeklyMission else None
+	if not dailyMission:
+		dmissionStr = 'Use **/daily** to acquire a daily mission.'
+	else:
+		if newDay:
+			progressStr = 'Expired'
+		else:
+			progressStr = f'{trainer.DailyMission.Progress}/{dailyMission.Amount}' if trainer.DailyMission.Progress < dailyMission.Amount else 'Completed (Rewarded 3x Rare Candy)'
+		dmissionStr = f'{dailyMission.Description}\n**{progressStr}**'
+	if not weeklyMission:
+		wmissionStr = 'Use **/daily** to acquire a weekly mission.'
+	else:
+		if (datetime.now(UTC).date()-datetime.strptime(trainer.WeeklyMission.DayStarted, ShortDateFormat).date()).days >= 7:
+			progressStr = 'Expired'
+		else:
+			progressStr = f'{trainer.WeeklyMission.Progress}/{weeklyMission.Amount}' if trainer.WeeklyMission.Progress < weeklyMission.Amount else 'Completed (Rewarded 1x Masterball)'
+		wmissionStr = f'{weeklyMission.Description}\n**{progressStr}**'
+	mission = f'__Missions__\n{dmissionStr}\n{wmissionStr}'
 
 	#Dex Section
 	totalPkmn = pokemonservice.GetAllPokemon()
@@ -40,7 +62,7 @@ async def PrintTrainer(interaction: Interaction, trainer: Trainer, targetUser: M
 
 	embed = discordservice.CreateEmbed(
 			f"{targetUser.display_name}'s Trainer Info", 
-			f"{stats}\n\n{dex}\n\n{other}", 
+			f"{stats}\n\n{mission}\n\n{dex}\n\n{other}", 
 			TrainerColor)
 	embed.set_thumbnail(url=targetUser.display_avatar.url)
 	return await interaction.followup.send(embed=embed)
@@ -106,15 +128,16 @@ async def PrintRelease(interaction: Interaction, name: str):
 		params=[name],
 		eph=True)
 
-async def PrintDaily(interaction: Interaction, success: bool, boosted: bool, freeMasterball: bool, eggName: str|None):
+async def PrintDaily(interaction: Interaction, success: bool, boosted: bool, freeMasterball: bool, newWeekly: bool, eggName: str|None):
 	responseID = 0 if not success else 1 if not eggName else 2
+	missionStr = f'\nAcquired a new Weekly Mission.' if newWeekly else ''
 	return await discordservice.SendCommandResponse(
 		interaction=interaction, 
 		filename=responseFile, 
 		command='daily', 
 		responseInd=responseID+2 if freeMasterball else responseID, 
 		color=TrainerColor, 
-		params=['20' if boosted else '10', '500' if boosted else '200', eggName])
+		params=['20' if boosted else '10', '500' if boosted else '200', missionStr, eggName])
 
 async def PrintMyEggs(interaction: Interaction):
 	return await discordservice.SendCommandResponse(
