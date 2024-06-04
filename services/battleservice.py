@@ -18,60 +18,58 @@ def TeamFight(teamA: list[dict[str, int|PokemonData]], teamB: list[dict[str, int
 		teamBGroup = teamBGroup % 7 if teamBGroup < 10 else teamBGroup
 		AvBtype = typeservice.TypeMatch(teamAFighter['Data'].Types, teamBFighter['Data'].Types)
 		BvAtype = typeservice.TypeMatch(teamBFighter['Data'].Types, teamAFighter['Data'].Types)
+		aDoubleAdv = (AvBtype > 2) or (AvBtype == 2 and len(teamAFighter['Data'].Types) == 1)
+		bDoubleAdv = (BvAtype > 2) or (BvAtype == 2 and len(teamBFighter['Data'].Types) == 1)
+		aDoubleDis = (AvBtype < -2) or (AvBtype == -2 and len(teamAFighter['Data'].Types) == 1)
+		bDoubleDis = (BvAtype < -2) or (BvAtype == -2 and len(teamBFighter['Data'].Types) == 1)
 		AvBrarity = teamAGroup - teamBGroup
 
 		print(f"{teamAFighter['Data'].Name} - {teamAGroup} - {teamALevel} - {AvBtype}")
 		print(f"{teamBFighter['Data'].Name} - {teamBGroup} - {teamBLevel} - {BvAtype}")
+		if AvBtype == -5 or BvAtype == -5:
+			aSuccess = 0 if AvBtype == -5 else 1
+			bSuccess = 0 if BvAtype == -5 else 1
 		#1v10
 		if AvBrarity == -9:
-			aSuccess = 0 if AvBtype == -5 else 1 if AvBtype <= -2 else 2 if AvBtype <= 0 else 3 if AvBtype <= 2 else 4
-			bSuccess = 0 if AvBtype == -5 else 5 if AvBtype <= -2 else 6 if AvBtype <= 0 else 7 if AvBtype <= 2 else 8
+			aSuccess = 1 if AvBtype <= -2 else 2 if AvBtype <= 0 else 3 if not aDoubleAdv else 4
+			bSuccess = 5 if BvAtype <= -2 else 6 if BvAtype <= 0 else 7 if not bDoubleAdv else 8
 			aSuccess += int(teamALevel/teamBLevel)*2 if teamALevel > (teamBLevel*2.5) else 1 if teamALevel > (teamBLevel*2) else 0
-			bSuccess += int(teamALevel/teamBLevel)*2 if teamALevel > (teamBLevel*1.5) else 1 if teamALevel > (teamBLevel*0.8) else 0
+			bSuccess += int(teamBLevel/teamALevel)*2 if teamBLevel > (teamALevel*1.5) else 1 if teamBLevel > (teamALevel*0.8) else 0
 		#10v1
 		elif AvBrarity == 9:
-			aSuccess = 0 if AvBtype == -5 else 5 if AvBtype <= -2 else 6 if AvBtype <= 0 else 7 if AvBtype <= 2 else 8
-			bSuccess = 0 if AvBtype == -5 else 1 if AvBtype <= -2 else 2 if AvBtype <= 0 else 3 if AvBtype <= 2 else 4
+			aSuccess = 5 if AvBtype <= -2 else 6 if AvBtype <= 0 else 7 if not aDoubleAdv else 8
+			bSuccess = 1 if BvAtype <= -2 else 2 if BvAtype <= 0 else 3 if not bDoubleAdv else 4
 			aSuccess += int(teamALevel/teamBLevel)*2 if teamALevel > (teamBLevel*1.5) else 1 if teamALevel > (teamBLevel*0.8) else 0
-			bSuccess += int(teamALevel/teamBLevel)*2 if teamALevel > (teamBLevel*2.5) else 1 if teamALevel > (teamBLevel*2) else 0
+			bSuccess += int(teamBLevel/teamALevel)*2 if teamBLevel > (teamALevel*2.5) else 1 if teamBLevel > (teamALevel*2) else 0
 		#2v10
 		elif AvBrarity == -8:
-			aSuccess = 0 if AvBtype == -5 else 1 if AvBtype <= -2 else 2 if AvBtype <= 0 else 3 if AvBtype <= 2 else 4
-			bSuccess = 0 if AvBtype == -5 else 3 if AvBtype <= -2 else 4 if AvBtype <= 0 else 5 if AvBtype <= 2 else 6
+			aSuccess = 1 if AvBtype <= -2 else 2 if AvBtype <= 0 else 3 if not aDoubleAdv else 4
+			bSuccess = 3 if BvAtype <= -2 else 4 if BvAtype <= 0 else 5 if not bDoubleAdv else 6
 			aSuccess += int(teamALevel/teamBLevel)*2 if teamALevel > (teamBLevel*2) else 1 if teamALevel > (teamBLevel*1.5) else 0
-			bSuccess += int(teamALevel/teamBLevel)*2 if teamALevel > (teamBLevel*1.5) else 1 if teamALevel > (teamBLevel*0.8) else 0
+			bSuccess += int(teamBLevel/teamALevel)*2 if teamBLevel > (teamALevel*1.25) else 1 if teamBLevel > (teamALevel*0.7) else 0
 		#10v2
 		elif AvBrarity == 8:
-			aSuccess = 0 if AvBtype == -5 else 3 if AvBtype <= -2 else 4 if AvBtype <= 0 else 5 if AvBtype <= 2 else 6
-			bSuccess = 0 if AvBtype == -5 else 1 if AvBtype <= -2 else 2 if AvBtype <= 0 else 3 if AvBtype <= 2 else 4
-			aSuccess += int(teamALevel/teamBLevel)*2 if teamALevel > (teamBLevel*1.5) else 1 if teamALevel > (teamBLevel*0.8) else 0
-			bSuccess += int(teamALevel/teamBLevel)*2 if teamALevel > (teamBLevel*2) else 1 if teamALevel > (teamBLevel*1.5) else 0
+			aSuccess = 4 if AvBtype <= -2 else 5 if AvBtype <= 0 else 6 if not aDoubleAdv else 7
+			bSuccess = 1 if BvAtype <= -2 else 2 if BvAtype <= 0 else 3 if not bDoubleAdv else 4
+			aSuccess += int(teamALevel/teamBLevel)*2 if teamALevel > (teamBLevel*1.25) else 1 if teamALevel > (teamBLevel*0.7) else 0
+			bSuccess += int(teamBLevel/teamALevel)*2 if teamBLevel > (teamALevel*2) else 1 if teamBLevel > (teamALevel*1.5) else 0
 		#3v10
 		elif AvBrarity == -7:
-			aSuccess = 0 if AvBtype == -5 else 1 if AvBtype <= -2 else 2 if AvBtype <= 0 else 3 if AvBtype <= 2 else 4
-			bSuccess = 0 if AvBtype == -5 else 2 if AvBtype <= -2 else 3 if AvBtype <= 0 else 4 if AvBtype <= 2 else 5
+			aSuccess = 1 if AvBtype <= -2 else 2 if AvBtype <= 0 else 3 if not aDoubleAdv else 4
+			bSuccess = 2 if BvAtype <= -2 else 3 if BvAtype <= 0 else 4 if not bDoubleAdv else 5
 			aSuccess += int(teamALevel/teamBLevel)*2 if teamALevel > (teamBLevel*1.75) else 1 if teamALevel > (teamBLevel*1.25) else 0
-			bSuccess += int(teamALevel/teamBLevel)*2 if teamALevel > (teamBLevel*1.5) else 1 if teamALevel > (teamBLevel*0.8) else 0
+			bSuccess += int(teamBLevel/teamALevel)*2 if teamBLevel > (teamALevel*1.5) else 1 if teamBLevel > (teamALevel*0.8) else 0
 		#10v3
 		elif AvBrarity == 7:
-			aSuccess = 0 if AvBtype == -5 else 2 if AvBtype <= -2 else 3 if AvBtype <= 0 else 4 if AvBtype <= 2 else 5
-			bSuccess = 0 if AvBtype == -5 else 1 if AvBtype <= -2 else 2 if AvBtype <= 0 else 3 if AvBtype <= 2 else 4
+			aSuccess = 3 if aDoubleDis else 4 if AvBtype <= 0 else 5 if not aDoubleAdv else 6
+			bSuccess = 1 if bDoubleDis else 2 if BvAtype <= 0 else 3 if not bDoubleAdv else 4
 			aSuccess += int(teamALevel/teamBLevel)*2 if teamALevel > (teamBLevel*1.5) else 1 if teamALevel > (teamBLevel*0.8) else 0
-			bSuccess += int(teamALevel/teamBLevel)*2 if teamALevel > (teamBLevel*1.75) else 1 if teamALevel > (teamBLevel*1.25) else 0
+			bSuccess += int(teamBLevel/teamALevel)*2 if teamBLevel > (teamALevel*1.75) else 1 if teamBLevel > (teamALevel*1.25) else 0
 		else:
-			aSuccess = 0 if AvBtype == -5 else 1 if AvBtype <= -2 else 2 if AvBtype <= 0 else 3 if AvBtype <= 2 else 4
-			bSuccess = 0 if AvBtype == -5 else 1 if AvBtype <= -2 else 2 if AvBtype <= 0 else 3 if AvBtype <= 2 else 4
-			aSuccess += int(teamALevel/teamBLevel)*2 if teamALevel > (teamBLevel*1.5) else 1 if teamALevel > (teamBLevel*0.8) else 0
-			bSuccess += int(teamALevel/teamBLevel)*2 if teamALevel > (teamBLevel*1.75) else 1 if teamALevel > (teamBLevel*1.25) else 0
-
-		if AvBtype == -5:
-			aSuccess = 0
-		else:
-			aSuccess = (AvBtype if AvBtype > 0 else 0) + (5 if teamAGroup == 10 else 0)
-			bSuccess = (BvAtype if BvAtype > 0 else 0) + (5 if teamBGroup == 10 else 0)
-			aLevelCalc = teamALevel/teamBLevel
-			bLevelCalc = teamBLevel/teamALevel
-			print(f'{aLevelCalc} - {bLevelCalc}')
+			aSuccess = 1 if AvBtype <= -2 else 2 if AvBtype <= 0 else 3 if not aDoubleAdv else 4
+			bSuccess = 1 if BvAtype <= -2 else 2 if BvAtype <= 0 else 3 if not bDoubleAdv else 4
+			aSuccess += int(teamALevel/teamBLevel)*2 if teamALevel > (teamBLevel*1.5) else 1 if teamALevel > (teamBLevel*1.25) else 0
+			bSuccess += int(teamBLevel/teamALevel)*2 if teamBLevel > (teamALevel*1.5) else 1 if teamBLevel > (teamALevel*1.25) else 0
 
 		print(f"{aSuccess}")
 		print(f"{bSuccess}")
