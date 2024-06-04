@@ -90,3 +90,7 @@ def GymCompletion(trainer: Trainer, generation: int = None):
   return (len(obtained), len(allBadges))
 
 #endregion
+
+#region Special Trainers
+
+#endregion

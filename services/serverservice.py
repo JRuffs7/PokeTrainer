@@ -44,6 +44,15 @@ def SpecialSpawnEvent(server: Server):
   UpsertServer(server)
   return (specialPokemon, trainerda.GetWishlistTrainers(server.ServerId, specialPokemon.Pokemon_Id))
 
+def SpecialBattleEvent(server: Server):
+  specialTrainer = eventservice.GetRandomSpecialTrainer()
+  server.CurrentEvent = Event.from_dict({
+    'EventName': f'{specialTrainer.Name} Battle Event',
+    'EventType': EventType.SpecialBattle.value,
+  })
+  UpsertServer(server)
+  return specialTrainer
+
 def StatCompareEvent(server: Server):
   comparison = eventservice.GetRandomStatCompare()
   server.CurrentEvent = Event.from_dict({

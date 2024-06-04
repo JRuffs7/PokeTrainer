@@ -19,3 +19,15 @@ class Badge:
 
 	def __init__(self, dict):
 		vars(self).update(dict)
+
+
+class SpecialTrainer:
+	Id: int
+	Name: str
+	Sprite: str
+	Team: list[int]
+	Reward: int
+	Amount: int
+
+	def __init__(self, dict):
+		vars(self).update(dict)

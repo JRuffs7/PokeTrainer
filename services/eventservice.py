@@ -1,7 +1,11 @@
 from random import choice
 
+from dataaccess import gymda
 from models.enums import PokemonCount, StatCompare
 
+
+def GetRandomSpecialTrainer():
+	return choice(gymda.GetAllSpecialTrainers())
 
 def GetRandomStatCompare():
 	return choice(list(StatCompare))

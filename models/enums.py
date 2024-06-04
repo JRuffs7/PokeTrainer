@@ -3,8 +3,8 @@ from enum import Enum
 
 class EventType(Enum):
 	SpecialSpawn = 0
-	StatCompare = 1
-	PokemonCount = 2
+	SpecialTrade = 1
+	SpecialBattle = 2
 
 class StatCompare(Enum):
 	Lightest = 0

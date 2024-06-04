@@ -54,7 +54,7 @@ class BattleSimView(discord.ui.View):
 		evenString = 'This typing matchup will give you no advantage or disadvantage.'
 		immuneString = 'The opponent will be immune to your attacks.'
 
-		typeResult = pokemonservice.TypeMatch(self.attackdata.Types, self.defenddata.Types)
+		typeResult = typeservice.TypeMatch(self.attackdata.Types, self.defenddata.Types)
 
 		if self.gymbattle:
 			needAssistance: bool = False

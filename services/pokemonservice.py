@@ -272,7 +272,7 @@ def SimulateLevelGain(currLevel: int, currExp: int, rarity: int, evData: list[Ev
 
 def WildFight(attack: PokemonData, defend: PokemonData, attackLevel: int, defendLevel: int):
   healthLost: list[int] = [1,3,5,7,10,13,15]
-  battleResult = TypeMatch(attack.Types, defend.Types)
+  battleResult = typeservice.TypeMatch(attack.Types, defend.Types)
   doubleAdv = battleResult >= 2
   doubleDis = battleResult <= -2
   immune = battleResult == -5
@@ -305,7 +305,7 @@ def WildFight(attack: PokemonData, defend: PokemonData, attackLevel: int, defend
   return lost if lost > 0 else 1
 
 def GymFight(attack: PokemonData, defend: PokemonData, attackLevel: int, gymID: int):
-  battleResult = TypeMatch(attack.Types, defend.Types)
+  battleResult = typeservice.TypeMatch(attack.Types, defend.Types)
   attackGroup = RarityGroup(attack)
   attackGroup = attackGroup % 7 if attackGroup < 10 else attackGroup
   defendGroup = RarityGroup(defend)
@@ -317,32 +317,6 @@ def GymFight(attack: PokemonData, defend: PokemonData, attackLevel: int, gymID: 
     return battleResult >= 1 and attackGroup >= defendGroup
 
   return doubleAdv and (attackGroup >= defendGroup or (attackGroup == defendGroup-1 and attackLevel > defendLevel*1.25))
-
-def TypeMatch(attackTypes: list[str], defendTypes: list[str]):
-  if len(attackTypes) == 1:
-    fightOne = typeservice.TypeWeakness(attackTypes[0].lower(), defendTypes[0].lower())
-    fightTwo = typeservice.TypeWeakness(attackTypes[0].lower(), defendTypes[1].lower() if len(defendTypes) > 1 else defendTypes[0].lower())
-    if fightOne == -2 or fightTwo == -2:
-      return -5
-    return fightOne + fightTwo
-  else:
-    fightA1 = typeservice.TypeWeakness(attackTypes[0].lower(), defendTypes[0].lower())
-    fightA2 = typeservice.TypeWeakness(attackTypes[0].lower(), defendTypes[1].lower() if len(defendTypes) > 1 else defendTypes[0].lower())
-    firstType = -5 if fightA1 == -2 or fightA2 == -2 else fightA1 + fightA2 
-
-    fightB1 = typeservice.TypeWeakness(attackTypes[1].lower(), defendTypes[0].lower())
-    fightB2 = typeservice.TypeWeakness(attackTypes[1].lower(), defendTypes[1].lower() if len(defendTypes) > 1 else defendTypes[0].lower())
-    secondType = -5 if fightB1 == -2 or fightB2 == -2 else fightB1 + fightB2 
-
-    #One type is immune
-    if firstType == -5 or secondType == -5:
-      return firstType if secondType == -5 else secondType
-    
-    #One type is Super Effective
-    if firstType == 2 or secondType == 2:
-      return 4 if firstType == 2 and secondType == 2 else 2
-    
-    return firstType + secondType
 
 def RarityGroup(pokemon: PokemonData):
   rarityGroup = 1 if pokemon.Rarity <= 2 else 2 if pokemon.Rarity == 3 else 3
