@@ -30,9 +30,10 @@ async def StartBot():
   async def on_ready():
     logger.info(f"{discordBot.user} up and running - {os.environ['BUILD']}")
 
-    logger.info(f'Global Sync Command Startup')
-    await discordBot.tree.sync()
-    logger.info(f'Syncing complete.')
+    if int(os.environ['GLOBAL_SYNC']) == 1:
+      logger.info(f'Global Sync Command Startup')
+      await discordBot.tree.sync()
+      logger.info(f'Syncing complete.')
 
     try:
       os.remove('dataaccess/utility/cache.sqlite3')

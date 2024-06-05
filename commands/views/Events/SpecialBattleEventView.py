@@ -113,7 +113,6 @@ class SpecialBattleEventView(EventView):
 		return f"```ansi\n{battle}```\n{'You won!' if first < len(tTeamData) else 'You have been defeated.'}"
 	
 	def GiveReward(self, trainer: Trainer):
-		print(f'{self.reward} - {self.item.Id if self.item else "N/A"} - {self.amount}')
 		if self.reward == 1:
 			trainer.Money += self.amount
 		elif self.reward == 2:
