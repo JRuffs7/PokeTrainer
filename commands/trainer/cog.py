@@ -75,7 +75,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
       dailyResult >= 0, 
       trainerservice.HasRegionReward(trainer, 5),
       freeMasterball,
-      currentWeekly != trainer.WeeklyMission.DayStarted,
+      currentWeekly != (trainer.WeeklyMission.DayStarted if trainer.WeeklyMission else None),
       itemservice.GetEgg(dailyResult).Name if dailyResult > 0 else None)
 
   @app_commands.command(name="myeggs",

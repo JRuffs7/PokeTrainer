@@ -179,15 +179,16 @@ def TryAddMissionProgress(trainer: Trainer, action: str, type: str, addition: in
   #Daily
   if not trainer.DailyMission: #No mission
     dailyPass = False
-  if (datetime.now(UTC).date() - datetime.strptime(trainer.DailyMission.DayStarted, ShortDateFormat).date()).days != 0: #Expired
-    dailyPass = False
-  dMission = missionservice.GetDailyMission(trainer.DailyMission.MissionId)
-  if trainer.DailyMission.Progress >= dMission.Amount: #Completed
-    dailyPass = False
-  if action.lower() != dMission.Action.lower(): #Wrong Action
-    dailyPass = False
-  if dMission.Action.lower() == 'fight' and not missionservice.CheckFightMission(dMission, type, trainer.CurrentZone): #Invalid Type
-    dailyPass = False
+  else:
+    if (datetime.now(UTC).date() - datetime.strptime(trainer.DailyMission.DayStarted, ShortDateFormat).date()).days != 0: #Expired
+      dailyPass = False
+    dMission = missionservice.GetDailyMission(trainer.DailyMission.MissionId)
+    if trainer.DailyMission.Progress >= dMission.Amount: #Completed
+      dailyPass = False
+    if action.lower() != dMission.Action.lower(): #Wrong Action
+      dailyPass = False
+    if dMission.Action.lower() == 'fight' and not missionservice.CheckFightMission(dMission, type, trainer.CurrentZone): #Invalid Type
+      dailyPass = False
   if dailyPass:
     trainer.DailyMission.Progress += addition
     if trainer.DailyMission.Progress >= dMission.Amount:
@@ -197,13 +198,14 @@ def TryAddMissionProgress(trainer: Trainer, action: str, type: str, addition: in
   #Weekly
   if not trainer.WeeklyMission: #No mission
     weeklyPass = False
-  if (datetime.now(UTC).date() - datetime.strptime(trainer.WeeklyMission.DayStarted, ShortDateFormat).date()).days >= 7: #Expired
-    weeklyPass = False
-  wMission = missionservice.GetWeeklyMission(trainer.WeeklyMission.MissionId)
-  if trainer.WeeklyMission.Progress >= wMission.Amount: #Completed
-    weeklyPass = False
-  if action.lower() != wMission.Action.lower(): #Wrong action
-    weeklyPass = False
+  else:
+    if (datetime.now(UTC).date() - datetime.strptime(trainer.WeeklyMission.DayStarted, ShortDateFormat).date()).days >= 7: #Expired
+      weeklyPass = False
+    wMission = missionservice.GetWeeklyMission(trainer.WeeklyMission.MissionId)
+    if trainer.WeeklyMission.Progress >= wMission.Amount: #Completed
+      weeklyPass = False
+    if action.lower() != wMission.Action.lower(): #Wrong action
+      weeklyPass = False
   if weeklyPass:
     trainer.WeeklyMission.Progress += addition
     if trainer.WeeklyMission.Progress >= wMission.Amount:

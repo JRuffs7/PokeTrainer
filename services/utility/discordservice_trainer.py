@@ -29,21 +29,21 @@ async def PrintTrainer(interaction: Interaction, trainer: Trainer, targetUser: M
 	dailyMission = missionservice.GetDailyMission(trainer.DailyMission.MissionId) if trainer.DailyMission else None
 	weeklyMission = missionservice.GetWeeklyMission(trainer.WeeklyMission.MissionId) if trainer.WeeklyMission else None
 	if not dailyMission:
-		dmissionStr = 'Use **/daily** to acquire a daily mission.'
+		dmissionStr = '**Daily**: Use **/daily** to acquire a daily mission.'
 	else:
 		if newDay:
 			progressStr = 'Expired'
 		else:
 			progressStr = f'{trainer.DailyMission.Progress}/{dailyMission.Amount}' if trainer.DailyMission.Progress < dailyMission.Amount else 'Completed (Rewarded 3x Rare Candy)'
-		dmissionStr = f'{dailyMission.Description}\n**{progressStr}**'
+		dmissionStr = f'**Daily**: {dailyMission.Description}\n{progressStr}'
 	if not weeklyMission:
-		wmissionStr = 'Use **/daily** to acquire a weekly mission.'
+		wmissionStr = '**Weekly**: Use **/daily** to acquire a weekly mission.'
 	else:
 		if (datetime.now(UTC).date()-datetime.strptime(trainer.WeeklyMission.DayStarted, ShortDateFormat).date()).days >= 7:
 			progressStr = 'Expired'
 		else:
 			progressStr = f'{trainer.WeeklyMission.Progress}/{weeklyMission.Amount}' if trainer.WeeklyMission.Progress < weeklyMission.Amount else 'Completed (Rewarded 1x Masterball)'
-		wmissionStr = f'{weeklyMission.Description}\n**{progressStr}**'
+		wmissionStr = f'**Weekly**: {weeklyMission.Description}\n{progressStr}'
 	mission = f'__Missions__\n{dmissionStr}\n{wmissionStr}'
 
 	#Dex Section
