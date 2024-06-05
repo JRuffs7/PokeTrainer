@@ -21,7 +21,6 @@ discordBot = commands.Bot(command_prefix='~',
                           help_command=None,
                           intents=intents)
 logger = logging.getLogger('discord')
-syncLogger = logging.getLogger('command')
 errorLogger = logging.getLogger('error')
 
 
@@ -31,12 +30,13 @@ async def StartBot():
   async def on_ready():
     logger.info(f"{discordBot.user} up and running - {os.environ['BUILD']}")
 
-    syncLogger.info(f'Global Sync Command Startup')
+    logger.info(f'Global Sync Command Startup')
     await discordBot.tree.sync()
-    syncLogger.info(f'Syncing complete.')
+    logger.info(f'Syncing complete.')
 
     try:
       os.remove('dataaccess/utility/cache.sqlite3')
+      logger.info(f"Cache Reset")
     except Exception as e:
       pass
 
