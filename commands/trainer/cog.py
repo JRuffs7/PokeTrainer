@@ -67,7 +67,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
   @trainer_check
   async def daily(self, interaction: Interaction):
     trainer = trainerservice.GetTrainer(interaction.guild_id, interaction.user.id)
-    currentWeekly = trainer.WeeklyMission.DayStarted
+    currentWeekly = trainer.WeeklyMission.DayStarted if trainer.WeeklyMission else None
     freeMasterball = datetime.today().date() == freemasterball.date()
     dailyResult = trainerservice.TryDaily(trainer, freeMasterball)
     return await discordservice_trainer.PrintDaily(
