@@ -6,8 +6,8 @@ from random import choice
 import discord
 from discord.ext import commands, tasks
 from discord.ext.commands import CommandNotFound
+from commands.views.Events.SpecialBattleEventView import SpecialBattleEventView
 from commands.views.Events.SpecialSpawnEventView import SpecialSpawnEventView
-from commands.views.Events.UserEntryEventView import UserEntryEventView
 from globals import HelpColor, eventtimes
 from models.Server import Server
 from models.enums import EventType
@@ -21,7 +21,6 @@ discordBot = commands.Bot(command_prefix='~',
                           help_command=None,
                           intents=intents)
 logger = logging.getLogger('discord')
-syncLogger = logging.getLogger('command')
 errorLogger = logging.getLogger('error')
 
 
@@ -31,12 +30,13 @@ async def StartBot():
   async def on_ready():
     logger.info(f"{discordBot.user} up and running - {os.environ['BUILD']}")
 
-    syncLogger.info(f'Global Sync Command Startup')
+    logger.info(f'Global Sync Command Startup')
     await discordBot.tree.sync()
-    syncLogger.info(f'Syncing complete.')
+    logger.info(f'Syncing complete.')
 
     try:
       os.remove('dataaccess/utility/cache.sqlite3')
+      logger.info(f"Cache Reset")
     except Exception as e:
       pass
 
@@ -92,12 +92,9 @@ async def StartBot():
         return
       
       match eventType:
-        case EventType.StatCompare:
-          serverservice.StatCompareEvent(server)
-          await UserEntryEventView(server, channel, discordBot.user.display_avatar.url).send()
-        case EventType.PokemonCount:
-          serverservice.PokemonCountEvent(server)
-          await UserEntryEventView(server, channel, discordBot.user.display_avatar.url).send()
+        case EventType.SpecialBattle:
+          sTrainer = serverservice.SpecialBattleEvent(server)
+          await SpecialBattleEventView(server, channel, sTrainer).send()
         case _:
           spawnPkmn, wishUsers = serverservice.SpecialSpawnEvent(server)
           await SpecialSpawnEventView(server, channel, spawnPkmn).send(wishUsers)

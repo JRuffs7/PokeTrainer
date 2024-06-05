@@ -5,13 +5,12 @@ import uuid
 from dataaccess import trainerda
 from globals import AdminList, GreatBallReaction, PokeballReaction, ShinyOdds, UltraBallReaction, DateFormat, ShortDateFormat
 from models.Egg import TrainerEgg
-from models.Event import Event
 from models.Item import Potion
+from models.Mission import TrainerMission
 from models.Shop import SpecialShop
 from models.Trainer import Trainer
 from models.Pokemon import EvolveData, Pokemon, PokemonData
-from models.enums import EventType, PokemonCount, StatCompare
-from services import gymservice, itemservice, pokemonservice
+from services import battleservice, gymservice, itemservice, missionservice, pokemonservice
 
 captureLog = logging.getLogger('capture')
 updatedTrainers: list[str] = []
@@ -119,6 +118,17 @@ def TryUsePotion(trainer: Trainer, potion: Potion):
 def TryDaily(trainer: Trainer, freeMasterball: bool):
   if (not trainer.LastDaily or datetime.strptime(trainer.LastDaily, ShortDateFormat).date() < datetime.now(UTC).date()) or trainer.UserId in AdminList:
     trainer.LastDaily = datetime.now(UTC).strftime(ShortDateFormat)
+    trainer.DailyMission = TrainerMission.from_dict({
+      'Progress': 0,
+      'DayStarted': datetime.now(UTC).strftime(ShortDateFormat),
+      'MissionId': missionservice.GetNewDailyMission().Id
+    })
+    if not trainer.WeeklyMission or (datetime.now(UTC).date()-datetime.strptime(trainer.WeeklyMission.DayStarted, ShortDateFormat).date()).days >= 7:
+      trainer.WeeklyMission = TrainerMission.from_dict({
+        'Progress': 0,
+        'DayStarted': (datetime.now(UTC) - timedelta(days=(datetime.now(UTC).isoweekday()-1))).strftime(ShortDateFormat),
+        'MissionId': missionservice.GetNewWeeklyMission().Id
+      })
 
     #Unova Reward
     if HasRegionReward(trainer, 5):
@@ -144,30 +154,6 @@ def SpecialShopCheck(trainer: Trainer):
     trainer.Shop.ItemIds = [i.Id for i in sample(itemservice.GetAllItems(), 4)]
   UpsertTrainer(trainer)
 
-def EventEntry(trainer: Trainer, event: Event):
-  isStatCompare = event.EventType == EventType.StatCompare.value
-  heightBased = event.SubType in [StatCompare.Shortest.value, StatCompare.Tallest.value]
-  dexEntries = GetPokedexList(
-    trainer,
-    ('height' if heightBased else 'weight') if isStatCompare else 'default',
-    1 if not isStatCompare and event.SubType == PokemonCount.Shiny.value else 0,
-    None,
-    PokemonCount(event.SubType).name if not isStatCompare and event.SubType <= 17 else None,
-    2 if isStatCompare else 1 if event.SubType == PokemonCount.Legendary.value else 0,
-    0 if isStatCompare else 1 if event.SubType == PokemonCount.Female.value else 2 if event.SubType == PokemonCount.Male.value else 0)
-  
-  #Pokemon Count Event
-  if event.EventType == EventType.PokemonCount.value:
-    return len(dexEntries)
-  #Stat Compare Event
-  if isStatCompare and event.SubType in [StatCompare.Tallest.value, StatCompare.Heaviest.value]:
-    dexEntries.reverse()
-  return dexEntries[0]
-
-def EventWinner(trainer: Trainer, ballId: int):
-  ModifyItemList(trainer.Pokeballs, str(ballId), 1 if ballId == 4 else 5 if ballId == 3 else 10)
-  UpsertTrainer(trainer)
-
 def ModifyItemList(itemDict: dict[str, int], itemId: str, amount: int):
   newAmount = itemDict[itemId] + amount if itemId in itemDict else amount
   if newAmount < 0:
@@ -186,6 +172,43 @@ def TryGetCandy():
       return itemservice.GetCandy(3) #Large Candy
     return itemservice.GetCandy(2) #Small Candy
   return None
+
+def TryAddMissionProgress(trainer: Trainer, action: str, type: str, addition: int = 1):
+  dailyPass = True
+  weeklyPass = True
+  #Daily
+  if not trainer.DailyMission: #No mission
+    dailyPass = False
+  if (datetime.now(UTC).date() - datetime.strptime(trainer.DailyMission.DayStarted, ShortDateFormat).date()).days != 0: #Expired
+    dailyPass = False
+  dMission = missionservice.GetDailyMission(trainer.DailyMission.MissionId)
+  if trainer.DailyMission.Progress >= dMission.Amount: #Completed
+    dailyPass = False
+  if action.lower() != dMission.Action.lower(): #Wrong Action
+    dailyPass = False
+  if dMission.Action.lower() == 'fight' and not missionservice.CheckFightMission(dMission, type, trainer.CurrentZone): #Invalid Type
+    dailyPass = False
+  if dailyPass:
+    trainer.DailyMission.Progress += addition
+    if trainer.DailyMission.Progress >= dMission.Amount:
+      trainer.DailyMission.Progress = dMission.Amount
+      ModifyItemList(trainer.Candies, '1', 3)
+
+  #Weekly
+  if not trainer.WeeklyMission: #No mission
+    weeklyPass = False
+  if (datetime.now(UTC).date() - datetime.strptime(trainer.WeeklyMission.DayStarted, ShortDateFormat).date()).days >= 7: #Expired
+    weeklyPass = False
+  wMission = missionservice.GetWeeklyMission(trainer.WeeklyMission.MissionId)
+  if trainer.WeeklyMission.Progress >= wMission.Amount: #Completed
+    weeklyPass = False
+  if action.lower() != wMission.Action.lower(): #Wrong action
+    weeklyPass = False
+  if weeklyPass:
+    trainer.WeeklyMission.Progress += addition
+    if trainer.WeeklyMission.Progress >= wMission.Amount:
+      trainer.WeeklyMission.Progress = wMission.Amount
+      ModifyItemList(trainer.Pokeballs, '4', 1)
 
 #endregion
 
@@ -309,6 +332,7 @@ def Evolve(trainer: Trainer, initialPkmn: Pokemon, evolveMon: EvolveData):
   if evolveMon.ItemNeeded:
     ModifyItemList(trainer.EvolutionItems, str(evolveMon.ItemNeeded), -1)
   TryAddToPokedex(trainer, newData, newPkmn.IsShiny)
+  TryAddMissionProgress(trainer, 'Evolve', '')
   if newData.PokedexId == 869 and initialPkmn.IsShiny:
     for p in pokemonservice.GetPokemonByPokedexId(869):
       if p.Id not in trainer.Shinydex:
@@ -319,6 +343,7 @@ def Evolve(trainer: Trainer, initialPkmn: Pokemon, evolveMon: EvolveData):
 def ReleasePokemon(trainer: Trainer, pokemonIds: list[str]):
   released = next(p for p in trainer.OwnedPokemon if p.Id in pokemonIds)
   trainer.OwnedPokemon = [p for p in trainer.OwnedPokemon if p.Id not in pokemonIds]
+  TryAddMissionProgress(trainer, 'Release', '', len(pokemonIds))
   UpsertTrainer(trainer)
   return pokemonservice.GetPokemonById(released.Pokemon_Id).Name
 
@@ -327,9 +352,11 @@ def TradePokemon(trainerOne: Trainer, pokemonOne: Pokemon, trainerTwo: Trainer, 
   trainerTwo.OwnedPokemon = [p for p in trainerTwo.OwnedPokemon if p.Id != pokemonTwo.Id]
   trainerOne.OwnedPokemon.append(pokemonTwo)
   TryAddToPokedex(trainerOne, pokemonservice.GetPokemonById(pokemonTwo.Pokemon_Id), pokemonTwo.IsShiny)
+  TryAddMissionProgress(trainerOne, 'Trade', '')
   UpsertTrainer(trainerOne)
   trainerTwo.OwnedPokemon.append(pokemonOne)
   TryAddToPokedex(trainerTwo, pokemonservice.GetPokemonById(pokemonOne.Pokemon_Id), pokemonOne.IsShiny)
+  TryAddMissionProgress(trainerTwo, 'Trade', '')
   UpsertTrainer(trainerTwo)
 
 #endregion
@@ -381,8 +408,8 @@ def TryCapture(reaction: str, trainer: Trainer, spawn: Pokemon):
   #Sinnoh Reward
   if (HasRegionReward(trainer, 4) and choice(range(1, 101)) < 11) or pokemonservice.CaptureSuccess(pokeball, pokemon, spawn.Level):
     trainer.OwnedPokemon.append(spawn)
-    trainer.Money += 25
     TryAddToPokedex(trainer, pokemon, spawn.IsShiny)
+    TryAddMissionProgress(trainer, 'Catch', ','.join(pokemon.Types))
     if len(trainer.Team) < 6:
       trainer.Team.append(spawn.Id)
     caught = True
@@ -391,7 +418,7 @@ def TryCapture(reaction: str, trainer: Trainer, spawn: Pokemon):
 
 def TryWildFight(trainer: Trainer, trainerPkmnData: PokemonData, wild: Pokemon, wildData: PokemonData):
     trainerPokemon = next(p for p in trainer.OwnedPokemon if p.Id == trainer.Team[0])
-    healthLost = pokemonservice.WildFight(trainerPkmnData, wildData, trainerPokemon.Level, wild.Level)
+    healthLost = battleservice.WildFight(trainerPkmnData, wildData, trainerPokemon.Level, wild.Level)
 
     #Hoenn Reward
     if HasRegionReward(trainer, 3) and choice(range(1, 101)) < 11:
@@ -405,7 +432,8 @@ def TryWildFight(trainer: Trainer, trainerPkmnData: PokemonData, wild: Pokemon, 
         trainerPokemon, 
         trainerPkmnData, 
         exp)
-      trainer.Money += 50
+      trainer.Money += 25
+      TryAddMissionProgress(trainer, 'Fight', ','.join(wildData.Types))
       #Kanto Reward
       if HasRegionReward(trainer, 1) and len(trainer.Team) > 1:
         teamMember = next(p for p in trainer.OwnedPokemon if p.Id == trainer.Team[1])

@@ -1,5 +1,6 @@
 from dataclasses import dataclass, field, fields
 from models.Egg import TrainerEgg
+from models.Mission import TrainerMission
 from models.Pokemon import Pokemon
 from models.Shop import SpecialShop
 
@@ -27,6 +28,8 @@ class Trainer:
   LastDaily: str | None = None
   Shop: SpecialShop | None = field(default_factory=lambda: None)
   CurrentZone: int = 0
+  DailyMission: TrainerMission | None = None
+  WeeklyMission: TrainerMission | None = None
 
   @classmethod
   def from_dict(cls, dict):
@@ -35,9 +38,6 @@ class Trainer:
     returnObj.OwnedPokemon = [Pokemon.from_dict(p) for p in returnObj.OwnedPokemon]
     returnObj.Eggs = [TrainerEgg.from_dict(e) for e in returnObj.Eggs]
     returnObj.Shop = SpecialShop(returnObj.Shop) if returnObj.Shop else None
+    returnObj.DailyMission = TrainerMission.from_dict(returnObj.DailyMission) if returnObj.DailyMission else None
+    returnObj.WeeklyMission = TrainerMission.from_dict(returnObj.WeeklyMission) if returnObj.WeeklyMission else None
     return returnObj
-
-  # def __init__(cls, dict):
-  #   fields = {field.name for field in fields(cls)}
-  #   vars(self).update(dict)
-  #   self.OwnedPokemon = [Pokemon(p) for p in self.OwnedPokemon]

@@ -46,7 +46,7 @@ class SpecialSpawnEventView(EventView):
 				self.eventLog.info(f"{self.server.ServerName} - Created Thread")
 			await self.messagethread.send(self.CaptureDesc(interaction.user.id))
 			self.captureLog.info(f'{self.server.ServerName} - {interaction.user.display_name} used Masterball and caught a {self.pkmndata.Name}')
-			return await interaction.followup.send(content=f"You captured a {self.pkmndata.Name}!\nYou used 1x Masterball and gained $25.", ephemeral=True)
+			return await interaction.followup.send(content=f"You captured a {self.pkmndata.Name}!\nYou used 1x Masterball.", ephemeral=True)
 		else:
 			self.userentries.remove(interaction.user.id)
 			return await interaction.followup.send(f"Capture failed for some reason. Try again.", ephemeral=True)

@@ -1,7 +1,7 @@
 import logging
 from dataaccess import gymda
 from models.Trainer import Trainer
-from services import pokemonservice, trainerservice
+from services import battleservice, pokemonservice, trainerservice
 from models.Gym import GymLeader
 
 #region Gym Leaders
@@ -32,7 +32,7 @@ def GymLeaderFight(trainer: Trainer, leader: GymLeader):
 	while trainerInd < len(trainerTeam) and leaderInd < len(leaderTeam):
 		trainerFighter = trainerTeam[trainerInd]
 		leaderFighter = leaderTeam[leaderInd]
-		fight = pokemonservice.GymFight(trainerFighter['Pokemon'], leaderFighter, trainerFighter['Level'], leader.BadgeId)
+		fight = battleservice.GymFight(trainerFighter['Pokemon'], leaderFighter, trainerFighter['Level'], leader.BadgeId)
 		fightResults.append(fight)
 		if fight:
 			group = pokemonservice.RarityGroup(leaderTeam[leaderInd])
@@ -56,6 +56,7 @@ def GymLeaderFight(trainer: Trainer, leader: GymLeader):
 		trainer.Money -= int(leader.Reward/2)
 	if leader.BadgeId not in trainer.GymAttempts:
 		trainer.GymAttempts.append(leader.BadgeId)
+	trainerservice.TryAddMissionProgress(trainer, 'Gym', '')
 	trainerservice.UpsertTrainer(trainer)
 	return fightResults
 

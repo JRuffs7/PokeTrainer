@@ -4,7 +4,7 @@ from discord import Member, TextChannel
 from discord.ext import commands
 from middleware.decorators import is_bot_admin
 from models.Server import Server
-from services import pokemonservice, serverservice, trainerservice
+from services import battleservice, pokemonservice, serverservice, trainerservice
 
 class AdminCommands(commands.Cog, name="AdminCommands"):
 
@@ -110,6 +110,11 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 		pokemon = pokemonservice.GetPokemonById(pokemonId)
 		if pokemon:
 			print(f"{pokemon.Name}: {pokemon.PokedexId}")
+
+	@commands.command(name="testfight")
+	@is_bot_admin
+	async def testfight(self, ctx: commands.Context, pokemon1: int, level1: int, pokemon2: int, level2: int):
+		await ctx.send(battleservice.TeamFight([{'Level': level1, 'Data': pokemonservice.GetPokemonById(pokemon1)}], [{'Level': level2, 'Data': pokemonservice.GetPokemonById(pokemon2)}]))
 
 	#endregion
 

@@ -1,0 +1,335 @@
+{
+	"Daily": [
+		{
+			"Id": 0,
+			"Amount": 5,
+			"Action": "Catch",
+			"Type": "grass",
+			"Description": "Catch 5 Grass Type Pokemon"
+		},
+		{
+			"Id": 1,
+			"Amount": 5,
+			"Action": "Catch",
+			"Type": "water",
+			"Description": "Catch 5 Water Type Pokemon"
+		},
+		{
+			"Id": 2,
+			"Amount": 5,
+			"Action": "Catch",
+			"Type": "fire",
+			"Description": "Catch 5 Fire Type Pokemon"
+		},
+		{
+			"Id": 3,
+			"Amount": 5,
+			"Action": "Catch",
+			"Type": "electric",
+			"Description": "Catch 5 Electric Type Pokemon"
+		},
+		{
+			"Id": 4,
+			"Amount": 5,
+			"Action": "Catch",
+			"Type": "ground",
+			"Description": "Catch 5 Ground Type Pokemon"
+		},
+		{
+			"Id": 5,
+			"Amount": 5,
+			"Action": "Catch",
+			"Type": "flying",
+			"Description": "Catch 5 Flying Type Pokemon"
+		},
+		{
+			"Id": 6,
+			"Amount": 5,
+			"Action": "Catch",
+			"Type": "rock",
+			"Description": "Catch 5 Rock Type Pokemon"
+		},
+		{
+			"Id": 7,
+			"Amount": 5,
+			"Action": "Catch",
+			"Type": "ice",
+			"Description": "Catch 5 Ice Type Pokemon"
+		},
+		{
+			"Id": 8,
+			"Amount": 5,
+			"Action": "Catch",
+			"Type": "bug",
+			"Description": "Catch 5 Bug Type Pokemon"
+		},
+		{
+			"Id": 9,
+			"Amount": 5,
+			"Action": "Catch",
+			"Type": "fairy",
+			"Description": "Catch 5 Fairy Type Pokemon"
+		},
+		{
+			"Id": 10,
+			"Amount": 5,
+			"Action": "Catch",
+			"Type": "fighting",
+			"Description": "Catch 5 Fighting Type Pokemon"
+		},
+		{
+			"Id": 11,
+			"Amount": 5,
+			"Action": "Catch",
+			"Type": "ghost",
+			"Description": "Catch 5 Ghost Type Pokemon"
+		},
+		{
+			"Id": 12,
+			"Amount": 5,
+			"Action": "Catch",
+			"Type": "psychic",
+			"Description": "Catch 5 Psychic Type Pokemon"
+		},
+		{
+			"Id": 13,
+			"Amount": 5,
+			"Action": "Catch",
+			"Type": "dark",
+			"Description": "Catch 5 Dark Type Pokemon"
+		},
+		{
+			"Id": 14,
+			"Amount": 5,
+			"Action": "Catch",
+			"Type": "steel",
+			"Description": "Catch 5 Steel Type Pokemon"
+		},
+		{
+			"Id": 15,
+			"Amount": 5,
+			"Action": "Catch",
+			"Type": "dragon",
+			"Description": "Catch 5 Dragon Type Pokemon"
+		},
+		{
+			"Id": 16,
+			"Amount": 5,
+			"Action": "Catch",
+			"Type": "normal",
+			"Description": "Catch 5 Normal Type Pokemon"
+		},
+		{
+			"Id": 17,
+			"Amount": 5,
+			"Action": "Catch",
+			"Type": "poison",
+			"Description": "Catch 5 Poison Type Pokemon"
+		},
+		{
+			"Id": 18,
+			"Amount": 5,
+			"Action": "Fight",
+			"Type": "grass",
+			"Description": "Win 5 Wild Grass Type Battles (No Zones)"
+		},
+		{
+			"Id": 19,
+			"Amount": 5,
+			"Action": "Fight",
+			"Type": "water",
+			"Description": "Win 5 Wild Water Type Battles (No Zones)"
+		},
+		{
+			"Id": 20,
+			"Amount": 5,
+			"Action": "Fight",
+			"Type": "fire",
+			"Description": "Win 5 Wild Fire Type Battles (No Zones)"
+		},
+		{
+			"Id": 21,
+			"Amount": 5,
+			"Action": "Fight",
+			"Type": "electric",
+			"Description": "Win 5 Wild Electric Type Battles (No Zones)"
+		},
+		{
+			"Id": 22,
+			"Amount": 5,
+			"Action": "Fight",
+			"Type": "ground",
+			"Description": "Win 5 Wild Ground Type Battles (No Zones)"
+		},
+		{
+			"Id": 23,
+			"Amount": 5,
+			"Action": "Fight",
+			"Type": "flying",
+			"Description": "Win 5 Wild Flying Type Battles (No Zones)"
+		},
+		{
+			"Id": 24,
+			"Amount": 5,
+			"Action": "Fight",
+			"Type": "rock",
+			"Description": "Win 5 Wild Rock Type Battles (No Zones)"
+		},
+		{
+			"Id": 25,
+			"Amount": 5,
+			"Action": "Fight",
+			"Type": "ice",
+			"Description": "Win 5 Wild Ice Type Battles (No Zones)"
+		},
+		{
+			"Id": 26,
+			"Amount": 5,
+			"Action": "Fight",
+			"Type": "bug",
+			"Description": "Win 5 Wild Bug Type Battles (No Zones)"
+		},
+		{
+			"Id": 27,
+			"Amount": 5,
+			"Action": "Fight",
+			"Type": "fairy",
+			"Description": "Win 5 Wild Fairy Type Battles (No Zones)"
+		},
+		{
+			"Id": 28,
+			"Amount": 5,
+			"Action": "Fight",
+			"Type": "fighting",
+			"Description": "Win 5 Wild Fighting Type Battles (No Zones)"
+		},
+		{
+			"Id": 29,
+			"Amount": 5,
+			"Action": "Fight",
+			"Type": "ghost",
+			"Description": "Win 5 Wild Ghost Type Battles (No Zones)"
+		},
+		{
+			"Id": 30,
+			"Amount": 5,
+			"Action": "Fight",
+			"Type": "psychic",
+			"Description": "Win 5 Wild Psychic Type Battles (No Zones)"
+		},
+		{
+			"Id": 31,
+			"Amount": 5,
+			"Action": "Fight",
+			"Type": "dark",
+			"Description": "Win 5 Wild Dark Type Battles (No Zones)"
+		},
+		{
+			"Id": 32,
+			"Amount": 5,
+			"Action": "Fight",
+			"Type": "steel",
+			"Description": "Win 5 Wild Steel Type Battles (No Zones)"
+		},
+		{
+			"Id": 33,
+			"Amount": 5,
+			"Action": "Fight",
+			"Type": "dragon",
+			"Description": "Win 5 Wild Dragon Type Battles (No Zones)"
+		},
+		{
+			"Id": 34,
+			"Amount": 5,
+			"Action": "Fight",
+			"Type": "normal",
+			"Description": "Win 5 Wild Normal Type Battles (No Zones)"
+		},
+		{
+			"Id": 35,
+			"Amount": 5,
+			"Action": "Fight",
+			"Type": "poison",
+			"Description": "Win 5 Wild Poison Type Battles (No Zones)"
+		},
+		{
+			"Id": 36,
+			"Amount": 10,
+			"Action": "Catch",
+			"Type": "",
+			"Description": "Catch 10 Pokemon"
+		},
+		{
+			"Id": 37,
+			"Amount": 20,
+			"Action": "Fight",
+			"Type": "",
+			"Description": "Win 20 Wild Battles"
+		},
+		{
+			"Id": 38,
+			"Amount": 1,
+			"Action": "Evolve",
+			"Type": "",
+			"Description": "Evolve 1 Pokemon"
+		},
+		{
+			"Id": 39,
+			"Amount": 1,
+			"Action": "Trade",
+			"Type": "",
+			"Description": "Complete 1 Trade"
+		},
+		{
+			"Id": 40,
+			"Amount": 5,
+			"Action": "Release",
+			"Type": "",
+			"Description": "Release 5 Pokemon"
+		},
+		{
+			"Id": 41,
+			"Amount": 1,
+			"Action": "Gym",
+			"Type": "",
+			"Description": "Attempt 1 Gym Battle"
+		}
+	],
+	"Weekly": [
+		{
+			"Id": 0,
+			"Amount": 50,
+			"Action": "Catch",
+			"Type": "",
+			"Description": "Catch 50 Pokemon"
+		},
+		{
+			"Id": 1,
+			"Amount": 100,
+			"Action": "Fight",
+			"Type": "",
+			"Description": "Win 100 Wild Battles"
+		},
+		{
+			"Id": 2,
+			"Amount": 5,
+			"Action": "Evolve",
+			"Type": "",
+			"Description": "Evolve 5 Pokemon"
+		},
+		{
+			"Id": 3,
+			"Amount": 25,
+			"Action": "Release",
+			"Type": "",
+			"Description": "Release 25 Pokemon"
+		},
+		{
+			"Id": 4,
+			"Amount": 5,
+			"Action": "Trade",
+			"Type": "",
+			"Description": "Initiate And Complete 5 Trades"
+		}
+	]
+}

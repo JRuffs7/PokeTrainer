@@ -1,0 +1,675 @@
+[
+	{
+		"Id": 0,
+		"Name": "Aliana",
+		"Sprite": "https://imgur.com/nXID2hM.png",
+		"Team": [
+			262,
+			621
+		]
+	},
+	{
+		"Id": 1,
+		"Name": "Archer",
+		"Sprite": "https://imgur.com/nh7y6hz.png",
+		"Team": [
+			101,
+			42,
+			126,
+			110
+		]
+	},
+	{
+		"Id": 2,
+		"Name": "Archie",
+		"Sprite": "https://imgur.com/MGv4RV1.png",
+		"Team": [
+			262,
+			89,
+			169,
+			319
+		]
+	},
+	{
+		"Id": 3,
+		"Name": "Ariana",
+		"Sprite": "https://imgur.com/vjcuFAZ.png",
+		"Team": [
+			24,
+			45,
+			198
+		]
+	},
+	{
+		"Id": 4,
+		"Name": "Atticus",
+		"Sprite": "https://imgur.com/ntIipXo.png",
+		"Team": [
+			435,
+			89,
+			691,
+			748,
+			966
+		]
+	},
+	{
+		"Id": 5,
+		"Name": "Avery",
+		"Sprite": "https://imgur.com/wASkCS6.png",
+		"Team": [
+			10324,
+			10322,
+			528,
+			65,
+			199
+		]
+	},
+	{
+		"Id": 6,
+		"Name": "Barry",
+		"Sprite": "https://imgur.com/EfeF4kg.png",
+		"Team": [
+			398,
+			407,
+			214,
+			78,
+			143,
+			395
+		]
+	},
+	{
+		"Id": 7,
+		"Name": "Bianca",
+		"Sprite": "https://imgur.com/8Ec2wnt.png",
+		"Team": [
+			508,
+			514,
+			518,
+			620,
+			609,
+			503
+		]
+	},
+	{
+		"Id": 8,
+		"Name": "Blue",
+		"Sprite": "https://imgur.com/OhoAhaw.png",
+		"Team": [
+			18,
+			65,
+			112,
+			103,
+			130,
+			6
+		]
+	},
+	{
+		"Id": 9,
+		"Name": "Brendan",
+		"Sprite": "https://imgur.com/pcCjnfE.png",
+		"Team": [
+			277,
+			26,
+			219,
+			321,
+			254
+		]
+	},
+	{
+		"Id": 10,
+		"Name": "Bryony",
+		"Sprite": "https://imgur.com/VsxHwXl.png",
+		"Team": [
+			510,
+			625
+		]
+	},
+	{
+		"Id": 11,
+		"Name": "Calem",
+		"Sprite": "https://imgur.com/PMpntp4.png",
+		"Team": [
+			678,
+			36,
+			134,
+			359,
+			334,
+			652
+		]
+	},
+	{
+		"Id": 12,
+		"Name": "Celosia",
+		"Sprite": "https://imgur.com/j6fVpGv.png",
+		"Team": [
+			310,
+			452
+		]
+	},
+	{
+		"Id": 13,
+		"Name": "Cheren",
+		"Sprite": "https://imgur.com/5wfB4Zn.png",
+		"Team": [
+			510,
+			516,
+			521,
+			526,
+			612,
+			497
+		]
+	},
+	{
+		"Id": 14,
+		"Name": "Colress",
+		"Sprite": "https://imgur.com/aCkyTUz.png",
+		"Team": [
+			82,
+			10059,
+			3766,
+			606,
+			462,
+			601
+		]
+	},
+	{
+		"Id": 15,
+		"Name": "Courtney",
+		"Sprite": "https://imgur.com/W4SpGEp.png",
+		"Team": [
+			323,
+			262
+		]
+	},
+	{
+		"Id": 16,
+		"Name": "Cyrus",
+		"Sprite": "https://imgur.com/gAccy3g.png",
+		"Team": [
+			229,
+			430,
+			169,
+			130,
+			461
+		]
+	},
+	{
+		"Id": 17,
+		"Name": "Eri",
+		"Sprite": "https://imgur.com/YJQWIuj.png",
+		"Team": [
+			57,
+			454,
+			766,
+			448,
+			979
+		]
+	},
+	{
+		"Id": 18,
+		"Name": "Ghetsis",
+		"Sprite": "https://imgur.com/PJ1Wiyz.png",
+		"Team": [
+			563,
+			537,
+			604,
+			452,
+			454,
+			635
+		]
+	},
+	{
+		"Id": 19,
+		"Name": "Giacomo",
+		"Sprite": "https://imgur.com/Vg4Mbx7.png",
+		"Team": [
+			332,
+			430,
+			943,
+			553,
+			983
+		]
+	},
+	{
+		"Id": 20,
+		"Name": "Giovanni",
+		"Sprite": "https://imgur.com/turBhNL.png",
+		"Team": [
+			34,
+			430,
+			31,
+			115
+		]
+	},
+	{
+		"Id": 21,
+		"Name": "Gladion",
+		"Sprite": "https://imgur.com/FpjEmUn.png",
+		"Team": [
+			169,
+			571,
+			474,
+			448,
+			9,
+			773
+		]
+	},
+	{
+		"Id": 22,
+		"Name": "Guzma",
+		"Sprite": "https://imgur.com/PIV2vdl.png",
+		"Team": [
+			768,
+			168,
+			284,
+			127,
+			212
+		]
+	},
+	{
+		"Id": 23,
+		"Name": "Hau",
+		"Sprite": "https://imgur.com/3VbbFR2.png",
+		"Team": [
+			10202,
+			134,
+			128,
+			715,
+			740,
+			724
+		]
+	},
+	{
+		"Id": 24,
+		"Name": "Hop",
+		"Sprite": "https://imgur.com/rygckjw.png",
+		"Team": [
+			832,
+			143,
+			871,
+			823,
+			818,
+			10357
+		]
+	},
+	{
+		"Id": 25,
+		"Name": "Hugh",
+		"Sprite": "https://imgur.com/yEOVmTc.png",
+		"Team": [
+			521,
+			514,
+			626,
+			330,
+			604,
+			503
+		]
+	},
+	{
+		"Id": 26,
+		"Name": "Team Rocket",
+		"Sprite": "https://imgur.com/hcL5T4u.png",
+		"Team": [
+			52,
+			24,
+			110,
+			108,
+			71,
+			202
+		]
+	},
+	{
+		"Id": 27,
+		"Name": "Jupiter",
+		"Sprite": "https://imgur.com/YlfedlF.png",
+		"Team": [
+			437,
+			42,
+			435
+		]
+	},
+	{
+		"Id": 28,
+		"Name": "Kieran",
+		"Sprite": "https://imgur.com/6Di524G.png",
+		"Team": [
+			186,
+			149,
+			861,
+			474,
+			727,
+			1019
+		]
+	},
+	{
+		"Id": 29,
+		"Name": "Klara",
+		"Sprite": "https://imgur.com/qyk1dV8.png",
+		"Team": [
+			10331,
+			10326,
+			452,
+			545,
+			10324
+		]
+	},
+	{
+		"Id": 30,
+		"Name": "Lysandre",
+		"Sprite": "https://imgur.com/Yj4Wd3r.png",
+		"Team": [
+			620,
+			430,
+			668,
+			130
+		]
+	},
+	{
+		"Id": 31,
+		"Name": "Mable",
+		"Sprite": "https://imgur.com/cKc7eSe.png",
+		"Team": [
+			229,
+			461
+		]
+	},
+	{
+		"Id": 32,
+		"Name": "Mars",
+		"Sprite": "https://imgur.com/kU1joI3.png",
+		"Team": [
+			437,
+			42,
+			432
+		]
+	},
+	{
+		"Id": 33,
+		"Name": "Matt",
+		"Sprite": "https://imgur.com/z8hpFtx.png",
+		"Team": [
+			318,
+			262,
+			319
+		]
+	},
+	{
+		"Id": 34,
+		"Name": "Maxie",
+		"Sprite": "https://imgur.com/Wp8ggmn.png",
+		"Team": [
+			262,
+			110,
+			169,
+			323
+		]
+	},
+	{
+		"Id": 35,
+		"Name": "May",
+		"Sprite": "https://imgur.com/JZefUac.png",
+		"Team": [
+			277,
+			26,
+			219,
+			321,
+			257
+		]
+	},
+	{
+		"Id": 36,
+		"Name": "Mela",
+		"Sprite": "https://imgur.com/Lmsudg9.png",
+		"Team": [
+			324,
+			839,
+			229,
+			59,
+			936
+		]
+	},
+	{
+		"Id": 37,
+		"Name": "Molly Hale",
+		"Sprite": "https://imgur.com/Gv7BIN8.png",
+		"Team": [
+			216,
+			180,
+			231,
+			230,
+			226,
+			244
+		]
+	},
+	{
+		"Id": 38,
+		"Name": "N",
+		"Sprite": "https://imgur.com/xZC9uME.png",
+		"Team": [
+			644,
+			565,
+			584,
+			567,
+			571,
+			601
+		]
+	},
+	{
+		"Id": 39,
+		"Name": "Nemona",
+		"Sprite": "https://imgur.com/H6GIgGR.png",
+		"Team": [
+			745,
+			784,
+			392,
+			350,
+			923,
+			908
+		]
+	},
+	{
+		"Id": 40,
+		"Name": "Ortega",
+		"Sprite": "https://imgur.com/d5Wcnp4.png",
+		"Team": [
+			707,
+			184,
+			40,
+			858,
+			927
+		]
+	},
+	{
+		"Id": 41,
+		"Name": "Penny",
+		"Sprite": "https://imgur.com/uSpTOX9.png",
+		"Team": [
+			197,
+			134,
+			135,
+			136,
+			470,
+			600
+		]
+	},
+	{
+		"Id": 42,
+		"Name": "Petrel",
+		"Sprite": "https://imgur.com/cBNOBkx.png",
+		"Team": [
+			109,
+			109,
+			109,
+			109,
+			110,
+			109
+		]
+	},
+	{
+		"Id": 43,
+		"Name": "Piers",
+		"Sprite": "https://imgur.com/vCkkXH0.png",
+		"Team": [
+			560,
+			687,
+			435,
+			849,
+			862
+		]
+	},
+	{
+		"Id": 44,
+		"Name": "Plumeria",
+		"Sprite": "https://imgur.com/gIuDemD.png",
+		"Team": [
+			94,
+			10215,
+			169,
+			748,
+			758
+		]
+	},
+	{
+		"Id": 45,
+		"Name": "Proton",
+		"Sprite": "https://imgur.com/gWzZ2GG.png",
+		"Team": [
+			42,
+			110
+		]
+	},
+	{
+		"Id": 46,
+		"Name": "Red",
+		"Sprite": "https://imgur.com/3LA20mj.png",
+		"Team": [
+			25,
+			131,
+			143,
+			3,
+			6,
+			9
+		]
+	},
+	{
+		"Id": 47,
+		"Name": "Saturn",
+		"Sprite": "https://imgur.com/EzYROvZ.png",
+		"Team": [
+			42,
+			436,
+			454
+		]
+	},
+	{
+		"Id": 48,
+		"Name": "Serena",
+		"Sprite": "https://imgur.com/bkMaoNR.png",
+		"Team": [
+			678,
+			36,
+			134,
+			359,
+			334,
+			655
+		]
+	},
+	{
+		"Id": 49,
+		"Name": "Shauna",
+		"Sprite": "https://imgur.com/GxrZxvC.png",
+		"Team": [
+			301,
+			706,
+			652
+		]
+	},
+	{
+		"Id": 50,
+		"Name": "Shelly",
+		"Sprite": "https://imgur.com/fY7XxBX.png",
+		"Team": [
+			319,
+			262
+		]
+	},
+	{
+		"Id": 51,
+		"Name": "Silver",
+		"Sprite": "https://imgur.com/YSrda9w.png",
+		"Team": [
+			215,
+			82,
+			94,
+			169,
+			65,
+			160
+		]
+	},
+	{
+		"Id": 52,
+		"Name": "Tabitha",
+		"Sprite": "https://imgur.com/z0Xblc6.png",
+		"Team": [
+			322,
+			262,
+			41,
+			323
+		]
+	},
+	{
+		"Id": 53,
+		"Name": "Tierno",
+		"Sprite": "https://imgur.com/ohm9uhj.png",
+		"Team": [
+			663,
+			407,
+			342
+		]
+	},
+	{
+		"Id": 54,
+		"Name": "Trace",
+		"Sprite": "https://imgur.com/W4oM29T.png",
+		"Team": [
+			18,
+			45,
+			105,
+			78,
+			80,
+			135
+		]
+	},
+	{
+		"Id": 55,
+		"Name": "Wally",
+		"Sprite": "https://imgur.com/yC4a3cD.png",
+		"Team": [
+			407,
+			663,
+			184,
+			462,
+			445,
+			475
+		]
+	},
+	{
+		"Id": 56,
+		"Name": "Xerosic",
+		"Sprite": "https://imgur.com/q2AqzIe.png",
+		"Team": [
+			169,
+			687
+		]
+	},
+	{
+		"Id": 57,
+		"Name": "Zinzolin",
+		"Sprite": "https://imgur.com/9qGq8ob.png",
+		"Team": [
+			615,
+			615,
+			461
+		]
+	}
+]

@@ -67,6 +67,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
   @trainer_check
   async def daily(self, interaction: Interaction):
     trainer = trainerservice.GetTrainer(interaction.guild_id, interaction.user.id)
+    currentWeekly = trainer.WeeklyMission.DayStarted
     freeMasterball = datetime.today().date() == freemasterball.date()
     dailyResult = trainerservice.TryDaily(trainer, freeMasterball)
     return await discordservice_trainer.PrintDaily(
@@ -74,6 +75,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
       dailyResult >= 0, 
       trainerservice.HasRegionReward(trainer, 5),
       freeMasterball,
+      currentWeekly != trainer.WeeklyMission.DayStarted,
       itemservice.GetEgg(dailyResult).Name if dailyResult > 0 else None)
 
   @app_commands.command(name="myeggs",

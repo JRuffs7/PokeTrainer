@@ -39,7 +39,7 @@ class EventView(discord.ui.View):
 
 	async def send(self, wishUsers: list[int] = None):
 		timestamp = calendar.timegm((datetime.now(UTC)+timedelta(minutes=self.eventTime)).timetuple())
-		self.embed.title += f' (Ends <t:{timestamp}:R>)'
+		self.embed.title += f'\n(Ends <t:{timestamp}:R>)'
 		self.message = await self.channel.send(embed=self.embed, view=self)
 		if wishUsers:
 			self.messagethread = await self.message.create_thread(

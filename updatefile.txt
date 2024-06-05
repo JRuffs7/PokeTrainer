@@ -1,0 +1,9 @@
+- New Daily/Weekly Missions! Use **/help missions** for more details
+- Capturing a Pokemon no longer gives money as a reward (including event spawns)
+- Defeating a spawned Pokemon now gives $25 instead of $50
+- Removed the 'Run Away' reaction from spawns
+### Major Event overhaul!
+Look at **/help events** for more details!
+- Stat comparisons and Pokemon Counts events have been Removed
+- New Special Trainers will now appear during event times
+- Special Spawns are still available
