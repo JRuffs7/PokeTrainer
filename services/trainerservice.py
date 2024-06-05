@@ -101,14 +101,17 @@ def StartTrainer(pokemonId: int, userId: int, serverId: int):
 #region Inventory/Items
 
 def TryUsePotion(trainer: Trainer, potion: Potion):
-  if trainer.Potions[str(potion.Id)] == 0:
+  if str(potion.Id) not in trainer.Potions or trainer.Potions[str(potion.Id)] == 0:
     return (False, 0)
 
   if trainer.Health == 100:
     return (True, 0)
 
   preHealth = trainer.Health
-  trainer.Health += potion.HealingAmount
+  if potion.HealingAmount == None:
+    trainer.Health = 100
+  else:
+    trainer.Health += potion.HealingAmount
   if trainer.Health > 100:
     trainer.Health = 100
   ModifyItemList(trainer.Potions, str(potion.Id), -1)

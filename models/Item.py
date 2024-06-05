@@ -17,7 +17,7 @@ class Pokeball(Item):
 
 
 class Potion(Item):
-  HealingAmount: int
+  HealingAmount: int|None
 
   def __init__(self, dict):
     super(Potion, self).__init__(dict)

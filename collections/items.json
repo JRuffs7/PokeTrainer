@@ -64,7 +64,7 @@
       "Description": "Heals trainer for max HP.",
       "BuyAmount": 600,
       "SellAmount": 300,
-      "HealingAmount": 100
+      "HealingAmount": null
     }
   ],
   "Candy": [
