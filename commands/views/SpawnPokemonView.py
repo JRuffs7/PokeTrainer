@@ -102,7 +102,10 @@ class SpawnPokemonView(discord.ui.View):
 	async def TryCapture(self, interaction: discord.Interaction, label: str, ball: str):
 		updatedTrainer = trainerservice.GetTrainer(self.interaction.guild_id, self.interaction.user.id)
 		pokeballId = '1' if label == PokeballReaction else '2' if label == GreatBallReaction else '3' if label == UltraBallReaction else '4'
-		if updatedTrainer.Pokeballs[str(pokeballId)] <= 0:
+		if updatedTrainer.Health <= 0:
+				self.pressed = False
+				return await self.message.edit(content=f"You do not have any health! Restore with **/usepotion**. You can buy potions from the **/shop**", view=self)
+		elif updatedTrainer.Pokeballs[str(pokeballId)] <= 0:
 			self.pressed = False
 			await self.message.edit(content=f"You do not have any {ball}s. Buy some from the **/shop**, try another ball, or fight!\nCurrent Trainer HP: {self.TrainerHealthString(updatedTrainer)}", view=self)
 		elif trainerservice.TryCapture(pokeballId, updatedTrainer, self.pokemon):

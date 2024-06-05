@@ -3,7 +3,7 @@ import logging
 from random import choice, sample
 import uuid
 from dataaccess import trainerda
-from globals import AdminList, GreatBallReaction, PokeballReaction, ShinyOdds, UltraBallReaction, DateFormat, ShortDateFormat
+from globals import AdminList, ShinyOdds, DateFormat, ShortDateFormat
 from models.Egg import TrainerEgg
 from models.Item import Potion
 from models.Mission import TrainerMission
@@ -187,7 +187,9 @@ def TryAddMissionProgress(trainer: Trainer, action: str, type: str, addition: in
       dailyPass = False
     if action.lower() != dMission.Action.lower(): #Wrong Action
       dailyPass = False
-    if dMission.Action.lower() == 'fight' and not missionservice.CheckFightMission(dMission, type, trainer.CurrentZone): #Invalid Type
+    if dMission.Action.lower() == 'fight' and not missionservice.CheckMissionType(dMission, type, trainer.CurrentZone): #Invalid Type
+      dailyPass = False
+    if dMission.Action.lower() == 'catch' and not missionservice.CheckMissionType(dMission, type, 0): #Invalid Type
       dailyPass = False
   if dailyPass:
     trainer.DailyMission.Progress += addition
@@ -416,6 +418,7 @@ def TryCapture(pokeballId: str, trainer: Trainer, spawn: Pokemon):
     caught = True
   else:
     trainer.Health -= (5-int(pokeballId))
+    trainer.Health = 0 if trainer.Health < 0 else trainer.Health
   UpsertTrainer(trainer)
   return caught
 

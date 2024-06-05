@@ -21,7 +21,7 @@ def GetWeeklyMission(missionId: int):
 def GetNewWeeklyMission():
 	return choice(GetAllWeeklyMissions())
 
-def CheckFightMission(mission: Mission, types: str, zone: int):
+def CheckMissionType(mission: Mission, types: str, zone: int):
 	if not mission.Type:
 		return True
 	
