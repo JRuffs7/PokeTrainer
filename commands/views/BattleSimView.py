@@ -2,7 +2,7 @@ import discord
 
 from globals import BlueDiamond, GreenCircle, PokeballReaction, PokemonColor, WhiteCircle
 from models.Pokemon import PokemonData
-from services import pokemonservice, typeservice
+from services import battleservice, pokemonservice, typeservice
 from services.utility import discordservice
 
 
@@ -123,7 +123,7 @@ class BattleSimView(discord.ui.View):
 		defendGroup = pokemonservice.RarityGroup(self.defenddata)
 		defendGroup = defendGroup if attackGroup == 10 and self.gymbattle else defendGroup % 7
 		if not self.gymbattle:
-			return f'Level advantages are given for the following scenarios:\n```Major Advantage - Attack Level > Defense Level x 2\nMinor Advantage - Attack Level > Defense Level x 1.5```\nThis can also work in reverse with Major/Minor Disadvantage.\n\nIf both Pokemon are under Level 10, only Minor Advantage is given with a level discrepancy of at least 3.\n\n**Potential Health Lost (No Level Assistance): {pokemonservice.WildFight(self.attackdata, self.defenddata, 5 if attackGroup == 1 else 25 if attackGroup == 2 else 35, 5 if defendGroup == 1 else 25 if defendGroup == 2 else 35)}**'
+			return f'Level advantages are given for the following scenarios:\n```Major Advantage - Attack Level > Defense Level x 2\nMinor Advantage - Attack Level > Defense Level x 1.5```\nThis can also work in reverse with Major/Minor Disadvantage.\n\nIf both Pokemon are under Level 10, only Minor Advantage is given with a level discrepancy of at least 3.\n\n**Potential Health Lost (No Level Assistance): {battleservice.WildFight(self.attackdata, self.defenddata, 5 if attackGroup == 1 else 25 if attackGroup == 2 else 35, 5 if defendGroup == 1 else 25 if defendGroup == 2 else 35)}**'
 		else:
 			defendGroup = pokemonservice.RarityGroup(self.defenddata)
 			defendGroup = defendGroup % 7 if defendGroup < 10 else defendGroup

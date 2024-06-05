@@ -95,16 +95,9 @@ class SpawnPokemonView(discord.ui.View):
 				exp = self.pkmndata.Rarity*self.pokemon.Level*2 if self.pkmndata.Rarity <= 2 else self.pkmndata.Rarity*self.pokemon.Level
 				expMsg = f'{pokemonservice.GetPokemonDisplayName(trainerPkmn, trainerPkmnData)} gained {exp} XP'
 				expShareMsg = f'{pokemonservice.GetPokemonDisplayName(next(p for p in updatedTrainer.OwnedPokemon if p.Id == updatedTrainer.Team[1]))} gained {int(exp/2)} XP from the Exp. Share' if trainerservice.HasRegionReward(updatedTrainer, 1) and len(updatedTrainer.Team) > 1 else ''
-				rewardMsg = f'Trainer lost {healthLost}hp and gained $50.{f" Found one **{candy.Name}**!" if candy else ""}'
+				rewardMsg = f'Trainer lost {healthLost}hp and gained $25.{f" Found one **{candy.Name}**!" if candy else ""}'
 				newline = '\n'
 				return await interaction.followup.send(content=f'{newline.join([battleMsg, expMsg, expShareMsg, rewardMsg] if expShareMsg else [battleMsg, expMsg, rewardMsg])}')
-			
-
-	@discord.ui.button(label='💨')
-	@defer
-	async def run_button(self, interaction: discord.Interaction, button: discord.ui.Button):
-		await self.message.delete(delay=0.01)
-		await interaction.followup.send(content=f'Ran away from {pokemonservice.GetPokemonDisplayName(self.pokemon, self.pkmndata)}', ephemeral=True)
 			
 	async def TryCapture(self, interaction: discord.Interaction, label: str, ball: str):
 		updatedTrainer = trainerservice.GetTrainer(self.interaction.guild_id, self.interaction.user.id)

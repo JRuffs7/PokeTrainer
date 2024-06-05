@@ -8,7 +8,6 @@ from discord.ext import commands, tasks
 from discord.ext.commands import CommandNotFound
 from commands.views.Events.SpecialBattleEventView import SpecialBattleEventView
 from commands.views.Events.SpecialSpawnEventView import SpecialSpawnEventView
-from commands.views.Events.UserEntryEventView import UserEntryEventView
 from globals import HelpColor, eventtimes
 from models.Server import Server
 from models.enums import EventType
@@ -92,12 +91,10 @@ async def StartBot():
       if not channel or not isinstance(channel, discord.TextChannel):
         return
       
-      match EventType.SpecialBattle:
+      match eventType:
         case EventType.SpecialBattle:
           sTrainer = serverservice.SpecialBattleEvent(server)
           await SpecialBattleEventView(server, channel, sTrainer).send()
-        case EventType.SpecialTrade:
-          serverservice.PokemonCountEvent(server)
         case _:
           spawnPkmn, wishUsers = serverservice.SpecialSpawnEvent(server)
           await SpecialSpawnEventView(server, channel, spawnPkmn).send(wishUsers)

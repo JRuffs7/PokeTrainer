@@ -5,14 +5,12 @@ import uuid
 from dataaccess import trainerda
 from globals import AdminList, GreatBallReaction, PokeballReaction, ShinyOdds, UltraBallReaction, DateFormat, ShortDateFormat
 from models.Egg import TrainerEgg
-from models.Event import Event
 from models.Item import Potion
 from models.Mission import TrainerMission
 from models.Shop import SpecialShop
 from models.Trainer import Trainer
 from models.Pokemon import EvolveData, Pokemon, PokemonData
-from models.enums import EventType, PokemonCount, StatCompare
-from services import gymservice, itemservice, missionservice, pokemonservice
+from services import battleservice, gymservice, itemservice, missionservice, pokemonservice
 
 captureLog = logging.getLogger('capture')
 updatedTrainers: list[str] = []
@@ -154,30 +152,6 @@ def SpecialShopCheck(trainer: Trainer):
   elif datetime.strptime(trainer.Shop.LastRecycle, ShortDateFormat).date() < datetime.now(UTC).date():
     trainer.Shop.LastRecycle = datetime.now(UTC).strftime(ShortDateFormat)
     trainer.Shop.ItemIds = [i.Id for i in sample(itemservice.GetAllItems(), 4)]
-  UpsertTrainer(trainer)
-
-def EventEntry(trainer: Trainer, event: Event):
-  isStatCompare = event.EventType == EventType.StatCompare.value
-  heightBased = event.SubType in [StatCompare.Shortest.value, StatCompare.Tallest.value]
-  dexEntries = GetPokedexList(
-    trainer,
-    ('height' if heightBased else 'weight') if isStatCompare else 'default',
-    1 if not isStatCompare and event.SubType == PokemonCount.Shiny.value else 0,
-    None,
-    PokemonCount(event.SubType).name if not isStatCompare and event.SubType <= 17 else None,
-    2 if isStatCompare else 1 if event.SubType == PokemonCount.Legendary.value else 0,
-    0 if isStatCompare else 1 if event.SubType == PokemonCount.Female.value else 2 if event.SubType == PokemonCount.Male.value else 0)
-  
-  #Pokemon Count Event
-  if event.EventType == EventType.PokemonCount.value:
-    return len(dexEntries)
-  #Stat Compare Event
-  if isStatCompare and event.SubType in [StatCompare.Tallest.value, StatCompare.Heaviest.value]:
-    dexEntries.reverse()
-  return dexEntries[0]
-
-def EventWinner(trainer: Trainer, ballId: int):
-  ModifyItemList(trainer.Pokeballs, str(ballId), 1 if ballId == 4 else 5 if ballId == 3 else 10)
   UpsertTrainer(trainer)
 
 def ModifyItemList(itemDict: dict[str, int], itemId: str, amount: int):
@@ -444,7 +418,7 @@ def TryCapture(reaction: str, trainer: Trainer, spawn: Pokemon):
 
 def TryWildFight(trainer: Trainer, trainerPkmnData: PokemonData, wild: Pokemon, wildData: PokemonData):
     trainerPokemon = next(p for p in trainer.OwnedPokemon if p.Id == trainer.Team[0])
-    healthLost = pokemonservice.WildFight(trainerPkmnData, wildData, trainerPokemon.Level, wild.Level)
+    healthLost = battleservice.WildFight(trainerPkmnData, wildData, trainerPokemon.Level, wild.Level)
 
     #Hoenn Reward
     if HasRegionReward(trainer, 3) and choice(range(1, 101)) < 11:
@@ -458,7 +432,7 @@ def TryWildFight(trainer: Trainer, trainerPkmnData: PokemonData, wild: Pokemon, 
         trainerPokemon, 
         trainerPkmnData, 
         exp)
-      trainer.Money += 50
+      trainer.Money += 25
       TryAddMissionProgress(trainer, 'Fight', ','.join(wildData.Types))
       #Kanto Reward
       if HasRegionReward(trainer, 1) and len(trainer.Team) > 1:

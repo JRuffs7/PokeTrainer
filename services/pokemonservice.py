@@ -266,58 +266,6 @@ def SimulateLevelGain(currLevel: int, currExp: int, rarity: int, evData: list[Ev
   AddExperience(simPokemon, simData, exp)
   return simPokemon.Level
 
-#endregion
-
-#region Fights
-
-def WildFight(attack: PokemonData, defend: PokemonData, attackLevel: int, defendLevel: int):
-  healthLost: list[int] = [1,3,5,7,10,13,15]
-  battleResult = typeservice.TypeMatch(attack.Types, defend.Types)
-  doubleAdv = battleResult >= 2
-  doubleDis = battleResult <= -2
-  immune = battleResult == -5
-  attackGroup = RarityGroup(attack) % 7
-  defendGroup = RarityGroup(defend)
-  levelAdvantage = 2 if attackLevel > (defendLevel*2) else 1 if attackLevel > (defendLevel*1.5) else 0
-  levelDisadvantage = 2 if defendLevel > (attackLevel*2) else 1 if defendLevel > (attackLevel*1.5) else 0
-  if attackLevel < 10 and defendLevel < 10:
-    levelAdvantage = 1 if attackLevel > (defendLevel + 3) else 0 
-    levelDisadvantage = 1 if defendLevel > (attackLevel + 3) else 0 
-  
-  if attackGroup - defendGroup == 0:
-    returnInd = 6 if immune else 2 if doubleAdv else 4 if doubleDis else 3
-  # 3v2 2v1
-  elif attackGroup - defendGroup == 1:
-    returnInd = 5 if immune else 1 if doubleAdv else 3 if doubleDis else 2
-  # 3v1
-  elif attackGroup - defendGroup == 2:
-    returnInd = 4 if immune else 0 if doubleAdv else 2 if doubleDis else 1
-  # 1v2 2v3
-  elif attackGroup - defendGroup == -1:
-    returnInd = 6 if immune else 3 if doubleAdv else 5 if doubleDis else 4
-  # 1v3
-  else:
-    returnInd = 6 if immune else 4 if doubleAdv else 6 if doubleDis else 5
-  returnInd -= (levelAdvantage - levelDisadvantage) if not immune else 0
-  returnInd = 0 if returnInd < 0 else len(healthLost)-1 if returnInd >= len(healthLost) else returnInd
-  lost = healthLost[returnInd] - battleResult
-  lost = lost - (1 if attack.Rarity == 10 else 0)
-  return lost if lost > 0 else 1
-
-def GymFight(attack: PokemonData, defend: PokemonData, attackLevel: int, gymID: int):
-  battleResult = typeservice.TypeMatch(attack.Types, defend.Types)
-  attackGroup = RarityGroup(attack)
-  attackGroup = attackGroup % 7 if attackGroup < 10 else attackGroup
-  defendGroup = RarityGroup(defend)
-  defendGroup = defendGroup % 7 if defendGroup < 10 else defendGroup
-  defendLevel = 100 if gymID >= 1000 else 15 if defendGroup == 1 else 25 if defendGroup == 2 else 35 if defendGroup == 3 else 100
-  doubleAdv = battleResult >= 2 or (battleResult > 0 and attackLevel > defendLevel*1.5 and attackGroup >= defendGroup)
-
-  if IsLegendaryPokemon(defend) and len(attack.Types) == 1:
-    return battleResult >= 1 and attackGroup >= defendGroup
-
-  return doubleAdv and (attackGroup >= defendGroup or (attackGroup == defendGroup-1 and attackLevel > defendLevel*1.25))
-
 def RarityGroup(pokemon: PokemonData):
   rarityGroup = 1 if pokemon.Rarity <= 2 else 2 if pokemon.Rarity == 3 else 3
   if IsLegendaryPokemon(pokemon):
