@@ -36,7 +36,7 @@ class SpecialSpawnEventView(EventView):
 		if trainer.Pokeballs['4'] <= 0:
 			self.userentries.remove(interaction.user.id)
 			return await interaction.followup.send(content=f"You do not have any Masterballs. Participate in non-legendary public events to receive one.", ephemeral=True)
-		elif trainerservice.TryCapture(MasterBallReaction, trainer, self.pokemon):
+		elif trainerservice.TryCapture('4', trainer, self.pokemon):
 			if not self.messagethread or not interaction.guild.get_channel_or_thread(self.messagethread.id):
 				self.messagethread = await self.message.create_thread(
 					name=f"{self.pkmndata.Name}-{datetime.now(UTC).strftime(ShortDateFormat)}",

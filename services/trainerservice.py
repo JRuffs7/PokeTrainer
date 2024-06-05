@@ -401,20 +401,21 @@ def CanCallSpawn(trainer: Trainer):
     UpsertTrainer(trainer)
   return canSpawn
 
-def TryCapture(reaction: str, trainer: Trainer, spawn: Pokemon):
+def TryCapture(pokeballId: str, trainer: Trainer, spawn: Pokemon):
   caught = False
-  pokeball = itemservice.GetPokeball(1 if reaction == PokeballReaction else 2 if reaction == GreatBallReaction else 3 if reaction == UltraBallReaction else 4)
   pokemon = pokemonservice.GetPokemonById(spawn.Pokemon_Id)
-  ModifyItemList(trainer.Pokeballs, str(pokeball.Id), -1)
+  ModifyItemList(trainer.Pokeballs, pokeballId, -1)
 
   #Sinnoh Reward
-  if (HasRegionReward(trainer, 4) and choice(range(1, 101)) < 11) or pokemonservice.CaptureSuccess(pokeball, pokemon, spawn.Level):
+  if (HasRegionReward(trainer, 4) and choice(range(1, 101)) < 11) or pokemonservice.CaptureSuccess(itemservice.GetPokeball(int(pokeballId)), pokemon, spawn.Level):
     trainer.OwnedPokemon.append(spawn)
     TryAddToPokedex(trainer, pokemon, spawn.IsShiny)
     TryAddMissionProgress(trainer, 'Catch', ','.join(pokemon.Types))
     if len(trainer.Team) < 6:
       trainer.Team.append(spawn.Id)
     caught = True
+  else:
+    trainer.Health -= (5-int(pokeballId))
   UpsertTrainer(trainer)
   return caught
 
