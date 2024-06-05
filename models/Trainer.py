@@ -20,6 +20,7 @@ class Trainer:
   Formdex: list[int] = field(default_factory=list)
   Team: list[str] = field(default_factory=list)
   Badges: list[int] = field(default_factory=list)
+  SpTrainerWins: list[int] = field(default_factory=list)
   GymAttempts: list[int] = field(default_factory=list)
   Eggs: list[TrainerEgg] = field(default_factory=list)
   Daycare: dict[str, str] = field(default_factory=dict)

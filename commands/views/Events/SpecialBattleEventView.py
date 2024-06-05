@@ -120,4 +120,6 @@ class SpecialBattleEventView(EventView):
 			trainerservice.ModifyItemList(trainer.Pokeballs, str(self.item.Id), self.amount)
 		else:
 			trainerservice.ModifyItemList(trainer.Potions if len(self.sTeam) != 6 else trainer.EvolutionItems, str(self.item.Id), self.amount)
+		if self.strainer.Id not in trainer.SpTrainerWins:
+			trainer.SpTrainerWins.append(self.strainer.Id)
 		trainerservice.UpsertTrainer(trainer)
