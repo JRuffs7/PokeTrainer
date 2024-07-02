@@ -190,9 +190,7 @@ def TryAddMissionProgress(trainer: Trainer, action: str, type: str, addition: in
       dailyPass = False
     if action.lower() != dMission.Action.lower(): #Wrong Action
       dailyPass = False
-    if dMission.Action.lower() == 'fight' and not missionservice.CheckMissionType(dMission, type, trainer.CurrentZone): #Invalid Type
-      dailyPass = False
-    if dMission.Action.lower() == 'catch' and not missionservice.CheckMissionType(dMission, type, 0): #Invalid Type
+    if not missionservice.CheckMissionType(dMission, type): #Invalid Type
       dailyPass = False
   if dailyPass:
     trainer.DailyMission.Progress += addition

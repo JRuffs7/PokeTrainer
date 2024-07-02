@@ -1,0 +1,2 @@
+- Refactored some daily missions. Removed (No Zone) requirements
+- Fixed an error with trading using improper parameters

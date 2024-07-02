@@ -47,12 +47,12 @@ class TradeCommands(commands.Cog, name="TradeCommands"):
 		userTradeList = [x for x in userTrainer.OwnedPokemon if x.Pokemon_Id == give and x.Id not in userTrainer.Team]
 		userTradeData = pokemonservice.GetPokemonById(give)
 		if not userTradeList or not userTradeData:
-			return await discordservice_trade.PrintTradeResponse(inter, 0, [userTradeData.Name])
+			return await discordservice_trade.PrintTradeResponse(inter, 0, [userTradeData.Name if userTradeData else 'N/A'])
 		targetTrainer = trainerservice.GetTrainer(inter.guild_id, user.id)
 		targetTradeList = [x for x in targetTrainer.OwnedPokemon if x.Pokemon_Id == receive and x.Id not in targetTrainer.Team]
 		targetTradeData = pokemonservice.GetPokemonById(receive)
 		if not targetTradeList or not targetTradeData:
-			return await discordservice_trade.PrintTradeResponse(inter, 1, [user.display_name, targetTradeData.Name])
+			return await discordservice_trade.PrintTradeResponse(inter, 1, [user.display_name, targetTradeData.Name if targetTradeData else 'N/A'])
 		
 		await TradeView(inter, userTrainer, targetTrainer, userTradeList, targetTradeList, userTradeData, targetTradeData, self.bot.user.display_avatar.url).send()
 

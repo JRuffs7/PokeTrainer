@@ -131,126 +131,126 @@
 			"Amount": 5,
 			"Action": "Fight",
 			"Type": "grass",
-			"Description": "Win 5 Wild Grass Type Battles (No Zones)"
+			"Description": "Win 5 Wild Grass Type Battles"
 		},
 		{
 			"Id": 19,
 			"Amount": 5,
 			"Action": "Fight",
 			"Type": "water",
-			"Description": "Win 5 Wild Water Type Battles (No Zones)"
+			"Description": "Win 5 Wild Water Type Battles"
 		},
 		{
 			"Id": 20,
 			"Amount": 5,
 			"Action": "Fight",
 			"Type": "fire",
-			"Description": "Win 5 Wild Fire Type Battles (No Zones)"
+			"Description": "Win 5 Wild Fire Type Battles"
 		},
 		{
 			"Id": 21,
 			"Amount": 5,
 			"Action": "Fight",
 			"Type": "electric",
-			"Description": "Win 5 Wild Electric Type Battles (No Zones)"
+			"Description": "Win 5 Wild Electric Type Battles"
 		},
 		{
 			"Id": 22,
 			"Amount": 5,
 			"Action": "Fight",
 			"Type": "ground",
-			"Description": "Win 5 Wild Ground Type Battles (No Zones)"
+			"Description": "Win 5 Wild Ground Type Battles"
 		},
 		{
 			"Id": 23,
 			"Amount": 5,
 			"Action": "Fight",
 			"Type": "flying",
-			"Description": "Win 5 Wild Flying Type Battles (No Zones)"
+			"Description": "Win 5 Wild Flying Type Battles"
 		},
 		{
 			"Id": 24,
 			"Amount": 5,
 			"Action": "Fight",
 			"Type": "rock",
-			"Description": "Win 5 Wild Rock Type Battles (No Zones)"
+			"Description": "Win 5 Wild Rock Type Battles"
 		},
 		{
 			"Id": 25,
 			"Amount": 5,
 			"Action": "Fight",
 			"Type": "ice",
-			"Description": "Win 5 Wild Ice Type Battles (No Zones)"
+			"Description": "Win 5 Wild Ice Type Battles"
 		},
 		{
 			"Id": 26,
 			"Amount": 5,
 			"Action": "Fight",
 			"Type": "bug",
-			"Description": "Win 5 Wild Bug Type Battles (No Zones)"
+			"Description": "Win 5 Wild Bug Type Battles"
 		},
 		{
 			"Id": 27,
 			"Amount": 5,
 			"Action": "Fight",
 			"Type": "fairy",
-			"Description": "Win 5 Wild Fairy Type Battles (No Zones)"
+			"Description": "Win 5 Wild Fairy Type Battles"
 		},
 		{
 			"Id": 28,
 			"Amount": 5,
 			"Action": "Fight",
 			"Type": "fighting",
-			"Description": "Win 5 Wild Fighting Type Battles (No Zones)"
+			"Description": "Win 5 Wild Fighting Type Battles"
 		},
 		{
 			"Id": 29,
 			"Amount": 5,
 			"Action": "Fight",
 			"Type": "ghost",
-			"Description": "Win 5 Wild Ghost Type Battles (No Zones)"
+			"Description": "Win 5 Wild Ghost Type Battles"
 		},
 		{
 			"Id": 30,
 			"Amount": 5,
 			"Action": "Fight",
 			"Type": "psychic",
-			"Description": "Win 5 Wild Psychic Type Battles (No Zones)"
+			"Description": "Win 5 Wild Psychic Type Battles"
 		},
 		{
 			"Id": 31,
 			"Amount": 5,
 			"Action": "Fight",
 			"Type": "dark",
-			"Description": "Win 5 Wild Dark Type Battles (No Zones)"
+			"Description": "Win 5 Wild Dark Type Battles"
 		},
 		{
 			"Id": 32,
 			"Amount": 5,
 			"Action": "Fight",
 			"Type": "steel",
-			"Description": "Win 5 Wild Steel Type Battles (No Zones)"
+			"Description": "Win 5 Wild Steel Type Battles"
 		},
 		{
 			"Id": 33,
 			"Amount": 5,
 			"Action": "Fight",
 			"Type": "dragon",
-			"Description": "Win 5 Wild Dragon Type Battles (No Zones)"
+			"Description": "Win 5 Wild Dragon Type Battles"
 		},
 		{
 			"Id": 34,
 			"Amount": 5,
 			"Action": "Fight",
 			"Type": "normal",
-			"Description": "Win 5 Wild Normal Type Battles (No Zones)"
+			"Description": "Win 5 Wild Normal Type Battles"
 		},
 		{
 			"Id": 35,
 			"Amount": 5,
 			"Action": "Fight",
 			"Type": "poison",
-			"Description": "Win 5 Wild Poison Type Battles (No Zones)"
+			"Description": "Win 5 Wild Poison Type Battles"
 		},
 		{
 			"Id": 36,
