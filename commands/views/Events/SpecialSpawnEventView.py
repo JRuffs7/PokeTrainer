@@ -44,16 +44,16 @@ class SpecialSpawnEventView(EventView):
 				self.server.CurrentEvent.ThreadId = self.messagethread.id
 				serverservice.UpsertServer(self.server)
 				self.eventLog.info(f"{self.server.ServerName} - Created Thread")
-			await self.messagethread.send(self.CaptureDesc(interaction.user.id))
+			await self.messagethread.send(self.CaptureDesc(interaction.user.display_name))
 			self.captureLog.info(f'{self.server.ServerName} - {interaction.user.display_name} used Masterball and caught a {self.pkmndata.Name}')
 			return await interaction.followup.send(content=f"You captured a {self.pkmndata.Name}!\nYou used 1x Masterball.", ephemeral=True)
 		else:
 			self.userentries.remove(interaction.user.id)
 			return await interaction.followup.send(f"Capture failed for some reason. Try again.", ephemeral=True)
 
-	def CaptureDesc(self, userId: int):
+	def CaptureDesc(self, userName: str):
 		pkmnType = 'starter' if self.pkmndata.IsStarter else 'Legendary' if self.pkmndata.IsLegendary else 'Ultra Beast' if self.pkmndata.IsUltraBeast else 'Paradox' if self.pkmndata.IsParadox else 'Fossil' if self.pkmndata.IsFossil else 'Mythical'
-		return f'<@{userId}> used a Masterball and captured the {pkmnType} Pokemon {pokemonservice.GetPokemonDisplayName(self.pokemon, self.pkmndata)}!'
+		return f'{userName} used a Masterball and captured the {pkmnType} Pokemon {pokemonservice.GetPokemonDisplayName(self.pokemon, self.pkmndata)}!'
 
 	def PokemonDesc(self):
 		pkmnData = t2a(

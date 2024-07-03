@@ -63,10 +63,10 @@ class SpecialBattleEventView(EventView):
 		await self.messagethread.send(self.FightDesc(interaction.user.id, fight.count(2) < len(trainerTeam)))
 		await interaction.followup.send(content=self.ResultDesc(fight, trainerTeam), ephemeral=True)
 
-	def FightDesc(self, userId: int, won: bool):
+	def FightDesc(self, userName: str, won: bool):
 		if won:
-			return f'<@{userId}> won and received an award!'
-		return f'<@{userId}> was defeated. No reward given.'
+			return f'{userName} won and received an award!'
+		return f'{userName} was defeated. No reward given.'
 
 	def TeamDesc(self):
 		teamDesc: list[list] = []
