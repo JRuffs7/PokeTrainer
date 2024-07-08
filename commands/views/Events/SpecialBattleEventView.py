@@ -60,7 +60,7 @@ class SpecialBattleEventView(EventView):
 			self.eventLog.info(f"{self.server.ServerName} - Created Thread")
 		if fight.count(2) < len(trainer.Team):
 			self.GiveReward(trainer)
-		await self.messagethread.send(self.FightDesc(interaction.user.id, fight.count(2) < len(trainerTeam)))
+		await self.messagethread.send(self.FightDesc(interaction.user.display_name, fight.count(2) < len(trainerTeam)))
 		await interaction.followup.send(content=self.ResultDesc(fight, trainerTeam), ephemeral=True)
 
 	def FightDesc(self, userName: str, won: bool):
