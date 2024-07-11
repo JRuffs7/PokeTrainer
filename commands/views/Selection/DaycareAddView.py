@@ -16,6 +16,7 @@ class DaycareAddView(discord.ui.View):
 		self.user = interaction.user
 		self.trainer = trainer
 		self.pokemon = pokemon
+		self.pokemonchoices = None
 		super().__init__(timeout=300)
 		self.ownlist = OwnedSelector(pokemon, 2 - len(trainer.Daycare))
 		self.add_item(self.ownlist)
