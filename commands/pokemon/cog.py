@@ -107,7 +107,6 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
     if "4" not in trainer.Pokeballs or trainer.Pokeballs["4"] < 20:
       return await discordservice_pokemon.PrintPokeShopResponse(inter, 4, pkmn.Name)
     spawn = pokemonservice.GenerateSpawnPokemon(pkmn, 1)
-    spawn.IsShiny = True
     spawn.IsShiny = (spawn.IsShiny and trainer.Money >= pokemonservice.GetShopValue(pkmn)*2 and trainer.Pokeballs["4"] >= 30)
 
     return await PokeShopView(inter, trainer, spawn).send()
