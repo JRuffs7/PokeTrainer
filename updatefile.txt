@@ -1,1 +1,0 @@
-- Added a **/pokeshop**. Check out **/help pokeshop** for more details
