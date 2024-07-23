@@ -37,7 +37,7 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 			trainer.Health = 100 if trainer.Health > 100 else 0 if trainer.Health < 0 else trainer.Health
 			trainerservice.UpsertTrainer(trainer)
 
-	@commands.command(name="givemoney")
+	@commands.command(name="addmoney")
 	@is_bot_admin
 	async def givemoney(self, ctx: commands.Context, amount: int, user: Member = None):
 		if not ctx.guild:

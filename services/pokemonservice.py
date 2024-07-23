@@ -6,7 +6,7 @@ from models.Trainer import Trainer
 from models.Zone import Zone
 from models.enums import SpecialSpawn
 
-from services import itemservice, typeservice
+from services import itemservice
 from dataaccess import pokemonda
 from globals import FemaleSign, MaleSign, ShinyOdds, ShinySign, to_dict
 from models.Pokemon import EvolveData, PokemonData, Pokemon
@@ -65,6 +65,26 @@ def IsLegendaryPokemon(pokemon: PokemonData):
 
 def IsSpecialSpawn(pokemon: PokemonData):
   return IsLegendaryPokemon(pokemon) or pokemon.IsParadox or pokemon.IsStarter or (pokemon.IsFossil and pokemon.EvolvesInto)
+
+def GetPreviousStages(pokemon: PokemonData, allPkmn: list[PokemonData] = None):
+  if not allPkmn:
+    allPkmn = GetAllPokemon()
+
+  return [p for p in allPkmn if [e for e in p.EvolvesInto if e.EvolveID == pokemon.Id]]
+
+def GetShopValue(pokemon: PokemonData):
+  if IsLegendaryPokemon(pokemon):
+    return 100000
+  elif pokemon.IsParadox:
+    return 75000
+  elif IsSpecialSpawn(pokemon):
+    return 50000
+  elif pokemon.Rarity <= 2:
+    return 15000
+  elif pokemon.Rarity == 3 and not pokemon.EvolvesInto:
+    return 25000
+  #elif pokemon.Rarity <= 10:
+  return None
 
 #endregion
 

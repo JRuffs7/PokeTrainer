@@ -83,3 +83,13 @@ async def PrintWishlistResponse(interaction: Interaction, response: int, pkmnnam
 		color=ErrorColor if response else SuccessColor, 
 		params=[pkmnname],
 		eph=True)
+
+async def PrintPokeShopResponse(interaction: Interaction, response: int, pkmnname: str|None = None):
+	return await discordservice.SendCommandResponse(
+		interaction=interaction, 
+		filename=responseFile, 
+		command='pokeshop', 
+		responseInd=response, 
+		color=ErrorColor, 
+		params=[pkmnname],
+		eph=True)

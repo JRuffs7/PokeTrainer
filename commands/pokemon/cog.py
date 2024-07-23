@@ -1,8 +1,8 @@
-import logging
 from discord import Member, app_commands, Interaction
 from discord.ext import commands
 from typing import List
-from commands.autofills.autofills import autofill_nonteam, autofill_owned, autofill_pokemon, autofill_special
+from commands.autofills.autofills import autofill_nonteam, autofill_owned, autofill_pokemon, autofill_pokemon_legendary_spawn, autofill_special
+from commands.views.PokeShopView import PokeShopView
 from commands.views.BattleSimView import BattleSimView
 from commands.views.Pagination.DaycareView import DaycareView
 from commands.views.Pagination.DexView import DexView
@@ -87,6 +87,30 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
       0 if trainerservice.TryAddWishlist(trainer, pokemon) else 3,
       pokemonservice.GetPokemonById(pokemon).Name
     )
+
+  @app_commands.command(name="pokeshop",
+                        description="Buy a specific Pokemon in exchange for Money or Pokeballs.")
+  @app_commands.autocomplete(pokemon=autofill_pokemon_legendary_spawn)
+  @method_logger(True)
+  @trainer_check
+  async def pokeshop(self, inter: Interaction, pokemon: int):
+    trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
+    if trainer.Money <= 0:
+      return await discordservice_pokemon.PrintPokeShopResponse(inter, 0)
+    pkmn = pokemonservice.GetPokemonById(pokemon)
+    if not pkmn:
+      return await discordservice_pokemon.PrintPokeShopResponse(inter, 1)
+    if not pokemonservice.IsLegendaryPokemon(pkmn) or pokemonservice.GetPreviousStages(pkmn):
+      return await discordservice_pokemon.PrintPokeShopResponse(inter, 2, pkmn.Name)
+    if trainer.Money < pokemonservice.GetShopValue(pkmn):
+      return await discordservice_pokemon.PrintPokeShopResponse(inter, 3, pkmn.Name)
+    if "4" not in trainer.Pokeballs or trainer.Pokeballs["4"] < 20:
+      return await discordservice_pokemon.PrintPokeShopResponse(inter, 4, pkmn.Name)
+    spawn = pokemonservice.GenerateSpawnPokemon(pkmn, 1)
+    spawn.IsShiny = True
+    spawn.IsShiny = (spawn.IsShiny and trainer.Money >= pokemonservice.GetShopValue(pkmn)*2 and trainer.Pokeballs["4"] >= 30)
+
+    return await PokeShopView(inter, trainer, spawn).send()
 
   #endregion
 

@@ -13,6 +13,17 @@ async def autofill_pokemon(inter: Interaction, current: str):
 			break
 	return data
 
+async def autofill_pokemon_legendary_spawn(inter: Interaction, current: str):
+	data = []
+	pokemonList = pokemonservice.GetAllPokemon()
+	pokemonList.sort(key=lambda x: x.Name)
+	for pkmn in [p for p in pokemonList if pokemonservice.IsLegendaryPokemon(p) and not pokemonservice.GetPreviousStages(p, pokemonList)]:
+		if current.lower() in pkmn.Name.lower():
+			data.append(app_commands.Choice(name=pkmn.Name, value=pkmn.Id))
+		if len(data) == 25:
+			break
+	return data
+
 async def autofill_special(inter: Interaction, current: str):
 	data = []
 	pokemonList = [p for p in pokemonservice.GetAllPokemon() if pokemonservice.IsSpecialSpawn(p)]
