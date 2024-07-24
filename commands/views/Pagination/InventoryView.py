@@ -1,10 +1,9 @@
-from datetime import UTC, datetime
 import discord
 
-from globals import DateFormat, TrainerColor
+from globals import TrainerColor
 from middleware.decorators import defer
 from models.Trainer import Trainer
-from services import itemservice, pokemonservice, trainerservice
+from services import itemservice
 from services.utility import discordservice
 
 
@@ -65,17 +64,6 @@ class InventoryView(discord.ui.View):
 		self.prevBtn.disabled = self.currentPage == 0
 		self.nextBtn.disabled = self.currentPage == 3
 		await self.update_message()
-
-	@defer
-	async def remove_button(self, interaction: discord.Interaction):
-		await self.message.delete(delay=0.01)
-		pkmn = self.pokemon[self.currentPage]
-		data = next(p for p in self.pkmndata if p.Id == pkmn.Pokemon_Id)
-		timeAdded = datetime.strptime(self.trainer.Daycare.pop(pkmn.Id), DateFormat).replace(tzinfo=UTC)
-		hoursSpent = int((datetime.now(UTC) - timeAdded).total_seconds()//3600)
-		pokemonservice.AddExperience(pkmn, data, 10*hoursSpent)
-		trainerservice.UpsertTrainer(self.trainer)
-		await interaction.followup.send(content=f'{pokemonservice.GetPokemonDisplayName(pkmn, data)} has been removed from the daycare and is now Level {pkmn.Level}!', ephemeral=True)
 
 	def Description(self, ownList: dict[str,int], fullList: list):
 		title = 'POKEBALLS' if self.currentPage == 0 else 'POTIONS' if self.currentPage == 1 else 'CANDY' if self.currentPage ==  2 else 'EVOLUTION ITEMS'

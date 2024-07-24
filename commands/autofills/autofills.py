@@ -17,7 +17,7 @@ async def autofill_pokemon_legendary_spawn(inter: Interaction, current: str):
 	data = []
 	pokemonList = pokemonservice.GetAllPokemon()
 	pokemonList.sort(key=lambda x: x.Name)
-	for pkmn in [p for p in pokemonList if pokemonservice.IsLegendaryPokemon(p) and not pokemonservice.GetPreviousStages(p, pokemonList)]:
+	for pkmn in [p for p in pokemonList if pokemonservice.IsLegendaryPokemon(p) and not pokemonservice.GetPreviousStages(p, pokemonList) and "unknown" not in [t.lower() for t in p.Types]]:
 		if current.lower() in pkmn.Name.lower():
 			data.append(app_commands.Choice(name=pkmn.Name, value=pkmn.Id))
 		if len(data) == 25:

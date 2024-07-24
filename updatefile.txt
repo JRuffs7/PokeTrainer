@@ -1,0 +1,3 @@
+- Removed ??? Arceus from the **/pokeshop**
+- You can no longer see Gym Leader details just for attempting the battle
+- Added more region rewards. Check out **/help regionreward** for more details

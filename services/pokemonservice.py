@@ -120,7 +120,7 @@ def GetPokemonImage(pokemon: Pokemon, pkmnData: PokemonData = None):
 
 #region Spawns
 
-def SpawnPokemon(specialZone: Zone|None, badgeBonus: int):
+def SpawnPokemon(specialZone: Zone|None, badgeBonus: int, shinyOdds: int):
   pokemonList = pokemonda.GetPokemonByProperty([1, 2, 3], 'Rarity')
   if specialZone:
     specialTypes = [t.lower() for t in specialZone.Types]
@@ -131,7 +131,7 @@ def SpawnPokemon(specialZone: Zone|None, badgeBonus: int):
     if not CanSpawn(pokemon):
       pokemon = None
 
-  spawn = GenerateSpawnPokemon(pokemon)
+  spawn = GenerateSpawnPokemon(pokemon, shinyOdds)
   spawn.Level += floor(badgeBonus/2)
   return spawn
 
@@ -143,10 +143,10 @@ def GetSpecialSpawn():
     pkmn = choice(pokemonList)
     if pkmn.IsFossil and not pkmn.EvolvesInto:
       pkmn = None
-  return GenerateSpawnPokemon(pkmn, 5 if pkmn.IsStarter or pkmn.IsFossil else 75 if pkmn.IsLegendary or pkmn.IsMythical else 40)
+  return GenerateSpawnPokemon(pkmn, level=5 if pkmn.IsStarter or pkmn.IsFossil else 75 if pkmn.IsLegendary or pkmn.IsMythical else 40)
 
-def GenerateSpawnPokemon(pokemon: PokemonData, level: int | None = None):
-  shiny = choice(range(0, ShinyOdds)) == int(ShinyOdds / 2)
+def GenerateSpawnPokemon(pokemon: PokemonData, shinyOdds: int = ShinyOdds, level: int | None = None):
+  shiny = choice(range(0, shinyOdds)) == int(shinyOdds / 2)
   height = round(
       uniform((pokemon.Height * 0.9), (pokemon.Height * 1.1)) / 10, 2)
   weight = round(

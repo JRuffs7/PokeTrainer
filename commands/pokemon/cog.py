@@ -40,7 +40,9 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
     pokemon = pokemonservice.SpawnPokemon(
       None if trainer.CurrentZone == 0 else zoneservice.GetZone(trainer.CurrentZone),
-      max([b for b in trainer.Badges if b < 1000]) if len(trainer.Badges) > 0 else 0
+      max([b for b in trainer.Badges if b < 1000]) if len(trainer.Badges) > 0 else 0,
+      #Voltage Reward
+      trainerservice.GetShinyOdds(trainer)
     )
     trainerservice.EggInteraction(trainer)
     if inter.user.id in AdminList or trainerservice.CanCallSpawn(trainer):
@@ -106,7 +108,7 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
       return await discordservice_pokemon.PrintPokeShopResponse(inter, 3, pkmn.Name)
     if "4" not in trainer.Pokeballs or trainer.Pokeballs["4"] < 20:
       return await discordservice_pokemon.PrintPokeShopResponse(inter, 4, pkmn.Name)
-    spawn = pokemonservice.GenerateSpawnPokemon(pkmn, 1)
+    spawn = pokemonservice.GenerateSpawnPokemon(pkmn, level=1)
     spawn.IsShiny = (spawn.IsShiny and trainer.Money >= pokemonservice.GetShopValue(pkmn)*2 and trainer.Pokeballs["4"] >= 30)
 
     return await PokeShopView(inter, trainer, spawn).send()
@@ -317,7 +319,8 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
       return await DaycareView(inter, trainer).send()
     
     #Adding To Daycare
-    if len(trainer.Daycare) >= 2:
+    #Kalos Reward
+    if len(trainer.Daycare) >= (4 if trainerservice.HasRegionReward(trainer, 6) else 2):
       return await discordservice_pokemon.PrintDaycareResponse(inter, 1, [])
     
     pokeList = [p for p in trainer.OwnedPokemon if p.Pokemon_Id == pokemon]

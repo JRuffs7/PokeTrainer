@@ -111,7 +111,9 @@ class SpawnPokemonView(discord.ui.View):
 		elif trainerservice.TryCapture(pokeballId, updatedTrainer, self.pokemon):
 			self.captureLog.info(f'{interaction.guild.name} - {self.interaction.user.display_name} used {ball} and caught a {self.pkmndata.Name}{"-SHINY" if self.pokemon.IsShiny else ""}')
 			await self.message.delete(delay=0.01)
-			await interaction.followup.send(content=f'<@{self.interaction.user.id}> used a {ball} and captured a wild **{pokemonservice.GetPokemonDisplayName(self.pokemon, self.pkmndata)} (Lvl. {self.pokemon.Level})**!')
+			baseMsg = f'<@{self.interaction.user.id}> used a {ball} and captured a wild **{pokemonservice.GetPokemonDisplayName(self.pokemon, self.pkmndata)} (Lvl. {self.pokemon.Level})**!'
+			expMsg = f'\nYour entire team also gained **{self.pokemon.Level} XP**' if trainerservice.HasRegionReward(updatedTrainer, 9) else ''
+			await interaction.followup.send(content=f'{baseMsg}{expMsg}')
 		else:
 			self.pressed = False
 			await self.message.edit(content=f"Capture failed! Lost **{5-int(pokeballId)}hp** Try again or fight.\nCurrent Trainer HP: {self.TrainerHealthString(updatedTrainer)}", view=self)

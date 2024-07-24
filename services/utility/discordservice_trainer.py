@@ -1,7 +1,7 @@
 from datetime import UTC, datetime
 from models.Item import Potion
 from models.Trainer import Trainer
-from services import missionservice, pokemonservice, gymservice, zoneservice
+from services import missionservice, pokemonservice, gymservice, trainerservice, zoneservice
 from services.utility import discordservice
 from discord import Interaction, Member
 from globals import HelpColor, ShortDateFormat, TrainerColor
@@ -56,8 +56,8 @@ async def PrintTrainer(interaction: Interaction, trainer: Trainer, targetUser: M
 	dex = f'__Completion__\n{newLine.join([pokedexString, formdexString, shinydexString, badgeString])}'
 
 	#Other Section
-	eggString = f'Eggs: {len(trainer.Eggs)}/5'
-	daycareString = f'Daycare: {len(trainer.Daycare)}/2'
+	eggString = f'Eggs: {len(trainer.Eggs)}/{(8 if trainerservice.HasRegionReward(trainer, 8) else 5)}'
+	daycareString = f'Daycare: {len(trainer.Daycare)}/{4 if trainerservice.HasRegionReward(trainer, 6) else 2}'
 	other = f'__Other__\n{newLine.join([eggString, daycareString])}'
 
 	embed = discordservice.CreateEmbed(

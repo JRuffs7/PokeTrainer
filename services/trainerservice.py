@@ -3,7 +3,7 @@ import logging
 from random import choice, sample
 import uuid
 from dataaccess import trainerda
-from globals import AdminList, ShinyOdds, DateFormat, ShortDateFormat
+from globals import AdminList, GreatShinyOdds, ShinyOdds, DateFormat, ShortDateFormat, SuperShinyOdds
 from models.Egg import TrainerEgg
 from models.Item import Potion
 from models.Mission import TrainerMission
@@ -82,7 +82,7 @@ def StartTrainer(pokemonId: int, userId: int, serverId: int):
   pkmn = pokemonservice.GetPokemonById(pokemonId)
   if not pkmn:
     return None
-  spawn = pokemonservice.GenerateSpawnPokemon(pkmn, 5)
+  spawn = pokemonservice.GenerateSpawnPokemon(pkmn, level=5)
   trainer = Trainer.from_dict({
     'UserId': userId,
     'ServerId': serverId,
@@ -164,7 +164,15 @@ def ModifyItemList(itemDict: dict[str, int], itemId: str, amount: int):
   itemDict.update({ itemId: newAmount })
 
 def HasRegionReward(trainer: Trainer, region: int):
-  return max([b.Id for b in gymservice.GetBadgesByRegion(region)]) in trainer.Badges
+  for b in [b.Id for b in gymservice.GetBadgesByRegion(region)]:
+    found = False
+    for t in trainer.Badges:
+      if t == b:
+        found = True
+        break
+    if not found:
+        return False
+  return True
 
 def TryGetCandy():
   if choice(range(1,101)) < 20:
@@ -220,7 +228,8 @@ def TryAddMissionProgress(trainer: Trainer, action: str, type: str, addition: in
 #region Eggs
 
 def TryAddNewEgg(trainer: Trainer):
-  if(len(trainer.Eggs) < 5):
+  #Galar Reward
+  if(len(trainer.Eggs) < (8 if HasRegionReward(trainer, 8) else 5)):
     randId = choice(range(1, 101))
 
     #Johta Reward
@@ -259,9 +268,9 @@ def TryHatchEgg(trainer: Trainer, eggId: str):
   pkmn = choice(pokemonservice.GetPokemonByRarity(eggData.Hatch))
   while pkmn.EvolvesInto and pkmn.Rarity == 3:
     pkmn = choice(pokemonservice.GetPokemonByRarity(eggData.Hatch))
-  newPokemon = pokemonservice.GenerateSpawnPokemon(pkmn, 1)
+  newPokemon = pokemonservice.GenerateSpawnPokemon(pkmn, GetShinyOdds(trainer), 1)
   if not newPokemon.IsShiny:
-    newPokemon.IsShiny = choice(range(0, ShinyOdds)) == int(ShinyOdds/2)
+    newPokemon.IsShiny = choice(range(0, GetShinyOdds(trainer))) == int(GetShinyOdds(trainer)/2)
   trainer.OwnedPokemon.append(newPokemon)
   trainer.Money += 50
   TryAddToPokedex(trainer, pkmn, newPokemon.IsShiny)
@@ -414,6 +423,16 @@ def TryCapture(pokeballId: str, trainer: Trainer, spawn: Pokemon):
     trainer.OwnedPokemon.append(spawn)
     TryAddToPokedex(trainer, pokemon, spawn.IsShiny)
     TryAddMissionProgress(trainer, 'Catch', ','.join(pokemon.Types))
+    #Paldea Reward
+    if HasRegionReward(trainer, 9):
+      exp = spawn.Level
+      team = GetTeam(trainer)
+      teamData = pokemonservice.GetPokemonByIdList([t.Pokemon_Id for t in team])
+      for p in team:
+        pokemonservice.AddExperience(
+          p, 
+          next(t for t in teamData if t.Id == p.Pokemon_Id), 
+          exp)
     if len(trainer.Team) < 6:
       trainer.Team.append(spawn.Id)
     caught = True
@@ -463,5 +482,14 @@ def TryAddWishlist(trainer: Trainer, pokemonId: int):
   trainer.Wishlist.append(pokemonId)
   UpsertTrainer(trainer)
   return True
+
+def GetShinyOdds(trainer: Trainer):
+  totalPkmn = pokemonservice.GetAllPokemon()
+  totalPkdx = len(set(p.PokedexId for p in totalPkmn))
+  if HasRegionReward(trainer, 1000) and len(trainer.Pokedex) == totalPkdx:
+    return SuperShinyOdds
+  elif HasRegionReward(trainer, 1000) or len(trainer.Pokedex) == totalPkdx:
+    return GreatShinyOdds
+  return ShinyOdds
 
 #endregion

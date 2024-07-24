@@ -53,11 +53,11 @@ class DaycareView(discord.ui.View):
 	@defer
 	async def page_button(self, interaction: discord.Interaction):
 		if interaction.data['custom_id'] == 'prev':
-			self.currentPage = 0
+			self.currentPage -= 1
 		else:
-			self.currentPage = 1
+			self.currentPage += 1
 		self.prevBtn.disabled = self.currentPage == 0
-		self.nextBtn.disabled = self.currentPage == 1
+		self.nextBtn.disabled = self.currentPage == len(self.trainer.Daycare) - 1
 		await self.update_message()
 
 	@defer
@@ -69,7 +69,7 @@ class DaycareView(discord.ui.View):
 		hoursSpent = int((datetime.now(UTC) - timeAdded).total_seconds()//3600)
 		pokemonservice.AddExperience(pkmn, data, 10*hoursSpent)
 		trainerservice.UpsertTrainer(self.trainer)
-		await interaction.followup.send(content=f'{pokemonservice.GetPokemonDisplayName(pkmn, data)} has been removed from the daycare and is now Level {pkmn.Level}!', ephemeral=True)
+		await interaction.followup.send(content=f'**{pokemonservice.GetPokemonDisplayName(pkmn, data)}** has been removed from the daycare and is now **Level {pkmn.Level}**!', ephemeral=True)
 
 	def Description(self, pokemon: Pokemon, pkmnData: PokemonData):
 		timeAdded = datetime.strptime(self.trainer.Daycare[pokemon.Id], DateFormat).replace(tzinfo=UTC)

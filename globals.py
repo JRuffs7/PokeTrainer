@@ -3,6 +3,8 @@ import discord
 from flask import json
 
 ShinyOdds: int = 3000
+GreatShinyOdds: int = 2000
+SuperShinyOdds: int = 1000
 ServerColor: discord.Colour = discord.Colour.blue()
 ErrorColor: discord.Colour = discord.Colour.red()
 SuccessColor: discord.Colour = discord.Colour.green()

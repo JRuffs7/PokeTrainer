@@ -2,6 +2,7 @@ import asyncio
 import logging
 from discord import Member, TextChannel
 from discord.ext import commands
+from globals import SuperShinyOdds
 from middleware.decorators import is_bot_admin
 from models.Server import Server
 from services import battleservice, pokemonservice, serverservice, trainerservice
@@ -97,7 +98,7 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 		trainer = trainerservice.GetTrainer(ctx.guild.id, user.id if user else ctx.author.id)
 		pokemon = pokemonservice.GetPokemonById(pokemonId)
 		if trainer and pokemon:
-			newPkmn = pokemonservice.GenerateSpawnPokemon(pokemon, 1)
+			newPkmn = pokemonservice.GenerateSpawnPokemon(pokemon, SuperShinyOdds, 1)
 			newPkmn.Level = 1
 			trainer.OwnedPokemon.append(newPkmn)
 			trainerservice.UpsertTrainer(trainer)

@@ -16,10 +16,12 @@ class DaycareAddView(discord.ui.View):
 		self.user = interaction.user
 		self.trainer = trainer
 		self.pokemon = pokemon
-		self.pokemonchoices = None
+		self.pokemonchoices = None if len(pokemon) > 1 else [p.Id for p in pokemon]
 		super().__init__(timeout=300)
-		self.ownlist = OwnedSelector(pokemon, 2 - len(trainer.Daycare))
+		self.ownlist = OwnedSelector(pokemon, (4 if trainerservice.HasRegionReward(self.trainer, 6) else 2) - len(trainer.Daycare))
 		self.add_item(self.ownlist)
+		if self.pokemonchoices:
+			self.clear_items()
 
 	async def on_timeout(self):
 		await self.message.delete()
@@ -39,15 +41,22 @@ class DaycareAddView(discord.ui.View):
 	async def submit_button(self, inter: discord.Interaction, button: discord.ui.Button):
 		if not self.pokemonchoices:
 			return
+		await self.SubmitPokemon()
 		
+	async def SubmitPokemon(self):
+		self.clear_items()
 		pkmnList = [next(p for p in self.trainer.OwnedPokemon if p.Id == c) for c in self.pokemonchoices]
 		for p in self.pokemonchoices:
-			if len(self.trainer.Daycare) < 2:
+			if len(self.trainer.Daycare) < (4 if trainerservice.HasRegionReward(self.trainer, 6) else 2):
 				self.trainer.Daycare[p] = datetime.now(UTC).strftime(DateFormat)
 		trainerservice.UpsertTrainer(self.trainer)
-		self.clear_items()
-		await self.message.edit(content=f'Added {" and ".join([pokemonservice.GetPokemonDisplayName(p) for p in pkmnList])} to your daycare.', view=self)
+		await self.message.edit(content=f'Added **{"** and **".join([pokemonservice.GetPokemonDisplayName(p) for p in pkmnList])}** to your daycare.', view=self)
 
 	async def send(self):
-		await self.interaction.followup.send(view=self)
-		self.message = await self.interaction.original_response()
+		if self.pokemonchoices:
+			await self.interaction.followup.send(content='Processing...')
+			self.message = await self.interaction.original_response()
+			await self.SubmitPokemon()
+		else:
+			await self.interaction.followup.send(view=self)
+			self.message = await self.interaction.original_response()
