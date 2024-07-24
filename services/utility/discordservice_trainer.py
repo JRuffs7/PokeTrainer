@@ -49,11 +49,13 @@ async def PrintTrainer(interaction: Interaction, trainer: Trainer, targetUser: M
 	#Dex Section
 	totalPkmn = pokemonservice.GetAllPokemon()
 	totalPkdx = len(set(p.PokedexId for p in totalPkmn))
+	livingDex = len(set(p.Pokemon_Id for p in trainer.OwnedPokemon))
 	pokedexString = f'Pokedex: {len(trainer.Pokedex)}/{totalPkdx} ({round((len(trainer.Pokedex)*100)/totalPkdx)}%)'
 	formdexString = f'Form Dex: {len(trainer.Formdex)}/{len(totalPkmn)} ({round((len(trainer.Formdex)*100)/len(totalPkmn))}%)'
+	livedexString = f'Living Dex: {livingDex}/{len(totalPkmn)} ({round((livingDex*100)/len(totalPkmn))}%)'
 	shinydexString = f'Shiny Dex: {len(trainer.Shinydex)}/{len(totalPkmn)} ({round((len(trainer.Shinydex)*100)/len(totalPkmn))}%)'
 	badgeString = f'Gym Badges: {len(trainer.Badges)}/{len(gymservice.GetAllBadges())}'
-	dex = f'__Completion__\n{newLine.join([pokedexString, formdexString, shinydexString, badgeString])}'
+	dex = f'__Completion__\n{newLine.join([pokedexString, formdexString, livedexString, shinydexString, badgeString])}'
 
 	#Other Section
 	eggString = f'Eggs: {len(trainer.Eggs)}/{(8 if trainerservice.HasRegionReward(trainer, 8) else 5)}'
