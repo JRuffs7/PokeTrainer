@@ -6,7 +6,7 @@ import discordbot
 from logs.logsetup import override_loglevels
 from webserver import keep_alive
 from dotenv import load_dotenv
-from globals import DateFormat, eventtimes
+from globals import eventtimes
 
 
 async def main():
