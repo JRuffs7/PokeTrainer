@@ -4,6 +4,7 @@ import discord
 from commands.views.Pagination.BasePaginationView import BasePaginationView
 from globals import PokemonColor
 from models.Pokemon import Pokemon, PokemonData
+from services import statservice
 from services.utility import discordservice
 
 
@@ -49,5 +50,5 @@ class PokemonSearchView(BasePaginationView):
 
   def ListDesc(self, data: list[PokemonData]):
     newline = '\n'
-    slash = '\\'
-    return f"{newline.join([f'**{x.Name}** ({slash.join(x.Types)})' if 'type' in self.title else f'**{x.Name}**' for x in data])}"
+    slash = '/'
+    return f"{newline.join([f'**{x.Name}** ({slash.join([statservice.GetType(t).Name for t in x.Types])})' if 'type' in self.title else f'**{x.Name}**' for x in data])}"

@@ -36,7 +36,7 @@ class SpecialShopView(discord.ui.View):
 		if choice == 'buy':
 			self.itemlist = [i for i in self.fullitemlist if i.Id in self.trainer.Shop.ItemIds]
 		else:
-			self.itemlist = [itemservice.GetItem(int(i)) for i in self.trainer.EvolutionItems if self.trainer.EvolutionItems[i] > 0]
+			self.itemlist = trainerservice.GetTrainerItemList(self.trainer, 3)
 
 		self.buysellview = BuySell(self.buysellchoice)
 		self.itemview = ItemChoice(self.itemlist, [], [], choice == 'buy')
@@ -52,7 +52,7 @@ class SpecialShopView(discord.ui.View):
 			if type(item) is not discord.ui.Button:
 				self.remove_item(item)
 		
-		self.itemchoice = next(i for i in self.fullitemlist if i.Id == int(choice[1:]))
+		self.itemchoice = next(i for i in self.fullitemlist if i.Id == int(choice))
 		self.amountchoice = 1
 		self.buysellview = BuySell(self.buysellchoice)
 		self.itemview = ItemChoice(self.itemlist, [], [], self.buysellchoice == 'buy', choice)
@@ -64,9 +64,9 @@ class SpecialShopView(discord.ui.View):
 
 		if self.buysellchoice != 'buy':
 			self.amountchoice = None
-			self.amountview = AmountSelector(self.trainer.EvolutionItems[choice[1:]])
+			self.amountview = AmountSelector(self.trainer.Items[choice])
 			self.add_item(self.amountview)
-		currOwned = self.trainer.EvolutionItems[choice[1:]] if choice[1:] in self.trainer.EvolutionItems else 0
+		currOwned = self.trainer.Items[choice] if choice in self.trainer.Items else 0
 		await self.message.edit(content=f"Money: ${self.trainer.Money}\nYou currently have {currOwned} {self.itemchoice.Name}(s)", view=self)
 
 	async def AmountSelection(self, inter: discord.Interaction, choice: str):
@@ -84,9 +84,10 @@ class SpecialShopView(discord.ui.View):
 	async def submit_button(self, inter: discord.Interaction,
 												button: discord.ui.Button):
 		if self.buysellchoice and self.itemchoice and self.amountchoice:
+			self.trainer = trainerservice.GetTrainer(self.trainer.ServerId, self.trainer.UserId)
 			buying = self.buysellchoice == 'buy'
 			trainerservice.ModifyItemList(
-				self.trainer.EvolutionItems, 
+				self.trainer, 
 				str(self.itemchoice.Id), 
 				self.amountchoice if buying else (0 - self.amountchoice),
 			)

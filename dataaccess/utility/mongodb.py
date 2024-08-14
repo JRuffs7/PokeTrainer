@@ -1,6 +1,7 @@
 import logging
 import os
 
+from pymongo import ReplaceOne
 from pymongo.mongo_client import MongoClient
 
 errorLog = logging.getLogger('error')
@@ -41,6 +42,23 @@ def UpsertSingleDoc(collection, filters, object):
       errorLog.error(f"Mongo Upsert Exception: Temporary failure in name resolution.\nCollection: {collection}\nfilters: {filters}")
     if 'not known' in str(e).lower():
       errorLog.error(f"Mongo Upsert Exception: Name or service not known.\nCollection: {collection}\nfilters: {filters}")
+    return None
+  
+
+def UpsertManyDocs(collection, updateList):
+  try:
+    replaceCmds = []
+    for item in updateList:
+      replaceCmds.append(ReplaceOne(filter=item['filter'], replacement=item['object'], upsert=True))
+
+    with MongoClient(os.environ.get('MONGO_CONN_STRING')) as cluster:
+      coll = cluster[os.environ.get('MONGO_DB_NAME')][collection]
+      coll.bulk_write(replaceCmds)
+  except Exception as e:
+    if 'temporary' in str(e).lower():
+      errorLog.error(f"Mongo Upsert Exception: Temporary failure in name resolution. Many Upsert Issue.")
+    if 'not known' in str(e).lower():
+      errorLog.error(f"Mongo Upsert Exception: Name or service not known. Many Upsert Issue.")
     return None
 
 

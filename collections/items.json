@@ -1,357 +1,550 @@
-{
-  "Pokeball": [
-    {
-      "Id": 1,
-      "Name": "Pokeball",
-      "Description": "Standard ball for capturing Pokemon.",
-      "BuyAmount": 100,
-      "SellAmount": 50,
-      "CaptureRate": 1
-    },
-    {
-      "Id": 2,
-      "Name": "Greatball",
-      "Description": "High-performance ball for catching Pokemon.",
-      "BuyAmount": 300,
-      "SellAmount": 150,
-      "CaptureRate": 1.5
-    },
-    {
-      "Id": 3,
-      "Name": "Ultraball",
-      "Description": "Ultra-high-performance ball for catching Pokemon.",
-      "BuyAmount": 600,
-      "SellAmount": 300,
-      "CaptureRate": 2
-    },
-    {
-      "Id": 4,
-      "Name": "Masterball",
-      "Description": "Guarenteed capture ball for catching Pokemon.",
-      "BuyAmount": null,
-      "SellAmount": 1000,
-      "CaptureRate": 100
-    }
-  ],
-  "Potion": [
-    {
-      "Id": 1,
-      "Name": "Potion",
-      "Description": "Heals trainer for 15 HP.",
-      "BuyAmount": 100,
-      "SellAmount": 50,
-      "HealingAmount": 15
-    },
-    {
-      "Id": 2,
-      "Name": "Super Potion",
-      "Description": "Heals trainer for 40 HP.",
-      "BuyAmount": 250,
-      "SellAmount": 125,
-      "HealingAmount": 40
-    },
-    {
-      "Id": 3,
-      "Name": "Hyper Potion",
-      "Description": "Heals trainer for 80 HP.",
-      "BuyAmount": 450,
-      "SellAmount": 225,
-      "HealingAmount": 80
-    },
-    {
-      "Id": 4,
-      "Name": "Max Potion",
-      "Description": "Heals trainer for max HP.",
-      "BuyAmount": 600,
-      "SellAmount": 300,
-      "HealingAmount": null
-    }
-  ],
-  "Candy": [
-    {
-      "Id": 1,
-      "Name": "Rare Candy",
-      "Description": "Level up your Pokemon by 1 level.",
-      "BuyAmount": 1000,
-      "SellAmount": 500,
-      "Experience": null
-    },
-    {
-      "Id": 2,
-      "Name": "Small Candy",
-      "Description": "Provide a Pokemon with 15 XP.",
-      "BuyAmount": 100,
-      "SellAmount": 50,
-      "Experience": 15
-    },
-    {
-      "Id": 3,
-      "Name": "Large Candy",
-      "Description": "Provide a Pokemon with 40 XP.",
-      "BuyAmount": 250,
-      "SellAmount": 125,
-      "Experience": 40
-    }
-  ],
-  "Evolution": [
-    {
-      "Id": 80,
-      "Name": "Sun Stone",
-      "Description": "Stone used to evolve Pokemon.",
-      "BuyAmount": 5000,
-      "SellAmount": 2500
-    },
-    {
-      "Id": 81,
-      "Name": "Moon Stone",
-      "Description": "Stone used to evolve Pokemon.",
-      "BuyAmount": 5000,
-      "SellAmount": 2500
-    },
-    {
-      "Id": 82,
-      "Name": "Fire Stone",
-      "Description": "Stone used to evolve Pokemon.",
-      "BuyAmount": 5000,
-      "SellAmount": 2500
-    },
-    {
-      "Id": 83,
-      "Name": "Thunder Stone",
-      "Description": "Stone used to evolve Pokemon.",
-      "BuyAmount": 5000,
-      "SellAmount": 2500
-    },
-    {
-      "Id": 84,
-      "Name": "Water Stone",
-      "Description": "Stone used to evolve Pokemon.",
-      "BuyAmount": 5000,
-      "SellAmount": 2500
-    },
-    {
-      "Id": 85,
-      "Name": "Leaf Stone",
-      "Description": "Stone used to evolve Pokemon.",
-      "BuyAmount": 5000,
-      "SellAmount": 2500
-    },
-    {
-      "Id": 107,
-      "Name": "Shiny Stone",
-      "Description": "Stone used to evolve Pokemon.",
-      "BuyAmount": 5000,
-      "SellAmount": 2500
-    },
-    {
-      "Id": 108,
-      "Name": "Dusk Stone",
-      "Description": "Stone used to evolve Pokemon.",
-      "BuyAmount": 5000,
-      "SellAmount": 2500
-    },
-    {
-      "Id": 109,
-      "Name": "Dawn Stone",
-      "Description": "Stone used to evolve Pokemon.",
-      "BuyAmount": 5000,
-      "SellAmount": 2500
-    },
-    {
-      "Id": 110,
-      "Name": "Oval Stone",
-      "Description": "Stone used to evolve Pokemon.",
-      "BuyAmount": 5000,
-      "SellAmount": 2500
-    },
-    {
-      "Id": 198,
-      "Name": "King's Rock",
-      "Description": "Item used to evolve Pokemon.",
-      "BuyAmount": 5000,
-      "SellAmount": 2500
-    },
-    {
-      "Id": 203,
-      "Name": "Deep Sea Tooth",
-      "Description": "Item used to evolve Pokemon.",
-      "BuyAmount": 5000,
-      "SellAmount": 2500
-    },
-    {
-      "Id": 204,
-      "Name": "Deep Sea Scale",
-      "Description": "Item used to evolve Pokemon.",
-      "BuyAmount": 5000,
-      "SellAmount": 2500
-    },
-    {
-      "Id": 210,
-      "Name": "Metal Coat",
-      "Description": "Item used to evolve Pokemon.",
-      "BuyAmount": 5000,
-      "SellAmount": 2500
-    },
-    {
-      "Id": 212,
-      "Name": "Dragon Scale",
-      "Description": "Item used to evolve Pokemon.",
-      "BuyAmount": 5000,
-      "SellAmount": 2500
-    },
-    {
-      "Id": 229,
-      "Name": "Upgrade",
-      "Description": "Item used to evolve Pokemon.",
-      "BuyAmount": 5000,
-      "SellAmount": 2500
-    },
-    {
-      "Id": 298,
-      "Name": "Protector",
-      "Description": "Item used to evolve Pokemon.",
-      "BuyAmount": 5000,
-      "SellAmount": 2500
-    },
-    {
-      "Id": 299,
-      "Name": "Electirizer",
-      "Description": "Item used to evolve Pokemon.",
-      "BuyAmount": 5000,
-      "SellAmount": 2500
-    },
-    {
-      "Id": 300,
-      "Name": "Magmarizer",
-      "Description": "Item used to evolve Pokemon.",
-      "BuyAmount": 5000,
-      "SellAmount": 2500
-    },
-    {
-      "Id": 301,
-      "Name": "Dubious Disc",
-      "Description": "Item used to evolve Pokemon.",
-      "BuyAmount": 5000,
-      "SellAmount": 2500
-    },
-    {
-      "Id": 302,
-      "Name": "Reaper Cloth",
-      "Description": "Item used to evolve Pokemon.",
-      "BuyAmount": 5000,
-      "SellAmount": 2500
-    },
-    {
-      "Id": 303,
-      "Name": "Razor Claw",
-      "Description": "Item used to evolve Pokemon.",
-      "BuyAmount": 5000,
-      "SellAmount": 2500
-    },
-    {
-      "Id": 304,
-      "Name": "Razor Fang",
-      "Description": "Item used to evolve Pokemon.",
-      "BuyAmount": 5000,
-      "SellAmount": 2500
-    },
-    {
-      "Id": 686,
-      "Name": "Whipped Dream",
-      "Description": "Item used to evolve Pokemon.",
-      "BuyAmount": 5000,
-      "SellAmount": 2500
-    },
-    {
-      "Id": 687,
-      "Name": "Sachet",
-      "Description": "Item used to evolve Pokemon.",
-      "BuyAmount": 5000,
-      "SellAmount": 2500
-    },
-    {
-      "Id": 885,
-      "Name": "Ice Stone",
-      "Description": "Stone used to evolve Pokemon.",
-      "BuyAmount": 5000,
-      "SellAmount": 2500
-    },
-    {
-      "Id": 1167,
-      "Name": "Strawberry Sweet",
-      "Description": "Item used to evolve Pokemon.",
-      "BuyAmount": 5000,
-      "SellAmount": 2500
-    },
-    {
-      "Id": 1174,
-      "Name": "Sweet Apple",
-      "Description": "Item used to evolve Pokemon.",
-      "BuyAmount": 5000,
-      "SellAmount": 2500
-    },
-    {
-      "Id": 1175,
-      "Name": "Tart Apple",
-      "Description": "Item used to evolve Pokemon.",
-      "BuyAmount": 5000,
-      "SellAmount": 2500
-    },
-    {
-      "Id": 1311,
-      "Name": "Cracked Pot",
-      "Description": "Item used to evolve Pokemon.",
-      "BuyAmount": 5000,
-      "SellAmount": 2500
-    },
-    {
-      "Id": 1312,
-      "Name": "Chipped Pot",
-      "Description": "Item used to evolve Pokemon.",
-      "BuyAmount": 5000,
-      "SellAmount": 2500
-    },
-    {
-      "Id": 1633,
-      "Name": "Galarica Cuff",
-      "Description": "Item used to evolve Pokemon.",
-      "BuyAmount": 5000,
-      "SellAmount": 2500
-    },
-    {
-      "Id": 1643,
-      "Name": "Galarica Wreath",
-      "Description": "Item used to evolve Pokemon.",
-      "BuyAmount": 5000,
-      "SellAmount": 2500
-    },
-    {
-      "Id": 1677,
-      "Name": "Malicious Armor",
-      "Description": "Item used to evolve Pokemon.",
-      "BuyAmount": 5000,
-      "SellAmount": 2500
-    },
-    {
-      "Id": 2045,
-      "Name": "Auspicious Armor",
-      "Description": "Item used to evolve Pokemon.",
-      "BuyAmount": 5000,
-      "SellAmount": 2500
-    },
-    {
-      "Id": 10001,
-      "Name": "Black Augurite",
-      "Description": "Item used to evolve Pokemon.",
-      "BuyAmount": 5000,
-      "SellAmount": 2500
-    },
-    {
-      "Id": 10002,
-      "Name": "Peat Block",
-      "Description": "Item used to evolve Pokemon.",
-      "BuyAmount": 5000,
-      "SellAmount": 2500
-    }
-  ]
-}
+[
+  {
+    "CaptureRate": 100,
+    "Id": 1,
+    "Name": "Master Ball",
+    "Url": "https://pokeapi.co/api/v2/item/1/",
+    "Description": "Used for capturing event Pokemon.",
+    "EvolutionItem": false,
+    "BuyAmount": 0,
+    "SellAmount": 1000
+  },
+  {
+    "CaptureRate": 2,
+    "Id": 2,
+    "Name": "Ultra Ball",
+    "Url": "https://pokeapi.co/api/v2/item/2/",
+    "Description": "Captures wild Pokemon with 2x capture rate.",
+    "EvolutionItem": false,
+    "BuyAmount": 800,
+    "SellAmount": 400
+  },
+  {
+    "CaptureRate": 1.5,
+    "Id": 3,
+    "Name": "Great Ball",
+    "Url": "https://pokeapi.co/api/v2/item/3/",
+    "Description": "Captures wild Pokemon with 1.5x capture rate.",
+    "EvolutionItem": false,
+    "BuyAmount": 600,
+    "SellAmount": 300
+  },
+  {
+    "CaptureRate": 1,
+    "Id": 4,
+    "Name": "Poké Ball",
+    "Url": "https://pokeapi.co/api/v2/item/4/",
+    "Description": "Captures wild Pokemon with 1x capture rate.",
+    "EvolutionItem": false,
+    "BuyAmount": 200,
+    "SellAmount": 100
+  },
+  {
+    "HealingAmount": 20,
+    "AilmentCures": [],
+    "Id": 17,
+    "Name": "Potion",
+    "Url": "https://pokeapi.co/api/v2/item/17/",
+    "Description": "Restores 20 HP.",
+    "EvolutionItem": false,
+    "BuyAmount": 200,
+    "SellAmount": 100
+  },
+  {
+    "HealingAmount": 0,
+    "AilmentCures": [
+      5
+    ],
+    "Id": 18,
+    "Name": "Antidote",
+    "Url": "https://pokeapi.co/api/v2/item/18/",
+    "Description": "Cures poison.",
+    "EvolutionItem": false,
+    "BuyAmount": 200,
+    "SellAmount": 100
+  },
+  {
+    "HealingAmount": 0,
+    "AilmentCures": [
+      4
+    ],
+    "Id": 19,
+    "Name": "Burn Heal",
+    "Url": "https://pokeapi.co/api/v2/item/19/",
+    "Description": "Cures a burn.",
+    "EvolutionItem": false,
+    "BuyAmount": 200,
+    "SellAmount": 100
+  },
+  {
+    "HealingAmount": 0,
+    "AilmentCures": [
+      3
+    ],
+    "Id": 20,
+    "Name": "Ice Heal",
+    "Url": "https://pokeapi.co/api/v2/item/20/",
+    "Description": "Cures freezing.",
+    "EvolutionItem": false,
+    "BuyAmount": 200,
+    "SellAmount": 100
+  },
+  {
+    "HealingAmount": 0,
+    "AilmentCures": [
+      2
+    ],
+    "Id": 21,
+    "Name": "Awakening",
+    "Url": "https://pokeapi.co/api/v2/item/21/",
+    "Description": "Cures sleep.",
+    "EvolutionItem": false,
+    "BuyAmount": 200,
+    "SellAmount": 100
+  },
+  {
+    "HealingAmount": 0,
+    "AilmentCures": [
+      1
+    ],
+    "Id": 22,
+    "Name": "Paralyze Heal",
+    "Url": "https://pokeapi.co/api/v2/item/22/",
+    "Description": "Cures paralysis.",
+    "EvolutionItem": false,
+    "BuyAmount": 200,
+    "SellAmount": 100
+  },
+  {
+    "HealingAmount": null,
+    "AilmentCures": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "Id": 23,
+    "Name": "Full Restore",
+    "Url": "https://pokeapi.co/api/v2/item/23/",
+    "Description": "Restores full HP and cures all ailments.",
+    "EvolutionItem": false,
+    "BuyAmount": 3000,
+    "SellAmount": 1500
+  },
+  {
+    "HealingAmount": null,
+    "AilmentCures": [],
+    "Id": 24,
+    "Name": "Max Potion",
+    "Url": "https://pokeapi.co/api/v2/item/24/",
+    "Description": "Restores HP to full.",
+    "EvolutionItem": false,
+    "BuyAmount": 2500,
+    "SellAmount": 1250
+  },
+  {
+    "HealingAmount": 200,
+    "AilmentCures": [],
+    "Id": 25,
+    "Name": "Hyper Potion",
+    "Url": "https://pokeapi.co/api/v2/item/25/",
+    "Description": "Restores 200 HP.",
+    "EvolutionItem": false,
+    "BuyAmount": 1500,
+    "SellAmount": 750
+  },
+  {
+    "HealingAmount": 50,
+    "AilmentCures": [],
+    "Id": 26,
+    "Name": "Super Potion",
+    "Url": "https://pokeapi.co/api/v2/item/26/",
+    "Description": "Restores 50 HP.",
+    "EvolutionItem": false,
+    "BuyAmount": 700,
+    "SellAmount": 350
+  },
+  {
+    "HealingAmount": 0,
+    "AilmentCures": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "Id": 27,
+    "Name": "Full Heal",
+    "Url": "https://pokeapi.co/api/v2/item/27/",
+    "Description": "Cures any status ailment and confusion.",
+    "EvolutionItem": false,
+    "BuyAmount": 400,
+    "SellAmount": 200
+  },
+  {
+    "Experience": null,
+    "Id": 50,
+    "Name": "Rare Candy",
+    "Url": "https://pokeapi.co/api/v2/item/50/",
+    "Description": "Levels up the Pokemon by 1 level.",
+    "EvolutionItem": false,
+    "BuyAmount": 0,
+    "SellAmount": 500
+  },
+  {
+    "Id": 80,
+    "Name": "Sun Stone",
+    "Url": "https://pokeapi.co/api/v2/item/80/",
+    "Description": "Item used to evolve a Pokemon.",
+    "EvolutionItem": true,
+    "BuyAmount": 5000,
+    "SellAmount": 2500
+  },
+  {
+    "Id": 81,
+    "Name": "Moon Stone",
+    "Url": "https://pokeapi.co/api/v2/item/81/",
+    "Description": "Item used to evolve a Pokemon.",
+    "EvolutionItem": true,
+    "BuyAmount": 5000,
+    "SellAmount": 2500
+  },
+  {
+    "Id": 82,
+    "Name": "Fire Stone",
+    "Url": "https://pokeapi.co/api/v2/item/82/",
+    "Description": "Item used to evolve a Pokemon.",
+    "EvolutionItem": true,
+    "BuyAmount": 5000,
+    "SellAmount": 2500
+  },
+  {
+    "Id": 83,
+    "Name": "Thunder Stone",
+    "Url": "https://pokeapi.co/api/v2/item/83/",
+    "Description": "Item used to evolve a Pokemon.",
+    "EvolutionItem": true,
+    "BuyAmount": 5000,
+    "SellAmount": 2500
+  },
+  {
+    "Id": 84,
+    "Name": "Water Stone",
+    "Url": "https://pokeapi.co/api/v2/item/84/",
+    "Description": "Item used to evolve a Pokemon.",
+    "EvolutionItem": true,
+    "BuyAmount": 5000,
+    "SellAmount": 2500
+  },
+  {
+    "Id": 85,
+    "Name": "Leaf Stone",
+    "Url": "https://pokeapi.co/api/v2/item/85/",
+    "Description": "Item used to evolve a Pokemon.",
+    "EvolutionItem": true,
+    "BuyAmount": 5000,
+    "SellAmount": 2500
+  },
+  {
+    "Id": 107,
+    "Name": "Shiny Stone",
+    "Url": "https://pokeapi.co/api/v2/item/107/",
+    "Description": "Item used to evolve a Pokemon.",
+    "EvolutionItem": true,
+    "BuyAmount": 5000,
+    "SellAmount": 2500
+  },
+  {
+    "Id": 108,
+    "Name": "Dusk Stone",
+    "Url": "https://pokeapi.co/api/v2/item/108/",
+    "Description": "Item used to evolve a Pokemon.",
+    "EvolutionItem": true,
+    "BuyAmount": 5000,
+    "SellAmount": 2500
+  },
+  {
+    "Id": 109,
+    "Name": "Dawn Stone",
+    "Url": "https://pokeapi.co/api/v2/item/109/",
+    "Description": "Item used to evolve a Pokemon.",
+    "EvolutionItem": true,
+    "BuyAmount": 5000,
+    "SellAmount": 2500
+  },
+  {
+    "Id": 110,
+    "Name": "Oval Stone",
+    "Url": "https://pokeapi.co/api/v2/item/110/",
+    "Description": "Item used to evolve a Pokemon.",
+    "EvolutionItem": true,
+    "BuyAmount": 5000,
+    "SellAmount": 2500
+  },
+  {
+    "Id": 198,
+    "Name": "King’s Rock",
+    "Url": "https://pokeapi.co/api/v2/item/198/",
+    "Description": "Item used to evolve a Pokemon.",
+    "EvolutionItem": true,
+    "BuyAmount": 5000,
+    "SellAmount": 2500
+  },
+  {
+    "Id": 203,
+    "Name": "Deep Sea Tooth",
+    "Url": "https://pokeapi.co/api/v2/item/203/",
+    "Description": "Item used to evolve a Pokemon.",
+    "EvolutionItem": true,
+    "BuyAmount": 5000,
+    "SellAmount": 2500
+  },
+  {
+    "Id": 204,
+    "Name": "Deep Sea Scale",
+    "Url": "https://pokeapi.co/api/v2/item/204/",
+    "Description": "Item used to evolve a Pokemon.",
+    "EvolutionItem": true,
+    "BuyAmount": 5000,
+    "SellAmount": 2500
+  },
+  {
+    "Id": 210,
+    "Name": "Metal Coat",
+    "Url": "https://pokeapi.co/api/v2/item/210/",
+    "Description": "Item used to evolve a Pokemon.",
+    "EvolutionItem": true,
+    "BuyAmount": 5000,
+    "SellAmount": 2500
+  },
+  {
+    "Id": 212,
+    "Name": "Dragon Scale",
+    "Url": "https://pokeapi.co/api/v2/item/212/",
+    "Description": "Item used to evolve a Pokemon.",
+    "EvolutionItem": true,
+    "BuyAmount": 5000,
+    "SellAmount": 2500
+  },
+  {
+    "Id": 229,
+    "Name": "Upgrade",
+    "Url": "https://pokeapi.co/api/v2/item/229/",
+    "Description": "Item used to evolve a Pokemon.",
+    "EvolutionItem": true,
+    "BuyAmount": 5000,
+    "SellAmount": 2500
+  },
+  {
+    "Id": 298,
+    "Name": "Protector",
+    "Url": "https://pokeapi.co/api/v2/item/298/",
+    "Description": "Item used to evolve a Pokemon.",
+    "EvolutionItem": true,
+    "BuyAmount": 5000,
+    "SellAmount": 2500
+  },
+  {
+    "Id": 299,
+    "Name": "Electirizer",
+    "Url": "https://pokeapi.co/api/v2/item/299/",
+    "Description": "Item used to evolve a Pokemon.",
+    "EvolutionItem": true,
+    "BuyAmount": 5000,
+    "SellAmount": 2500
+  },
+  {
+    "Id": 300,
+    "Name": "Magmarizer",
+    "Url": "https://pokeapi.co/api/v2/item/300/",
+    "Description": "Item used to evolve a Pokemon.",
+    "EvolutionItem": true,
+    "BuyAmount": 5000,
+    "SellAmount": 2500
+  },
+  {
+    "Id": 301,
+    "Name": "Dubious Disc",
+    "Url": "https://pokeapi.co/api/v2/item/301/",
+    "Description": "Item used to evolve a Pokemon.",
+    "EvolutionItem": true,
+    "BuyAmount": 5000,
+    "SellAmount": 2500
+  },
+  {
+    "Id": 302,
+    "Name": "Reaper Cloth",
+    "Url": "https://pokeapi.co/api/v2/item/302/",
+    "Description": "Item used to evolve a Pokemon.",
+    "EvolutionItem": true,
+    "BuyAmount": 5000,
+    "SellAmount": 2500
+  },
+  {
+    "Id": 303,
+    "Name": "Razor Claw",
+    "Url": "https://pokeapi.co/api/v2/item/303/",
+    "Description": "Item used to evolve a Pokemon.",
+    "EvolutionItem": true,
+    "BuyAmount": 5000,
+    "SellAmount": 2500
+  },
+  {
+    "Id": 304,
+    "Name": "Razor Fang",
+    "Url": "https://pokeapi.co/api/v2/item/304/",
+    "Description": "Item used to evolve a Pokemon.",
+    "EvolutionItem": true,
+    "BuyAmount": 5000,
+    "SellAmount": 2500
+  },
+  {
+    "Id": 686,
+    "Name": "Whipped Dream",
+    "Url": "https://pokeapi.co/api/v2/item/686/",
+    "Description": "Item used to evolve a Pokemon.",
+    "EvolutionItem": true,
+    "BuyAmount": 5000,
+    "SellAmount": 2500
+  },
+  {
+    "Id": 687,
+    "Name": "Sachet",
+    "Url": "https://pokeapi.co/api/v2/item/687/",
+    "Description": "Item used to evolve a Pokemon.",
+    "EvolutionItem": true,
+    "BuyAmount": 5000,
+    "SellAmount": 2500
+  },
+  {
+    "Id": 885,
+    "Name": "Ice Stone",
+    "Url": "https://pokeapi.co/api/v2/item/885/",
+    "Description": "Item used to evolve a Pokemon.",
+    "EvolutionItem": true,
+    "BuyAmount": 5000,
+    "SellAmount": 2500
+  },
+  {
+    "Id": 1167,
+    "Name": "Strawberry Sweet",
+    "Url": "https://pokeapi.co/api/v2/item/1167/",
+    "Description": "Item used to evolve a Pokemon.",
+    "EvolutionItem": true,
+    "BuyAmount": 5000,
+    "SellAmount": 2500
+  },
+  {
+    "Id": 1174,
+    "Name": "Sweet Apple",
+    "Url": "https://pokeapi.co/api/v2/item/1174/",
+    "Description": "Item used to evolve a Pokemon.",
+    "EvolutionItem": true,
+    "BuyAmount": 5000,
+    "SellAmount": 2500
+  },
+  {
+    "Id": 1175,
+    "Name": "Tart Apple",
+    "Url": "https://pokeapi.co/api/v2/item/1175/",
+    "Description": "Item used to evolve a Pokemon.",
+    "EvolutionItem": true,
+    "BuyAmount": 5000,
+    "SellAmount": 2500
+  },
+  {
+    "Experience": 15,
+    "Id": 1183,
+    "Name": "Exp. Candy S",
+    "Url": "https://pokeapi.co/api/v2/item/1183/",
+    "Description": "Provides a Pokemon with 15 XP.",
+    "EvolutionItem": false,
+    "BuyAmount": 0,
+    "SellAmount": 50
+  },
+  {
+    "Experience": 40,
+    "Id": 1185,
+    "Name": "Exp. Candy L",
+    "Url": "https://pokeapi.co/api/v2/item/1185/",
+    "Description": "Provides a Pokemon with 40 XP",
+    "EvolutionItem": false,
+    "BuyAmount": 0,
+    "SellAmount": 125
+  },
+  {
+    "Id": 1311,
+    "Name": "Cracked Pot",
+    "Url": "https://pokeapi.co/api/v2/item/1311/",
+    "Description": "Item used to evolve a Pokemon.",
+    "EvolutionItem": true,
+    "BuyAmount": 5000,
+    "SellAmount": 2500
+  },
+  {
+    "Id": 1312,
+    "Name": "Chipped Pot",
+    "Url": "https://pokeapi.co/api/v2/item/1312/",
+    "Description": "Item used to evolve a Pokemon.",
+    "EvolutionItem": true,
+    "BuyAmount": 5000,
+    "SellAmount": 2500
+  },
+  {
+    "Id": 1633,
+    "Name": "Galarica Cuff",
+    "Url": "https://pokeapi.co/api/v2/item/1633/",
+    "Description": "Item used to evolve a Pokemon.",
+    "EvolutionItem": true,
+    "BuyAmount": 5000,
+    "SellAmount": 2500
+  },
+  {
+    "Id": 1643,
+    "Name": "Galarica Wreath",
+    "Url": "https://pokeapi.co/api/v2/item/1643/",
+    "Description": "Item used to evolve a Pokemon.",
+    "EvolutionItem": true,
+    "BuyAmount": 5000,
+    "SellAmount": 2500
+  },
+  {
+    "Id": 1677,
+    "Name": "Malicious Armor",
+    "Url": "https://pokeapi.co/api/v2/item/1677/",
+    "Description": "Item used to evolve a Pokemon.",
+    "EvolutionItem": true,
+    "BuyAmount": 5000,
+    "SellAmount": 2500
+  },
+  {
+    "Id": 2045,
+    "Name": "Auspicious Armor",
+    "Url": "https://pokeapi.co/api/v2/item/2045/",
+    "Description": "Item used to evolve a Pokemon.",
+    "EvolutionItem": true,
+    "BuyAmount": 5000,
+    "SellAmount": 2500
+  },
+  {
+    "Id": 10001,
+    "Name": "Black Augurite",
+    "Url": "https://pokeapi.co/api/v2/item/10001/",
+    "Description": "Item used to evolve a Pokemon.",
+    "EvolutionItem": true,
+    "BuyAmount": 5000,
+    "SellAmount": 2500
+  },
+  {
+    "Id": 10002,
+    "Name": "Peat Block",
+    "Url": "https://pokeapi.co/api/v2/item/10002/",
+    "Description": "Item used to evolve a Pokemon.",
+    "EvolutionItem": true,
+    "BuyAmount": 5000,
+    "SellAmount": 2500
+  }
+]

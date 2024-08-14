@@ -6,7 +6,7 @@ from globals import Dexmark, PokemonColor
 from middleware.decorators import defer
 from models.Pokemon import Pokemon
 from models.Trainer import Trainer
-from services import pokemonservice, trainerservice
+from services import pokemonservice, statservice, trainerservice
 from services.utility import discordservice
 
 
@@ -48,17 +48,17 @@ class PokeShopView(discord.ui.View):
 	@defer
 	async def submit_button(self, interaction: discord.Interaction, button: discord.ui.Button):
 		self.clear_items()
-		updateTrainer = trainerservice.GetTrainer(self.trainer.ServerId, self.trainer.UserId)
-		if updateTrainer.Money < self.price:
+		self.trainer = trainerservice.GetTrainer(self.trainer.ServerId, self.trainer.UserId)
+		if self.trainer.Money < self.price:
 			return await self.message.edit(view=self, embed=None, content='Not enough money for an exchange.')
-		if "4" not in updateTrainer.Pokeballs or updateTrainer.Pokeballs["4"] < self.masterballs:
+		if "1" not in self.trainer.Items or self.trainer.Items["1"] < self.masterballs:
 			return await self.message.edit(view=self, embed=None, content='Not enough Masterballs for an exchange.')
 		
-		updateTrainer.OwnedPokemon.append(self.pokemon)
-		updateTrainer.Money -= self.price
-		trainerservice.ModifyItemList(updateTrainer.Pokeballs, "4", (0-self.masterballs))
-		trainerservice.TryAddToPokedex(updateTrainer, self.pkmndata, self.pokemon.IsShiny)
-		trainerservice.UpsertTrainer(updateTrainer)
+		self.trainer.OwnedPokemon.append(self.pokemon)
+		self.trainer.Money -= self.price
+		trainerservice.ModifyItemList(self.trainer, "1", (0-self.masterballs))
+		trainerservice.TryAddToPokedex(self.trainer, self.pkmndata, self.pokemon.IsShiny)
+		trainerservice.UpsertTrainer(self.trainer)
 		return await self.message.edit(view=self, embed=None, content=f'Obtained one **{pokemonservice.GetPokemonDisplayName(self.pokemon, self.pkmndata)}** for **${self.price}**{" and **20 Masterballs**" if self.pkmndata.Rarity >= 8 else ""}')
 
 	def PokemonDesc(self):
@@ -66,7 +66,7 @@ class PokeShopView(discord.ui.View):
 		pkmnData = t2a(body=[['Rarity:', f'{self.pkmndata.Rarity}', '|', 'Height:', self.pkmndata.Height/10],
                          ['Color:',f'{self.pkmndata.Color}', '|','Weight:', self.pkmndata.Weight/10], 
                          ['Capture:',f'{self.pkmndata.CaptureRate}/255', '|','Female:', f'{self.pkmndata.FemaleChance}/8' if self.pkmndata.FemaleChance >= 0 else 'N/A'], 
-                         ['Types:', f'{"/".join(self.pkmndata.Types)}', Merge.LEFT, Merge.LEFT, Merge.LEFT]], 
+                         ['Types:', f'{"/".join([statservice.GetType(t).Name for t in self.pkmndata.Types])}', Merge.LEFT, Merge.LEFT, Merge.LEFT]], 
                       first_col_heading=False,
                       alignments=[Alignment.LEFT,Alignment.LEFT,Alignment.CENTER,Alignment.LEFT,Alignment.LEFT],
                       style=PresetStyle.plain,

@@ -1,272 +1,332 @@
 [
     {
-        "Name": "normal",
+        "Id": 1,
+        "Name": "Normal",
+        "Url": "https://pokeapi.co/api/v2/type/1/",
         "Weakness": [
-            "fighting"
+            2
         ],
         "Resistant": [],
         "Immune": [
-            "ghost"
+            8
         ]
     },
     {
-        "Name": "fire",
+        "Id": 2,
+        "Name": "Fighting",
+        "Url": "https://pokeapi.co/api/v2/type/2/",
         "Weakness": [
-            "water",
-            "ground",
-            "rock"
+            3,
+            14,
+            18
         ],
         "Resistant": [
-            "fire",
-            "grass",
-            "ice",
-            "bug",
-            "steel",
-            "fairy"
+            6,
+            7,
+            17
         ],
         "Immune": []
     },
     {
-        "Name": "water",
+        "Id": 3,
+        "Name": "Flying",
+        "Url": "https://pokeapi.co/api/v2/type/3/",
         "Weakness": [
-            "grass",
-            "electric"
+            6,
+            13,
+            15
         ],
         "Resistant": [
-            "fire",
-            "water",
-            "ice",
-            "steel"
-        ],
-        "Immune": []
-    },
-    {
-        "Name": "grass",
-        "Weakness": [
-            "fire",
-            "ice",
-            "poison",
-            "flying",
-            "bug"
-        ],
-        "Resistant": [
-            "water",
-            "grass",
-            "electric",
-            "ground"
-        ],
-        "Immune": []
-    },
-    {
-        "Name": "electric",
-        "Weakness": [
-            "ground"
-        ],
-        "Resistant": [
-            "electric",
-            "flying",
-            "steel"
-        ],
-        "Immune": []
-    },
-    {
-        "Name": "ice",
-        "Weakness": [
-            "fire",
-            "fighting",
-            "rock",
-            "steel"
-        ],
-        "Resistant": [
-            "ice"
-        ],
-        "Immune": []
-    },
-    {
-        "Name": "fighting",
-        "Weakness": [
-            "flying",
-            "psychic",
-            "fairy"
-        ],
-        "Resistant": [
-            "bug",
-            "rock",
-            "dark"
-        ],
-        "Immune": []
-    },
-    {
-        "Name": "poison",
-        "Weakness": [
-            "ground",
-            "psychic"
-        ],
-        "Resistant": [
-            "grass",
-            "fighting",
-            "poison",
-            "bug",
-            "fairy"
-        ],
-        "Immune": []
-    },
-    {
-        "Name": "ground",
-        "Weakness": [
-            "water",
-            "grass",
-            "ice"
-        ],
-        "Resistant": [
-            "poison",
-            "rock"
+            2,
+            7,
+            12
         ],
         "Immune": [
-            "electric"
+            5
         ]
     },
     {
-        "Name": "flying",
+        "Id": 4,
+        "Name": "Poison",
+        "Url": "https://pokeapi.co/api/v2/type/4/",
         "Weakness": [
-            "electric",
-            "ice",
-            "rock"
+            5,
+            14
         ],
         "Resistant": [
-            "grass",
-            "fighting",
-            "bug"
-        ],
-        "Immune": [
-            "ground"
-        ]
-    },
-    {
-        "Name": "psychic",
-        "Weakness": [
-            "bug",
-            "ghost",
-            "dark"
-        ],
-        "Resistant": [
-            "fighting",
-            "psychic"
+            2,
+            4,
+            7,
+            12,
+            18
         ],
         "Immune": []
     },
     {
-        "Name": "bug",
+        "Id": 5,
+        "Name": "Ground",
+        "Url": "https://pokeapi.co/api/v2/type/5/",
         "Weakness": [
-            "fire",
-            "flying",
-            "rock"
+            11,
+            12,
+            15
         ],
         "Resistant": [
-            "grass",
-            "fighting",
-            "ground"
+            4,
+            6
+        ],
+        "Immune": [
+            13
+        ]
+    },
+    {
+        "Id": 6,
+        "Name": "Rock",
+        "Url": "https://pokeapi.co/api/v2/type/6/",
+        "Weakness": [
+            2,
+            5,
+            9,
+            11,
+            12
+        ],
+        "Resistant": [
+            1,
+            3,
+            4,
+            10
         ],
         "Immune": []
     },
     {
-        "Name": "rock",
+        "Id": 7,
+        "Name": "Bug",
+        "Url": "https://pokeapi.co/api/v2/type/7/",
         "Weakness": [
-            "water",
-            "grass",
-            "fighting",
-            "ground",
-            "steel"
+            3,
+            6,
+            10
         ],
         "Resistant": [
-            "normal",
-            "fire",
-            "poison",
-            "flying"
+            2,
+            5,
+            12
         ],
         "Immune": []
     },
     {
-        "Name": "ghost",
+        "Id": 8,
+        "Name": "Ghost",
+        "Url": "https://pokeapi.co/api/v2/type/8/",
         "Weakness": [
-            "ghost",
-            "dark"
+            8,
+            17
         ],
         "Resistant": [
-            "poison",
-            "bug"
+            4,
+            7
         ],
         "Immune": [
-            "normal",
-            "fighting"
+            1,
+            2
         ]
     },
     {
-        "Name": "dragon",
+        "Id": 9,
+        "Name": "Steel",
+        "Url": "https://pokeapi.co/api/v2/type/9/",
         "Weakness": [
-            "ice",
-            "dragon",
-            "fairy"
+            2,
+            5,
+            10
         ],
         "Resistant": [
-            "fire",
-            "water",
-            "grass",
-            "electric"
+            1,
+            3,
+            6,
+            7,
+            9,
+            12,
+            14,
+            15,
+            16,
+            18
+        ],
+        "Immune": [
+            4
+        ]
+    },
+    {
+        "Id": 10,
+        "Name": "Fire",
+        "Url": "https://pokeapi.co/api/v2/type/10/",
+        "Weakness": [
+            5,
+            6,
+            11
+        ],
+        "Resistant": [
+            7,
+            9,
+            10,
+            12,
+            15,
+            18
         ],
         "Immune": []
     },
     {
-        "Name": "dark",
+        "Id": 11,
+        "Name": "Water",
+        "Url": "https://pokeapi.co/api/v2/type/11/",
         "Weakness": [
-            "fighting",
-            "bug",
-            "fairy"
+            12,
+            13
         ],
         "Resistant": [
-            "ghost",
-            "dark"
+            9,
+            10,
+            11,
+            15
+        ],
+        "Immune": []
+    },
+    {
+        "Id": 12,
+        "Name": "Grass",
+        "Url": "https://pokeapi.co/api/v2/type/12/",
+        "Weakness": [
+            3,
+            4,
+            7,
+            10,
+            15
+        ],
+        "Resistant": [
+            5,
+            11,
+            12,
+            13
+        ],
+        "Immune": []
+    },
+    {
+        "Id": 13,
+        "Name": "Electric",
+        "Url": "https://pokeapi.co/api/v2/type/13/",
+        "Weakness": [
+            5
+        ],
+        "Resistant": [
+            3,
+            9,
+            13
+        ],
+        "Immune": []
+    },
+    {
+        "Id": 14,
+        "Name": "Psychic",
+        "Url": "https://pokeapi.co/api/v2/type/14/",
+        "Weakness": [
+            7,
+            8,
+            17
+        ],
+        "Resistant": [
+            2,
+            14
+        ],
+        "Immune": []
+    },
+    {
+        "Id": 15,
+        "Name": "Ice",
+        "Url": "https://pokeapi.co/api/v2/type/15/",
+        "Weakness": [
+            2,
+            6,
+            9,
+            10
+        ],
+        "Resistant": [
+            15
+        ],
+        "Immune": []
+    },
+    {
+        "Id": 16,
+        "Name": "Dragon",
+        "Url": "https://pokeapi.co/api/v2/type/16/",
+        "Weakness": [
+            15,
+            16,
+            18
+        ],
+        "Resistant": [
+            10,
+            11,
+            12,
+            13
+        ],
+        "Immune": []
+    },
+    {
+        "Id": 17,
+        "Name": "Dark",
+        "Url": "https://pokeapi.co/api/v2/type/17/",
+        "Weakness": [
+            2,
+            7,
+            18
+        ],
+        "Resistant": [
+            8,
+            17
         ],
         "Immune": [
-            "psychic"
+            14
         ]
     },
     {
-        "Name": "steel",
+        "Id": 18,
+        "Name": "Fairy",
+        "Url": "https://pokeapi.co/api/v2/type/18/",
         "Weakness": [
-            "fire",
-            "fighting",
-            "ground"
+            4,
+            9
         ],
         "Resistant": [
-            "normal",
-            "grass",
-            "ice",
-            "flying",
-            "psychic",
-            "bug",
-            "rock",
-            "dragon",
-            "steel",
-            "fairy"
+            2,
+            7,
+            17
         ],
         "Immune": [
-            "poison"
+            16
         ]
     },
     {
-        "Name": "fairy",
-        "Weakness": [
-            "poison",
-            "steel"
-        ],
-        "Resistant": [
-            "fighting",
-            "bug",
-            "dark"
-        ],
-        "Immune": [
-            "dragon"
-        ]
+        "Id": 19,
+        "Name": "Stellar",
+        "Url": "https://pokeapi.co/api/v2/type/19/",
+        "Weakness": [],
+        "Resistant": [],
+        "Immune": []
+    },
+    {
+        "Id": 10001,
+        "Name": "???",
+        "Url": "https://pokeapi.co/api/v2/type/10001/",
+        "Weakness": [],
+        "Resistant": [],
+        "Immune": []
+    },
+    {
+        "Id": 10002,
+        "Name": "Shadow",
+        "Url": "https://pokeapi.co/api/v2/type/10002/",
+        "Weakness": [],
+        "Resistant": [],
+        "Immune": []
     }
 ]

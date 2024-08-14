@@ -5,7 +5,7 @@ from discord.ext import commands
 from globals import SuperShinyOdds
 from middleware.decorators import is_bot_admin
 from models.Server import Server
-from services import battleservice, pokemonservice, serverservice, trainerservice
+from services import battleservice, itemservice, pokemonservice, serverservice, trainerservice
 
 class AdminCommands(commands.Cog, name="AdminCommands"):
 
@@ -56,7 +56,7 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 			return
 		trainer = trainerservice.GetTrainer(ctx.guild.id, user.id if user else ctx.author.id)
 		if trainer:
-			trainerservice.ModifyItemList(trainer.Pokeballs, str(type) if -1 < type < 5 else '1', amount)
+			trainerservice.ModifyItemList(trainer, str(type) if type in [i.Id for i in itemservice.GetAllPokeballs()] else '4', amount)
 			trainerservice.UpsertTrainer(trainer)
 			
 	@commands.command(name="addpotion")
@@ -66,7 +66,7 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 			return
 		trainer = trainerservice.GetTrainer(ctx.guild.id, user.id if user else ctx.author.id)
 		if trainer:
-			trainerservice.ModifyItemList(trainer.Potions, str(type) if -1 < type < 5 else '1', amount)
+			trainerservice.ModifyItemList(trainer, str(type) if type in [i.Id for i in itemservice.GetAllPotions()] else '17', amount)
 			trainerservice.UpsertTrainer(trainer)
 
 	@commands.command(name="addcandy")
@@ -76,7 +76,7 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 			return
 		trainer = trainerservice.GetTrainer(ctx.guild.id, user.id if user else ctx.author.id)
 		if trainer:
-			trainerservice.ModifyItemList(trainer.Candies, str(type) if 0 < type < 4 else '1', amount)
+			trainerservice.ModifyItemList(trainer, str(type) if type in [i.Id for i in itemservice.GetAllCandies()] else '50', amount)
 			trainerservice.UpsertTrainer(trainer)
 			
 	@commands.command(name="addbadge")
@@ -110,7 +110,7 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 			return
 		pokemon = pokemonservice.GetPokemonById(pokemonId)
 		if pokemon:
-			print(f"{pokemon.Name}: {pokemon.PokedexId}")
+			print(f"{pokemon.__dict__}")
 
 	@commands.command(name="testfight")
 	@is_bot_admin

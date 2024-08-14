@@ -15,7 +15,7 @@ class OwnedSelector(discord.ui.Select):
         options=[discord.SelectOption(
             label=pokemonservice.GetPokemonDisplayName(d, next(p for p in pkmnData if d.Pokemon_Id == p.Id)),
             description= pokemonservice.GetOwnedPokemonDescription(d, next(p for p in pkmnData if d.Pokemon_Id == p.Id)),
-            value=f'{d.Id}',
+            value=d.Id,
             default=(defaultId and d.Id == defaultId)
         ) for d in data]
         super().__init__(options=options, max_values=max_select, min_values=1, placeholder='Select Pokemon', custom_id=(customId if customId else uuid.uuid4().hex))

@@ -45,6 +45,8 @@ eventtimes = [
 
 freemasterball = datetime(2024,4,26)
 
+updatebulk = datetime(2024,8,14)
+
 def to_dict(obj):
   return json.loads(json.dumps(obj, default=lambda o: o.__dict__))
 

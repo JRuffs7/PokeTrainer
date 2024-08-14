@@ -17,6 +17,9 @@ class CandyView(discord.ui.View):
 		self.user = interaction.user
 		self.trainer = trainer
 		self.pokemon = pokemon
+		self.pokemonchoice = None
+		self.candychoice = None
+		self.amountchoice = None
 		super().__init__(timeout=300)
 		self.ownlist = OwnedSelector(pokemon, 1)
 		self.add_item(self.ownlist)
@@ -31,10 +34,8 @@ class CandyView(discord.ui.View):
 				self.remove_item(item)
 
 		self.pokemonchoice = next(p for p in self.trainer.OwnedPokemon if p.Id == choices[0])
-		self.candychoice = None
-		self.amountchoice = None
 		self.ownlist = OwnedSelector(self.pokemon, 1, choices[0])
-		self.candyselector = ItemSelector([itemservice.GetCandy(int(c)) for c in self.trainer.Candies if self.trainer.Candies[c] > 0])
+		self.candyselector = ItemSelector(trainerservice.GetTrainerItemList(self.trainer, 2))
 		self.add_item(self.ownlist)
 		self.add_item(self.candyselector)
 		await self.message.edit(view=self)
@@ -47,8 +48,8 @@ class CandyView(discord.ui.View):
 		self.candychoice = itemservice.GetCandy(int(choice))
 		self.amountchoice = None
 		self.ownlist = OwnedSelector(self.pokemon, 1, self.pokemonchoice.Id)
-		self.candyselector = ItemSelector([itemservice.GetCandy(int(c)) for c in self.trainer.Candies if self.trainer.Candies[c] > 0], choice)
-		self.amountselector = AmountSelector(self.trainer.Candies[choice])
+		self.candyselector = ItemSelector(trainerservice.GetTrainerItemList(self.trainer, 2), choice)
+		self.amountselector = AmountSelector(self.trainer.Items[choice])
 		self.add_item(self.ownlist)
 		self.add_item(self.candyselector)
 		self.add_item(self.amountselector)
@@ -69,10 +70,9 @@ class CandyView(discord.ui.View):
 	async def submit_button(self, inter: discord.Interaction,
 												button: discord.ui.Button):
 		if self.pokemonchoice and self.candychoice and self.amountchoice:
-			#Rare Candy
 			pkmnData = pokemonservice.GetPokemonById(self.pokemonchoice.Pokemon_Id)
+			num = 0
 			if self.candychoice.Experience == None:
-				num = 0
 				while num < self.amountchoice and self.pokemonchoice.Level < 100:
 					pokemonservice.AddExperience(
 						self.pokemonchoice, 
@@ -80,9 +80,7 @@ class CandyView(discord.ui.View):
 						(pokemonservice.NeededExperience(self.pokemonchoice.Level, pkmnData.Rarity, pkmnData.EvolvesInto) - self.pokemonchoice.CurrentExp))
 					num += 1
 				message = f"{pokemonservice.GetPokemonDisplayName(self.pokemonchoice, pkmnData)} gained {num} level(s)."
-				trainerservice.ModifyItemList(self.trainer.Candies, str(self.candychoice.Id), (0-num))
 			else:
-				num = 0
 				while num < self.amountchoice and self.pokemonchoice.Level < 100:
 					nextLevel = pokemonservice.NeededExperience(self.pokemonchoice.Level, pkmnData.Rarity, pkmnData.EvolvesInto) - self.pokemonchoice.CurrentExp
 					numToUse = ceil(nextLevel/self.candychoice.Experience)
@@ -93,7 +91,7 @@ class CandyView(discord.ui.View):
 						self.candychoice.Experience*numToUse)
 					num += numToUse
 				message = f"{pokemonservice.GetPokemonDisplayName(self.pokemonchoice, pkmnData)} gained {self.candychoice.Experience*num} experience points."
-				trainerservice.ModifyItemList(self.trainer.Candies, str(self.candychoice.Id), (0-num))
+			trainerservice.ModifyItemList(self.trainer, str(self.candychoice.Id), (0-num))
 			trainerservice.UpsertTrainer(self.trainer)
 			self.clear_items()
 			await self.message.edit(content=message, view=self)

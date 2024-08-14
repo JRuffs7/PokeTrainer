@@ -1,5 +1,5 @@
 from discord import Interaction, app_commands
-from services import itemservice, pokemonservice, trainerservice, typeservice, zoneservice
+from services import itemservice, pokemonservice, statservice, trainerservice, typeservice, zoneservice
 
 
 async def autofill_pokemon(inter: Interaction, current: str):
@@ -37,11 +37,11 @@ async def autofill_special(inter: Interaction, current: str):
 
 async def autofill_types(inter: Interaction, current: str):
 	choiceList = []
-	searchList = typeservice.GetAllTypes()
+	searchList = statservice.GetAllTypes()
 	searchList.sort(key=lambda x: x.Name)
 	for type in searchList:
 		if current.lower() in type.Name.lower():
-				choiceList.append(app_commands.Choice(name=type.Name, value=type.Name))
+				choiceList.append(app_commands.Choice(name=type.Name, value=type.Id))
 				if len(choiceList) == 25:
 					break
 	return choiceList
@@ -87,9 +87,9 @@ async def autofill_zones(inter: Interaction, current: str):
 	zones = zoneservice.GetAllZones()
 	zones.sort(key=lambda x: (-(x.Id == 0),x.Name))
 	for zone in zones:
-		types = zone.Types
+		types = [statservice.GetType(t).Name for t in zone.Types] if zone.Id != 0 else ["All"]
 		types.sort()
-		displayName = f'{zone.Name} ({"/".join(types)})'
+		displayName = f'{zone.Name} ({"/".join([types])})'
 		if current.lower() in displayName.lower():
 			data.append(app_commands.Choice(name=displayName, value=zone.Id))
 		if len(data) == 25:

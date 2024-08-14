@@ -7,6 +7,7 @@ from commands.views.Pagination.BasePaginationView import BasePaginationView
 from globals import Dexmark, TrainerColor
 from models.Pokemon import PokemonData
 from models.Trainer import Trainer
+from services import statservice
 from services.utility import discordservice
 
 
@@ -64,7 +65,7 @@ class DexView(BasePaginationView):
 		pkmnData = t2a(body=[['Rarity:', f'{pokemon.Rarity}', '|', 'Height:', pokemon.Height/10],
                          ['Color:',f'{pokemon.Color}', '|','Weight:', pokemon.Weight/10], 
                          ['Capture:',f'{pokemon.CaptureRate}/255', '|','Female:', f'{pokemon.FemaleChance}/8' if pokemon.FemaleChance >= 0 else 'N/A'], 
-                         ['Types:', f'{"/".join(pokemon.Types)}', Merge.LEFT, Merge.LEFT, Merge.LEFT]], 
+                         ['Types:', f'{"/".join([statservice.GetType(t).Name for t in pokemon.Types])}', Merge.LEFT, Merge.LEFT, Merge.LEFT]], 
                       first_col_heading=False,
                       alignments=[Alignment.LEFT,Alignment.LEFT,Alignment.CENTER,Alignment.LEFT,Alignment.LEFT],
                       style=PresetStyle.plain,

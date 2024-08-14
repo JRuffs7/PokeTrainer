@@ -11,7 +11,7 @@ from commands.views.Selection.ReleaseView import ReleaseView
 from commands.views.Pagination.BadgeView import BadgeView
 
 from middleware.decorators import method_logger, trainer_check
-from services import gymservice, pokemonservice, trainerservice, itemservice, zoneservice
+from services import gymservice, pokemonservice, statservice, trainerservice, itemservice, zoneservice
 from services.utility import discordservice_trainer
 
 
@@ -37,8 +37,8 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
   async def autofill_usepotion(self, inter: Interaction, current:str):
     data = []
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
-    ptnList = [itemservice.GetPotion(int(k)) for k in trainer.Potions if trainer.Potions[k] > 0]
-    ptnList.sort(key=lambda x: x.Id)
+    ptnList = trainerservice.GetTrainerItemList(self.trainer, 1)
+    ptnList.sort(key=lambda x: x.HealingAmount)
     for ptn in ptnList:
       if current.lower() in ptn.Name.lower():
         data.append(app_commands.Choice(name=ptn.Name, value=ptn.Id))
@@ -53,13 +53,13 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
   @trainer_check
   async def usepotion(self, inter: Interaction, potion: int):
     if potion not in [p.Id for p in itemservice.GetAllPotions()]:
-      return await discordservice_trainer.PrintUsePotion(inter, None, (False, 0))
+      return await discordservice_trainer.PrintUsePotion(inter, 0, [])
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
     ptn = itemservice.GetPotion(potion)
-    if str(potion) not in trainer.Potions:
-      return await discordservice_trainer.PrintUsePotion(inter, ptn, (False, 0))
+    if str(potion) not in trainer.Items or trainer.Items[str(potion.Id)] == 0:
+      return await discordservice_trainer.PrintUsePotion(inter, 1, [ptn.Name])
     result = trainerservice.TryUsePotion(trainer, ptn)
-    return await discordservice_trainer.PrintUsePotion(inter, ptn, result)
+    return await discordservice_trainer.PrintUsePotion(inter, 3 if result > 0 else 2, [ptn.Name, result] if result > 0 else [ptn.Name])
 
   @app_commands.command(name="daily",
                         description="Claim your daily reward.")
@@ -112,7 +112,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
     
     trainer.CurrentZone = zone
     trainerservice.UpsertTrainer(trainer)
-    zoneTypes = zoneData.Types
+    zoneTypes = [statservice.GetType(t).Name for t in zone.Types] if zone.Id != 0 else ["All"]
     zoneTypes.sort()
     if zone == 0:
       await discordservice_trainer.PrintChangeZone(inter, 2, [])
@@ -237,7 +237,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
   @trainer_check
   async def mypokemon(self, inter: Interaction,
                     pokemon: int | None,
-                    type: str | None,
+                    type: int | None,
                     images: app_commands.Choice[int] | None,
                     order: app_commands.Choice[str] | None,
                     shiny: app_commands.Choice[int] | None,

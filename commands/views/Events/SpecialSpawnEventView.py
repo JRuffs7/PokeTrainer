@@ -9,7 +9,7 @@ from globals import EventColor, MasterBallReaction, ShortDateFormat
 from middleware.decorators import trainer_check
 from models.Pokemon import Pokemon
 from models.Server import Server
-from services import pokemonservice, serverservice, trainerservice
+from services import pokemonservice, serverservice, statservice, trainerservice
 from services.utility import discordservice
 
 class SpecialSpawnEventView(EventView):
@@ -33,7 +33,7 @@ class SpecialSpawnEventView(EventView):
 			return await interaction.followup.send(content=f"You already captured this special encounter! Wait for more to show up in the future.", ephemeral=True)
 		self.userentries.append(interaction.user.id)
 		trainer = trainerservice.GetTrainer(interaction.guild_id, interaction.user.id)
-		if trainer.Pokeballs['4'] <= 0:
+		if trainer.Items['1'] <= 0:
 			self.userentries.remove(interaction.user.id)
 			return await interaction.followup.send(content=f"You do not have any Masterballs. Participate in non-legendary public events to receive one.", ephemeral=True)
 		elif trainerservice.TryCapture('4', trainer, self.pokemon):
@@ -59,7 +59,7 @@ class SpecialSpawnEventView(EventView):
 		pkmnData = t2a(
 			body=[
 				['Height:', f"{self.pokemon.Height}", '|', 'Weight:', self.pokemon.Weight],
-				['Types:', f"{self.pkmndata.Types[0]}"f"{'/' + self.pkmndata.Types[1] if len(self.pkmndata.Types) > 1 else ''}", Merge.LEFT, Merge.LEFT, Merge.LEFT]], 
+				['Types:', f"{'/'.join([statservice.GetType(t).Name for t in self.pkmndata.Types])}", Merge.LEFT, Merge.LEFT, Merge.LEFT]], 
 			first_col_heading=False,
 			alignments=[Alignment.LEFT,Alignment.LEFT,Alignment.CENTER,Alignment.LEFT,Alignment.LEFT],
 			style=PresetStyle.plain,

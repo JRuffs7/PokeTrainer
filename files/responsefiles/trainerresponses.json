@@ -89,20 +89,20 @@
 	],
 	"usepotion": [
 		{
-			"Title": "No Healing",
-			"Body": "You do not own any {0}s. Please visit the **/shop** to stock up."
+			"Title": "Invalid Command",
+			"Body": "Please select a potion from the provided list when executing the command."
 		},
 		{
-			"Title": "Health Restored",
-			"Body": "{0} used to restore {1} trainer health."
+			"Title": "No Healing",
+			"Body": "You do not own any {0}s. Please visit the **/shop** to stock up."
 		},
 		{
 			"Title": "Health Full",
 			"Body": "{0} not used because health is already full."
 		},
 		{
-			"Title": "Invalid Command",
-			"Body": "Please select a potion from the provided list when executing the command."
+			"Title": "Health Restored",
+			"Body": "{0} used to restore {1} trainer health."
 		}
 	]
 }

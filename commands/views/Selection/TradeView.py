@@ -4,7 +4,7 @@ from globals import TradeColor
 from middleware.decorators import defer
 
 from models.Trainer import Trainer
-from services import trainerservice, pokemonservice
+from services import statservice, trainerservice, pokemonservice
 from models.Pokemon import Pokemon, PokemonData
 from commands.views.Selection.selectors.OwnedSelector import OwnedSelector
 from services.utility import discordservice
@@ -87,7 +87,7 @@ class TradeView(discord.ui.View):
 				['Height:', pokemon.Height],
 				['Weight:', pokemon.Weight],
 				['Color:',f"{data.Color}"],  
-				['Types:', f"{data.Types[0]}"f"{'/' + data.Types[1] if len(data.Types) > 1 else ''}"]], 
+				['Types:', f"{'/'.join([statservice.GetType(t).Name for t in data.Types])}"]], 
 			first_col_heading=False,
 			alignments=[Alignment.LEFT,Alignment.LEFT],
 			style=PresetStyle.plain,

@@ -1,0 +1,42 @@
+[
+	{
+		"Id": 1,
+		"Name": "HP",
+		"Url": "https://pokeapi.co/api/v2/stat/1/"
+	},
+	{
+		"Id": 2,
+		"Name": "Attack",
+		"Url": "https://pokeapi.co/api/v2/stat/2/"
+	},
+	{
+		"Id": 3,
+		"Name": "Defense",
+		"Url": "https://pokeapi.co/api/v2/stat/3/"
+	},
+	{
+		"Id": 4,
+		"Name": "Special Attack",
+		"Url": "https://pokeapi.co/api/v2/stat/4/"
+	},
+	{
+		"Id": 5,
+		"Name": "Special Defense",
+		"Url": "https://pokeapi.co/api/v2/stat/5/"
+	},
+	{
+		"Id": 6,
+		"Name": "Speed",
+		"Url": "https://pokeapi.co/api/v2/stat/6/"
+	},
+	{
+		"Id": 7,
+		"Name": "accuracy",
+		"Url": "https://pokeapi.co/api/v2/stat/7/"
+	},
+	{
+		"Id": 8,
+		"Name": "evasion",
+		"Url": "https://pokeapi.co/api/v2/stat/8/"
+	}
+]

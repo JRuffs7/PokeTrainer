@@ -8,7 +8,7 @@ from globals import Dexmark, FightReaction, Formmark, GreatBallReaction, Pokebal
 from middleware.decorators import defer
 from models.Pokemon import Pokemon
 from models.Trainer import Trainer
-from services import pokemonservice, trainerservice
+from services import pokemonservice, statservice, trainerservice
 from services.utility import discordservice
 
 class SpawnPokemonView(discord.ui.View):
@@ -30,20 +30,8 @@ class SpawnPokemonView(discord.ui.View):
 		await self.message.edit(content=f'{pokemonservice.GetPokemonDisplayName(self.pokemon, self.pkmndata)} (Lvl. {self.pokemon.Level}) ran away!', embed=None, view=None)
 		return await super().on_timeout()
 
-	async def send(self):
-		if not self.pokemon:
-			return await self.interaction.followup.send("Failed to spawn a Pokemon. Please try again.", ephemeral=True)
-		await self.interaction.followup.send(view=self, ephemeral=True)
-		self.message = await self.interaction.original_response()
-		embed = discordservice.CreateEmbed(
-				self.GetTitle(),
-				self.PokemonDesc(),
-				PokemonColor)
-		embed.set_image(url=pokemonservice.GetPokemonImage(self.pokemon, self.pkmndata))
-		embed.set_footer(text='Set Your Battle Pokemon Below')
-		await self.message.edit(content=f'Current Trainer HP: {self.TrainerHealthString(self.trainer)}', embed=embed, view=self)
-
 	async def PokemonSelection(self, inter: discord.Interaction, choice: list[str]):
+		self.trainer = trainerservice.GetTrainer(self.trainer.ServerId, self.trainer.UserId)
 		trainerservice.SetTeamSlot(self.trainer, 0, choice[0])
 
 	@discord.ui.button(label=PokeballReaction)
@@ -100,23 +88,23 @@ class SpawnPokemonView(discord.ui.View):
 				return await interaction.followup.send(content=f'{newline.join([battleMsg, expMsg, expShareMsg, rewardMsg] if expShareMsg else [battleMsg, expMsg, rewardMsg])}')
 			
 	async def TryCapture(self, interaction: discord.Interaction, label: str, ball: str):
-		updatedTrainer = trainerservice.GetTrainer(self.interaction.guild_id, self.interaction.user.id)
-		pokeballId = '1' if label == PokeballReaction else '2' if label == GreatBallReaction else '3' if label == UltraBallReaction else '4'
-		if updatedTrainer.Health <= 0:
+		self.trainer = trainerservice.GetTrainer(self.trainer.ServerId, self.trainer.UserId)
+		pokeballId = '4' if label == PokeballReaction else '3' if label == GreatBallReaction else '2' if label == UltraBallReaction else '1'
+		if self.trainer.Health <= 0:
 				self.pressed = False
 				return await self.message.edit(content=f"You do not have any health! Restore with **/usepotion**. You can buy potions from the **/shop**", view=self)
-		elif updatedTrainer.Pokeballs[str(pokeballId)] <= 0:
+		elif self.trainer.Items[pokeballId] <= 0:
 			self.pressed = False
-			await self.message.edit(content=f"You do not have any {ball}s. Buy some from the **/shop**, try another ball, or fight!\nCurrent Trainer HP: {self.TrainerHealthString(updatedTrainer)}", view=self)
-		elif trainerservice.TryCapture(pokeballId, updatedTrainer, self.pokemon):
+			await self.message.edit(content=f"You do not have any {ball}s. Buy some from the **/shop**, try another ball, or fight!\nCurrent Trainer HP: {self.TrainerHealthString(self.trainer)}", view=self)
+		elif trainerservice.TryCapture(pokeballId, self.trainer, self.pokemon):
 			self.captureLog.info(f'{interaction.guild.name} - {self.interaction.user.display_name} used {ball} and caught a {self.pkmndata.Name}{"-SHINY" if self.pokemon.IsShiny else ""}')
 			await self.message.delete(delay=0.01)
 			baseMsg = f'<@{self.interaction.user.id}> used a {ball} and captured a wild **{pokemonservice.GetPokemonDisplayName(self.pokemon, self.pkmndata)} (Lvl. {self.pokemon.Level})**!'
-			expMsg = f'\nYour entire team also gained **{self.pokemon.Level} XP**' if trainerservice.HasRegionReward(updatedTrainer, 9) else ''
+			expMsg = f'\nYour entire team also gained **{self.pokemon.Level} XP**' if trainerservice.HasRegionReward(self.trainer, 9) else ''
 			await interaction.followup.send(content=f'{baseMsg}{expMsg}')
 		else:
 			self.pressed = False
-			await self.message.edit(content=f"Capture failed! Lost **{5-int(pokeballId)}hp** Try again or fight.\nCurrent Trainer HP: {self.TrainerHealthString(updatedTrainer)}", view=self)
+			await self.message.edit(content=f"Capture failed! Lost **{5-int(pokeballId)}hp** Try again or fight.\nCurrent Trainer HP: {self.TrainerHealthString(self.trainer)}", view=self)
 
 	def GetTitle(self):
 		hasDexmark = Dexmark if ((self.pkmndata.PokedexId in self.trainer.Pokedex) if not self.pokemon.IsShiny else (self.pkmndata.Id in self.trainer.Shinydex)) else ''
@@ -131,9 +119,22 @@ class SpawnPokemonView(discord.ui.View):
 			body=[
 				['Rarity:', f"{self.pkmndata.Rarity}", '|', 'Height:', self.pokemon.Height],
 				['Color:',f"{self.pkmndata.Color}", '|','Weight:', self.pokemon.Weight], 
-				['Types:', f"{self.pkmndata.Types[0]}"f"{'/' + self.pkmndata.Types[1] if len(self.pkmndata.Types) > 1 else ''}", Merge.LEFT, Merge.LEFT, Merge.LEFT]], 
+				['Types:', f"{'/'.join([statservice.GetType(t).Name for t in self.pkmndata.Types])}", Merge.LEFT, Merge.LEFT, Merge.LEFT]], 
 			first_col_heading=False,
 			alignments=[Alignment.LEFT,Alignment.LEFT,Alignment.CENTER,Alignment.LEFT,Alignment.LEFT],
 			style=PresetStyle.plain,
 			cell_padding=0)
 		return f"```{pkmnData}```"
+
+	async def send(self):
+		if not self.pokemon:
+			return await self.interaction.followup.send("Failed to spawn a Pokemon. Please try again.", ephemeral=True)
+		await self.interaction.followup.send(view=self, ephemeral=True)
+		self.message = await self.interaction.original_response()
+		embed = discordservice.CreateEmbed(
+				self.GetTitle(),
+				self.PokemonDesc(),
+				PokemonColor)
+		embed.set_image(url=pokemonservice.GetPokemonImage(self.pokemon, self.pkmndata))
+		embed.set_footer(text='Set Your Battle Pokemon Below')
+		await self.message.edit(content=f'Current Trainer HP: {self.TrainerHealthString(self.trainer)}', embed=embed, view=self)

@@ -9,6 +9,7 @@ from commands.views.Events.EventView import EventView
 from globals import EventColor, FightReaction, ShortDateFormat
 from middleware.decorators import trainer_check
 from models.Gym import SpecialTrainer
+from models.Item import Pokeball
 from models.Pokemon import Pokemon
 from models.Server import Server
 from models.Trainer import Trainer
@@ -22,14 +23,12 @@ class SpecialBattleEventView(EventView):
 		self.strainer = sTrainer
 		self.sTeam = pokemonservice.GetPokemonByIdList(sTrainer.Team)
 		self.userentries = []
+		self.reward = choice([1,2,3])
 		if len(self.sTeam) == 6:
-			self.reward = choice([1,2,3])
 			self.amount = 5000 if self.reward == 1 else 10 if self.reward == 2 else 1
 		elif len(self.sTeam) == 5:
-			self.reward = choice([1,2,3])
 			self.amount = 3000 if self.reward == 1 else 5 if self.reward == 2 else 2
 		else:
-			self.reward = choice([1,2,3])
 			self.amount = 2000 if self.reward == 1 else 10 if self.reward == 2 else 5
 		embed = discordservice.CreateEmbed(
 				f'{sTrainer.Name} Wants To Battle!',
@@ -72,14 +71,15 @@ class SpecialBattleEventView(EventView):
 		teamDesc: list[list] = []
 		for i, t in enumerate(self.sTeam):
 			teamDesc.append([f'{i+1}:', f'{t.Name}', f'({75 if t.Rarity <= 5 else 100})'])
+		allItems = itemservice.GetAllItems()
 		if self.reward == 1:
 			self.item = None
 			reward = f'${self.amount}'
 		elif self.reward == 2:
-			self.item = itemservice.GetPokeball(3 if len(self.sTeam) >= 5 else 2)
+			self.item = next(i for i in allItems if i.Id == (2 if len(self.sTeam) >= 5 else 3))
 			reward = f'{self.amount}x {self.item.Name}(s)'
 		else:
-			self.item = choice(itemservice.GetAllItems()) if len(self.sTeam) == 6 else itemservice.GetPotion(3 if len(self.sTeam) == 5 else 2)
+			self.item = choice([i for i in allItems if i.EvolutionItem]) if len(self.sTeam) == 6 else next(i for i in allItems if i.Id == (25 if len(self.sTeam) == 5 else 26))
 			reward = f'{self.amount}x {self.item.Name}(s)'
 		pkmnData = t2a(
 			body=teamDesc, 
@@ -115,10 +115,8 @@ class SpecialBattleEventView(EventView):
 	def GiveReward(self, trainer: Trainer):
 		if self.reward == 1:
 			trainer.Money += self.amount
-		elif self.reward == 2:
-			trainerservice.ModifyItemList(trainer.Pokeballs, str(self.item.Id), self.amount)
 		else:
-			trainerservice.ModifyItemList(trainer.Potions if len(self.sTeam) != 6 else trainer.EvolutionItems, str(self.item.Id), self.amount)
+			trainerservice.ModifyItemList(trainer, str(self.item.Id), self.amount)
 		if self.strainer.Id not in trainer.SpTrainerWins:
 			trainer.SpTrainerWins.append(self.strainer.Id)
 		trainerservice.UpsertTrainer(trainer)

@@ -2,6 +2,7 @@
 	{
 		"Id": 1,
 		"Name": "Level One Egg",
+		"Url": "",
 		"Hatch": [
 			1,
 			2
@@ -12,6 +13,7 @@
 	{
 		"Id": 2,
 		"Name": "Level Two Egg",
+		"Url": "",
 		"Hatch": [
 			3
 		],
@@ -21,6 +23,7 @@
 	{
 		"Id": 3,
 		"Name": "Special Egg",
+		"Url": "",
 		"Hatch": [
 			8,
 			9

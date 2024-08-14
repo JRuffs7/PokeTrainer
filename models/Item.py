@@ -1,12 +1,13 @@
-class Item:
-  Id: int
-  Name: str
+from models.Base import Base
+
+class Item(Base):
   Description: str
+  EvolutionItem: bool
   BuyAmount: int
   SellAmount: int
 
   def __init__(self, dict):
-    vars(self).update(dict)
+    super(Item, self).__init__(dict)
 
 
 class Pokeball(Item):
@@ -18,6 +19,7 @@ class Pokeball(Item):
 
 class Potion(Item):
   HealingAmount: int|None
+  AilmentCures: list[int]
 
   def __init__(self, dict):
     super(Potion, self).__init__(dict)

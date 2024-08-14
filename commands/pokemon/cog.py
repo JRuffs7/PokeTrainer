@@ -18,7 +18,7 @@ import discordbot
 from commands.views.Selection.EvolveView import EvolveView
 from globals import AdminList
 from middleware.decorators import method_logger, trainer_check
-from services import pokemonservice, typeservice, trainerservice, zoneservice
+from services import itemservice, pokemonservice, statservice, typeservice, trainerservice, zoneservice
 from services.utility import discordservice_pokemon
 
 
@@ -106,10 +106,10 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
       return await discordservice_pokemon.PrintPokeShopResponse(inter, 2, pkmn.Name)
     if trainer.Money < pokemonservice.GetShopValue(pkmn):
       return await discordservice_pokemon.PrintPokeShopResponse(inter, 3, pkmn.Name)
-    if "4" not in trainer.Pokeballs or trainer.Pokeballs["4"] < 20:
+    if "1" not in trainer.Items or trainer.Items["1"] < 20:
       return await discordservice_pokemon.PrintPokeShopResponse(inter, 4, pkmn.Name)
     spawn = pokemonservice.GenerateSpawnPokemon(pkmn, level=1)
-    spawn.IsShiny = (spawn.IsShiny and trainer.Money >= pokemonservice.GetShopValue(pkmn)*2 and trainer.Pokeballs["4"] >= 30)
+    spawn.IsShiny = (spawn.IsShiny and trainer.Money >= pokemonservice.GetShopValue(pkmn)*2 and trainer.Items["1"] >= 30)
 
     return await PokeShopView(inter, trainer, spawn).send()
 
@@ -130,11 +130,11 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
           if len(choiceList) == 25:
             break
     elif search == 'type':
-      searchList = typeservice.GetAllTypes()
+      searchList = statservice.GetAllTypes()
       searchList.sort(key=lambda x: x.Name)
       for type in searchList:
         if current.lower() in type.Name.lower():
-            choiceList.append(app_commands.Choice(name=type.Name, value=type.Name))
+            choiceList.append(app_commands.Choice(name=type.Name, value=str(type.Id)))
             if len(choiceList) == 25:
               break
     return choiceList
@@ -151,7 +151,7 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
     if search.value == 'color':
       await self.PokeInfoColor(inter, filter)
     elif search.value == 'type':
-      await self.PokeInfoType(inter, filter)
+      await self.PokeInfoType(inter, int(filter))
     else:
       return await discordservice_pokemon.PrintPokeInfoResponse(inter, 3, [])
     
@@ -163,8 +163,8 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
     dexViewer = PokemonSearchView(inter, pokemonList, f"List of {color} Pokemon")
     await dexViewer.send()
 
-  async def PokeInfoType(self, inter: Interaction, type: str):
-    pokemonList = pokemonservice.GetPokemonByType(type.lower())
+  async def PokeInfoType(self, inter: Interaction, type: int):
+    pokemonList = pokemonservice.GetPokemonByType(type)
     if not pokemonList:
       return await discordservice_pokemon.PrintPokeInfoResponse(inter, 2, [type])
     dexViewer = PokemonSearchView(inter, pokemonList, f"List of {type} type Pokemon")
@@ -293,12 +293,11 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
   @trainer_check
   async def givecandy(self, inter: Interaction, pokemon: int):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
+    if not trainerservice.GetTrainerItemList(trainer, 2): 
+      return await discordservice_pokemon.PrintGiveCandyResponse(inter, 0, [])
     pokeList = [p for p in trainer.OwnedPokemon if p.Pokemon_Id == pokemon and p.Level < 100]
     if not pokeList:
-      return await discordservice_pokemon.PrintGiveCandyResponse(inter, 1, pokemonservice.GetPokemonById(pokemon).Name)
-    candyList = [c for c in trainer.Candies if trainer.Candies[c] > 0]
-    if not candyList: 
-      return await discordservice_pokemon.PrintGiveCandyResponse(inter, 0)
+      return await discordservice_pokemon.PrintGiveCandyResponse(inter, 1, [pokemonservice.GetPokemonById(pokemon).Name])
 
     candyView = CandyView(inter, trainer, pokeList)
     return await candyView.send()

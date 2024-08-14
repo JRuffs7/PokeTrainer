@@ -1,14 +1,13 @@
 from dataclasses import dataclass, fields
+from models.Base import Base
 
-class Egg:
-	Id: int
-	Name: str
+class Egg(Base):
 	Hatch: list[int]
 	SpawnsNeeded: int
 	Sprite: str
 
 	def __init__(self, dict):
-		vars(self).update(dict)
+		super(Egg, self).__init__(dict)
 	
 @dataclass
 class TrainerEgg:

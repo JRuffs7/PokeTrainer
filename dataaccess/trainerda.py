@@ -28,6 +28,9 @@ def GetTrainer(serverId: int, userId: int) -> Trainer|None:
       sqliteda.Save('Trainer', key, trainer)
   return trainer
 
+def GetAllTrainers():
+  return mongodb.GetManyDocs(collection, {}, {'_id':0}) or []
+
 def GetWishlistTrainers(serverId: int, pokemonId: int) -> list[int]:
   train = mongodb.GetManyDocs(
     collection, 
@@ -55,8 +58,21 @@ def PushTrainerToMongo(trainer: Trainer):
   mongodb.UpsertSingleDoc(collection, {
       'ServerId': trainer.ServerId,
       'UserId': trainer.UserId
-  }, to_dict(trainer))
+  })
   return
+
+def PushTrainers(trainers: list[Trainer]):
+  updateList = []
+  for trainer in trainers:
+    sqliteda.Save('Trainer', f'{trainer.ServerId}{trainer.UserId}', trainer)
+    updateList.append({
+      'filter': {
+        'ServerId': trainer.ServerId,
+        'UserId': trainer.UserId
+      }, 
+      'object': to_dict(trainer)
+    })
+  mongodb.UpsertManyDocs(collection, updateList)
 
 
 def DeleteTrainerFromMongo(serverId, userId):

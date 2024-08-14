@@ -2,6 +2,7 @@ import discord
 
 from globals import TrainerColor
 from middleware.decorators import defer
+from models.Item import Candy, Item, Pokeball, Potion
 from models.Trainer import Trainer
 from services import itemservice
 from services.utility import discordservice
@@ -12,14 +13,7 @@ class InventoryView(discord.ui.View):
 	def __init__(self, interaction: discord.Interaction, trainer: Trainer):
 		self.interaction = interaction
 		self.trainer = trainer
-		self.allpkbls = itemservice.GetAllPokeballs()
-		self.allpkbls.sort(key=lambda x: x.Id)
-		self.allptns = itemservice.GetAllPotions()
-		self.allptns.sort(key=lambda x: x.Id)
-		self.allcndy = itemservice.GetAllCandies()
-		self.allcndy.sort(key=lambda x: x.Id)
 		self.allitems = itemservice.GetAllItems()
-		self.allitems.sort(key=lambda x: x.Id)
 		self.currentPage = 0
 		super().__init__(timeout=300)
 		self.prevBtn = discord.ui.Button(label="<", style=discord.ButtonStyle.primary, disabled=True, custom_id='prev')
@@ -39,14 +33,7 @@ class InventoryView(discord.ui.View):
 		await self.update_message()
 
 	async def update_message(self):
-		if self.currentPage ==0:
-			desc = self.Description(self.trainer.Pokeballs, self.allpkbls)
-		elif self.currentPage == 1:
-			desc = self.Description(self.trainer.Potions, self.allptns)
-		elif self.currentPage == 2:
-			desc = self.Description(self.trainer.Candies, self.allcndy)
-		else:
-			desc = self.Description(self.trainer.EvolutionItems, self.allitems)
+		desc = self.Description()
 		embed = discordservice.CreateEmbed(
 				f'{self.interaction.user.display_name}s Inventory',
 				desc,
@@ -65,13 +52,18 @@ class InventoryView(discord.ui.View):
 		self.nextBtn.disabled = self.currentPage == 3
 		await self.update_message()
 
-	def Description(self, ownList: dict[str,int], fullList: list):
+	def Description(self):
 		title = 'POKEBALLS' if self.currentPage == 0 else 'POTIONS' if self.currentPage == 1 else 'CANDY' if self.currentPage ==  2 else 'EVOLUTION ITEMS'
-		if not [v for v in ownList.values() if v > 0]:
+		if self.currentPage < 3:
+			itemList = [i for i in self.allitems if type(i) is (Pokeball if self.currentpage == 0 else Potion if self.currentpage == 1 else Candy)]
+		else:
+			itemList = [i for i in self.allitems if i.EvolutionItem]
+
+		if not [i for i in itemList if self.trainer.Items[str(i.Id)] > 0]:
 			return f'Money: {self.trainer.Money}\n\n**__{title}__\n\nYou do not own any of these items.'
 		
 		newLine = '\n'
 		if self.currentPage == 3:
-			return f'**Money: ${self.trainer.Money}**\n\n**__{title}__**\n{newLine.join([f"{i.Name}: {ownList[str(i.Id)]}" for i in fullList if str(i.Id) in ownList and ownList[str(i.Id)]>0])}'
-		return f'**Money: ${self.trainer.Money}**\n\n**__{title}__**\n{newLine.join([f"{i.Name}: {ownList[str(i.Id)] if str(i.Id) in ownList else 0}" for i in fullList])}'
+			return f'**Money: ${self.trainer.Money}**\n\n**__{title}__**\n{newLine.join([f"{i.Name}: {self.trainer.Items[str(i.Id)]}" for i in itemList if str(i.Id) in self.trainer.Items and self.trainer.Items[str(i.Id)] > 0])}'
+		return f'**Money: ${self.trainer.Money}**\n\n**__{title}__**\n{newLine.join([f"{i.Name}: {self.trainer.Items[str(i.Id)] if str(i.Id) in self.trainer.Items else 0}" for i in itemList])}'
 		

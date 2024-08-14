@@ -2,170 +2,209 @@
 	{
 		"Id": 0,
 		"Name": "No Zone",
+		"Url": "",
 		"Types": [
-			"All"
+			1,
+			2,
+			3,
+			4,
+			5,
+			6,
+			7,
+			8,
+			9,
+			10,
+			11,
+			12,
+			13,
+			14,
+			15,
+			16,
+			17,
+			18,
+			19,
+			10001,
+			10002
 		],
 		"FightOnly": false
 	},
 	{
 		"Id": 1,
 		"Name": "Volcano",
+		"Url": "",
 		"Types": [
-			"Fire",
-			"Dragon"
+			10,
+			16
 		],
 		"FightOnly": false
 	},
 	{
 		"Id": 2,
 		"Name": "Ocean",
+		"Url": "",
 		"Types": [
-			"Water",
-			"Ice"
+			11,
+			15
 		],
 		"FightOnly": false
 	},
 	{
 		"Id": 3,
 		"Name": "Mountain",
+		"Url": "",
 		"Types": [
-			"Ground",
-			"Ghost"
+			5,
+			8
 		],
 		"FightOnly": false
 	},
 	{
 		"Id": 4,
 		"Name": "Safari",
+		"Url": "",
 		"Types": [
-			"Normal",
-			"Flying"
+			1,
+			3
 		],
 		"FightOnly": false
 	},
 	{
 		"Id": 5,
 		"Name": "Forest",
+		"Url": "",
 		"Types": [
-			"Grass",
-			"Poison"
+			12,
+			4
 		],
 		"FightOnly": false
 	},
 	{
 		"Id": 6,
 		"Name": "Industrial",
+		"Url": "",
 		"Types": [
-			"Steel",
-			"Fire"
+			9,
+			10
 		],
 		"FightOnly": false
 	},
 	{
 		"Id": 7,
 		"Name": "Cemetary",
+		"Url": "",
 		"Types": [
-			"Ghost",
-			"Psychic"
+			8,
+			14
 		],
 		"FightOnly": false
 	},
 	{
 		"Id": 8,
 		"Name": "Cave",
+		"Url": "",
 		"Types": [
-			"Rock",
-			"Bug"
+			6,
+			7
 		],
 		"FightOnly": false
 	},
 	{
 		"Id": 9,
 		"Name": "Generator",
+		"Url": "",
 		"Types": [
-			"Electric",
-			"Steel"
+			13,
+			9
 		],
 		"FightOnly": false
 	},
 	{
 		"Id": 10,
 		"Name": "Archaelogical",
+		"Url": "",
 		"Types": [
-			"Dragon",
-			"Rock"
+			16,
+			6
 		],
 		"FightOnly": false
 	},
 	{
 		"Id": 11,
 		"Name": "Airport",
+		"Url": "",
 		"Types": [
-			"Flying",
-			"Electric"
+			3,
+			13
 		],
 		"FightOnly": false
 	},
 	{
 		"Id": 12,
 		"Name": "Temple",
+		"Url": "",
 		"Types": [
-			"Psychic",
-			"Fighting"
+			14,
+			2
 		],
 		"FightOnly": false
 	},
 	{
 		"Id": 13,
 		"Name": "City",
+		"Url": "",
 		"Types": [
-			"Poison",
-			"Normal"
+			4,
+			1
 		],
 		"FightOnly": false
 	},
 	{
 		"Id": 14,
 		"Name": "Tundra",
+		"Url": "",
 		"Types": [
-			"Ice",
-			"Ground"
+			15,
+			5
 		],
 		"FightOnly": false
 	},
 	{
 		"Id": 15,
 		"Name": "Flower Field",
+		"Url": "",
 		"Types": [
-			"Fairy",
-			"Grass"
+			18,
+			12
 		],
 		"FightOnly": false
 	},
 	{
 		"Id": 16,
 		"Name": "Swamp",
+		"Url": "",
 		"Types": [
-			"Bug",
-			"Dark"
+			7,
+			17
 		],
 		"FightOnly": false
 	},
 	{
 		"Id": 17,
 		"Name": "Dream",
+		"Url": "",
 		"Types": [
-			"Dark",
-			"Fairy"
+			17,
+			18
 		],
 		"FightOnly": false
 	},
 	{
 		"Id": 18,
 		"Name": "Beach",
+		"Url": "",
 		"Types": [
-			"Fighting",
-			"Water"
+			2,
+			11
 		],
 		"FightOnly": false
 	}

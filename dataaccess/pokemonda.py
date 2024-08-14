@@ -12,7 +12,7 @@ def GetAllPokemon():
 
 def GetPokemonByType(type):
   pokemon = GetJson(pokemonFile)
-  return [PokemonData(x) for x in pokemon if type.lower() in [y.lower() for y in x['Types']]]
+  return [PokemonData(x) for x in pokemon if type in x['Types']]
 
 
 def GetPokemonByProperty(searchVals: list, property: str):

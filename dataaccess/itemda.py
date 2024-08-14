@@ -6,8 +6,11 @@ itemFile = "collections/items.json"
 
 
 def GetAllItems():
-  evolutions = GetJson(itemFile)["Evolution"]
-  return [Item(p) for p in evolutions]
+  items = GetJson(itemFile)
+  retList: list[Item] = []
+  for i in items:
+    retList.append(Pokeball(i) if 'CaptureRate' in i else Potion(i) if 'HealingAmount' in i else Candy(i) if 'Experience' in i else Item(i))
+  return retList
 
 
 def GetAllPokeballs():

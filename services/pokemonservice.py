@@ -6,7 +6,7 @@ from models.Trainer import Trainer
 from models.Zone import Zone
 from models.enums import SpecialSpawn
 
-from services import itemservice
+from services import itemservice, statservice, trainerservice
 from dataaccess import pokemonda
 from globals import FemaleSign, MaleSign, ShinyOdds, ShinySign, to_dict
 from models.Pokemon import EvolveData, PokemonData, Pokemon
@@ -34,11 +34,11 @@ def GetPokemonColors():
 def GetPokemonByColor(color: str):
   return pokemonda.GetPokemonByProperty([color], 'Color')
 
-def GetPokemonByType(type: str):
+def GetPokemonByType(type: int):
   pokeList = pokemonda.GetPokemonByType(type)
   singleType = [x for x in pokeList if len(x.Types) == 1]
-  firstType = [x for x in pokeList if len(x.Types) == 2 and x.Types[0].lower() == type]
-  secondType = [x for x in pokeList if len(x.Types) == 2 and x.Types[1].lower() == type]
+  firstType = [x for x in pokeList if len(x.Types) == 2 and x.Types[0] == type]
+  secondType = [x for x in pokeList if len(x.Types) == 2 and x.Types[1] == type]
   singleType.sort(key=lambda x: x.Name)
   firstType.sort(key=lambda x: x.Name)
   secondType.sort(key=lambda x: x.Name)
@@ -103,7 +103,7 @@ def GetPokemonDisplayName(pokemon: Pokemon, pkmn: PokemonData = None, showGender
 
 def GetOwnedPokemonDescription(pokemon: Pokemon, pkmnData: PokemonData = None):
   pkmn = GetPokemonById(pokemon.Pokemon_Id) if not pkmnData else pkmnData
-  return f"Lvl. {pokemon.Level} ({pokemon.CurrentExp}/{NeededExperience(pokemon.Level, pkmn.Rarity, pkmn.EvolvesInto)}xp | H:{pokemon.Height} | W:{pokemon.Weight} | Types: {'/'.join(pkmn.Types)}"
+  return f"Lvl. {pokemon.Level} ({pokemon.CurrentExp}/{NeededExperience(pokemon.Level, pkmn.Rarity, pkmn.EvolvesInto)}xp | H:{pokemon.Height} | W:{pokemon.Weight} | Types: {'/'.join([statservice.GetType(t).Name for t in pkmn.Types])}"
 
 
 def GetPokemonImage(pokemon: Pokemon, pkmnData: PokemonData = None):
@@ -123,8 +123,7 @@ def GetPokemonImage(pokemon: Pokemon, pkmnData: PokemonData = None):
 def SpawnPokemon(specialZone: Zone|None, badgeBonus: int, shinyOdds: int):
   pokemonList = pokemonda.GetPokemonByProperty([1, 2, 3], 'Rarity')
   if specialZone:
-    specialTypes = [t.lower() for t in specialZone.Types]
-    pokemonList = [p for p in pokemonList if p.Types[0].lower() in specialTypes or (p.Types[1].lower() in specialTypes if len(p.Types) > 1 else False)]
+    pokemonList = [p for p in pokemonList if len(specialZone.Types.intersection(p.Types)) > 0]
   pokemon = None
   while not pokemon:
     pokemon = choice(pokemonList)
@@ -180,7 +179,7 @@ def CanSpawn(pokemon: PokemonData):
   return  True
 
 def CaptureSuccess(pokeball: Pokeball, pokemon: PokemonData, level: int):
-  if pokeball.Name == 'Masterball':
+  if pokeball.Id == 1: #MasterBall
     return True
 
   randInt = choice(range(1,256))
@@ -278,7 +277,7 @@ def GetPokemonThatCanEvolve(trainer: Trainer, ownedPokemon: list[Pokemon]):
   if not ownedPokemon:
     return None
   dataList = GetPokemonByIdList([p.Pokemon_Id for p in ownedPokemon])
-  return [p for p in ownedPokemon if CanPokemonEvolve(p, next(pk for pk in dataList if pk.Id == p.Pokemon_Id), [itemservice.GetItem(int(i)) for i in trainer.EvolutionItems if trainer.EvolutionItems[i] > 0])]
+  return [p for p in ownedPokemon if CanPokemonEvolve(p, next(pk for pk in dataList if pk.Id == p.Pokemon_Id), trainerservice.GetTrainerItemList(trainer, 3))]
 
 def SimulateLevelGain(currLevel: int, currExp: int, rarity: int, evData: list[EvolveData], exp: int):
   simPokemon = Pokemon.from_dict({'Level': currLevel, 'CurrentExp': currExp})

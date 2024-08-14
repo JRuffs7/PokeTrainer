@@ -69,14 +69,14 @@ async def PrintTrainer(interaction: Interaction, trainer: Trainer, targetUser: M
 	embed.set_thumbnail(url=targetUser.display_avatar.url)
 	return await interaction.followup.send(embed=embed)
 
-async def PrintUsePotion(interaction: Interaction, potion: Potion | None, result: tuple[bool, int]):
+async def PrintUsePotion(interaction: Interaction, responseId: int, params: list):
 	return await discordservice.SendCommandResponse(
 		interaction=interaction, 
 		filename=responseFile, 
 		command='usepotion', 
-		responseInd=(0 if not result[0] else 1 if result[1] > 0 else 2) if potion else 3, 
+		responseInd=responseId, 
 		color=TrainerColor, 
-		params=[potion.Name if potion else '', result[1]],
+		params=params,
 		eph=True)
 
 async def PrintModifyTeam(interaction: Interaction, response: int, pkmnId: int):
