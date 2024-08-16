@@ -247,6 +247,7 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
   @app_commands.autocomplete(pokemon=autofill_owned)
   @method_logger(True)
   @trainer_check
+  @command_lock
   async def nickname(self, inter: Interaction, pokemon: int):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
     pkmnList = [p for p in trainer.OwnedPokemon if p.Pokemon_Id == pokemon]
