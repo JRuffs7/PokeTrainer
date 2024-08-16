@@ -3,7 +3,7 @@ from discord.ext import commands
 from commands.views.Selection.ShopView import ShopView
 from commands.views.Selection.SpecialShopView import SpecialShopView
 from middleware.decorators import command_lock, method_logger, trainer_check
-from services import trainerservice
+from services import commandlockservice, trainerservice
 from services.utility import discordservice_shop
 
 
@@ -26,13 +26,14 @@ class ShopCommands(commands.Cog, name="ShopCommands"):
                         description="Special store for evolution items.")
   @method_logger(True)
   @trainer_check
+  @command_lock
   async def specialshop(self, inter: Interaction):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
     trainerservice.SpecialShopCheck(trainer)
     if not trainer.Shop.ItemIds:
+      commandlockservice.DeleteLock(inter.guild_id, inter.user.id)
       return await discordservice_shop.PrintSpecialShopResponse(inter)
-    shopViewer = SpecialShopView(inter, trainer)
-    await shopViewer.send()
+    return await SpecialShopView(inter, trainer).send()
 
 async def setup(bot: commands.Bot):
   await bot.add_cog(ShopCommands(bot))
