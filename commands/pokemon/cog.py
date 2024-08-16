@@ -343,7 +343,8 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
       else:
         pokeList = [p for p in trainer.OwnedPokemon if p.Pokemon_Id == pokemon]
         if not pokeList:
-          await discordservice_pokemon.PrintDaycareResponse(inter, 2, [pokemonservice.GetPokemonById(pokemon).Name])
+          pkmn = pokemonservice.GetPokemonById(pokemon)
+          await discordservice_pokemon.PrintDaycareResponse(inter, 2, [pkmn.Name] if pkmn else ['N/A'])
         else:
           return await DaycareAddView(inter, trainer, pokeList).send()
     commandlockservice.DeleteLock(inter.guild_id, inter.user.id)
