@@ -477,7 +477,7 @@ def TryWildFight(trainer: Trainer, trainerPkmnData: PokemonData, wild: Pokemon, 
     return (healthLost,candy)
 
 def TryAddWishlist(trainer: Trainer, pokemonId: int):
-  if len(trainer.Wishlist) >= 5 or pokemonId in trainer.Wishlist:
+  if pokemonId in trainer.Wishlist:
     return False
   trainer.Wishlist.append(pokemonId)
   UpsertTrainer(trainer)
