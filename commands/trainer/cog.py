@@ -146,19 +146,21 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
   @app_commands.autocomplete(pokemon=autofill_nonteam)
   @method_logger(True)
   @trainer_check
+  @command_lock
   async def modifyteam(self, inter: Interaction, pokemon: int | None):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
+    pkmn = pokemonservice.GetPokemonById(pokemon)
     if len(trainer.OwnedPokemon) == 1:
-      return await discordservice_trainer.PrintModifyTeam(inter, 0, pokemon)
+      await discordservice_trainer.PrintModifyTeam(inter, 0, [])
     elif len(trainer.Team) == 1 and not pokemon:
-      return await discordservice_trainer.PrintModifyTeam(inter, 1, pokemon)
+      await discordservice_trainer.PrintModifyTeam(inter, 1, [])
     elif pokemon and pokemon not in [p.Pokemon_Id for p in trainer.OwnedPokemon]:
-      return await discordservice_trainer.PrintModifyTeam(inter, 2, pokemon)
+      await discordservice_trainer.PrintModifyTeam(inter, 2, [pkmn.Name] if pkmn else ['N/A'])
     elif pokemon and pokemon not in [p.Pokemon_Id for p in [p for p in trainer.OwnedPokemon if p.Id not in trainer.Team]]:
-      return await discordservice_trainer.PrintModifyTeam(inter, 3, pokemon)
-
-    teamSelect = TeamSelectorView(inter, trainer, pokemon)
-    await teamSelect.send()
+      await discordservice_trainer.PrintModifyTeam(inter, 3, [pkmn.Name] if pkmn else ['N/A'])
+    else:
+      return await TeamSelectorView(inter, trainer, pokemon).send()
+    commandlockservice.DeleteLock(inter.guild_id, inter.user.id)
 
   @app_commands.command(name="myteam",
                         description="View your current team.")

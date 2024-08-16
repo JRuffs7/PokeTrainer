@@ -79,14 +79,14 @@ async def PrintUsePotion(interaction: Interaction, potion: Potion | None, result
 		params=[potion.Name if potion else '', result[1]],
 		eph=True)
 
-async def PrintModifyTeam(interaction: Interaction, response: int, pkmnId: int):
+async def PrintModifyTeam(interaction: Interaction, response: int, params: list):
 	return await discordservice.SendCommandResponse(
 		interaction=interaction, 
 		filename=responseFile, 
 		command='modifyteam', 
 		responseInd=response, 
 		color=TrainerColor, 
-		params=[pokemonservice.GetPokemonById(pkmnId).Name] if pkmnId else [],
+		params=params,
 		eph=True)
 
 async def PrintStarter(interaction: Interaction, trainer: Trainer, server: str):
