@@ -10,8 +10,8 @@ from commands.views.Selection.TeamSelectorView import TeamSelectorView
 from commands.views.Selection.ReleaseView import ReleaseView
 from commands.views.Pagination.BadgeView import BadgeView
 
-from middleware.decorators import method_logger, trainer_check
-from services import gymservice, pokemonservice, trainerservice, itemservice, zoneservice
+from middleware.decorators import command_lock, method_logger, trainer_check
+from services import commandlockservice, gymservice, pokemonservice, trainerservice, itemservice, zoneservice
 from services.utility import discordservice_trainer
 
 
@@ -51,15 +51,19 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
   @app_commands.autocomplete(potion=autofill_usepotion)
   @method_logger(True)
   @trainer_check
+  @command_lock
   async def usepotion(self, inter: Interaction, potion: int):
     if potion not in [p.Id for p in itemservice.GetAllPotions()]:
-      return await discordservice_trainer.PrintUsePotion(inter, None, (False, 0))
-    trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
-    ptn = itemservice.GetPotion(potion)
-    if str(potion) not in trainer.Potions:
-      return await discordservice_trainer.PrintUsePotion(inter, ptn, (False, 0))
-    result = trainerservice.TryUsePotion(trainer, ptn)
-    return await discordservice_trainer.PrintUsePotion(inter, ptn, result)
+      await discordservice_trainer.PrintUsePotion(inter, None, (False, 0))
+    else:
+      trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
+      ptn = itemservice.GetPotion(potion)
+      if str(potion) not in trainer.Potions:
+        await discordservice_trainer.PrintUsePotion(inter, ptn, (False, 0))
+      else:
+        result = trainerservice.TryUsePotion(trainer, ptn)
+        await discordservice_trainer.PrintUsePotion(inter, ptn, result)
+    commandlockservice.DeleteLock(inter.guild_id, inter.user.id)
 
   @app_commands.command(name="daily",
                         description="Claim your daily reward.")
