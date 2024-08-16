@@ -18,7 +18,7 @@ import discordbot
 from commands.views.Selection.EvolveView import EvolveView
 from globals import AdminList
 from middleware.decorators import command_lock, method_logger, trainer_check
-from services import pokemonservice, typeservice, trainerservice, zoneservice
+from services import commandlockservice, pokemonservice, typeservice, trainerservice, zoneservice
 from services.utility import discordservice_pokemon
 
 
@@ -49,18 +49,21 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
       trainerservice.EggInteraction(trainer)
       await SpawnPokemonView(inter, trainer, pokemon).send()
     else:
+      commandlockservice.DeleteLock(inter.guild_id, inter.user.id)
       return await discordservice_pokemon.PrintSpawnResponse(inter, 0, [trainer.LastSpawnTime])
 
   @app_commands.command(name="hatch",
                         description="Hatch one or more of your eggs.")
   @method_logger(True)
   @trainer_check
+  @command_lock
   async def hatch(self, inter: Interaction):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
     hatchable = [e for e in trainer.Eggs if trainerservice.CanEggHatch(e)]
     if hatchable:
       await HatchView(inter, trainer, hatchable).send()
     else:
+      commandlockservice.DeleteLock(inter.guild_id, inter.user.id)
       return await discordservice_pokemon.PrintHatchResponse(inter, 0 if trainer.Eggs else 1)
 
   @app_commands.command(name="wishlist",

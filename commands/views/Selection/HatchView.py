@@ -3,7 +3,7 @@ from commands.views.Selection.selectors.HatchSelector import HatchSelector
 from middleware.decorators import defer
 
 from models.Egg import TrainerEgg
-from services import itemservice, trainerservice, pokemonservice
+from services import commandlockservice, itemservice, trainerservice, pokemonservice
 from models.Trainer import Trainer
 
 
@@ -20,6 +20,7 @@ class HatchView(discord.ui.View):
 
 	async def on_timeout(self):
 		await self.message.delete()
+		commandlockservice.DeleteLock(self.trainer.ServerId, self.trainer.UserId)
 		return await super().on_timeout()
 
 	async def EggSelection(self, inter: discord.Interaction, choices: list[str]):
@@ -29,8 +30,8 @@ class HatchView(discord.ui.View):
 	@defer
 	async def cancel_button(self, inter: discord.Interaction,
 												button: discord.ui.Button):
-		self.clear_items()
-		await self.message.edit(content='Canceled hatching.', view=self)
+		commandlockservice.DeleteLock(self.trainer.ServerId, self.trainer.UserId)
+		await self.message.edit(content='Canceled hatching.', view=None)
 
 	@discord.ui.button(label="Submit", style=discord.ButtonStyle.green)
 	@defer
@@ -41,9 +42,9 @@ class HatchView(discord.ui.View):
 			for i in self.hatchchoices:
 				trnEgg = next(e for e in self.trainer.Eggs if e.Id == i)
 				hatchResults[trainerservice.TryHatchEgg(self.trainer, trnEgg.Id)] = trnEgg.EggId
-			self.clear_items()
+			commandlockservice.DeleteLock(self.trainer.ServerId, self.trainer.UserId)
 			hatchMessage = '\n'.join([f'{itemservice.GetEgg(hatchResults[hr]).Name} hatched into a **{pokemonservice.GetPokemonDisplayName(next(p for p in self.trainer.OwnedPokemon if p.Id == hr))}** +$50' for hr in hatchResults])
-			await self.message.edit(content=hatchMessage, view=self)
+			await self.message.edit(content=hatchMessage, view=None)
 
 	async def send(self):
 		await self.interaction.followup.send(view=self)
