@@ -286,15 +286,16 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
   @app_commands.autocomplete(pokemon=autofill_nonteam)
   @method_logger(True)
   @trainer_check
+  @command_lock
   async def release(self, inter: Interaction,
                     pokemon: int):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
     result = [x for x in trainer.OwnedPokemon if x.Pokemon_Id == pokemon and x.Id not in trainer.Team]
     if not result:
+      commandlockservice.DeleteLock(inter.guild_id, inter.user.id)
       return await discordservice_trainer.PrintRelease(inter, pokemonservice.GetPokemonById(pokemon).Name)
 
-    releaseSelect = ReleaseView(inter, result)
-    await releaseSelect.send()
+    return await ReleaseView(inter, result).send()
 
   #endregion
 
