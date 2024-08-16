@@ -69,13 +69,15 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
                         description="Claim your daily reward.")
   @method_logger(False)
   @trainer_check
-  async def daily(self, interaction: Interaction):
-    trainer = trainerservice.GetTrainer(interaction.guild_id, interaction.user.id)
+  @command_lock
+  async def daily(self, inter: Interaction):
+    trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
     currentWeekly = trainer.WeeklyMission.DayStarted if trainer.WeeklyMission else None
     freeMasterball = datetime.today().date() == freemasterball.date()
     dailyResult = trainerservice.TryDaily(trainer, freeMasterball)
+    commandlockservice.DeleteLock(inter.guild_id, inter.user.id)
     return await discordservice_trainer.PrintDaily(
-      interaction, 
+      inter, 
       dailyResult >= 0, 
       trainerservice.HasRegionReward(trainer, 5),
       freeMasterball,
