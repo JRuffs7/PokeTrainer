@@ -2,7 +2,7 @@ from discord import app_commands, Interaction
 from discord.ext import commands
 from commands.views.Selection.ShopView import ShopView
 from commands.views.Selection.SpecialShopView import SpecialShopView
-from middleware.decorators import method_logger, trainer_check
+from middleware.decorators import command_lock, method_logger, trainer_check
 from services import trainerservice
 from services.utility import discordservice_shop
 
@@ -16,6 +16,7 @@ class ShopCommands(commands.Cog, name="ShopCommands"):
                         description="Buy or sell items.")
   @method_logger(True)
   @trainer_check
+  @command_lock
   async def shop(self, inter: Interaction):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
     shopViewer = ShopView(inter, trainer)
