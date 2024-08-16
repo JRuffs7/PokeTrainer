@@ -5,6 +5,12 @@
 			"Body": "This command can only be run by admins of your server. Type **/help** to get a list of available commands."
 		}
 	],
+	"commandlock": [
+		{
+			"Title": "Command Lock",
+			"Body": "You are currently in the middle of another interaction. To use this command, please complete or cancel the last task."
+		}
+	],
 	"server": [
 		{
 			"Title": "Server Not Registered",

@@ -8,7 +8,7 @@ from globals import Dexmark, FightReaction, Formmark, GreatBallReaction, Pokebal
 from middleware.decorators import defer
 from models.Pokemon import Pokemon
 from models.Trainer import Trainer
-from services import pokemonservice, trainerservice
+from services import commandlockservice, pokemonservice, trainerservice
 from services.utility import discordservice
 
 class SpawnPokemonView(discord.ui.View):
@@ -27,6 +27,7 @@ class SpawnPokemonView(discord.ui.View):
 		self.pressed = False
 
 	async def on_timeout(self):
+		commandlockservice.DeleteLock(self.interaction.guild_id, self.interaction.user.id)
 		await self.message.edit(content=f'{pokemonservice.GetPokemonDisplayName(self.pokemon, self.pkmndata)} (Lvl. {self.pokemon.Level}) ran away!', embed=None, view=None)
 		return await super().on_timeout()
 
@@ -77,8 +78,8 @@ class SpawnPokemonView(discord.ui.View):
 				self.pressed = False
 				return await self.message.edit(content=f"Error fighting. Please try again.", view=self)
 			elif updatedTrainer.Health <= 0:
-				self.pressed = False
-				return await self.message.edit(content=f"You do not have any health! Restore with **/usepotion**. You can buy potions from the **/shop**", view=self)
+				commandlockservice.DeleteLock(self.interaction.guild_id, self.interaction.user.id)
+				return await self.message.edit(content=f"{pokemonservice.GetPokemonDisplayName(self.pokemon, self.pkmndata)} (Lvl. {self.pokemon.Level}) ran away!\nYou do not have any health! Restore with **/usepotion**. You can buy potions from the **/shop**", embed=None, view=None)
 			
 			trainerPkmn = next(p for p in updatedTrainer.OwnedPokemon if p.Id == updatedTrainer.Team[0])
 			trainerPkmnData = pokemonservice.GetPokemonById(trainerPkmn.Pokemon_Id)
@@ -87,10 +88,12 @@ class SpawnPokemonView(discord.ui.View):
 			if healthLost >= 10 or updatedTrainer.Health == 0:
 				self.battleLog.info(f'{interaction.user.display_name} was defeated by a wild {self.pkmndata.Name}')
 				await self.message.delete(delay=0.01)
+				commandlockservice.DeleteLock(self.interaction.guild_id, self.interaction.user.id)
 				return await interaction.followup.send(content=f'<@{self.interaction.user.id}> and {pokemonservice.GetPokemonDisplayName(trainerPkmn, trainerPkmnData)} were defeated by a wild **{pokemonservice.GetPokemonDisplayName(self.pokemon, self.pkmndata)} (Lvl. {self.pokemon.Level})** and lost {healthLost}hp.\nNo experience or money gained.')
 			else:
 				self.battleLog.info(f'{interaction.user.display_name} defeated a wild {self.pkmndata.Name}')
 				await self.message.delete(delay=0.01)
+				commandlockservice.DeleteLock(self.interaction.guild_id, self.interaction.user.id)
 				battleMsg = f'<@{self.interaction.user.id}> defeated a wild **{pokemonservice.GetPokemonDisplayName(self.pokemon, self.pkmndata)} (Lvl. {self.pokemon.Level})**!'
 				exp = self.pkmndata.Rarity*self.pokemon.Level*2 if self.pkmndata.Rarity <= 2 else self.pkmndata.Rarity*self.pokemon.Level
 				expMsg = f'{pokemonservice.GetPokemonDisplayName(trainerPkmn, trainerPkmnData)} gained **{exp} XP**'
@@ -103,14 +106,15 @@ class SpawnPokemonView(discord.ui.View):
 		updatedTrainer = trainerservice.GetTrainer(self.interaction.guild_id, self.interaction.user.id)
 		pokeballId = '1' if label == PokeballReaction else '2' if label == GreatBallReaction else '3' if label == UltraBallReaction else '4'
 		if updatedTrainer.Health <= 0:
-				self.pressed = False
-				return await self.message.edit(content=f"You do not have any health! Restore with **/usepotion**. You can buy potions from the **/shop**", view=self)
+				commandlockservice.DeleteLock(self.interaction.guild_id, self.interaction.user.id)
+				return await self.message.edit(content=f"{pokemonservice.GetPokemonDisplayName(self.pokemon, self.pkmndata)} (Lvl. {self.pokemon.Level}) ran away!\nYou do not have any health! Restore with **/usepotion**. You can buy potions from the **/shop**", embed=None, view=None)
 		elif updatedTrainer.Pokeballs[str(pokeballId)] <= 0:
 			self.pressed = False
 			await self.message.edit(content=f"You do not have any {ball}s. Buy some from the **/shop**, try another ball, or fight!\nCurrent Trainer HP: {self.TrainerHealthString(updatedTrainer)}", view=self)
 		elif trainerservice.TryCapture(pokeballId, updatedTrainer, self.pokemon):
 			self.captureLog.info(f'{interaction.guild.name} - {self.interaction.user.display_name} used {ball} and caught a {self.pkmndata.Name}{"-SHINY" if self.pokemon.IsShiny else ""}')
 			await self.message.delete(delay=0.01)
+			commandlockservice.DeleteLock(self.interaction.guild_id, self.interaction.user.id)
 			baseMsg = f'<@{self.interaction.user.id}> used a {ball} and captured a wild **{pokemonservice.GetPokemonDisplayName(self.pokemon, self.pkmndata)} (Lvl. {self.pokemon.Level})**!'
 			expMsg = f'\nYour entire team also gained **{self.pokemon.Level} XP**' if trainerservice.HasRegionReward(updatedTrainer, 9) else ''
 			await interaction.followup.send(content=f'{baseMsg}{expMsg}')
