@@ -292,8 +292,9 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
     result = [x for x in trainer.OwnedPokemon if x.Pokemon_Id == pokemon and x.Id not in trainer.Team]
     if not result:
+      pkmn = pokemonservice.GetPokemonById(pokemon)
       commandlockservice.DeleteLock(inter.guild_id, inter.user.id)
-      return await discordservice_trainer.PrintRelease(inter, pokemonservice.GetPokemonById(pokemon).Name)
+      return await discordservice_trainer.PrintRelease(inter, [pkmn.Name] if pkmn else ['N/A'])
 
     return await ReleaseView(inter, result).send()
 

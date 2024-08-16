@@ -120,14 +120,14 @@ async def PrintBadges(interaction: Interaction, targetUser: Member, region: str 
 		params=[targetUser.display_name] if not region else [region],
 		eph=True)
 
-async def PrintRelease(interaction: Interaction, name: str):
+async def PrintRelease(interaction: Interaction, params: list):
 	return await discordservice.SendCommandResponse(
 		interaction=interaction, 
 		filename=responseFile, 
 		command='release', 
 		responseInd=0, 
 		color=TrainerColor, 
-		params=[name],
+		params=params,
 		eph=True)
 
 async def PrintDaily(interaction: Interaction, success: bool, boosted: bool, freeMasterball: bool, newWeekly: bool, eggName: str|None):

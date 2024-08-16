@@ -19,7 +19,7 @@ class ReleaseView(discord.ui.View):
 
 	async def on_timeout(self):
 		await self.message.delete(delay=0.1)
-		commandlockservice.DeleteLock(self.trainer.ServerId, self.trainer.UserId)
+		commandlockservice.DeleteLock(self.interaction.guild_id, self.interaction.user.id)
 		return await super().on_timeout()
 
 	async def PokemonSelection(self, inter: discord.Interaction, choices: list[str]):
@@ -29,7 +29,7 @@ class ReleaseView(discord.ui.View):
 	@defer
 	async def cancel_button(self, inter: discord.Interaction,
 												button: discord.ui.Button):
-		commandlockservice.DeleteLock(self.trainer.ServerId, self.trainer.UserId)
+		commandlockservice.DeleteLock(self.interaction.guild_id, self.interaction.user.id)
 		await self.message.edit(content='Canceled release.', embed=None, view=None)
 
 	@discord.ui.button(label="Submit", style=discord.ButtonStyle.green)
@@ -38,7 +38,7 @@ class ReleaseView(discord.ui.View):
 												button: discord.ui.Button):
 		if self.pokemonchoices:
 			pokemon = trainerservice.ReleasePokemon(trainerservice.GetTrainer(inter.guild_id, inter.user.id), self.pokemonchoices)
-			commandlockservice.DeleteLock(self.trainer.ServerId, self.trainer.UserId)
+			commandlockservice.DeleteLock(self.interaction.guild_id, self.interaction.user.id)
 			await self.message.edit(content=f"You have released {len(self.pokemonchoices)} {pokemon}", embed=None, view=None)
 
 	async def send(self):
