@@ -240,7 +240,7 @@ def CanPokemonEvolve(pokemon: Pokemon, pkmn: PokemonData, items: list[Item]):
   return False
 
 def AvailableEvolutions(pokemon: Pokemon, pkmnData: PokemonData, items: list[Item]):
-  evolveIdList = []
+  evolveIdList: list[int] = []
   for evData in pkmnData.EvolvesInto:
     if evData.EvolveLevel and pokemon.Level < evData.EvolveLevel:
       continue

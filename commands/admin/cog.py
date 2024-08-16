@@ -78,6 +78,16 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 		if trainer:
 			trainerservice.ModifyItemList(trainer.Candies, str(type) if 0 < type < 4 else '1', amount)
 			trainerservice.UpsertTrainer(trainer)
+
+	@commands.command(name="additem")
+	@is_bot_admin
+	async def additem(self, ctx: commands.Context, type: int, amount: int, user: Member = None):
+		if not ctx.guild:
+			return
+		trainer = trainerservice.GetTrainer(ctx.guild.id, user.id if user else ctx.author.id)
+		if trainer:
+			trainerservice.ModifyItemList(trainer.EvolutionItems, str(type) if type >= 80 else '84', amount)
+			trainerservice.UpsertTrainer(trainer)
 			
 	@commands.command(name="addbadge")
 	@is_bot_admin

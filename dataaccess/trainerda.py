@@ -7,7 +7,7 @@ from models.Trainer import Trainer
 collection: str = 'Trainer'
 
 def CheckTrainer(serverId: int, userId: int):
-  if sqliteda.KeyExists('trainer', f'{serverId}{userId}'):
+  if sqliteda.KeyExists(collection, f'{serverId}{userId}'):
     return True
   trainer = mongodb.GetSingleDoc(collection, {
         'ServerId': serverId,
@@ -17,7 +17,7 @@ def CheckTrainer(serverId: int, userId: int):
 
 def GetTrainer(serverId: int, userId: int) -> Trainer|None:
   key = f'{serverId}{userId}'
-  trainer = sqliteda.Load('Trainer', key)
+  trainer = sqliteda.Load(collection, key)
   if not trainer:
     train = mongodb.GetSingleDoc(collection, {
         'ServerId': serverId,
@@ -25,7 +25,7 @@ def GetTrainer(serverId: int, userId: int) -> Trainer|None:
     })
     trainer = Trainer.from_dict(train) if train else None
     if trainer:
-      sqliteda.Save('Trainer', key, trainer)
+      sqliteda.Save(collection, key, trainer)
   return trainer
 
 def GetWishlistTrainers(serverId: int, pokemonId: int) -> list[int]:
@@ -37,14 +37,14 @@ def GetWishlistTrainers(serverId: int, pokemonId: int) -> list[int]:
   return trainer
 
 def UpsertTrainer(trainer: Trainer):
-  sqliteda.Save('Trainer', f'{trainer.ServerId}{trainer.UserId}', trainer)
+  sqliteda.Save(collection, f'{trainer.ServerId}{trainer.UserId}', trainer)
   thread = Thread(target=PushTrainerToMongo, args=(trainer, ))
   thread.start()
   return trainer
 
 
 def DeleteTrainer(trainer: Trainer):
-  sqliteda.Remove('Trainer', f'{trainer.ServerId}{trainer.UserId}')
+  sqliteda.Remove(collection, f'{trainer.ServerId}{trainer.UserId}')
   thread = Thread(target=DeleteTrainerFromMongo,
                   args=(trainer.ServerId, trainer.UserId))
   thread.start()
