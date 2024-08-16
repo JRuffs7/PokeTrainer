@@ -276,15 +276,15 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
   @app_commands.autocomplete(pokemon=autofill_evolve)
   @method_logger(True)
   @trainer_check
+  @command_lock
   async def evolve(self, inter: Interaction, pokemon: int | None):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
     pokeList = pokemonservice.GetPokemonThatCanEvolve(trainer, [p for p in trainer.OwnedPokemon if (p.Pokemon_Id == pokemon if pokemon else True)])
     if not pokeList:
       pkmn = pokemonservice.GetPokemonById(pokemon)
+      commandlockservice.DeleteLock(inter.guild_id, inter.user.id)
       return await discordservice_pokemon.PrintEvolveResponse(inter, 1 if pokemon else 0, pkmn.Name if pkmn else 'N/A')
-
-    evolveView = EvolveView(inter, trainer, pokeList)
-    return await evolveView.send()
+    return await EvolveView(inter, trainer, pokeList).send()
 
 
   async def autofill_candy(self, inter: Interaction, current: str):
