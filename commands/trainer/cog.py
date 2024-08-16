@@ -2,17 +2,18 @@ from datetime import datetime
 from discord import Member, app_commands, Interaction
 from discord.ext import commands
 from commands.views.Pagination.InventoryView import InventoryView
-from globals import freemasterball
+from globals import HelpColor, TrainerColor, freemasterball
 from commands.autofills.autofills import autofill_nonteam, autofill_owned, autofill_types, autofill_zones
 from commands.views.Pagination.EggView import EggView
 from commands.views.Pagination.MyPokemonView import MyPokemonView
 from commands.views.Selection.TeamSelectorView import TeamSelectorView
 from commands.views.Selection.ReleaseView import ReleaseView
 from commands.views.Pagination.BadgeView import BadgeView
+from commands.views.DeleteView import DeleteView
 
 from middleware.decorators import command_lock, method_logger, trainer_check
 from services import commandlockservice, gymservice, pokemonservice, trainerservice, itemservice, zoneservice
-from services.utility import discordservice_trainer
+from services.utility import discordservice, discordservice_trainer
 
 
 class TrainerCommands(commands.Cog, name="TrainerCommands"):
@@ -318,10 +319,32 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
   @app_commands.autocomplete(pokemon=starter_autocomplete)
   @method_logger(False)
   async def starter(self, inter: Interaction, pokemon: int):
-    if pokemon not in [p.Id for p in pokemonservice.GetStarterPokemon()]:
-      return await discordservice_trainer.PrintStarter(inter, None, inter.guild.name)
-    trainer = trainerservice.StartTrainer(pokemon, inter.user.id, inter.guild_id)
-    return await discordservice_trainer.PrintStarter(inter, trainer, inter.guild.name)
+    pkmn = pokemonservice.GetPokemonById(pokemon)
+    if trainerservice.GetTrainer(inter.guild_id, inter.user.id):
+      return await discordservice_trainer.PrintStarter(inter, 0, inter.guild.name)
+    elif not pkmn or not pkmn.IsStarter:
+      return await discordservice_trainer.PrintStarter(inter, 0, inter.guild.name)
+
+    trainer = trainerservice.StartTrainer(pkmn, inter.guild_id, inter.user.id)
+    embed = discordservice.CreateEmbed(
+        f"{inter.user.display_name}'s Journey Begins!",
+        f"Starter: {pokemonservice.GetPokemonDisplayName(trainer.OwnedPokemon[0], pkmn)}\nStarting Money: ${trainer.Money}\nStarting Pokeballs: 5",
+        TrainerColor)
+    embed.set_image(url=pokemonservice.GetPokemonImage(trainer.OwnedPokemon[0], pkmn))
+    await discordservice.SendEmbed(inter, embed)
+    embed2 = discordservice.CreateEmbed(
+          f"Welcome to PokeTrainer!",
+          f"You just began your journey in the server {inter.guild.name}. Use commands such as **/spawn** to interact with the bot! More interactions can be found using the **/help** command. Don't forget your **/daily** reward!",
+          HelpColor)
+    await discordservice.SendDMs(inter, [embed2])
+
+  @app_commands.command(name="delete",
+                        description="Delete all your PokeTrainer data :(")
+  @method_logger(True)
+  @trainer_check
+  @command_lock
+  async def delete(self, inter: Interaction):
+    return await DeleteView(inter, trainerservice.GetTrainer(inter.guild_id, inter.user.id)).send()
 
   #endregion
 
