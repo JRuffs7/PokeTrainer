@@ -325,25 +325,28 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
   @app_commands.autocomplete(pokemon=autofill_nonteam)
   @method_logger(True)
   @trainer_check
+  @command_lock
   async def daycare(self, inter: Interaction, pokemon: int|None):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
 
     #Viewing Daycare
     if not pokemon:
       if len(trainer.Daycare) == 0:
-        return await discordservice_pokemon.PrintDaycareResponse(inter, 0, [])
-      return await DaycareView(inter, trainer).send()
-    
-    #Adding To Daycare
-    #Kalos Reward
-    if len(trainer.Daycare) >= (4 if trainerservice.HasRegionReward(trainer, 6) else 2):
-      return await discordservice_pokemon.PrintDaycareResponse(inter, 1, [])
-    
-    pokeList = [p for p in trainer.OwnedPokemon if p.Pokemon_Id == pokemon]
-    if not pokeList:
-      return await discordservice_pokemon.PrintDaycareResponse(inter, 2, [pokemonservice.GetPokemonById(pokemon).Name])
-
-    return await DaycareAddView(inter, trainer, pokeList).send()
+        await discordservice_pokemon.PrintDaycareResponse(inter, 0, [])
+      else:
+        return await DaycareView(inter, trainer).send()
+    else:
+      #Adding To Daycare
+      #Kalos Reward
+      if len(trainer.Daycare) >= (4 if trainerservice.HasRegionReward(trainer, 6) else 2):
+        await discordservice_pokemon.PrintDaycareResponse(inter, 1, [])
+      else:
+        pokeList = [p for p in trainer.OwnedPokemon if p.Pokemon_Id == pokemon]
+        if not pokeList:
+          await discordservice_pokemon.PrintDaycareResponse(inter, 2, [pokemonservice.GetPokemonById(pokemon).Name])
+        else:
+          return await DaycareAddView(inter, trainer, pokeList).send()
+    commandlockservice.DeleteLock(inter.guild_id, inter.user.id)
 
   #endregion
 

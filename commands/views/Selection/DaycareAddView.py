@@ -5,7 +5,7 @@ from globals import DateFormat
 from middleware.decorators import defer
 
 from models.Pokemon import Pokemon
-from services import pokemonservice, trainerservice
+from services import commandlockservice, pokemonservice, trainerservice
 from models.Trainer import Trainer
 
 
@@ -25,6 +25,7 @@ class DaycareAddView(discord.ui.View):
 
 	async def on_timeout(self):
 		await self.message.delete()
+		commandlockservice.DeleteLock(self.trainer.ServerId, self.trainer.UserId)
 		return await super().on_timeout()
 
 	async def PokemonSelection(self, inter: discord.Interaction, choices: list[str]):
@@ -34,6 +35,7 @@ class DaycareAddView(discord.ui.View):
 	@defer
 	async def cancel_button(self, inter: discord.Interaction, button: discord.ui.Button):
 		self.clear_items()
+		commandlockservice.DeleteLock(self.trainer.ServerId, self.trainer.UserId)
 		await self.message.edit(content='Did not add to daycare.', view=self)
 
 	@discord.ui.button(label="Submit", style=discord.ButtonStyle.green)
@@ -50,6 +52,7 @@ class DaycareAddView(discord.ui.View):
 			if len(self.trainer.Daycare) < (4 if trainerservice.HasRegionReward(self.trainer, 6) else 2):
 				self.trainer.Daycare[p] = datetime.now(UTC).strftime(DateFormat)
 		trainerservice.UpsertTrainer(self.trainer)
+		commandlockservice.DeleteLock(self.trainer.ServerId, self.trainer.UserId)
 		await self.message.edit(content=f'Added **{"** and **".join([pokemonservice.GetPokemonDisplayName(p) for p in pkmnList])}** to your daycare.', view=self)
 
 	async def send(self):
