@@ -3,6 +3,11 @@ from dataclasses import dataclass, field, fields
 from models.Base import Base
 
 
+class MoveData:
+  MoveId: int
+  PP: int
+
+
 class EvolveData:
   EvolveID: int
   EvolveLevel: int|None
@@ -19,6 +24,7 @@ class PokemonData(Base):
   IsBattleOnly: bool
   IsDefault: bool
   #Species Properties
+  GrowthRate: str
   CaptureRate: int
   Color: str
   EvolvesInto: list[EvolveData]
@@ -34,6 +40,7 @@ class PokemonData(Base):
   IsLegendary: bool
   IsMythical: bool
   #Pokemon Properties
+  BaseDefeatExp: int
   Height: int
   Sprite: str
   ShinySprite: str
@@ -65,7 +72,7 @@ class Pokemon:
   Nature: int = 0
   CurrentHP: int = 0
   IVs: dict[str, int] = field(default_factory=dict)
-  LearnedMoves: list[int] = field(default_factory=list)
+  LearnedMoves: list[MoveData] = field(default_factory=list)
   CurrentAilment: int|None = None
 
 
@@ -73,4 +80,5 @@ class Pokemon:
   def from_dict(cls, dict):
     field_names = {field.name for field in fields(cls)}
     returnObj = cls(**{k: v for k, v in dict.items() if k in field_names})
+    returnObj.EvolvesInto = [MoveData(m) for m in returnObj.LearnedMoves]
     return returnObj

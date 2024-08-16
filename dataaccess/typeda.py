@@ -1,6 +1,6 @@
 from dataaccess.utility.jsonreader import GetJson
 
-from models.Type import Type
+from models.Stat import Type
 
 typeFile = "collections/types.json"
 

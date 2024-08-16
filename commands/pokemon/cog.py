@@ -18,7 +18,7 @@ import discordbot
 from commands.views.Selection.EvolveView import EvolveView
 from globals import AdminList
 from middleware.decorators import method_logger, trainer_check
-from services import itemservice, pokemonservice, statservice, typeservice, trainerservice, zoneservice
+from services import pokemonservice, statservice, trainerservice, zoneservice
 from services.utility import discordservice_pokemon
 
 
@@ -38,6 +38,7 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
   @trainer_check
   async def spawn(self, inter: Interaction):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
+    print(trainer.__dict__)
     pokemon = pokemonservice.SpawnPokemon(
       None if trainer.CurrentZone == 0 else zoneservice.GetZone(trainer.CurrentZone),
       max([b for b in trainer.Badges if b < 1000]) if len(trainer.Badges) > 0 else 0,

@@ -106,25 +106,13 @@ class SpawnPokemonView(discord.ui.View):
 			self.pressed = False
 			await self.message.edit(content=f"Capture failed! Lost **{5-int(pokeballId)}hp** Try again or fight.\nCurrent Trainer HP: {self.TrainerHealthString(self.trainer)}", view=self)
 
-	def GetTitle(self):
-		hasDexmark = Dexmark if ((self.pkmndata.PokedexId in self.trainer.Pokedex) if not self.pokemon.IsShiny else (self.pkmndata.Id in self.trainer.Shinydex)) else ''
-		hasFormmark = Formmark if ((self.pkmndata.Id in self.trainer.Formdex) if not self.pokemon.IsShiny else False) else ''
-		return f'{f"{hasDexmark}{hasFormmark} " if hasDexmark or hasFormmark else ""}{pokemonservice.GetPokemonDisplayName(self.pokemon, self.pkmndata)} (Lvl. {self.pokemon.Level})'
-
 	def TrainerHealthString(self, trainer: Trainer):
 		return f"{trainer.Health}{WarningSign}" if trainer.Health < 10 else f"{trainer.Health}"
 
 	def PokemonDesc(self):
-		pkmnData = t2a(
-			body=[
-				['Rarity:', f"{self.pkmndata.Rarity}", '|', 'Height:', self.pokemon.Height],
-				['Color:',f"{self.pkmndata.Color}", '|','Weight:', self.pokemon.Weight], 
-				['Types:', f"{'/'.join([statservice.GetType(t).Name for t in self.pkmndata.Types])}", Merge.LEFT, Merge.LEFT, Merge.LEFT]], 
-			first_col_heading=False,
-			alignments=[Alignment.LEFT,Alignment.LEFT,Alignment.CENTER,Alignment.LEFT,Alignment.LEFT],
-			style=PresetStyle.plain,
-			cell_padding=0)
-		return f"```{pkmnData}```"
+		hasDexmark = Dexmark if ((self.pkmndata.PokedexId in self.trainer.Pokedex) if not self.pokemon.IsShiny else (self.pkmndata.Id in self.trainer.Shinydex)) else ''
+		hasFormmark = Formmark if ((self.pkmndata.Id in self.trainer.Formdex) if not self.pokemon.IsShiny else False) else ''
+		return f"Level: {self.pokemon.Level}\nDex: {f"{hasDexmark}{hasFormmark} " if hasDexmark or hasFormmark else ""}\nType(s): {'/'.join([statservice.GetType(t).Name for t in self.pkmndata.Types])}"
 
 	async def send(self):
 		if not self.pokemon:
@@ -132,9 +120,8 @@ class SpawnPokemonView(discord.ui.View):
 		await self.interaction.followup.send(view=self, ephemeral=True)
 		self.message = await self.interaction.original_response()
 		embed = discordservice.CreateEmbed(
-				self.GetTitle(),
+				f'Wild {pokemonservice.GetPokemonDisplayName(self.pokemon, self.pkmndata)}!',
 				self.PokemonDesc(),
 				PokemonColor)
 		embed.set_image(url=pokemonservice.GetPokemonImage(self.pokemon, self.pkmndata))
-		embed.set_footer(text='Set Your Battle Pokemon Below')
-		await self.message.edit(content=f'Current Trainer HP: {self.TrainerHealthString(self.trainer)}', embed=embed, view=self)
+		embed.set_footer(text='Choose An Action')

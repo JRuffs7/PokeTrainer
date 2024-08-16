@@ -1,4 +1,3 @@
-- Removed ??? Arceus from the **/pokeshop**
-- You can no longer see Gym Leader details just for attempting the battle
-- Added more region rewards. Check out **/help regionreward** for more details
-- Added a Living Dex to the trainer stats
+- Removed ??? Arceus from PokeTrainer due to imbalances
+- Introduced Stats/Natures/IVs to all Pokemon
+- Pokemon now gain experience and level up more realistically

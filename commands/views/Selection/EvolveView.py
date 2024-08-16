@@ -80,7 +80,7 @@ class EvolveView(discord.ui.View):
 	async def submit_button(self, inter: discord.Interaction,
 												button: discord.ui.Button):
 		if self.pokemonchoice and self.evolvechoice:
-			evPkmn = trainerservice.Evolve(self.trainer, self.pokemonchoice, self.evolvechoice)
+			evPkmn = trainerservice.Evolve(self.trainer, self.pokemonchoice, self.pkmnChoiceData, self.evolvechoice)
 			self.clear_items()
 			displayMon = Pokemon.from_dict({'IsFemale': evPkmn.IsFemale, 'IsShiny': evPkmn.IsShiny, 'Pokemon_Id': self.evolvechoice.EvolveID})
 			await self.message.edit(content=f"**{pokemonservice.GetPokemonDisplayName(self.pokemonchoice, self.pkmnChoiceData)}** evolved into **{pokemonservice.GetPokemonDisplayName(displayMon)}**", view=self)

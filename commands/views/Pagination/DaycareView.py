@@ -66,13 +66,13 @@ class DaycareView(discord.ui.View):
 		pkmn = self.pokemon[self.currentPage]
 		data = next(p for p in self.pkmndata if p.Id == pkmn.Pokemon_Id)
 		timeAdded = datetime.strptime(self.trainer.Daycare.pop(pkmn.Id), DateFormat).replace(tzinfo=UTC)
-		hoursSpent = int((datetime.now(UTC) - timeAdded).total_seconds()//3600)
-		pokemonservice.AddExperience(pkmn, data, 10*hoursSpent)
+		minutesSpent = int((datetime.now(UTC) - timeAdded).total_seconds()//60)
+		pokemonservice.AddExperience(pkmn, data, minutesSpent)
 		trainerservice.UpsertTrainer(self.trainer)
 		await interaction.followup.send(content=f'**{pokemonservice.GetPokemonDisplayName(pkmn, data)}** has been removed from the daycare and is now **Level {pkmn.Level}**!', ephemeral=True)
 
 	def Description(self, pokemon: Pokemon, pkmnData: PokemonData):
 		timeAdded = datetime.strptime(self.trainer.Daycare[pokemon.Id], DateFormat).replace(tzinfo=UTC)
-		hoursSpent = int((datetime.now(UTC) - timeAdded).total_seconds()//3600)
-		simLevel = pokemonservice.SimulateLevelGain(pokemon.Level, pokemon.CurrentExp, pkmnData.Rarity, pkmnData.EvolvesInto, 10*hoursSpent)
+		minutesSpent = int((datetime.now(UTC) - timeAdded).total_seconds()//60)
+		simLevel = pokemonservice.SimulateLevelGain(pokemon, pkmnData, minutesSpent)
 		return f'**__{pokemonservice.GetPokemonDisplayName(pokemon, pkmnData)}__**\n\nLevel: {pokemon.Level} -> {simLevel}'

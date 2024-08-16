@@ -5,6 +5,12 @@
 			"Body": "This command can only be run by admins of your server. Type **/help** to get a list of available commands."
 		}
 	],
+	"commandlock": [
+		{
+			"Title": "Commands Locked",
+			"Body": "You are currently in an interaction that prevents use of this command. Complete the other interaction, then try again."
+		}
+	],
 	"server": [
 		{
 			"Title": "Server Not Registered",

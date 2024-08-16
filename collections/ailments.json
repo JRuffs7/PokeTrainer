@@ -2,135 +2,31 @@
 	{
 		"Id": 1,
 		"Name": "Paralysis",
-		"Url": "https://pokeapi.co/api/v2/move-ailment/1/",
-		"MoveIds": [
-			9,
-			34,
-			78,
-			84,
-			85,
-			86,
-			87,
-			122,
-			137,
-			192,
-			209,
-			225,
-			340,
-			344,
-			395,
-			422,
-			435,
-			550,
-			553,
-			609,
-			700,
-			730,
-			734
-		]
+		"Url": "https://pokeapi.co/api/v2/move-ailment/1/"
 	},
 	{
 		"Id": 2,
 		"Name": "Sleep",
-		"Url": "https://pokeapi.co/api/v2/move-ailment/2/",
-		"MoveIds": [
-			47,
-			79,
-			95,
-			142,
-			147,
-			320,
-			464,
-			547
-		]
+		"Url": "https://pokeapi.co/api/v2/move-ailment/2/"
 	},
 	{
 		"Id": 3,
 		"Name": "Freeze",
-		"Url": "https://pokeapi.co/api/v2/move-ailment/3/",
-		"MoveIds": [
-			8,
-			58,
-			59,
-			181,
-			423,
-			573,
-			821
-		]
+		"Url": "https://pokeapi.co/api/v2/move-ailment/3/"
 	},
 	{
 		"Id": 4,
 		"Name": "Burn",
-		"Url": "https://pokeapi.co/api/v2/move-ailment/4/",
-		"MoveIds": [
-			7,
-			52,
-			53,
-			126,
-			172,
-			221,
-			257,
-			261,
-			299,
-			394,
-			424,
-			436,
-			503,
-			517,
-			545,
-			551,
-			554,
-			592,
-			735,
-			780,
-			807,
-			815
-		]
+		"Url": "https://pokeapi.co/api/v2/move-ailment/4/"
 	},
 	{
 		"Id": 5,
 		"Name": "Poison",
-		"Url": "https://pokeapi.co/api/v2/move-ailment/5/",
-		"MoveIds": [
-			40,
-			41,
-			77,
-			92,
-			123,
-			124,
-			139,
-			188,
-			305,
-			342,
-			398,
-			440,
-			441,
-			482,
-			672,
-			801
-		]
+		"Url": "https://pokeapi.co/api/v2/move-ailment/5/"
 	},
 	{
 		"Id": 6,
 		"Name": "Confusion",
-		"Url": "https://pokeapi.co/api/v2/move-ailment/6/",
-		"MoveIds": [
-			48,
-			60,
-			93,
-			109,
-			146,
-			186,
-			207,
-			223,
-			260,
-			298,
-			324,
-			352,
-			431,
-			448,
-			542,
-			790
-		]
+		"Url": "https://pokeapi.co/api/v2/move-ailment/6/"
 	}
 ]

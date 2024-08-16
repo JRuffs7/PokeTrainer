@@ -1,8 +1,10 @@
 import logging
 from random import choice
 from dataaccess import trainerda
+from models.Pokemon import MoveData
+from models.Stat import StatEnum
 from models.Trainer import Trainer
-from services import pokemonservice, statservice
+from services import battleservice, pokemonservice, statservice
 
 errorLogger = logging.getLogger('error')
 
@@ -11,7 +13,6 @@ def UpdateTrainers():
 	updateList: list[Trainer] = []
 	for t in trainerda.GetAllTrainers() or []:
 		try:
-			print(t['UserId'])
 			newTrainer = Trainer.from_dict({
 				'UserId': t['UserId'] if 'UserId' in t else 0,
 				'ServerId': t['ServerId'] if 'ServerId' in t else 0,
@@ -89,7 +90,6 @@ def UpdateTrainers():
 				if p.Pokemon_Id == 10057:
 					newTrainer.OwnedPokemon.remove(p)
 				else:
-					print(p.Pokemon_Id)
 					pData = next(pd for pd in allPkmnData if p.Pokemon_Id == pd.Id)
 					p.Nature = choice(statservice.GetAllNatures()).Id
 					p.IVs = {
@@ -101,15 +101,17 @@ def UpdateTrainers():
 						"6": choice(range(32)),
 					}
 					p.CurrentAilment = None
-					p.CurrentHP = statservice.GenerateHP(p.IVs["1"], pData.BaseStats["1"], p.Level)
+					p.CurrentHP = statservice.GenerateStat(p, pData, StatEnum.HP)
 					p.LearnedMoves = []
 					slot = 0
+					moves = []
 					for move in dict(reversed(sorted(pData.LevelUpMoves.items(), key=lambda move: move[1]))):
 						if pData.LevelUpMoves[move] <= p.Level:
-							p.LearnedMoves.append(int(move))
+							moves.append(int(move))
 							slot += 1
 						if slot == 4:
 							break
+					p.LearnedMoves = [MoveData({'MoveId': m.Id, 'PP': m.BasePP}) for m in battleservice.GetMovesById(moves)]
 			updateList.append(newTrainer)
 		except Exception as e:
 			errorLogger.error(f"Could not update trainer: {t['UserId']}-{t['ServerId']}\n{e}")

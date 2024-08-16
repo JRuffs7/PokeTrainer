@@ -1,7 +1,7 @@
-from dataaccess import typeda
+from dataaccess import statda
 
 def AttackEffect(attackType: int, defendingTypes: list[int]):
-  types = typeda.GetAllTypes()
+  types = statda.GetAllTypes()
   dTypeOne = next(t for t in types if t.Id == defendingTypes[0])
   dTypeTwo = next(t for t in types if t.Id == defendingTypes[0]) if len(defendingTypes) > 1 else None
   defendOne = 0 if attackType in dTypeOne.Immune else 2 if attackType in dTypeOne.Weakness else 0.5 if attackType in dTypeOne.Resistant else 1
@@ -10,7 +10,7 @@ def AttackEffect(attackType: int, defendingTypes: list[int]):
 
 
 def TypeWeakness(attacking, defending):
-  defenseType = next(t for t in GetAllTypes() if t.Name.lower() == defending.lower())
+  defenseType = next(t for t in statda.GetAllTypes() if t.Name.lower() == defending.lower())
 
   if attacking in defenseType.Weakness:
       return 1
@@ -45,6 +45,3 @@ def TypeMatch(attackTypes: list[int], defendTypes: list[int]):
       return 4 if firstType == 2 and secondType == 2 else 2
     
     return firstType + secondType
-
-def GetAllTypes():
-    return typeda.GetAllTypes()

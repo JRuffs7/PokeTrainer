@@ -1,7 +1,59 @@
 from random import choice
-from models.Pokemon import PokemonData
-from services import pokemonservice, typeservice
+from dataaccess import moveda
+from models.Battle import Battle
+from models.Pokemon import Pokemon, PokemonData
+from models.Move import Move
+from models.Stat import StatEnum
+from services import pokemonservice, statservice, typeservice
 
+
+def GetMovesById(ids: list[int]):
+	return moveda.GetMovesByProperty(ids, 'Id')
+
+def Attack(move: Move, battle: Battle, teamA: bool):
+	dmgA = ((2*battle.TeamAPokemon.Level)/5) + 2
+	dmgB = statservice.GenerateStat(battle.TeamAPokemon, battle.TeamAData, StatEnum.Attack)/statservice.GenerateStat(battle.TeamBPokemon, battle.TeamBData, StatEnum.Defense)
+	baseDmg = ((dmgA*move.Power*dmgB)/50) + 2
+	targets = 0.75 if move.Targets > 1 else 1
+	pb = 1
+	weather = 1
+	glaive = 2 if ((battle.LastTeamAMove.Id == 862 and teamA) or (battle.LastTeamBMove.Id == 862 and not teamA)) else 1
+	critical = Critical(move)
+	random = choice(85,101)/100
+	stab = 1.5 if move.MoveType in battle.TeamAData.Types else 1
+	typedmg = statservice.TypeDamage(move.MoveType, battle.TeamBData.Types)
+	burn = 0.5 if battle.TeamAPokemon.CurrentAilment == 4 else 1 #burn
+	other = ReduceDamage(move, battle, teamA) if critical == 1 else 1
+	zmove = 1
+	terrashield = 1
+
+	return baseDmg*targets*pb*weather*glaive*critical*random*stab*typedmg*burn*other*zmove*terrashield
+
+def ReduceDamage(move: Move, battle: Battle, teamA: bool):
+	if move.AttackType == 'physical':
+		if teamA:
+			return 0.5 if battle.TeamBPhysReduce else 1
+		else:
+			return 0.5 if battle.TeamAPhysReduce else 1
+	if move.AttackType == 'special':
+		if teamA:
+			return 0.5 if battle.TeamBSpReduce else 1
+		else:
+			return 0.5 if battle.TeamASpReduce else 1
+
+def Critical(move: Move):
+	if move.UniqueDamage:
+		return 1
+	if move.CritRate > 1:
+		return 1.5
+	critcalc = choice(range(96))
+	if move.CritRate == 1:
+		return 1.5 if critcalc < 12 else 1
+	return 1.5 if critcalc in [0,32,64,95] else 1
+
+def StatDamage(isPhysical: bool, battle: Battle):
+	if isPhysical:
+		statservice.GenerateStat(battle.TeamAPokemon, battle.TeamAData, (StatEnum.Attack if isPhysical else StatEnum.SpecialAttack))/statservice.GenerateStat(battle.TeamBPokemon, battle.TeamBData, StatEnum.Defense)
 
 def WildFight(attack: PokemonData, defend: PokemonData, attackLevel: int, defendLevel: int):
   healthLost: list[int] = [1,3,5,7,10,13,15]

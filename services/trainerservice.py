@@ -13,7 +13,8 @@ from models.Pokemon import EvolveData, Pokemon, PokemonData
 from services import battleservice, gymservice, itemservice, missionservice, pokemonservice, statservice
 
 captureLog = logging.getLogger('capture')
-updatedTrainers: list[str] = []
+
+commandLocks: list[str] = []
 
 #region Data
 
@@ -48,6 +49,15 @@ def StartTrainer(pokemonId: int, userId: int, serverId: int):
   trainer.OwnedPokemon.append(spawn)
   UpsertTrainer(trainer)
   return trainer
+
+def CheckTrainerLock(serverId: int, userId: int):
+  return f'{serverId}{userId}' in commandLocks
+
+def TrainerCommandLock(serverId: int, userId: int):
+  commandLocks.append(f'{serverId}{userId}')
+
+def TrainerRemoveLock(serverId: int, userId: int):
+  commandLocks.remove(f'{serverId}{userId}')
 
 #endregion
 
@@ -289,9 +299,9 @@ def TryAddToPokedex(trainer: Trainer, data: PokemonData, shiny: bool):
   if shiny and data.Id not in trainer.Shinydex:
     trainer.Shinydex.append(data.Id)
 
-def Evolve(trainer: Trainer, initialPkmn: Pokemon, evolveMon: EvolveData):
+def Evolve(trainer: Trainer, initialPkmn: Pokemon, initialData: PokemonData, evolveMon: EvolveData):
   newData = pokemonservice.GetPokemonById(evolveMon.EvolveID)
-  newPkmn = pokemonservice.EvolvePokemon(initialPkmn, newData)
+  newPkmn = pokemonservice.EvolvePokemon(initialPkmn, initialData, newData)
   index = trainer.OwnedPokemon.index(initialPkmn)
   trainer.OwnedPokemon[index] = newPkmn
   if evolveMon.ItemNeeded:

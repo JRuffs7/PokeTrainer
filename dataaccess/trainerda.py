@@ -58,7 +58,7 @@ def PushTrainerToMongo(trainer: Trainer):
   mongodb.UpsertSingleDoc(collection, {
       'ServerId': trainer.ServerId,
       'UserId': trainer.UserId
-  })
+  }, to_dict(trainer))
   return
 
 def PushTrainers(trainers: list[Trainer]):

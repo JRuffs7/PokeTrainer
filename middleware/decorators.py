@@ -79,6 +79,18 @@ def trainer_check(function):
     return await function(self, *args, **kwargs)
   return wrapper
 
+def command_lock(function):
+  @functools.wraps(function)
+  async def wrapper(self, *args, **kwargs):
+    inter = args[0]
+    userId = inter.user.id
+    serverId = inter.guild_id
+    if trainerservice.CheckTrainerLock(serverId, userId):
+      await discordservice_permission.SendError(inter, 'commandlock')
+      return
+    return await function(self, *args, **kwargs)
+  return wrapper
+
 
 def defer(f):
   async def wrapper(self,*args):
