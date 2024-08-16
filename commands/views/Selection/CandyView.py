@@ -6,7 +6,7 @@ from commands.views.Selection.selectors.OwnedSelector import OwnedSelector
 from middleware.decorators import defer
 
 from models.Pokemon import Pokemon
-from services import itemservice, pokemonservice, trainerservice
+from services import commandlockservice, itemservice, pokemonservice, trainerservice
 from models.Trainer import Trainer
 
 
@@ -23,6 +23,7 @@ class CandyView(discord.ui.View):
 
 	async def on_timeout(self):
 		await self.message.delete()
+		commandlockservice.DeleteLock(self.trainer.ServerId, self.trainer.UserId)
 		return await super().on_timeout()
 
 	async def PokemonSelection(self, inter: discord.Interaction, choices: list[str]):
@@ -62,6 +63,7 @@ class CandyView(discord.ui.View):
 	async def cancel_button(self, inter: discord.Interaction,
 												button: discord.ui.Button):
 		self.clear_items()
+		commandlockservice.DeleteLock(self.trainer.ServerId, self.trainer.UserId)
 		await self.message.edit(content='Did not give any candies.', view=self)
 
 	@discord.ui.button(label="Submit", style=discord.ButtonStyle.green)
@@ -80,7 +82,6 @@ class CandyView(discord.ui.View):
 						(pokemonservice.NeededExperience(self.pokemonchoice.Level, pkmnData.Rarity, pkmnData.EvolvesInto) - self.pokemonchoice.CurrentExp))
 					num += 1
 				message = f"{pokemonservice.GetPokemonDisplayName(self.pokemonchoice, pkmnData)} gained {num} level(s)."
-				trainerservice.ModifyItemList(self.trainer.Candies, str(self.candychoice.Id), (0-num))
 			else:
 				num = 0
 				while num < self.amountchoice and self.pokemonchoice.Level < 100:
@@ -93,10 +94,10 @@ class CandyView(discord.ui.View):
 						self.candychoice.Experience*numToUse)
 					num += numToUse
 				message = f"{pokemonservice.GetPokemonDisplayName(self.pokemonchoice, pkmnData)} gained {self.candychoice.Experience*num} experience points."
-				trainerservice.ModifyItemList(self.trainer.Candies, str(self.candychoice.Id), (0-num))
+			trainerservice.ModifyItemList(self.trainer.Candies, str(self.candychoice.Id), (0-num))
 			trainerservice.UpsertTrainer(self.trainer)
-			self.clear_items()
-			await self.message.edit(content=message, view=self)
+			commandlockservice.DeleteLock(self.trainer.ServerId, self.trainer.UserId)
+			await self.message.edit(content=message, view=None)
 
 	async def send(self):
 		await self.interaction.followup.send(view=self)

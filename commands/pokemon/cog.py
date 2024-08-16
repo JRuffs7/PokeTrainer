@@ -305,17 +305,19 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
   @app_commands.autocomplete(pokemon=autofill_candy)
   @method_logger(True)
   @trainer_check
+  @command_lock
   async def givecandy(self, inter: Interaction, pokemon: int):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
     pokeList = [p for p in trainer.OwnedPokemon if p.Pokemon_Id == pokemon and p.Level < 100]
     if not pokeList:
-      return await discordservice_pokemon.PrintGiveCandyResponse(inter, 1, pokemonservice.GetPokemonById(pokemon).Name)
-    candyList = [c for c in trainer.Candies if trainer.Candies[c] > 0]
-    if not candyList: 
-      return await discordservice_pokemon.PrintGiveCandyResponse(inter, 0)
-
-    candyView = CandyView(inter, trainer, pokeList)
-    return await candyView.send()
+      await discordservice_pokemon.PrintGiveCandyResponse(inter, 1, pokemonservice.GetPokemonById(pokemon).Name)
+    else:
+      candyList = [c for c in trainer.Candies if trainer.Candies[c] > 0]
+      if not candyList: 
+        await discordservice_pokemon.PrintGiveCandyResponse(inter, 0)
+      else:
+        return await CandyView(inter, trainer, pokeList).send()
+    commandlockservice.DeleteLock(inter.guild_id, inter.user.id)
 
 
   @app_commands.command(name="daycare",
