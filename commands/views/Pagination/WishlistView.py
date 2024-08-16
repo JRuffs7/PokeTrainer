@@ -3,7 +3,7 @@ import discord
 from globals import TrainerColor
 from middleware.decorators import defer
 from models.Trainer import Trainer
-from services import pokemonservice, trainerservice
+from services import commandlockservice, pokemonservice, trainerservice
 from services.utility import discordservice
 
 
@@ -26,9 +26,13 @@ class WishlistView(discord.ui.View):
 			self.nextBtn = discord.ui.Button(label=">", style=discord.ButtonStyle.primary, disabled=False, custom_id='next')
 			self.nextBtn.callback = self.page_button
 			self.add_item(self.nextBtn)
+		closebtn = discord.ui.Button(label="Close", style=discord.ButtonStyle.grey)
+		closebtn.callback = self.close_button
+		self.add_item(closebtn)
 
 	async def on_timeout(self):
-		await self.message.delete()
+		await self.message.delete(delay=0.1)
+		commandlockservice.DeleteLock(self.trainer.ServerId, self.trainer.UserId)
 		return await super().on_timeout()
 
 	async def send(self):
@@ -58,8 +62,12 @@ class WishlistView(discord.ui.View):
 
 	@defer
 	async def remove_button(self, interaction: discord.Interaction):
-		await self.message.delete(delay=0.01)
 		pkmn = self.pokemon[self.currentPage]
 		self.trainer.Wishlist.remove(pkmn.Id)
 		trainerservice.UpsertTrainer(self.trainer)
-		await interaction.followup.send(content=f'{pkmn.Name} has been removed from your wishlist.', ephemeral=True)
+		commandlockservice.DeleteLock(self.trainer.ServerId, self.trainer.UserId)
+		await self.message.edit(content=f'{pkmn.Name} has been removed from your wishlist.', embed=None, view=None)
+
+	@defer
+	async def close_button(self, interaction: discord.Interaction):
+		await self.on_timeout()

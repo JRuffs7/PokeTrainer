@@ -71,28 +71,31 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
   @app_commands.autocomplete(pokemon=autofill_special)
   @method_logger(True)
   @trainer_check
+  @command_lock
   async def wishlist(self, inter: Interaction, pokemon: int = None):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
 
     #Viewing Wishlist
     if not pokemon:
       if len(trainer.Wishlist) == 0:
-        return await discordservice_pokemon.PrintWishlistResponse(inter, 1, [])
-      return await WishlistView(inter, trainer).send()
-    
+        await discordservice_pokemon.PrintWishlistResponse(inter, 1, [])
+      else:
+        return await WishlistView(inter, trainer).send()
+    else:
     #Adding To Wishlist
-    if len(trainer.Wishlist) >= 5:
-      return await discordservice_pokemon.PrintWishlistResponse(inter, 2, [])
-    
-    pkmn = pokemonservice.GetPokemonById(pokemon)
-    if not pkmn or not pokemonservice.IsSpecialSpawn(pkmn):
-      return await discordservice_pokemon.PrintWishlistResponse(inter, 4, pkmn.Name if pkmn else 'N/A')
-
-    return await discordservice_pokemon.PrintWishlistResponse(
-      inter, 
-      0 if trainerservice.TryAddWishlist(trainer, pokemon) else 3,
-      pokemonservice.GetPokemonById(pokemon).Name
-    )
+      if len(trainer.Wishlist) >= 5:
+        await discordservice_pokemon.PrintWishlistResponse(inter, 2, [])
+      else:
+        pkmn = pokemonservice.GetPokemonById(pokemon)
+        if not pkmn or not pokemonservice.IsSpecialSpawn(pkmn):
+          await discordservice_pokemon.PrintWishlistResponse(inter, 4, pkmn.Name if pkmn else 'N/A')
+        else:
+          await discordservice_pokemon.PrintWishlistResponse(
+            inter, 
+            0 if trainerservice.TryAddWishlist(trainer, pokemon) else 3,
+            pokemonservice.GetPokemonById(pokemon).Name
+          )
+    commandlockservice.DeleteLock(inter.guild_id, inter.user.id)
 
   @app_commands.command(name="pokeshop",
                         description="Buy a specific Pokemon in exchange for Money or Pokeballs.")
