@@ -102,23 +102,29 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
   @app_commands.autocomplete(pokemon=autofill_pokemon_legendary_spawn)
   @method_logger(True)
   @trainer_check
+  @command_lock
   async def pokeshop(self, inter: Interaction, pokemon: int):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
     if trainer.Money <= 0:
-      return await discordservice_pokemon.PrintPokeShopResponse(inter, 0)
-    pkmn = pokemonservice.GetPokemonById(pokemon)
-    if not pkmn:
-      return await discordservice_pokemon.PrintPokeShopResponse(inter, 1)
-    if not pokemonservice.IsLegendaryPokemon(pkmn) or pokemonservice.GetPreviousStages(pkmn):
-      return await discordservice_pokemon.PrintPokeShopResponse(inter, 2, pkmn.Name)
-    if trainer.Money < pokemonservice.GetShopValue(pkmn):
-      return await discordservice_pokemon.PrintPokeShopResponse(inter, 3, pkmn.Name)
-    if "4" not in trainer.Pokeballs or trainer.Pokeballs["4"] < 20:
-      return await discordservice_pokemon.PrintPokeShopResponse(inter, 4, pkmn.Name)
-    spawn = pokemonservice.GenerateSpawnPokemon(pkmn, level=1)
-    spawn.IsShiny = (spawn.IsShiny and trainer.Money >= pokemonservice.GetShopValue(pkmn)*2 and trainer.Pokeballs["4"] >= 30)
-
-    return await PokeShopView(inter, trainer, spawn).send()
+      await discordservice_pokemon.PrintPokeShopResponse(inter, 0)
+    else:
+      pkmn = pokemonservice.GetPokemonById(pokemon)
+      if not pkmn:
+        await discordservice_pokemon.PrintPokeShopResponse(inter, 1)
+      else:
+        if not pokemonservice.IsLegendaryPokemon(pkmn) or pokemonservice.GetPreviousStages(pkmn):
+          await discordservice_pokemon.PrintPokeShopResponse(inter, 2, pkmn.Name)
+        else:
+          if trainer.Money < pokemonservice.GetShopValue(pkmn):
+            await discordservice_pokemon.PrintPokeShopResponse(inter, 3, pkmn.Name)
+          else:
+            if "4" not in trainer.Pokeballs or trainer.Pokeballs["4"] < 20:
+              await discordservice_pokemon.PrintPokeShopResponse(inter, 4, pkmn.Name)
+            else:
+              spawn = pokemonservice.GenerateSpawnPokemon(pkmn, level=1)
+              spawn.IsShiny = (spawn.IsShiny and trainer.Money >= pokemonservice.GetShopValue(pkmn)*2 and trainer.Pokeballs["4"] >= 30)
+              return await PokeShopView(inter, trainer, spawn).send()
+    commandlockservice.DeleteLock(inter.guild_id, inter.user.id)
 
   #endregion
 
