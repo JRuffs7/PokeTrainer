@@ -5,7 +5,6 @@ from globals import DateFormat
 collection: str = 'CommandLock'
 
 def AddLock(serverId: int, userId: int):
-	print('Add')
 	if sqliteda.KeyExists(collection, f'{serverId}{userId}'):
 		date = datetime.strptime(sqliteda.Load(collection, f'{serverId}{userId}'), DateFormat)
 		if date + timedelta(minutes=5) < datetime.now():
@@ -17,6 +16,5 @@ def AddLock(serverId: int, userId: int):
 
 
 def DeleteLock(serverId: int, userId: int):
-	print('Delete')
 	if sqliteda.KeyExists(collection, f'{serverId}{userId}'):
 		sqliteda.Remove(collection, f'{serverId}{userId}')

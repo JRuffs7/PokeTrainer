@@ -1,2 +1,0 @@
-- To prevent loopholes in terms of random evolutions, temporary locks have been put in place. Use **/help commandlock** for more information
-- A new command has been added to **/delete** your trainer. Use **/help delete** for more information
