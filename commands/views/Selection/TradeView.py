@@ -4,7 +4,7 @@ from globals import TradeColor
 from middleware.decorators import defer
 
 from models.Trainer import Trainer
-from services import statservice, trainerservice, pokemonservice
+from services import commandlockservice, statservice, trainerservice, pokemonservice
 from models.Pokemon import Pokemon, PokemonData
 from commands.views.Selection.selectors.OwnedSelector import OwnedSelector
 from services.utility import discordservice
@@ -23,7 +23,7 @@ class TradeView(discord.ui.View):
 		self.targetdata = targetData
 		self.botimg = botimg
 		self.initial = True
-		super().__init__(timeout=300)
+		super().__init__(timeout=30)
 		self.ownlist = OwnedSelector(self.usertradelist, 1, customId='ownedTradeList')
 		self.targetlist = OwnedSelector(self.targettradelist, 1, customId='targetTradeList')
 		self.add_item(self.ownlist)
@@ -31,6 +31,7 @@ class TradeView(discord.ui.View):
 
 	async def on_timeout(self):
 		await self.message.delete()
+		commandlockservice.DeleteLock(self.trainer.ServerId, self.trainer.UserId)
 		return await super().on_timeout()
 
 	async def PokemonSelection(self, inter: discord.Interaction, choice: list[str]):
@@ -42,17 +43,11 @@ class TradeView(discord.ui.View):
 	@discord.ui.button(label='Reject', style=discord.ButtonStyle.red)
 	@defer
 	async def cancel_button(self, inter: discord.Interaction, button: discord.ui.Button):
-		if self.initial:
-			if inter.user.id != self.trainer.UserId:
-				return
-			self.clear_items()
-			await self.message.edit(content='Trade canceled.', view=self)
+		if inter.user.id == self.targettrainer.UserId:
+			await self.message.edit(content=f'<@{self.user.id}>\nTrade offer was rejected.', embed=None, view=None)
 		else:
-			if inter.user.id != self.targettrainer.UserId:
-				return
-			self.clear_items()
-			await self.message.delete(delay=0.01)
-			await inter.followup.send(content=f'<@{self.user.id}>\nTrade offer was rejected.', embed=None, view=self)
+			await self.message.edit(content='Trade was canceled.', embed=None, view=None)
+		commandlockservice.DeleteLock(self.trainer.ServerId, self.trainer.UserId)
 
 
 	@discord.ui.button(label='Accept', style=discord.ButtonStyle.green)
@@ -76,9 +71,13 @@ class TradeView(discord.ui.View):
 		else:
 			if inter.user.id != self.targettrainer.UserId:
 				return
-			await self.message.delete(delay=0.01)
-			trainerservice.TradePokemon(self.trainer, self.userpkmnchoice, self.targettrainer, self.targetpkmnchoice)
-			await inter.followup.send(content=f'<@{self.user.id}> traded away **{pokemonservice.GetPokemonDisplayName(self.userpkmnchoice, self.userdata)}** to <@{self.targettrainer.UserId}> for **{pokemonservice.GetPokemonDisplayName(self.targetpkmnchoice, self.targetdata)}**')
+			updatedTarget = trainerservice.GetTrainer(self.targettrainer.ServerId, self.targettrainer.UserId)
+			targetPkmn = next((p for p in updatedTarget.OwnedPokemon if p.Id == self.targetpkmnchoice.Id), None)
+			if not targetPkmn or targetPkmn.Pokemon_Id != self.targetpkmnchoice.Pokemon_Id:
+				return await self.message.edit(content=f'The Pokemon being traded no longer exists. Please try again.', embed=None, view=None)
+			trainerservice.TradePokemon(self.trainer, self.userpkmnchoice, updatedTarget, targetPkmn)
+			commandlockservice.DeleteLock(self.trainer.ServerId, self.trainer.UserId)
+			await self.message.edit(content=f'<@{self.user.id}> traded away **{pokemonservice.GetPokemonDisplayName(self.userpkmnchoice, self.userdata)}** to <@{updatedTarget.UserId}> for **{pokemonservice.GetPokemonDisplayName(targetPkmn, self.targetdata)}**', embed=None, view=None)
 
 	def PrintPkmnDetails(self, pokemon: Pokemon, data: PokemonData):
 		pkmnData = t2a(

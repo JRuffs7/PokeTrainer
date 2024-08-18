@@ -79,35 +79,23 @@ async def PrintUsePotion(interaction: Interaction, responseId: int, params: list
 		params=params,
 		eph=True)
 
-async def PrintModifyTeam(interaction: Interaction, response: int, pkmnId: int):
+async def PrintModifyTeam(interaction: Interaction, response: int, params: list):
 	return await discordservice.SendCommandResponse(
 		interaction=interaction, 
 		filename=responseFile, 
 		command='modifyteam', 
 		responseInd=response, 
 		color=TrainerColor, 
-		params=[pokemonservice.GetPokemonById(pkmnId).Name] if pkmnId else [],
+		params=params,
 		eph=True)
 
-async def PrintStarter(interaction: Interaction, trainer: Trainer, server: str):
-	if trainer:
-		pkmnData = pokemonservice.GetPokemonById(trainer.OwnedPokemon[0].Pokemon_Id)
-		embed = discordservice.CreateEmbed(
-				f"{interaction.user.display_name}'s Journey Begins!",
-				f"Starter: {pokemonservice.GetPokemonDisplayName(trainer.OwnedPokemon[0], pkmnData)}\nStarting Money: ${trainer.Money}\nStarting Pokeballs: 5",
-				TrainerColor)
-		embed.set_image(url=pokemonservice.GetPokemonImage(trainer.OwnedPokemon[0], pkmnData))
-		await discordservice.SendEmbed(interaction, embed)
-		embed2 = discordservice.CreateEmbed(
-					f"Welcome to PokeTrainer!",
-					f"You just began your journey in the server {server}. Use commands such as **/spawn** to interact with the bot! More interactions can be found using the **/help** command. Don't forget your **/daily** reward!",
-					HelpColor)
-		return await discordservice.SendDMs(interaction, [embed2])
+async def PrintStarter(interaction: Interaction, response: int, params: list):
 	await discordservice.SendCommandResponse(
 		interaction=interaction, 
 		filename=responseFile, 
 		command='starter', 
-		responseInd=0, 
+		responseInd=response,
+		params=params,
 		color=TrainerColor)
 
 async def PrintBadges(interaction: Interaction, targetUser: Member, region: str = None):
@@ -120,14 +108,14 @@ async def PrintBadges(interaction: Interaction, targetUser: Member, region: str 
 		params=[targetUser.display_name] if not region else [region],
 		eph=True)
 
-async def PrintRelease(interaction: Interaction, name: str):
+async def PrintRelease(interaction: Interaction, params: list):
 	return await discordservice.SendCommandResponse(
 		interaction=interaction, 
 		filename=responseFile, 
 		command='release', 
 		responseInd=0, 
 		color=TrainerColor, 
-		params=[name],
+		params=params,
 		eph=True)
 
 async def PrintDaily(interaction: Interaction, success: bool, boosted: bool, freeMasterball: bool, newWeekly: bool, eggName: str|None):

@@ -5,7 +5,7 @@ from commands.views.Selection.selectors.OwnedSelector import OwnedSelector
 from middleware.decorators import defer
 from models.Trainer import Trainer
 
-from services import pokemonservice, trainerservice
+from services import commandlockservice, pokemonservice, trainerservice
 
 
 class TeamSelectorView(discord.ui.View):
@@ -34,6 +34,7 @@ class TeamSelectorView(discord.ui.View):
 
   async def on_timeout(self):
     await self.message.delete()
+    commandlockservice.DeleteLock(self.trainer.ServerId, self.trainer.UserId)
     return await super().on_timeout()
 
   async def PokemonSelection(self, inter: discord.Interaction, choice: str):
@@ -47,6 +48,7 @@ class TeamSelectorView(discord.ui.View):
   async def cancel_button(self, inter: discord.Interaction,
                         button: discord.ui.Button):
     self.clear_items()
+    commandlockservice.DeleteLock(self.trainer.ServerId, self.trainer.UserId)
     await self.message.edit(content='Canceled team editing.', view=self)
 
   @discord.ui.button(label="Submit", style=discord.ButtonStyle.green)
@@ -56,13 +58,12 @@ class TeamSelectorView(discord.ui.View):
     if not self.pokemonchoice or self.teamslotchoice is None:
       return
 
-    self.clear_items()
     pkmn = next(p for p in self.trainer.OwnedPokemon if p.Id == self.pokemonchoice)
     #removing team member
     if self.teamslotchoice == -1:
       self.trainer.Team = [p for p in self.trainer.Team if p != self.pokemonchoice]
       trainerservice.UpsertTrainer(self.trainer)
-      await self.message.edit(content=f"{pokemonservice.GetPokemonDisplayName(pkmn)} has been removed from your team.", view=self)
+      await self.message.edit(content=f"{pokemonservice.GetPokemonDisplayName(pkmn)} has been removed from your team.", embed=None, view=None)
     #swapping/adding
     else:
       if self.adding and self.teamslotchoice == len(self.trainer.Team):
@@ -70,7 +71,8 @@ class TeamSelectorView(discord.ui.View):
       else:
         message = f"{pokemonservice.GetPokemonDisplayName(pkmn)} was swapped into slot {int(self.teamslotchoice) + 1}"
       trainerservice.SetTeamSlot(self.trainer, self.teamslotchoice, self.pokemonchoice)
-      await self.message.edit(content=message, view=self)
+      await self.message.edit(content=message, embed=None, view=None)
+    commandlockservice.DeleteLock(self.trainer.ServerId, self.trainer.UserId)
 
   async def send(self):
     await self.interaction.followup.send(view=self, ephemeral=True)

@@ -30,18 +30,13 @@ def UpsertTrainer(trainer: Trainer):
 def DeleteTrainer(trainer: Trainer):
   return trainerda.DeleteTrainer(trainer)
 
-def StartTrainer(pokemonId: int, userId: int, serverId: int):
-  if(GetTrainer(serverId, userId)):
-    return None
-  pkmn = pokemonservice.GetPokemonById(pokemonId)
-  if not pkmn:
-    return None
-  spawn = pokemonservice.GenerateSpawnPokemon(pkmn, level=5)
+def StartTrainer(pokemon: PokemonData, serverId: int, userId: int):
+  spawn = pokemonservice.GenerateSpawnPokemon(pokemon, level=5)
   trainer = Trainer.from_dict({
     'UserId': userId,
     'ServerId': serverId,
     'Team': [spawn.Id],
-    'Pokedex': [pkmn.PokedexId],
+    'Pokedex': [pokemon.PokedexId],
     'Health': 50,
     'Money': 500,
     'Pokeballs': { '1': 5, '2': 0, '3': 0, '4': 0 }
@@ -438,7 +433,7 @@ def TryWildFight(trainer: Trainer, trainerPkmnData: PokemonData, wild: Pokemon, 
     return (healthLost,candy)
 
 def TryAddWishlist(trainer: Trainer, pokemonId: int):
-  if len(trainer.Wishlist) >= 5 or pokemonId in trainer.Wishlist:
+  if pokemonId in trainer.Wishlist:
     return False
   trainer.Wishlist.append(pokemonId)
   UpsertTrainer(trainer)

@@ -3,7 +3,7 @@ from commands.views.Selection.selectors.GenericSelector import AmountSelector
 from middleware.decorators import defer
 
 from models.Item import Pokeball, Potion
-from services import itemservice, trainerservice
+from services import commandlockservice, itemservice, trainerservice
 from models.Trainer import Trainer
 from commands.views.Selection.selectors.ShopSelectors import BuySell, ItemChoice
 
@@ -24,6 +24,7 @@ class ShopView(discord.ui.View):
 
 	async def on_timeout(self):
 		await self.message.delete()
+		commandlockservice.DeleteLock(self.trainer.ServerId, self.trainer.UserId)
 		return await super().on_timeout()
 
 	async def BuySellSelection(self, inter: discord.Interaction, choice: str):
@@ -77,19 +78,19 @@ class ShopView(discord.ui.View):
 	async def AmountSelection(self, inter: discord.Interaction, choice: str):
 		self.amountchoice = int(choice)
 
-	@discord.ui.button(label="Cancel", style=discord.ButtonStyle.red)
+	@discord.ui.button(label="Leave", style=discord.ButtonStyle.red)
 	@defer
 	async def cancel_button(self, inter: discord.Interaction,
 												button: discord.ui.Button):
 		self.clear_items()
+		commandlockservice.DeleteLock(self.trainer.ServerId, self.trainer.UserId)
 		await self.message.edit(content='You left the shop.', view=self)
 
-	@discord.ui.button(label="Submit", style=discord.ButtonStyle.green)
+	@discord.ui.button(label="Buy", style=discord.ButtonStyle.green)
 	@defer
 	async def submit_button(self, inter: discord.Interaction,
 												button: discord.ui.Button):
 		if self.buysellchoice and self.itemchoice and self.amountchoice:
-			self.trainer = trainerservice.GetTrainer(self.trainer.ServerId, self.trainer.UserId)
 			buying = self.buysellchoice == 'buy'
 			trainerservice.ModifyItemList(self.trainer, str(self.itemchoice.Id), self.amountchoice if buying else (0 - self.amountchoice))
 			self.trainer.Money += (0 - (self.amountchoice)*self.itemchoice.BuyAmount) if buying else ((self.amountchoice)*self.itemchoice.SellAmount)

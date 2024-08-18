@@ -6,7 +6,7 @@ from globals import Dexmark, PokemonColor
 from middleware.decorators import defer
 from models.Pokemon import Pokemon
 from models.Trainer import Trainer
-from services import pokemonservice, statservice, trainerservice
+from services import commandlockservice, pokemonservice, statservice, trainerservice
 from services.utility import discordservice
 
 
@@ -22,7 +22,8 @@ class PokeShopView(discord.ui.View):
 		super().__init__()
 
 	async def on_timeout(self):
-		await self.message.delete()
+		await self.message.delete(delay=0.1)
+		commandlockservice.DeleteLock(self.trainer.ServerId, self.trainer.UserId)
 		return await super().on_timeout()
 
 	async def send(self):
@@ -42,24 +43,19 @@ class PokeShopView(discord.ui.View):
 	@defer
 	async def cancel_button(self, interaction: discord.Interaction, button: discord.ui.Button):
 		self.clear_items()
-		await self.message.edit(view=self, embed=None, content='Left the PokeShop.')
+		commandlockservice.DeleteLock(self.trainer.ServerId, self.trainer.UserId)
+		await self.message.edit(content='Left the PokeShop.', embed=None, view=None)
 
 	@discord.ui.button(style=discord.ButtonStyle.green ,label='Confirm')
 	@defer
-	async def submit_button(self, interaction: discord.Interaction, button: discord.ui.Button):
-		self.clear_items()
-		self.trainer = trainerservice.GetTrainer(self.trainer.ServerId, self.trainer.UserId)
-		if self.trainer.Money < self.price:
-			return await self.message.edit(view=self, embed=None, content='Not enough money for an exchange.')
-		if "1" not in self.trainer.Items or self.trainer.Items["1"] < self.masterballs:
-			return await self.message.edit(view=self, embed=None, content='Not enough Masterballs for an exchange.')
-		
+	async def submit_button(self, interaction: discord.Interaction, button: discord.ui.Button):		
 		self.trainer.OwnedPokemon.append(self.pokemon)
 		self.trainer.Money -= self.price
-		trainerservice.ModifyItemList(self.trainer, "1", (0-self.masterballs))
+		trainerservice.ModifyItemList(self.trainer.Pokeballs, "1", (0-self.masterballs))
 		trainerservice.TryAddToPokedex(self.trainer, self.pkmndata, self.pokemon.IsShiny)
 		trainerservice.UpsertTrainer(self.trainer)
-		return await self.message.edit(view=self, embed=None, content=f'Obtained one **{pokemonservice.GetPokemonDisplayName(self.pokemon, self.pkmndata)}** for **${self.price}**{" and **20 Masterballs**" if self.pkmndata.Rarity >= 8 else ""}')
+		commandlockservice.DeleteLock(self.trainer.ServerId, self.trainer.UserId)
+		return await self.message.edit(content=f'Obtained one **{pokemonservice.GetPokemonDisplayName(self.pokemon, self.pkmndata)}** for **${self.price}**{" and **20 Masterballs**" if self.pkmndata.Rarity >= 8 else ""}', embed=None, view=None)
 
 	def PokemonDesc(self):
 		mark = Dexmark if ((self.pkmndata.PokedexId in self.trainer.Formdex) if not self.pokemon.IsShiny else (self.pkmndata.Id in self.trainer.Shinydex)) else ''

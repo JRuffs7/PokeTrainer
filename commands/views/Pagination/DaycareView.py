@@ -5,7 +5,7 @@ from globals import DateFormat, TrainerColor
 from middleware.decorators import defer
 from models.Pokemon import Pokemon, PokemonData
 from models.Trainer import Trainer
-from services import pokemonservice, trainerservice
+from services import commandlockservice, pokemonservice, trainerservice
 from services.utility import discordservice
 
 
@@ -29,10 +29,17 @@ class DaycareView(discord.ui.View):
 			self.nextBtn = discord.ui.Button(label=">", style=discord.ButtonStyle.primary, disabled=False, custom_id='next')
 			self.nextBtn.callback = self.page_button
 			self.add_item(self.nextBtn)
+		closeBtn = discord.ui.Button(label="Close", style=discord.ButtonStyle.grey)
+		closeBtn.callback = self.close_button
+		self.add_item(closeBtn)
 
 	async def on_timeout(self):
 		await self.message.delete()
+		commandlockservice.DeleteLock(self.trainer.ServerId, self.trainer.UserId)
 		return await super().on_timeout()
+
+	async def close_button(self, interaction: discord.Interaction):
+		await self.on_timeout()
 
 	async def send(self):
 		await self.interaction.followup.send(view=self)
@@ -62,14 +69,14 @@ class DaycareView(discord.ui.View):
 
 	@defer
 	async def remove_button(self, interaction: discord.Interaction):
-		await self.message.delete(delay=0.01)
 		pkmn = self.pokemon[self.currentPage]
 		data = next(p for p in self.pkmndata if p.Id == pkmn.Pokemon_Id)
 		timeAdded = datetime.strptime(self.trainer.Daycare.pop(pkmn.Id), DateFormat).replace(tzinfo=UTC)
 		minutesSpent = int((datetime.now(UTC) - timeAdded).total_seconds()//60)
 		pokemonservice.AddExperience(pkmn, data, minutesSpent)
 		trainerservice.UpsertTrainer(self.trainer)
-		await interaction.followup.send(content=f'**{pokemonservice.GetPokemonDisplayName(pkmn, data)}** has been removed from the daycare and is now **Level {pkmn.Level}**!', ephemeral=True)
+		commandlockservice.DeleteLock(self.trainer.ServerId, self.trainer.UserId)
+		await self.message.edit(content=f'**{pokemonservice.GetPokemonDisplayName(pkmn, data)}** has been removed from the daycare and is now **Level {pkmn.Level}**!', embed=None, view=None)
 
 	def Description(self, pokemon: Pokemon, pkmnData: PokemonData):
 		timeAdded = datetime.strptime(self.trainer.Daycare[pokemon.Id], DateFormat).replace(tzinfo=UTC)

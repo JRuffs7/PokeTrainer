@@ -4,8 +4,8 @@ from commands.views.GymLeaderView import GymLeaderView
 
 from commands.views.GymView import GymView
 from globals import region_name
-from middleware.decorators import method_logger, trainer_check
-from services import trainerservice, gymservice
+from middleware.decorators import command_lock, method_logger, trainer_check
+from services import commandlockservice, trainerservice, gymservice
 from services.utility import discordservice_gym
 
 class GymCommands(commands.Cog, name="GymCommands"):
@@ -18,6 +18,7 @@ class GymCommands(commands.Cog, name="GymCommands"):
                         description="Battle each gym leader from every region.")
     @method_logger(True)
     @trainer_check
+    @command_lock
     async def gymbattle(self, inter: Interaction):
         trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
         gymleader = gymservice.GetNextTrainerGym(trainer.Badges)
@@ -26,6 +27,7 @@ class GymCommands(commands.Cog, name="GymCommands"):
         if trainer.Money < int(gymleader.Reward/2):
             return await discordservice_gym.PrintGymBattleResponse(inter, 1, [int(gymleader.Reward/2), trainer.Money])
         fightResults = gymservice.GymLeaderFight(trainer, gymleader)
+        commandlockservice.DeleteLock(inter.guild_id, inter.user.id)
         await GymView(inter, gymleader, trainer, fightResults).send()
 
     

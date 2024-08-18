@@ -3,7 +3,7 @@ import discord
 from typing import List
 from middleware.decorators import defer
 
-from services import trainerservice
+from services import commandlockservice, trainerservice
 from models.Pokemon import Pokemon
 from commands.views.Selection.selectors.OwnedSelector import OwnedSelector
 
@@ -18,7 +18,8 @@ class ReleaseView(discord.ui.View):
 		self.add_item(OwnedSelector(pokeList))
 
 	async def on_timeout(self):
-		await self.message.delete()
+		await self.message.delete(delay=0.1)
+		commandlockservice.DeleteLock(self.interaction.guild_id, self.interaction.user.id)
 		return await super().on_timeout()
 
 	async def PokemonSelection(self, inter: discord.Interaction, choices: list[str]):
@@ -28,8 +29,8 @@ class ReleaseView(discord.ui.View):
 	@defer
 	async def cancel_button(self, inter: discord.Interaction,
 												button: discord.ui.Button):
-		self.clear_items()
-		await self.message.edit(content='Canceled release.')
+		commandlockservice.DeleteLock(self.interaction.guild_id, self.interaction.user.id)
+		await self.message.edit(content='Canceled release.', embed=None, view=None)
 
 	@discord.ui.button(label="Submit", style=discord.ButtonStyle.green)
 	@defer
@@ -37,8 +38,8 @@ class ReleaseView(discord.ui.View):
 												button: discord.ui.Button):
 		if self.pokemonchoices:
 			pokemon = trainerservice.ReleasePokemon(trainerservice.GetTrainer(inter.guild_id, inter.user.id), self.pokemonchoices)
-			await self.message.delete(delay=0.01)
-			await inter.followup.send(content=f"You have released {len(self.pokemonchoices)} {pokemon}",ephemeral=True)
+			commandlockservice.DeleteLock(self.interaction.guild_id, self.interaction.user.id)
+			await self.message.edit(content=f"You have released {len(self.pokemonchoices)} {pokemon}", embed=None, view=None)
 
 	async def send(self):
 		await self.interaction.followup.send(view=self)

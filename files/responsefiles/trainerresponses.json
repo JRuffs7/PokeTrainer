@@ -56,11 +56,11 @@
 		},
 		{
 			"Title": "Invalid Pokemon",
-			"Body": "You do not own any Pokemon with the name {0}."
+			"Body": "You do not own any Pokemon with the name **{0}**."
 		},
 		{
 			"Title": "Cannot Modify Team",
-			"Body": "{0} is already in your team, and you have no duplicates in the box.\nSelect a different Pokemon, or run the command without specifying to change the team order."
+			"Body": "**{0}** is already in your team, and you have no duplicates in the box.\nSelect a different Pokemon, or run the command without specifying to change the team order."
 		}
 	],
 	"myeggs": [
@@ -78,7 +78,7 @@
 	"release": [
 		{
 			"Title": "Invalid Pokemon",
-			"Body": "You do not own any Pokemon with the name {0} or this Pokemon is currently in your team."
+			"Body": "You do not own any **{0}** or this Pokemon is currently in your team."
 		}
 	],
 	"starter": [

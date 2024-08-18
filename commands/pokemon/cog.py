@@ -17,8 +17,9 @@ import discordbot
 
 from commands.views.Selection.EvolveView import EvolveView
 from globals import AdminList
+from middleware.decorators import command_lock, method_logger, trainer_check
+from services import commandlockservice, pokemonservice, statservice, trainerservice, zoneservice
 from middleware.decorators import method_logger, trainer_check
-from services import pokemonservice, statservice, trainerservice, zoneservice
 from services.utility import discordservice_pokemon
 
 
@@ -36,31 +37,34 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
                         description="Spawn an Pokemon to capture or fight.")
   @method_logger(True)
   @trainer_check
+  @command_lock
   async def spawn(self, inter: Interaction):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
-    print(trainer.__dict__)
-    pokemon = pokemonservice.SpawnPokemon(
-      None if trainer.CurrentZone == 0 else zoneservice.GetZone(trainer.CurrentZone),
-      max([b for b in trainer.Badges if b < 1000]) if len(trainer.Badges) > 0 else 0,
-      #Voltage Reward
-      trainerservice.GetShinyOdds(trainer)
-    )
-    trainerservice.EggInteraction(trainer)
     if inter.user.id in AdminList or trainerservice.CanCallSpawn(trainer):
+      pokemon = pokemonservice.SpawnPokemon(
+        None if trainer.CurrentZone == 0 else zoneservice.GetZone(trainer.CurrentZone),
+        max([b for b in trainer.Badges if b < 1000]) if len(trainer.Badges) > 0 else 0,
+        #Voltage Reward
+        trainerservice.GetShinyOdds(trainer)
+      )
+      trainerservice.EggInteraction(trainer)
       await SpawnPokemonView(inter, trainer, pokemon).send()
     else:
+      commandlockservice.DeleteLock(inter.guild_id, inter.user.id)
       return await discordservice_pokemon.PrintSpawnResponse(inter, 0, [trainer.LastSpawnTime])
 
   @app_commands.command(name="hatch",
                         description="Hatch one or more of your eggs.")
   @method_logger(True)
   @trainer_check
+  @command_lock
   async def hatch(self, inter: Interaction):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
     hatchable = [e for e in trainer.Eggs if trainerservice.CanEggHatch(e)]
     if hatchable:
       await HatchView(inter, trainer, hatchable).send()
     else:
+      commandlockservice.DeleteLock(inter.guild_id, inter.user.id)
       return await discordservice_pokemon.PrintHatchResponse(inter, 0 if trainer.Eggs else 1)
 
   @app_commands.command(name="wishlist",
@@ -68,51 +72,60 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
   @app_commands.autocomplete(pokemon=autofill_special)
   @method_logger(True)
   @trainer_check
+  @command_lock
   async def wishlist(self, inter: Interaction, pokemon: int = None):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
 
     #Viewing Wishlist
     if not pokemon:
       if len(trainer.Wishlist) == 0:
-        return await discordservice_pokemon.PrintWishlistResponse(inter, 1, [])
-      return await WishlistView(inter, trainer).send()
-    
+        await discordservice_pokemon.PrintWishlistResponse(inter, 1, [])
+      else:
+        return await WishlistView(inter, trainer).send()
+    else:
     #Adding To Wishlist
-    if len(trainer.Wishlist) >= 5:
-      return await discordservice_pokemon.PrintWishlistResponse(inter, 2, [])
-    
-    pkmn = pokemonservice.GetPokemonById(pokemon)
-    if not pkmn or not pokemonservice.IsSpecialSpawn(pkmn):
-      return await discordservice_pokemon.PrintWishlistResponse(inter, 4, pkmn.Name if pkmn else 'N/A')
-
-    return await discordservice_pokemon.PrintWishlistResponse(
-      inter, 
-      0 if trainerservice.TryAddWishlist(trainer, pokemon) else 3,
-      pokemonservice.GetPokemonById(pokemon).Name
-    )
+      if len(trainer.Wishlist) >= 5:
+        await discordservice_pokemon.PrintWishlistResponse(inter, 2, [])
+      else:
+        pkmn = pokemonservice.GetPokemonById(pokemon)
+        if not pkmn or not pokemonservice.IsSpecialSpawn(pkmn):
+          await discordservice_pokemon.PrintWishlistResponse(inter, 4, pkmn.Name if pkmn else 'N/A')
+        else:
+          await discordservice_pokemon.PrintWishlistResponse(
+            inter, 
+            0 if trainerservice.TryAddWishlist(trainer, pokemon) else 3,
+            pokemonservice.GetPokemonById(pokemon).Name
+          )
+    commandlockservice.DeleteLock(inter.guild_id, inter.user.id)
 
   @app_commands.command(name="pokeshop",
                         description="Buy a specific Pokemon in exchange for Money or Pokeballs.")
   @app_commands.autocomplete(pokemon=autofill_pokemon_legendary_spawn)
   @method_logger(True)
   @trainer_check
+  @command_lock
   async def pokeshop(self, inter: Interaction, pokemon: int):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
     if trainer.Money <= 0:
-      return await discordservice_pokemon.PrintPokeShopResponse(inter, 0)
-    pkmn = pokemonservice.GetPokemonById(pokemon)
-    if not pkmn:
-      return await discordservice_pokemon.PrintPokeShopResponse(inter, 1)
-    if not pokemonservice.IsLegendaryPokemon(pkmn) or pokemonservice.GetPreviousStages(pkmn):
-      return await discordservice_pokemon.PrintPokeShopResponse(inter, 2, pkmn.Name)
-    if trainer.Money < pokemonservice.GetShopValue(pkmn):
-      return await discordservice_pokemon.PrintPokeShopResponse(inter, 3, pkmn.Name)
-    if "1" not in trainer.Items or trainer.Items["1"] < 20:
-      return await discordservice_pokemon.PrintPokeShopResponse(inter, 4, pkmn.Name)
-    spawn = pokemonservice.GenerateSpawnPokemon(pkmn, level=1)
-    spawn.IsShiny = (spawn.IsShiny and trainer.Money >= pokemonservice.GetShopValue(pkmn)*2 and trainer.Items["1"] >= 30)
-
-    return await PokeShopView(inter, trainer, spawn).send()
+      await discordservice_pokemon.PrintPokeShopResponse(inter, 0)
+    else:
+      pkmn = pokemonservice.GetPokemonById(pokemon)
+      if not pkmn:
+        await discordservice_pokemon.PrintPokeShopResponse(inter, 1)
+      else:
+        if not pokemonservice.IsLegendaryPokemon(pkmn) or pokemonservice.GetPreviousStages(pkmn):
+          await discordservice_pokemon.PrintPokeShopResponse(inter, 2, pkmn.Name)
+        else:
+          if trainer.Money < pokemonservice.GetShopValue(pkmn):
+            await discordservice_pokemon.PrintPokeShopResponse(inter, 3, pkmn.Name)
+          else:
+            if "1" not in trainer.Items or trainer.Items["1"] < 20:
+              await discordservice_pokemon.PrintPokeShopResponse(inter, 4, pkmn.Name)
+            else:
+              spawn = pokemonservice.GenerateSpawnPokemon(pkmn, level=1)
+              spawn.IsShiny = (spawn.IsShiny and trainer.Money >= pokemonservice.GetShopValue(pkmn)*2 and trainer.Items["1"] >= 30)
+              return await PokeShopView(inter, trainer, spawn).send()
+    commandlockservice.DeleteLock(inter.guild_id, inter.user.id)
 
   #endregion
 
@@ -235,6 +248,7 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
   @app_commands.autocomplete(pokemon=autofill_owned)
   @method_logger(True)
   @trainer_check
+  @command_lock
   async def nickname(self, inter: Interaction, pokemon: int):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
     pkmnList = [p for p in trainer.OwnedPokemon if p.Pokemon_Id == pokemon]
@@ -263,15 +277,15 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
   @app_commands.autocomplete(pokemon=autofill_evolve)
   @method_logger(True)
   @trainer_check
+  @command_lock
   async def evolve(self, inter: Interaction, pokemon: int | None):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
     pokeList = pokemonservice.GetPokemonThatCanEvolve(trainer, [p for p in trainer.OwnedPokemon if (p.Pokemon_Id == pokemon if pokemon else True)])
     if not pokeList:
       pkmn = pokemonservice.GetPokemonById(pokemon)
+      commandlockservice.DeleteLock(inter.guild_id, inter.user.id)
       return await discordservice_pokemon.PrintEvolveResponse(inter, 1 if pokemon else 0, pkmn.Name if pkmn else 'N/A')
-
-    evolveView = EvolveView(inter, trainer, pokeList)
-    return await evolveView.send()
+    return await EvolveView(inter, trainer, pokeList).send()
 
 
   async def autofill_candy(self, inter: Interaction, current: str):
@@ -292,16 +306,19 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
   @app_commands.autocomplete(pokemon=autofill_candy)
   @method_logger(True)
   @trainer_check
+  @command_lock
   async def givecandy(self, inter: Interaction, pokemon: int):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
     if not trainerservice.GetTrainerItemList(trainer, 2): 
-      return await discordservice_pokemon.PrintGiveCandyResponse(inter, 0, [])
-    pokeList = [p for p in trainer.OwnedPokemon if p.Pokemon_Id == pokemon and p.Level < 100]
-    if not pokeList:
-      return await discordservice_pokemon.PrintGiveCandyResponse(inter, 1, [pokemonservice.GetPokemonById(pokemon).Name])
-
-    candyView = CandyView(inter, trainer, pokeList)
-    return await candyView.send()
+      await discordservice_pokemon.PrintGiveCandyResponse(inter, 0, [])
+    else:
+      pokeList = [p for p in trainer.OwnedPokemon if p.Pokemon_Id == pokemon and p.Level < 100]
+      if not pokeList:
+        pkmn = pokemonservice.GetPokemonById(pokemon)
+        await discordservice_pokemon.PrintGiveCandyResponse(inter, 1, [pkmn.Name] if pkmn else ['N/A'])
+      else:
+        return await CandyView(inter, trainer, pokeList).send()
+    commandlockservice.DeleteLock(inter.guild_id, inter.user.id)
 
 
   @app_commands.command(name="daycare",
@@ -309,25 +326,29 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
   @app_commands.autocomplete(pokemon=autofill_nonteam)
   @method_logger(True)
   @trainer_check
+  @command_lock
   async def daycare(self, inter: Interaction, pokemon: int|None):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
 
     #Viewing Daycare
     if not pokemon:
       if len(trainer.Daycare) == 0:
-        return await discordservice_pokemon.PrintDaycareResponse(inter, 0, [])
-      return await DaycareView(inter, trainer).send()
-    
-    #Adding To Daycare
-    #Kalos Reward
-    if len(trainer.Daycare) >= (4 if trainerservice.HasRegionReward(trainer, 6) else 2):
-      return await discordservice_pokemon.PrintDaycareResponse(inter, 1, [])
-    
-    pokeList = [p for p in trainer.OwnedPokemon if p.Pokemon_Id == pokemon]
-    if not pokeList:
-      return await discordservice_pokemon.PrintDaycareResponse(inter, 2, [pokemonservice.GetPokemonById(pokemon).Name])
-
-    return await DaycareAddView(inter, trainer, pokeList).send()
+        await discordservice_pokemon.PrintDaycareResponse(inter, 0, [])
+      else:
+        return await DaycareView(inter, trainer).send()
+    else:
+      #Adding To Daycare
+      #Kalos Reward
+      if len(trainer.Daycare) >= (4 if trainerservice.HasRegionReward(trainer, 6) else 2):
+        await discordservice_pokemon.PrintDaycareResponse(inter, 1, [])
+      else:
+        pokeList = [p for p in trainer.OwnedPokemon if p.Pokemon_Id == pokemon]
+        if not pokeList:
+          pkmn = pokemonservice.GetPokemonById(pokemon)
+          await discordservice_pokemon.PrintDaycareResponse(inter, 2, [pkmn.Name] if pkmn else ['N/A'])
+        else:
+          return await DaycareAddView(inter, trainer, pokeList).send()
+    commandlockservice.DeleteLock(inter.guild_id, inter.user.id)
 
   #endregion
 

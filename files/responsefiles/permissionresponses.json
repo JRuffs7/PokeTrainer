@@ -8,7 +8,7 @@
 	"commandlock": [
 		{
 			"Title": "Commands Locked",
-			"Body": "You are currently in an interaction that prevents use of this command. Complete the other interaction, then try again."
+			"Body": "You are currently in an interaction that prevents use of this command. Complete the other command, then try again."
 		}
 	],
 	"server": [

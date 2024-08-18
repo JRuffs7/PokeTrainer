@@ -2,17 +2,18 @@ from datetime import datetime
 from discord import Member, app_commands, Interaction
 from discord.ext import commands
 from commands.views.Pagination.InventoryView import InventoryView
-from globals import freemasterball
+from globals import HelpColor, TrainerColor, freemasterball
 from commands.autofills.autofills import autofill_nonteam, autofill_owned, autofill_types, autofill_zones
 from commands.views.Pagination.EggView import EggView
 from commands.views.Pagination.MyPokemonView import MyPokemonView
 from commands.views.Selection.TeamSelectorView import TeamSelectorView
 from commands.views.Selection.ReleaseView import ReleaseView
 from commands.views.Pagination.BadgeView import BadgeView
+from commands.views.DeleteView import DeleteView
 
-from middleware.decorators import method_logger, trainer_check
-from services import gymservice, pokemonservice, statservice, trainerservice, itemservice, zoneservice
-from services.utility import discordservice_trainer
+from middleware.decorators import command_lock, method_logger, trainer_check
+from services import commandlockservice, gymservice, pokemonservice, statservice, trainerservice, itemservice, zoneservice
+from services.utility import discordservice, discordservice_trainer
 
 
 class TrainerCommands(commands.Cog, name="TrainerCommands"):
@@ -51,27 +52,33 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
   @app_commands.autocomplete(potion=autofill_usepotion)
   @method_logger(True)
   @trainer_check
+  @command_lock
   async def usepotion(self, inter: Interaction, potion: int):
     if potion not in [p.Id for p in itemservice.GetAllPotions()]:
-      return await discordservice_trainer.PrintUsePotion(inter, 0, [])
-    trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
-    ptn = itemservice.GetPotion(potion)
-    if str(potion) not in trainer.Items or trainer.Items[str(potion.Id)] == 0:
-      return await discordservice_trainer.PrintUsePotion(inter, 1, [ptn.Name])
-    result = trainerservice.TryUsePotion(trainer, ptn)
-    return await discordservice_trainer.PrintUsePotion(inter, 3 if result > 0 else 2, [ptn.Name, result] if result > 0 else [ptn.Name])
+      await discordservice_trainer.PrintUsePotion(inter, 0, [])
+    else:
+      trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
+      ptn = itemservice.GetPotion(potion)
+      if str(potion) not in trainer.Items or trainer.Items[str(potion.Id)] == 0:
+        await discordservice_trainer.PrintUsePotion(inter, 1, [ptn.Name])
+      else:
+        result = trainerservice.TryUsePotion(trainer, ptn)
+        await discordservice_trainer.PrintUsePotion(inter, 3 if result > 0 else 2, [ptn.Name, result] if result > 0 else [ptn.Name])
+    commandlockservice.DeleteLock(inter.guild_id, inter.user.id)
 
   @app_commands.command(name="daily",
                         description="Claim your daily reward.")
   @method_logger(False)
   @trainer_check
-  async def daily(self, interaction: Interaction):
-    trainer = trainerservice.GetTrainer(interaction.guild_id, interaction.user.id)
+  @command_lock
+  async def daily(self, inter: Interaction):
+    trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
     currentWeekly = trainer.WeeklyMission.DayStarted if trainer.WeeklyMission else None
     freeMasterball = datetime.today().date() == freemasterball.date()
     dailyResult = trainerservice.TryDaily(trainer, freeMasterball)
+    commandlockservice.DeleteLock(inter.guild_id, inter.user.id)
     return await discordservice_trainer.PrintDaily(
-      interaction, 
+      inter, 
       dailyResult >= 0, 
       trainerservice.HasRegionReward(trainer, 5),
       freeMasterball,
@@ -104,20 +111,22 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
   @app_commands.autocomplete(zone=autofill_zones)
   @method_logger(True)
   @trainer_check
+  @command_lock
   async def changezone(self, inter: Interaction, zone: int):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
     zoneData = zoneservice.GetZone(zone)
     if trainer.CurrentZone == zone:
-      return await discordservice_trainer.PrintChangeZone(inter, 0 if zone != 0 else 2, [zoneData.Name])
-    
-    trainer.CurrentZone = zone
-    trainerservice.UpsertTrainer(trainer)
-    zoneTypes = [statservice.GetType(t).Name for t in zone.Types] if zone.Id != 0 else ["All"]
-    zoneTypes.sort()
-    if zone == 0:
-      await discordservice_trainer.PrintChangeZone(inter, 2, [])
+      await discordservice_trainer.PrintChangeZone(inter, 0 if zone != 0 else 2, [zoneData.Name])
     else:
-      await discordservice_trainer.PrintChangeZone(inter, 1, ['/'.join(zoneTypes), zoneData.Name])
+      trainer.CurrentZone = zone
+      trainerservice.UpsertTrainer(trainer)
+      zoneTypes = [statservice.GetType(t).Name for t in zone.Types] if zone.Id != 0 else ["All"]
+      zoneTypes.sort()
+      if zone == 0:
+        await discordservice_trainer.PrintChangeZone(inter, 2, [])
+      else:
+        await discordservice_trainer.PrintChangeZone(inter, 1, ['/'.join(zoneTypes), zoneData.Name])
+    commandlockservice.DeleteLock(inter.guild_id, inter.user.id)
     
 
   @app_commands.command(name="inventory",
@@ -138,19 +147,21 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
   @app_commands.autocomplete(pokemon=autofill_nonteam)
   @method_logger(True)
   @trainer_check
+  @command_lock
   async def modifyteam(self, inter: Interaction, pokemon: int | None):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
+    pkmn = pokemonservice.GetPokemonById(pokemon)
     if len(trainer.OwnedPokemon) == 1:
-      return await discordservice_trainer.PrintModifyTeam(inter, 0, pokemon)
+      await discordservice_trainer.PrintModifyTeam(inter, 0, [])
     elif len(trainer.Team) == 1 and not pokemon:
-      return await discordservice_trainer.PrintModifyTeam(inter, 1, pokemon)
+      await discordservice_trainer.PrintModifyTeam(inter, 1, [])
     elif pokemon and pokemon not in [p.Pokemon_Id for p in trainer.OwnedPokemon]:
-      return await discordservice_trainer.PrintModifyTeam(inter, 2, pokemon)
+      await discordservice_trainer.PrintModifyTeam(inter, 2, [pkmn.Name] if pkmn else ['N/A'])
     elif pokemon and pokemon not in [p.Pokemon_Id for p in [p for p in trainer.OwnedPokemon if p.Id not in trainer.Team]]:
-      return await discordservice_trainer.PrintModifyTeam(inter, 3, pokemon)
-
-    teamSelect = TeamSelectorView(inter, trainer, pokemon)
-    await teamSelect.send()
+      await discordservice_trainer.PrintModifyTeam(inter, 3, [pkmn.Name] if pkmn else ['N/A'])
+    else:
+      return await TeamSelectorView(inter, trainer, pokemon).send()
+    commandlockservice.DeleteLock(inter.guild_id, inter.user.id)
 
   @app_commands.command(name="myteam",
                         description="View your current team.")
@@ -276,15 +287,17 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
   @app_commands.autocomplete(pokemon=autofill_nonteam)
   @method_logger(True)
   @trainer_check
+  @command_lock
   async def release(self, inter: Interaction,
                     pokemon: int):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
     result = [x for x in trainer.OwnedPokemon if x.Pokemon_Id == pokemon and x.Id not in trainer.Team]
     if not result:
-      return await discordservice_trainer.PrintRelease(inter, pokemonservice.GetPokemonById(pokemon).Name)
+      pkmn = pokemonservice.GetPokemonById(pokemon)
+      commandlockservice.DeleteLock(inter.guild_id, inter.user.id)
+      return await discordservice_trainer.PrintRelease(inter, [pkmn.Name] if pkmn else ['N/A'])
 
-    releaseSelect = ReleaseView(inter, result)
-    await releaseSelect.send()
+    return await ReleaseView(inter, result).send()
 
   #endregion
 
@@ -306,10 +319,32 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
   @app_commands.autocomplete(pokemon=starter_autocomplete)
   @method_logger(False)
   async def starter(self, inter: Interaction, pokemon: int):
-    if pokemon not in [p.Id for p in pokemonservice.GetStarterPokemon()]:
-      return await discordservice_trainer.PrintStarter(inter, None, inter.guild.name)
-    trainer = trainerservice.StartTrainer(pokemon, inter.user.id, inter.guild_id)
-    return await discordservice_trainer.PrintStarter(inter, trainer, inter.guild.name)
+    pkmn = pokemonservice.GetPokemonById(pokemon)
+    if trainerservice.GetTrainer(inter.guild_id, inter.user.id):
+      return await discordservice_trainer.PrintStarter(inter, 0, inter.guild.name)
+    elif not pkmn or not pkmn.IsStarter:
+      return await discordservice_trainer.PrintStarter(inter, 0, inter.guild.name)
+
+    trainer = trainerservice.StartTrainer(pkmn, inter.guild_id, inter.user.id)
+    embed = discordservice.CreateEmbed(
+        f"{inter.user.display_name}'s Journey Begins!",
+        f"Starter: {pokemonservice.GetPokemonDisplayName(trainer.OwnedPokemon[0], pkmn)}\nStarting Money: ${trainer.Money}\nStarting Pokeballs: 5",
+        TrainerColor)
+    embed.set_image(url=pokemonservice.GetPokemonImage(trainer.OwnedPokemon[0], pkmn))
+    await discordservice.SendEmbed(inter, embed)
+    embed2 = discordservice.CreateEmbed(
+          f"Welcome to PokeTrainer!",
+          f"You just began your journey in the server {inter.guild.name}. Use commands such as **/spawn** to interact with the bot! More interactions can be found using the **/help** command. Don't forget your **/daily** reward!",
+          HelpColor)
+    await discordservice.SendDMs(inter, [embed2])
+
+  @app_commands.command(name="delete",
+                        description="Delete all your PokeTrainer data :(")
+  @method_logger(True)
+  @trainer_check
+  @command_lock
+  async def delete(self, inter: Interaction):
+    return await DeleteView(inter, trainerservice.GetTrainer(inter.guild_id, inter.user.id)).send()
 
   #endregion
 

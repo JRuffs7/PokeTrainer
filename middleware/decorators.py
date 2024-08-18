@@ -3,7 +3,7 @@ import logging
 import functools
 
 from globals import AdminList
-from services import serverservice, trainerservice
+from services import commandlockservice, serverservice, trainerservice
 from services.utility import discordservice_permission
 
 
@@ -83,9 +83,7 @@ def command_lock(function):
   @functools.wraps(function)
   async def wrapper(self, *args, **kwargs):
     inter = args[0]
-    userId = inter.user.id
-    serverId = inter.guild_id
-    if trainerservice.CheckTrainerLock(serverId, userId):
+    if not commandlockservice.AddLock(inter.guild_id, inter.user.id):
       await discordservice_permission.SendError(inter, 'commandlock')
       return
     return await function(self, *args, **kwargs)

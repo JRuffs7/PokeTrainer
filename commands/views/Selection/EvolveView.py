@@ -2,7 +2,7 @@ from random import choice
 import discord
 from middleware.decorators import defer
 
-from services import itemservice, trainerservice, pokemonservice
+from services import commandlockservice, itemservice, trainerservice, pokemonservice
 from models.Pokemon import Pokemon, PokemonData
 from models.Trainer import Trainer
 from commands.views.Selection.selectors.OwnedSelector import OwnedSelector
@@ -25,6 +25,7 @@ class EvolveView(discord.ui.View):
 
 	async def on_timeout(self):
 		await self.message.delete()
+		commandlockservice.DeleteLock(self.trainer.ServerId, self.trainer.UserId)
 		return await super().on_timeout()
 
 	async def EvolveSelection(self, inter: discord.Interaction, evchoice: str):
@@ -72,8 +73,8 @@ class EvolveView(discord.ui.View):
 	@defer
 	async def cancel_button(self, inter: discord.Interaction,
 												button: discord.ui.Button):
-		self.clear_items()
-		await self.message.edit(content='Canceled evolution.', view=self)
+		commandlockservice.DeleteLock(self.trainer.ServerId, self.trainer.UserId)
+		await self.message.edit(content='Canceled evolution.', view=None)
 
 	@discord.ui.button(label="Submit", style=discord.ButtonStyle.green)
 	@defer
@@ -81,9 +82,9 @@ class EvolveView(discord.ui.View):
 												button: discord.ui.Button):
 		if self.pokemonchoice and self.evolvechoice:
 			evPkmn = trainerservice.Evolve(self.trainer, self.pokemonchoice, self.pkmnChoiceData, self.evolvechoice)
-			self.clear_items()
 			displayMon = Pokemon.from_dict({'IsFemale': evPkmn.IsFemale, 'IsShiny': evPkmn.IsShiny, 'Pokemon_Id': self.evolvechoice.EvolveID})
-			await self.message.edit(content=f"**{pokemonservice.GetPokemonDisplayName(self.pokemonchoice, self.pkmnChoiceData)}** evolved into **{pokemonservice.GetPokemonDisplayName(displayMon)}**", view=self)
+			await self.message.edit(content=f"**{pokemonservice.GetPokemonDisplayName(self.pokemonchoice, self.pkmnChoiceData)}** evolved into **{pokemonservice.GetPokemonDisplayName(displayMon)}**", embed=None, view=None)
+			commandlockservice.DeleteLock(self.trainer.ServerId, self.trainer.UserId)
 
 	async def send(self):
 		await self.interaction.followup.send(view=self)
