@@ -1,4 +1,2 @@
-- Removed ??? Arceus from the **/pokeshop**
-- You can no longer see Gym Leader details just for attempting the battle
-- Added more region rewards. Check out **/help regionreward** for more details
-- Added a Living Dex to the trainer stats
+- To prevent loopholes in terms of random evolutions, temporary locks have been put in place. Use **/help commandlock** for more information
+- A new command has been added to **/delete** your trainer. Use **/help delete** for more information

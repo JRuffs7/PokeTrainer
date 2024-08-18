@@ -51,6 +51,12 @@
       "RequiresAdmin": false
     },
     {
+      "Name": "delete",
+      "ShortString": "Delete your PokeTrainer data.",
+      "HelpString": "Proper command usage: **/delete**\n\nThis command is used to remove all data related to this trainer within the current server. The user can always run **/starter** to begin their journey anew!",
+      "RequiresAdmin": false
+    },
+    {
       "Name": "inventory",
       "ShortString": "Page-by-page display of owned items.",
       "HelpString": "Proper command usage: **/inventory**\n\nThis command displays 4 different pages of items in the users inventory:\n- Pokeballs\n- Potions\n- Candy\n- Evolution Items",
@@ -232,6 +238,12 @@
       "Name": "fight",
       "ShortString": "",
       "HelpString": "There are three types of fights that a trainer can partake in: trainer fights, wild fights and gym battles.\n\n**__Trainer Fights__**\nSpecial Trainers may arrive during event spawns and will use this style of fighting to determine who is victorious. There will be a fight (⚔️) reaction to initiate the fight with your current team. If you lose the fight, there is no penalty but you will not be able to challenge the trainer again.\n\nSimilar to the other fights, rarity, type matchup, and level are all used to determine which Pokemon wins each match. However, in these fights it goes both ways. This means each Pokemon will take a \"turn\" fighting and based on who has the more favorable outcome, a victor will be shown. There is not **/battlesim** for these fights, but you can get a vague idea by simulating a wild fight. Levels for the opponents Pokemon will be given during events.\n\nNOTE: If the event fights work out as planned, this fighting style will be used for trainer vs trainer battles in the future!\n\n**__Wild Fight__**\nWhen a Pokemon spawns, there is a reaction available to fight it (⚔️). This will provide money ($25) and experience to the Pokemon you choose to fight. You must have some amount of HP to expend for a fight to occur, the command will warn you if your HP is low.\n\nFighting results are based off of 3 different comparisons: typing matchup, level, and rarity. When a trainer fights a wild Pokemon, they are always on the offensive. This means every typing check is based off of the trainer's Pokemon being the attacker and the wild Pokemon being the defender.\n\nLosing 10hp or more will consider the battle lost and will reward no experience or money.\n\nNOTE: Pokemon levels can reduce/increase the amount of health lost depending on the scale.\n\n**__Gym Battle__**\nWhen you trigger a gym battle by using **/gymbattle**, the fight is slightly different compared to a wild fight. It does not cost HP to fight a gym leader, but money instead. More can be seen through **/help gymbattle**.\n\nThe fight results are based off of similar comparisons: typing matchup and rarity, with level being a last resort factor in most cases. Gym Leader Levels are as such:\n- First Stage: **Level 15**\n- Second Stage/No Evolution: **Level 25**\n- Final Stage: **Level 35**\n- Voltage Gym: **Level 100**\nThe gym battle will start from the first slot of each team, eliminating one Pokemon per round until a team is wiped out.\n\n\nFor a deeper dive on fights, you can use **/battlesim** to mock a wild or gym battle.",
+      "RequiresAdmin": false
+    },
+    {
+      "Name": "lock",
+      "ShortString": "",
+      "HelpString": "Due to how the data of PokeTrainer is kept and updated, there were ways to circumvent certain actions and \"rewind\" time to a previous state. Locks for commands have been put in place so that if you are using a command that has the potential to edit your data, it will prevent you from using another command of the same nature.\n\nDue to this now being in place **DO NOT DISMISS MESSAGES** instead of using the interaction buttons. If you do, there is a possibility that you will be locked from using certain commands for up to **5 minutes**.\n\nIf you experience any issue, please report them to the [Discord Server](https://discord.com/invite/W9T4K7fyYu).",
       "RequiresAdmin": false
     },
     {
