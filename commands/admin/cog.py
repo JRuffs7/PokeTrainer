@@ -102,13 +102,13 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 
 	@commands.command(name="addpokemon")
 	@is_bot_admin
-	async def addpokemon(self, ctx: commands.Context, pokemonId: int, user: Member = None):
+	async def addpokemon(self, ctx: commands.Context, pokemonId: int, level: int, user: Member = None):
 		if not ctx.guild:
 			return
 		trainer = trainerservice.GetTrainer(ctx.guild.id, user.id if user else ctx.author.id)
 		pokemon = pokemonservice.GetPokemonById(pokemonId)
 		if trainer and pokemon:
-			newPkmn = pokemonservice.GenerateSpawnPokemon(pokemon, SuperShinyOdds, 1)
+			newPkmn = pokemonservice.GenerateSpawnPokemon(pokemon, SuperShinyOdds, level)
 			newPkmn.Level = 1
 			trainer.OwnedPokemon.append(newPkmn)
 			trainerservice.UpsertTrainer(trainer)
@@ -124,8 +124,11 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 
 	@commands.command(name="testfight")
 	@is_bot_admin
-	async def testfight(self, ctx: commands.Context, pokemon1: int, level1: int, pokemon2: int, level2: int):
-		await ctx.send(battleservice.TeamFight([{'Level': level1, 'Data': pokemonservice.GetPokemonById(pokemon1)}], [{'Level': level2, 'Data': pokemonservice.GetPokemonById(pokemon2)}]))
+	async def testfight(self, ctx: commands.Context, pokemon1: int, pokemon2: int = None, pokemon3: int = None, pokemon4: int = None, pokemon5: int = None, pokemon6: int = None):
+		trainer = trainerservice.GetTrainer(ctx.guild.id, ctx.author.id)
+		
+		enemyTeam = pokemonservice.GetPokemonByIdList([p for p in [pokemon1, pokemon2, pokemon3, pokemon4, pokemon5, pokemon6] if p])
+
 
 	#endregion
 

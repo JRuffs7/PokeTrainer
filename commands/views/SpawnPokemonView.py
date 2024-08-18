@@ -111,7 +111,7 @@ class SpawnPokemonView(discord.ui.View):
 	def PokemonDesc(self):
 		hasDexmark = Dexmark if ((self.pkmndata.PokedexId in self.trainer.Pokedex) if not self.pokemon.IsShiny else (self.pkmndata.Id in self.trainer.Shinydex)) else ''
 		hasFormmark = Formmark if ((self.pkmndata.Id in self.trainer.Formdex) if not self.pokemon.IsShiny else False) else ''
-		return f"Level: {self.pokemon.Level}\nDex: {f"{hasDexmark}{hasFormmark} " if hasDexmark or hasFormmark else ""}\nType(s): {'/'.join([statservice.GetType(t).Name for t in self.pkmndata.Types])}"
+		return f"Level: {self.pokemon.Level}\nDex: {f'{hasDexmark}{hasFormmark} ' if hasDexmark or hasFormmark else ''}\nType(s): {'/'.join([statservice.GetType(t).Name for t in self.pkmndata.Types])}"
 
 	async def send(self):
 		if not self.pokemon:
