@@ -106,7 +106,6 @@ async def StartBot():
           await SpecialSpawnEventView(server, channel, spawnPkmn).send(wishUsers)
     except Exception as e:
       errorLogger.error(f'Server {server.ServerName} Event: {e}')
-      serverservice.DeleteServer(server)
 
   for f in os.listdir("commands"):
     if os.path.exists(os.path.join("commands", f, "cog.py")):

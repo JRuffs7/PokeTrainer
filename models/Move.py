@@ -1,6 +1,6 @@
 from models.Base import Base
 
-class Move(Base):
+class MoveData(Base):
 	BasePP: int|None
 	Accuracy: int|None
 	Power: int|None
@@ -21,4 +21,4 @@ class Move(Base):
 	Cost: int|None
 
 	def __init__(self, dict):
-		super(Move, self).__init__(dict)
+		super(MoveData, self).__init__(dict)

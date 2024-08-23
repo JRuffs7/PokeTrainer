@@ -1,59 +1,95 @@
+import math
 from random import choice
 from dataaccess import moveda
-from models.Battle import Battle
-from models.Pokemon import Pokemon, PokemonData
-from models.Move import Move
+from models.Battle import BattleAction, CpuBattle
+from models.Pokemon import Move, Pokemon, PokemonData
+from models.Move import MoveData
 from models.Stat import StatEnum
 from services import pokemonservice, statservice, typeservice
+from services.utility import battleai
 
 
-def GetMovesById(ids: list[int]):
-	return moveda.GetMovesByProperty(ids, 'Id')
+def FleeAttempt(battle: CpuBattle, attempts: int):
+	trainerData = next(p for p in battle.AllPkmnData if p.Id == battle.TeamAPkmn.Pokemon_Id)
+	cpuData = next(p for p in battle.AllPkmnData if p.Id == battle.TeamBPkmn.Pokemon_Id)
+	if statservice.GenerateStat(battle.TeamAPkmn, trainerData, StatEnum.Speed) >= statservice.GenerateStat(battle.TeamBPkmn, cpuData, StatEnum.Speed):
+		return True
+	speedCalc = math.floor((statservice.GenerateStat(battle.TeamAPkmn, trainerData, StatEnum.Speed)*32)/(statservice.GenerateStat(battle.TeamBPkmn, cpuData, StatEnum.Speed)/4))
+	totalCalc = (speedCalc+30*attempts)/256
+	if totalCalc > 255:
+		return True
+	return choice(range(256)) < totalCalc
 
-def Attack(move: Move, battle: Battle, teamA: bool):
-	dmgA = ((2*battle.TeamAPokemon.Level)/5) + 2
-	dmgB = statservice.GenerateStat(battle.TeamAPokemon, battle.TeamAData, StatEnum.Attack)/statservice.GenerateStat(battle.TeamBPokemon, battle.TeamBData, StatEnum.Defense)
-	baseDmg = ((dmgA*move.Power*dmgB)/50) + 2
-	targets = 0.75 if move.Targets > 1 else 1
+def MoveAccuracy(move: Move, attacking: Pokemon, battle: CpuBattle):
+	teamA = attacking.Id == battle.TeamAPkmn.Id
+	moveData = next(m for m in battle.AllMoveData if m.Id == move.MoveId)
+	if not moveData.Accuracy:
+		return True
+	acc = moveData.Accuracy
+	modif = 1
+	stgMult = (battle.TeamAAccuracy - battle.TeamBEvasion) if teamA else (battle.TeamBAccuracy - battle.TeamAEvasion)
+	stg = (3 + (stgMult if stgMult > 0 else 0))/(3 - (stgMult if stgMult < 0 else 0))
+	mBerry = 1
+	affection = 0
+	return choice(range(1,101)) < (acc*modif*stg*mBerry-affection)
+
+def AttackDamage(move: Move, attacking: Pokemon, defending: Pokemon, battle: CpuBattle):
+	attData = next(p for p in battle.AllPkmnData if p.Id == attacking.Pokemon_Id)
+	defData = next(p for p in battle.AllPkmnData if p.Id == defending.Pokemon_Id)
+	moveData = next(m for m in battle.AllMoveData if m.Id == move.MoveId)
+	dmgA = ((2*attacking.Level)/5) + 2
+	dmgB = statservice.GenerateStat(attacking, attData, StatEnum.Attack if moveData.AttackType.lower() == 'physical' else StatEnum.SpecialAttack)/statservice.GenerateStat(defending, defData, StatEnum.Defense if moveData.AttackType.lower() == 'physical' else StatEnum.SpecialDefense)
+	baseDmg = ((dmgA*(moveData.Power or 0)*dmgB)/50) + 2
+	targets = 0.75 if moveData.Targets > 1 else 1
 	pb = 1
 	weather = 1
-	glaive = 2 if ((battle.LastTeamAMove.Id == 862 and teamA) or (battle.LastTeamBMove.Id == 862 and not teamA)) else 1
+	glaive = 2 if ((battle.LastTeamAMove.Id == 862 and attacking.Id == battle.TeamAPkmn.Id) or (battle.LastTeamBMove.Id == 862 and attacking.Id == battle.TeamBPkmn.Id)) else 1
 	critical = Critical(move)
-	random = choice(85,101)/100
+	random = choice(range(85,101))/100
 	stab = 1.5 if move.MoveType in battle.TeamAData.Types else 1
-	typedmg = statservice.TypeDamage(move.MoveType, battle.TeamBData.Types)
-	burn = 0.5 if battle.TeamAPokemon.CurrentAilment == 4 else 1 #burn
-	other = ReduceDamage(move, battle, teamA) if critical == 1 else 1
+	typedmg = statservice.TypeDamage(moveData.MoveType, defData.Types)
+	burn = 0.5 if attacking.CurrentAilment == 4 and moveData.AttackType.lower() == 'physical' else 1 #burn
+	other = ReduceDamage(move, battle, attacking.Id == battle.TeamAPkmn.Id) if critical == 1 else 1
 	zmove = 1
 	terrashield = 1
 
 	return baseDmg*targets*pb*weather*glaive*critical*random*stab*typedmg*burn*other*zmove*terrashield
 
-def ReduceDamage(move: Move, battle: Battle, teamA: bool):
-	if move.AttackType == 'physical':
+def ReduceDamage(moveData: MoveData, battle: CpuBattle, teamA: bool):
+	if moveData.AttackType.lower() == 'physical':
 		if teamA:
 			return 0.5 if battle.TeamBPhysReduce else 1
 		else:
 			return 0.5 if battle.TeamAPhysReduce else 1
-	if move.AttackType == 'special':
+	if moveData.AttackType.lower() == 'special':
 		if teamA:
-			return 0.5 if battle.TeamBSpReduce else 1
+			return 0.5 if battle.TeamBSpecReduce else 1
 		else:
-			return 0.5 if battle.TeamASpReduce else 1
+			return 0.5 if battle.TeamASpecReduce else 1
+	return 1
 
-def Critical(move: Move):
-	if move.UniqueDamage:
+def Critical(moveData: MoveData):
+	if moveData.UniqueDamage:
 		return 1
-	if move.CritRate > 1:
+	if moveData.CritRate > 1:
 		return 1.5
 	critcalc = choice(range(96))
-	if move.CritRate == 1:
+	if moveData.CritRate == 1:
 		return 1.5 if critcalc < 12 else 1
 	return 1.5 if critcalc in [0,32,64,95] else 1
 
-def StatDamage(isPhysical: bool, battle: Battle):
-	if isPhysical:
-		statservice.GenerateStat(battle.TeamAPokemon, battle.TeamAData, (StatEnum.Attack if isPhysical else StatEnum.SpecialAttack))/statservice.GenerateStat(battle.TeamBPokemon, battle.TeamBData, StatEnum.Defense)
+def ApplyStatus(move: Move, target: Pokemon, battle: CpuBattle):
+	targetData = next(p for p in battle.AllPkmnData if p.Id == target.Pokemon_Id)
+	moveData = next(m for m in battle.AllMoveData if m.Id == move.MoveId)
+
+
+def CpuAction(battle: CpuBattle, cpuTeam: list[Pokemon]):
+	swap = battleai.ShouldSwitchPokemon(battle, cpuTeam)
+	if swap:
+		return (BattleAction.Swap, swap)
+	attack = battleai.ChooseAttack(battle)
+
+
 
 def WildFight(attack: PokemonData, defend: PokemonData, attackLevel: int, defendLevel: int):
   healthLost: list[int] = [1,3,5,7,10,13,15]

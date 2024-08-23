@@ -22,5 +22,5 @@ async def SendCommandResponse(interaction: Interaction, filename: str, command: 
       response["Title"], response["Body"].format(*params), color), ephemeral=eph)
 
 
-def CreateEmbed(title, desc, color):
-  return Embed(title=title, description=desc, color=color)
+def CreateEmbed(title, desc, color, url = None):
+  return Embed(title=title, description=desc, color=color, url=url)

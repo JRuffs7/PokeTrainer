@@ -7,10 +7,10 @@ from models.Trainer import Trainer
 from models.Zone import Zone
 from models.enums import SpecialSpawn
 
-from services import itemservice, statservice, trainerservice
+from services import battleservice, moveservice, statservice, trainerservice
 from dataaccess import pokemonda
-from globals import FemaleSign, MaleSign, ShinyOdds, ShinySign, to_dict
-from models.Pokemon import EvolveData, PokemonData, Pokemon
+from globals import FemaleSign, MaleSign, ShinyOdds, ShinySign
+from models.Pokemon import Move, PokemonData, Pokemon
 
 #region Data
 
@@ -104,7 +104,7 @@ def GetPokemonDisplayName(pokemon: Pokemon, pkmn: PokemonData = None, showGender
 
 def GetOwnedPokemonDescription(pokemon: Pokemon, pkmnData: PokemonData = None):
   pkmn = GetPokemonById(pokemon.Pokemon_Id) if not pkmnData else pkmnData
-  return f"Lvl. {pokemon.Level} ({pokemon.CurrentExp}/{NeededExperience(pokemon.Level, pkmn.Rarity, pkmn.EvolvesInto)}xp | H:{pokemon.Height} | W:{pokemon.Weight} | Types: {'/'.join([statservice.GetType(t).Name for t in pkmn.Types])}"
+  return f"Lvl. {pokemon.Level} ({pokemon.CurrentExp}/{NeededExperience(pokemon, pkmn)}xp | H:{pokemon.Height} | W:{pokemon.Weight} | Types: {'/'.join([statservice.GetType(t).Name for t in pkmn.Types])}"
 
 
 def GetPokemonImage(pokemon: Pokemon, pkmnData: PokemonData = None):
@@ -172,6 +172,13 @@ def GenerateSpawnPokemon(pokemon: PokemonData, shinyOdds: int = ShinyOdds, level
       },
       'CurrentAilment': None
   })
+  moves = []
+  for move in dict(reversed(sorted(pokemon.LevelUpMoves.items(), key=lambda move: move[1]))):
+    if pokemon.LevelUpMoves[move] <= spawn.Level:
+      moves.append(int(move))
+    if len(moves) == 4:
+      break
+  spawn.LearnedMoves = [Move({'MoveId': m.Id, 'PP': m.BasePP}) for m in moveservice.GetMovesById(moves)]
   spawn.CurrentHP = statservice.GenerateStat(spawn, pokemon, StatEnum.HP)
   return spawn
 

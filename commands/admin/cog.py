@@ -1,11 +1,13 @@
 import asyncio
 import logging
-from discord import Member, TextChannel
+from random import choice
+from discord import Interaction, Member, TextChannel, app_commands
 from discord.ext import commands
+from commands.views.Battles.CpuBattleView import CpuBattleView
 from globals import SuperShinyOdds
-from middleware.decorators import is_bot_admin
+from middleware.decorators import is_bot_admin, trainer_check
 from models.Server import Server
-from services import battleservice, itemservice, pokemonservice, serverservice, trainerservice
+from services import itemservice, pokemonservice, serverservice, trainerservice
 
 class AdminCommands(commands.Cog, name="AdminCommands"):
 
@@ -109,7 +111,6 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 		pokemon = pokemonservice.GetPokemonById(pokemonId)
 		if trainer and pokemon:
 			newPkmn = pokemonservice.GenerateSpawnPokemon(pokemon, SuperShinyOdds, level)
-			newPkmn.Level = 1
 			trainer.OwnedPokemon.append(newPkmn)
 			trainerservice.UpsertTrainer(trainer)
 
@@ -122,13 +123,18 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 		if pokemon:
 			print(f"{pokemon.__dict__}")
 
-	@commands.command(name="testfight")
-	@is_bot_admin
-	async def testfight(self, ctx: commands.Context, pokemon1: int, pokemon2: int = None, pokemon3: int = None, pokemon4: int = None, pokemon5: int = None, pokemon6: int = None):
-		trainer = trainerservice.GetTrainer(ctx.guild.id, ctx.author.id)
-		
-		enemyTeam = pokemonservice.GetPokemonByIdList([p for p in [pokemon1, pokemon2, pokemon3, pokemon4, pokemon5, pokemon6] if p])
-
+	@app_commands.command(name="testfight",
+                        description="Battle each gym leader from every region.")
+	@trainer_check
+	async def testfight(self, inter: Interaction, wild: bool):
+		trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
+		enemyTeam = pokemonservice.GetPokemonByIdList([p for p in ([1] if wild else [1,2,3])])
+		await CpuBattleView(
+			inter, 
+			trainer, 
+			enemyTeam[0].Name if len(enemyTeam) == 1 else 'GymTest', 
+			[pokemonservice.GenerateSpawnPokemon(p, shinyOdds=2, level=choice(range(101))) for p in enemyTeam],
+			len(enemyTeam) == 1).send()
 
 	#endregion
 

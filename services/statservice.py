@@ -20,14 +20,14 @@ def GetAllTypes():
 def GetType(id: int):
 	return next(t for t in GetAllTypes() if t.Id == id)
 
-def TypeDamage(moveType: int, defendingTypes: int):
-	defendTypes = [t for t in GetAllTypes() if t.Id in defendingTypes]
+def TypeDamage(moveType: int, defendingTypes: list[int]):
+	defendTypes = [GetType(t.Id) for t in defendingTypes()]
 	damage = 1
 	for t in defendTypes:
 		if moveType in t.Immune:
 			return 0
 		if moveType in t.Weakness:
-			damage *= 2
+			damage = damage*2
 		if moveType in t.Resistant:
 			damage = damage/2
 	return damage

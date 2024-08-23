@@ -1,10 +1,10 @@
 import logging
 from random import choice
 from dataaccess import trainerda
-from models.Pokemon import MoveData
+from models.Pokemon import Move
 from models.Stat import StatEnum
 from models.Trainer import Trainer
-from services import battleservice, pokemonservice, statservice
+from services import battleservice, moveservice, pokemonservice, statservice
 
 errorLogger = logging.getLogger('error')
 
@@ -111,7 +111,7 @@ def UpdateTrainers():
 							slot += 1
 						if slot == 4:
 							break
-					p.LearnedMoves = [MoveData({'MoveId': m.Id, 'PP': m.BasePP}) for m in battleservice.GetMovesById(moves)]
+					p.LearnedMoves = [Move({'MoveId': m.Id, 'PP': m.BasePP}) for m in moveservice.GetMovesById(moves)]
 			updateList.append(newTrainer)
 		except Exception as e:
 			errorLogger.error(f"Could not update trainer: {t['UserId']}-{t['ServerId']}\n{e}")

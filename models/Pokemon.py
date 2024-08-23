@@ -3,9 +3,12 @@ from dataclasses import dataclass, field, fields
 from models.Base import Base
 
 
-class MoveData:
+class Move:
   MoveId: int
   PP: int
+
+  def __init__(self, dict):
+    vars(self).update(dict)
 
 
 class EvolveData:
@@ -72,7 +75,7 @@ class Pokemon:
   Nature: int = 0
   CurrentHP: int = 0
   IVs: dict[str, int] = field(default_factory=dict)
-  LearnedMoves: list[MoveData] = field(default_factory=list)
+  LearnedMoves: list[Move] = field(default_factory=list)
   CurrentAilment: int|None = None
 
 
@@ -80,5 +83,5 @@ class Pokemon:
   def from_dict(cls, dict):
     field_names = {field.name for field in fields(cls)}
     returnObj = cls(**{k: v for k, v in dict.items() if k in field_names})
-    returnObj.EvolvesInto = [MoveData(m) for m in returnObj.LearnedMoves]
+    returnObj.LearnedMoves = [Move(m) for m in returnObj.LearnedMoves]
     return returnObj

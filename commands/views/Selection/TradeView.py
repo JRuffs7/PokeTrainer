@@ -82,7 +82,7 @@ class TradeView(discord.ui.View):
 	def PrintPkmnDetails(self, pokemon: Pokemon, data: PokemonData):
 		pkmnData = t2a(
 			body=[
-				['Level:', f"{pokemon.Level}{f'({pokemon.CurrentExp}/{pokemonservice.NeededExperience(pokemon.Level, data.Rarity, data.EvolvesInto)})' if pokemon.Level < 100 else ''}"], 
+				['Level:', f"{pokemon.Level}{f'({pokemon.CurrentExp}/{pokemonservice.NeededExperience(pokemon, data)})' if pokemon.Level < 100 else ''}"], 
 				['Height:', pokemon.Height],
 				['Weight:', pokemon.Weight],
 				['Color:',f"{data.Color}"],  

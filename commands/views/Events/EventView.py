@@ -35,7 +35,6 @@ class EventView(discord.ui.View):
 			self.eventLog.info(f"{self.server.ServerName} - Event Ended")
 		except Exception as e:
 			self.errorLog.error(f"SERVER {self.server.ServerName}: {e}")
-			serverservice.DeleteServer(self.server)
 
 	async def send(self, wishUsers: list[int] = None):
 		timestamp = calendar.timegm((datetime.now(UTC)+timedelta(minutes=self.eventTime)).timetuple())
