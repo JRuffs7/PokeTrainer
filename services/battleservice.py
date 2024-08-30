@@ -1,13 +1,18 @@
 import math
 from random import choice
-from dataaccess import moveda
-from models.Battle import BattleAction, CpuBattle
+from typing import Tuple
+from models.Battle import BattleAction, BattleTurn, CpuBattle
+from models.Item import Pokeball
 from models.Pokemon import Move, Pokemon, PokemonData
 from models.Move import MoveData
 from models.Stat import StatEnum
-from services import pokemonservice, statservice, typeservice
-from services.utility import battleai
+from models.Trainer import Trainer
+from services import moveservice, pokemonservice, statservice, trainerservice, typeservice
 
+rechargeMoves = [63, 307, 308, 338, 416, 439, 459, 711, 794, 795]
+consecutiveMoves = []
+
+#region Flee
 
 def FleeAttempt(battle: CpuBattle, attempts: int):
 	trainerData = next(p for p in battle.AllPkmnData if p.Id == battle.TeamAPkmn.Pokemon_Id)
@@ -19,6 +24,35 @@ def FleeAttempt(battle: CpuBattle, attempts: int):
 	if totalCalc > 255:
 		return True
 	return choice(range(256)) < totalCalc
+
+#endregion
+
+#region Attack
+
+def TeamAAttackFirst(move1: MoveData, move2: MoveData, battle: CpuBattle):
+	if move1.Priority > move2.Priority:
+		return True
+	elif move1.Priority < move2.Priority:
+		return False
+	else:
+		spdA = statservice.GenerateStat(battle.TeamAPkmn, next(p for p in battle.AllPkmnData if p.Id == battle.TeamAPkmn.Pokemon_Id), StatEnum.Speed)
+		spdB = statservice.GenerateStat(battle.TeamBPkmn, next(p for p in battle.AllPkmnData if p.Id == battle.TeamBPkmn.Pokemon_Id), StatEnum.Speed)
+		if spdA > spdB:
+			return True
+		elif spdA < spdB:
+			return False
+		else:
+			return choice([1,2]) == 1
+
+def AbleToAttack(battle: CpuBattle, teamA: bool) -> Tuple[bool,str]:
+	lastTeamATurn = next((t for t in battle.Turns if t.TeamA), None)
+	lastTeamBTurn = next((t for t in battle.Turns if not t.TeamA), None)
+	lastTeamATurn2 = next((t for t in battle.Turns if t.TeamA and t != lastTeamATurn), None)
+	lastTeamBTurn2 = next((t for t in battle.Turns if not t.TeamA and t != lastTeamBTurn), None)
+	if (teamA and lastTeamATurn.Move.Id in rechargeMoves and lastTeamATurn2.Move.Id not in rechargeMoves) or (not teamA and lastTeamBTurn.Move.Id in rechargeMoves and lastTeamBTurn2.Move.Id not in rechargeMoves):
+		return False,"Recharging..."
+	if (teamA and lastTeamATurn.Move.Id == 117 and lastTeamATurn2.Move.Id != 117) or (not teamA and lastTeamBTurn.Move.Id == 117 and lastTeamBTurn2.Move.Id != 117):
+		return False,"Storing Energy..."
 
 def MoveAccuracy(move: Move, attacking: Pokemon, battle: CpuBattle):
 	teamA = attacking.Id == battle.TeamAPkmn.Id
@@ -82,12 +116,54 @@ def ApplyStatus(move: Move, target: Pokemon, battle: CpuBattle):
 	targetData = next(p for p in battle.AllPkmnData if p.Id == target.Pokemon_Id)
 	moveData = next(m for m in battle.AllMoveData if m.Id == move.MoveId)
 
+#endregion
 
-def CpuAction(battle: CpuBattle, cpuTeam: list[Pokemon]):
-	swap = battleai.ShouldSwitchPokemon(battle, cpuTeam)
-	if swap:
-		return (BattleAction.Swap, swap)
-	attack = battleai.ChooseAttack(battle)
+#region Capture
+
+def TryCapture(pokeball: Pokeball, trainer: Trainer, battle: CpuBattle):
+	trainerservice.ModifyItemList(trainer, str(pokeball.Id), -1)
+	pkmnData = next(p for p in battle.AllPkmnData if p.Id == battle.TeamBPkmn.Pokemon_Id)
+	capture = False
+	#Masterball
+	if pokeball.Id == 1:
+		capture =  True
+	else:
+		hpMax = statservice.GenerateStat(battle.TeamBPkmn, pkmnData, StatEnum.HP)
+		part1 = ((3*hpMax) - (2*battle.TeamBPkmn.CurrentHP))/(3*hpMax)
+		part2 = math.floor(part1*4096*pkmnData.CaptureRate*pokeball.CaptureRate)
+		bonusLevel = max(((36 - (2*battle.TeamBPkmn.Level))/10), 1) if battle.TeamBPkmn.Level < 13 else 1
+		bonusStatus = 2.5 if battle.TeamBPkmn.CurrentAilment in [2,3] else 1.5 if battle.TeamBPkmn.CurrentAilment in [1,4,5] else 1
+		formula = part2*bonusLevel*bonusStatus
+		numShakes = 4
+		#Sinnoh Reward
+		if trainerservice.HasRegionReward(trainer, 4) and choice(range(256)) < round(formula):
+			numShakes = 1
+		shake = 0
+		while shake < numShakes:
+			shakeCheck = 65536*(math.pow((formula/1044480),0.1875))
+			if choice(range(65536)) < shakeCheck:
+				capture = True
+			else:
+				capture = False
+				break
+			shake += 1
+	
+	if capture:
+		if len(trainer.Team) >= 6:
+			pokemonservice.HealPokemon(battle.TeamBPkmn, pkmnData)
+		trainer.OwnedPokemon.append(battle.TeamBPkmn)
+		trainerservice.TryAddToPokedex(trainer, pkmnData, battle.TeamBPkmn.IsShiny)
+		trainerservice.TryAddMissionProgress(trainer, 'Catch', pkmnData.Types)
+		#Paldea Reward
+		if trainerservice.HasRegionReward(trainer, 9):
+			for p in trainerservice.GetTeam(trainer):
+				pokemonservice.AddExperience(
+					p, 
+					next(t for t in battle.AllPkmnData if t.Id == p.Pokemon_Id), 
+					math.floor(pokemonservice.ExpForPokemon(battle.TeamBPkmn, pkmnData, False, battle.TeamAPkmn.Level)/2))
+		if len(trainer.Team) < 6:
+			trainer.Team.append(battle.TeamBPkmn.Id)
+	return capture
 
 
 

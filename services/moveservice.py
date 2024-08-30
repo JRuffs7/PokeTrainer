@@ -19,7 +19,6 @@ def GenerateMoves(pokemon: Pokemon, data: PokemonData):
 		if len(moves) == 4:
 			break
 	pokemon.LearnedMoves = [MoveData({'MoveId': m.Id, 'PP': m.BasePP}) for m in GetMovesById(moves)]
-	print(pokemon.LearnedMoves)
 
-def UniqueDamageMoves(moveId: int):
+#def UniqueDamageMoves(moveId: int):
 	

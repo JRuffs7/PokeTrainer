@@ -11,6 +11,7 @@ def KeyExists(table: str, key: str):
 		return exists
 	except Exception as ex:
 		errorLog.error(f'Sqlite Key Error: {ex}')
+		return False
 
 def Save(table: str, key: str, value):
 	try:
@@ -27,6 +28,15 @@ def Load(table: str, key: str):
 		return value
 	except Exception as ex:
 		errorLog.error(f'Sqlite Load Error: {ex}')
+		return None
+
+def LoadAll(table: str):
+	try:
+		with SqliteDict(cacheFile, tablename=table) as mydict:
+			return [v for v in mydict.values()] or []
+	except Exception as ex:
+		errorLog.error(f'Sqlite LoadAll Error: {ex}')
+		return []
 
 def Remove(table: str, key: str):
 	try:

@@ -12,6 +12,8 @@ def GetAllNatures():
 def GetNature(id: int):
 	return next(n for n in GetAllNatures() if n.Id == id)
 
+#endregion
+
 #region Types
 
 def GetAllTypes():
@@ -32,6 +34,7 @@ def TypeDamage(moveType: int, defendingTypes: list[int]):
 			damage = damage/2
 	return damage
 
+#endregion
 
 #region Stats
 
@@ -123,3 +126,15 @@ def ExpCalculator(pokemon: Pokemon, data: PokemonData):
 
 
 	return (expToCurrentLvl, expToNextLvl)
+
+#endregion
+
+#region Ailments
+
+def GetAllAilments():
+	return statda.GetAllAilments()
+
+def GetAilment(id: int):
+	return next(a for a in GetAllAilments() if a.Id == id)
+
+#endregion

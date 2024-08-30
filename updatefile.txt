@@ -1,3 +1,4 @@
 - Removed ??? Arceus from PokeTrainer due to imbalances
 - Introduced Stats/Natures/IVs to all Pokemon
 - Pokemon now gain experience and level up more realistically
+- All trainers have been updated to fit the new architecture

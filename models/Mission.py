@@ -5,7 +5,7 @@ class Mission:
 	Id: int
 	Amount: str
 	Action: str
-	Type: str
+	Type: int|None
 	Description: list[int]
 
 	def __init__(self, dict):

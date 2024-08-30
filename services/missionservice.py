@@ -21,8 +21,5 @@ def GetWeeklyMission(missionId: int):
 def GetNewWeeklyMission():
 	return choice(GetAllWeeklyMissions())
 
-def CheckMissionType(mission: Mission, types: str):
-	if not mission.Type:
-		return True
-	
-	return (not mission.Type) or (mission.Type.lower() in types.lower())
+def CheckMissionType(mission: Mission, types: list[int]):
+	return (not mission.Type) or (mission.Type in types)

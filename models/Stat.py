@@ -21,6 +21,11 @@ class Type(Base):
   def __init__(self, dict):
     super(Type, self).__init__(dict)
 
+class Ailment(Base):
+
+  def __init__(self, dict):
+    super(Ailment, self).__init__(dict)
+
 class StatEnum(Enum):
   HP = 1
   Attack = 2

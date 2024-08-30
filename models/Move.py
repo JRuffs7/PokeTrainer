@@ -6,6 +6,7 @@ class MoveData(Base):
 	Power: int|None
 	Priority: int
 	UniqueDamage: bool
+	UserDamage: bool
 	CritRate: int
 	MinAttacks: int
 	MaxAttacks: int

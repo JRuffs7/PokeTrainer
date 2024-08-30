@@ -5,7 +5,7 @@ import uuid
 from dataaccess import trainerda
 from globals import AdminList, GreatShinyOdds, ShinyOdds, DateFormat, ShortDateFormat, SuperShinyOdds
 from models.Egg import TrainerEgg
-from models.Item import Potion
+from models.Item import Pokeball, Potion
 from models.Mission import TrainerMission
 from models.Shop import SpecialShop
 from models.Trainer import Trainer
@@ -22,13 +22,13 @@ def CheckTrainer(serverId: int, userId: int):
   return trainerda.CheckTrainer(serverId, userId)
 
 def GetTrainer(serverId: int, userId: int):
-  return trainerda.GetTrainer(serverId, userId)
+  return trainerda.GetSingleTrainer(serverId, userId)
 
 def UpsertTrainer(trainer: Trainer):
-  return trainerda.UpsertTrainer(trainer)
+  return trainerda.UpsertSingleTrainer(trainer)
 
 def DeleteTrainer(trainer: Trainer):
-  return trainerda.DeleteTrainer(trainer)
+  return trainerda.DeleteSingleTrainer(trainer)
 
 def StartTrainer(pokemon: PokemonData, serverId: int, userId: int):
   spawn = pokemonservice.GenerateSpawnPokemon(pokemon, level=5)
@@ -70,7 +70,7 @@ def TryUsePotion(trainer: Trainer, potion: Potion):
   if trainer.Health > 100:
     trainer.Health = 100
   ModifyItemList(trainer, str(potion.Id), -1)
-  trainerda.UpsertTrainer(trainer)
+  trainerda.UpsertSingleTrainer(trainer)
   return trainer.Health - preHealth
 
 def TryDaily(trainer: Trainer, freeMasterball: bool):
@@ -129,7 +129,7 @@ def HasRegionReward(trainer: Trainer, region: int):
         return False
   return True
 
-def TryAddMissionProgress(trainer: Trainer, action: str, type: str, addition: int = 1):
+def TryAddMissionProgress(trainer: Trainer, action: str, types: list[int], addition: int = 1):
   dailyPass = True
   weeklyPass = True
   #Daily
@@ -143,7 +143,7 @@ def TryAddMissionProgress(trainer: Trainer, action: str, type: str, addition: in
       dailyPass = False
     if action.lower() != dMission.Action.lower(): #Wrong Action
       dailyPass = False
-    if not missionservice.CheckMissionType(dMission, type): #Invalid Type
+    if not missionservice.CheckMissionType(dMission, types): #Invalid Type
       dailyPass = False
   if dailyPass:
     trainer.DailyMission.Progress += addition
@@ -302,7 +302,7 @@ def Evolve(trainer: Trainer, initialPkmn: Pokemon, initialData: PokemonData, evo
   if evolveMon.ItemNeeded:
     ModifyItemList(trainer, str(evolveMon.ItemNeeded), -1)
   TryAddToPokedex(trainer, newData, newPkmn.IsShiny)
-  TryAddMissionProgress(trainer, 'Evolve', '')
+  TryAddMissionProgress(trainer, 'Evolve', [])
   if newData.PokedexId == 869 and initialPkmn.IsShiny:
     for p in pokemonservice.GetPokemonByPokedexId(869):
       if p.Id not in trainer.Shinydex:
@@ -313,7 +313,7 @@ def Evolve(trainer: Trainer, initialPkmn: Pokemon, initialData: PokemonData, evo
 def ReleasePokemon(trainer: Trainer, pokemonIds: list[str]):
   released = next(p for p in trainer.OwnedPokemon if p.Id in pokemonIds)
   trainer.OwnedPokemon = [p for p in trainer.OwnedPokemon if p.Id not in pokemonIds]
-  TryAddMissionProgress(trainer, 'Release', '', len(pokemonIds))
+  TryAddMissionProgress(trainer, 'Release', [], len(pokemonIds))
   UpsertTrainer(trainer)
   return pokemonservice.GetPokemonById(released.Pokemon_Id).Name
 
@@ -322,11 +322,11 @@ def TradePokemon(trainerOne: Trainer, pokemonOne: Pokemon, trainerTwo: Trainer, 
   trainerTwo.OwnedPokemon = [p for p in trainerTwo.OwnedPokemon if p.Id != pokemonTwo.Id]
   trainerOne.OwnedPokemon.append(pokemonTwo)
   TryAddToPokedex(trainerOne, pokemonservice.GetPokemonById(pokemonTwo.Pokemon_Id), pokemonTwo.IsShiny)
-  TryAddMissionProgress(trainerOne, 'Trade', '')
+  TryAddMissionProgress(trainerOne, 'Trade', [])
   UpsertTrainer(trainerOne)
   trainerTwo.OwnedPokemon.append(pokemonOne)
   TryAddToPokedex(trainerTwo, pokemonservice.GetPokemonById(pokemonOne.Pokemon_Id), pokemonOne.IsShiny)
-  TryAddMissionProgress(trainerTwo, 'Trade', '')
+  TryAddMissionProgress(trainerTwo, 'Trade', [])
   UpsertTrainer(trainerTwo)
 
 #endregion
@@ -369,16 +369,16 @@ def CanCallSpawn(trainer: Trainer):
     UpsertTrainer(trainer)
   return canSpawn
 
-def TryCapture(pokeballId: str, trainer: Trainer, spawn: Pokemon):
+def TryCapture(pokeball: Pokeball, trainer: Trainer, spawn: Pokemon):
   caught = False
   pokemon = pokemonservice.GetPokemonById(spawn.Pokemon_Id)
-  ModifyItemList(trainer, pokeballId, -1)
+  ModifyItemList(trainer, str(pokeball.Id), -1)
 
   #Sinnoh Reward
-  if (HasRegionReward(trainer, 4) and choice(range(1, 101)) < 11) or pokemonservice.CaptureSuccess(itemservice.GetPokeball(int(pokeballId)), pokemon, spawn.Level):
+  if (HasRegionReward(trainer, 4) and choice(range(1, 101)) < 6) or pokemonservice.CaptureSuccess(pokeball, pokemon, spawn.Level):
     trainer.OwnedPokemon.append(spawn)
     TryAddToPokedex(trainer, pokemon, spawn.IsShiny)
-    TryAddMissionProgress(trainer, 'Catch', ','.join([statservice.GetType(t).Name for t in pokemon.Types]))
+    TryAddMissionProgress(trainer, 'Catch', pokemon.Types)
     #Paldea Reward
     if HasRegionReward(trainer, 9):
       exp = spawn.Level
@@ -393,7 +393,7 @@ def TryCapture(pokeballId: str, trainer: Trainer, spawn: Pokemon):
       trainer.Team.append(spawn.Id)
     caught = True
   else:
-    trainer.Health -= (5-int(pokeballId))
+    trainer.Health -= (5-pokeball.Id)
     trainer.Health = 0 if trainer.Health < 0 else trainer.Health
   UpsertTrainer(trainer)
   return caught
@@ -415,7 +415,7 @@ def TryWildFight(trainer: Trainer, trainerPkmnData: PokemonData, wild: Pokemon, 
         trainerPkmnData, 
         exp)
       trainer.Money += 25
-      TryAddMissionProgress(trainer, 'Fight', ','.join([statservice.GetType(t).Name for t in wildData.Types]))
+      TryAddMissionProgress(trainer, 'Fight', wildData.Types)
       #Kanto Reward
       if HasRegionReward(trainer, 1) and len(trainer.Team) > 1:
         teamMember = next(p for p in trainer.OwnedPokemon if p.Id == trainer.Team[1])

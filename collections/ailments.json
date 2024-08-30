@@ -28,5 +28,15 @@
 		"Id": 6,
 		"Name": "Confusion",
 		"Url": "https://pokeapi.co/api/v2/move-ailment/6/"
+	},
+	{
+		"Id": 8,
+		"Name": "Trap",
+		"Url": "https://pokeapi.co/api/v2/move-ailment/8/"
+	},
+	{
+		"Id": 18,
+		"Name": "Leech Seed",
+		"Url": "https://pokeapi.co/api/v2/move-ailment/18/"
 	}
 ]

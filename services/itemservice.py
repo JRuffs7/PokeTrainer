@@ -1,6 +1,7 @@
 from random import choice
 from dataaccess import eggda, itemda
 from models.Item import Candy, Pokeball, Potion
+from models.Trainer import Trainer
 
 
 def GetAllItems():
@@ -56,3 +57,9 @@ def GetEvoItem(id: int):
 
 def GetEgg(id: int):
   return next(e for e in eggda.GetAllEggs() if e.Id == id)
+
+def GetTrainerPokeballs(trainer: Trainer):
+  return [p for p in GetAllPokeballs() if str(p.Id) in trainer.Items and trainer.Items[str(p.Id)] > 0]
+
+def GetTrainerPotions(trainer: Trainer):
+  return [p for p in GetAllPotions() if str(p.Id) in trainer.Items and trainer.Items[str(p.Id)] > 0]

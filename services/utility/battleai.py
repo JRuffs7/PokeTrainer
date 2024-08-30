@@ -1,8 +1,17 @@
 from random import choice
-from models.Battle import CpuBattle
+from typing import Tuple
+from models.Battle import BattleAction, CpuBattle
+from models.Move import MoveData
 from models.Pokemon import Pokemon, Move
 from models.Stat import StatEnum
-from services import battleservice, moveservice, statservice, typeservice
+from services import statservice, typeservice
+
+
+def CpuAction(battle: CpuBattle, cpuTeam: list[Pokemon]):
+	swap = ShouldSwitchPokemon(battle, cpuTeam)
+	if swap:
+		return swap
+	return ChooseAttack(battle)
 
 
 def ShouldSwitchPokemon(battle: CpuBattle, cpuTeam: list[Pokemon]):
@@ -29,7 +38,6 @@ def ShouldSwitchPokemon(battle: CpuBattle, cpuTeam: list[Pokemon]):
 		return choice(validSwaps)
 	return None
 
-
 def ChooseAttack(battle: CpuBattle):
 	availableMoves = [m for m in battle.TeamBPkmn.LearnedMoves if m.PP > 0]
 	if not availableMoves:
@@ -38,7 +46,34 @@ def ChooseAttack(battle: CpuBattle):
 	if battle.IsWild:
 		return choice(availableMoves)
 	
+	tookDamage = battle.TeamBPkmn.CurrentHP < statservice.GenerateStat(battle.TeamBPkmn, next(po for po in battle.AllPkmnData if po.Id == battle.TeamBPkmn.Pokemon_Id), StatEnum.HP)
+
+	#if the opponent does not have an ailment and on of the moves gives it
 	ailmentMoves = [m for m in battle.TeamBPkmn.LearnedMoves if next(mo for mo in battle.AllMoveData if mo.Id == m.MoveId).Ailment and m.PP > 0]
 	if not battle.TeamAPkmn.CurrentAilment and ailmentMoves:
-		ranks = {}
-		for move in ailmentMoves:
+		return choice(ailmentMoves)
+	
+	#if the opponent does not have any status effect OR it's not maxed and no damage has been taken
+	statDebuffs, statBuffs = MovesWithStatChange(availableMoves, battle.AllMoveData)
+	if not tookDamage:
+		if battle.TeamBPkmn.Nature in [n for n in statservice.GetAllNatures() if n.StatBoost == 2 or n.StatBoost == 4]:
+			if statBuffs and not [s for s in battle.TeamAStats if battle.TeamBStats[s] > 0]:
+				return choice(statBuffs)
+		if statDebuffs and not [s for s in battle.TeamAStats if battle.TeamBStats[s] > 0]:
+			return choice(statDebuffs)
+	
+	#random attack
+	attackMoves = [m for m in availableMoves if next(mo for mo in battle.AllMoveData if mo.Id == m.MoveId).Power > 0]
+	return choice(attackMoves) if attackMoves else choice(availableMoves)
+
+def MovesWithStatChange(moveList: list[Move], moveData: list[MoveData]):
+	debuffMoves: list[Move] = []
+	buffMoves: list[Move] = []
+	for m in moveList:
+		data = next(mo for mo in moveData if mo.Id == m.MoveId)
+		if data.StatChanges:
+			if [s for s in data.StatChanges if data.StatChanges[s] < 0]:
+				debuffMoves.append(m)
+			if [s for s in data.StatChanges if data.StatChanges[s] > 0]:
+				buffMoves.append(m)
+	return debuffMoves, buffMoves

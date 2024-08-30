@@ -1,7 +1,8 @@
+import math
 import uuid
 from math import ceil, floor
 from random import choice, uniform
-from models.Item import Item, Pokeball
+from models.Item import Item, Pokeball, Potion
 from models.Stat import StatEnum
 from models.Trainer import Trainer
 from models.Zone import Zone
@@ -106,6 +107,10 @@ def GetOwnedPokemonDescription(pokemon: Pokemon, pkmnData: PokemonData = None):
   pkmn = GetPokemonById(pokemon.Pokemon_Id) if not pkmnData else pkmnData
   return f"Lvl. {pokemon.Level} ({pokemon.CurrentExp}/{NeededExperience(pokemon, pkmn)}xp | H:{pokemon.Height} | W:{pokemon.Weight} | Types: {'/'.join([statservice.GetType(t).Name for t in pkmn.Types])}"
 
+def GetBattlePokemonDescription(pokemon: Pokemon, pkmnData: PokemonData = None):
+  pkmn = GetPokemonById(pokemon.Pokemon_Id) if not pkmnData else pkmnData
+  return f"Lvl. {pokemon.Level} ({pokemon.CurrentExp}/{NeededExperience(pokemon, pkmn)}xp | HP: {pokemon.CurrentHP}/{statservice.GenerateStat(pokemon, pkmnData, StatEnum.HP)} | Ailment: {statservice.GetAilment(pokemon.CurrentAilment) if pokemon.CurrentAilment else ' - '}"
+
 
 def GetPokemonImage(pokemon: Pokemon, pkmnData: PokemonData = None):
   pkmn = GetPokemonById(pokemon.Pokemon_Id) if not pkmnData else pkmnData
@@ -120,6 +125,27 @@ def GetPokemonImage(pokemon: Pokemon, pkmnData: PokemonData = None):
 #endregion
 
 #region Spawns
+
+def ExpForPokemon(pokemon: Pokemon, data: PokemonData, expShare: bool, victorLevel: int):
+  b = data.BaseDefeatExp
+  L = pokemon.Level
+  s = 1 if not expShare else 2
+  Lp = victorLevel
+  t = 1
+  e = 1
+  v = 1
+  f = 1
+  p = 1
+
+  part1 = (b*L)/5
+  part2 = 1/s
+  part3 = math.pow((((2*L) + 10)/(L + Lp + 10)),2.5)
+  part4 = (part1*part2*part3) + 1
+  return round(part4*t*e*v*f*p)
+
+
+
+
 
 def SpawnPokemon(specialZone: Zone|None, badgeBonus: int, shinyOdds: int):
   pokemonList = pokemonda.GetPokemonByProperty([1, 2, 3], 'Rarity')
@@ -291,7 +317,6 @@ def EvolvePokemon(initial: Pokemon, initialData: PokemonData, evolveData: Pokemo
     evolved.CurrentHP = evolveTotalHP
   return evolved
 
-
 def GetPokemonThatCanEvolve(trainer: Trainer, ownedPokemon: list[Pokemon]):
   if not ownedPokemon:
     return None
@@ -308,5 +333,16 @@ def RarityGroup(pokemon: PokemonData):
   if IsLegendaryPokemon(pokemon):
     rarityGroup = pokemon.Rarity
   return rarityGroup
+
+def HealPokemon(pokemon: Pokemon, data: PokemonData):
+  pokemon.CurrentAilment = None
+  pokemon.CurrentHP = statservice.GenerateStat(pokemon, data, StatEnum.HP)
+
+def UseItem(pokemon: Pokemon, data: PokemonData, potion: Potion):
+  pokemon.CurrentHP = min(pokemon.CurrentHP + (potion.HealingAmount or 0), statservice.GenerateStat(pokemon, data, StatEnum.HP))
+
+  if pokemon.CurrentAilment and pokemon.CurrentAilment in potion.AilmentCures:
+    pokemon.CurrentAilment = None
+
 
 #endregion
