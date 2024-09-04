@@ -3,6 +3,7 @@ import math
 from dataaccess import statda
 from models.Pokemon import Pokemon, PokemonData
 from models.Stat import StatEnum
+from services import moveservice, pokemonservice
 
 #region Nature
 
@@ -23,7 +24,7 @@ def GetType(id: int):
 	return next(t for t in GetAllTypes() if t.Id == id)
 
 def TypeDamage(moveType: int, defendingTypes: list[int]):
-	defendTypes = [GetType(t.Id) for t in defendingTypes()]
+	defendTypes = [GetType(t) for t in defendingTypes]
 	damage = 1
 	for t in defendTypes:
 		if moveType in t.Immune:
@@ -61,9 +62,9 @@ def GetBaseStat(pokemon: PokemonData, st: str):
 def CheckNatureBoost(pokemon: Pokemon, st: str):
 	stat = next(s for s in statda.GetAllStats() if s.Name.replace(' ', '').lower() == st)
 	nature = next(n for n in statda.GetAllNatures() if n.Id == pokemon.Nature)
-	if stat.Id in nature.StatBoost:
+	if stat.Id == nature.StatBoost:
 		return 1.1
-	elif stat.Id in nature.StatDecrease:
+	elif stat.Id == nature.StatDecrease:
 		return 0.9
 	return 1
 
@@ -136,5 +137,31 @@ def GetAllAilments():
 
 def GetAilment(id: int):
 	return next(a for a in GetAllAilments() if a.Id == id)
+
+def GetAilmentMessage(name: str, ailment: int) -> list[str]:
+	match(ailment):
+		case 1:
+			return [f"{name} is paralyzed!","It can't move!"]
+		case 2:
+			return [f'{name} is fast asleep!']
+		case 3:
+			return [f'{name} is frozen solid!']
+		case 6:
+			return [f'{name} is confused!','It hurt itself in its confusion!']
+		case _:
+			return []
+
+def GetRecoveryMessage(pokemon: Pokemon, data:PokemonData, trapMove: int):
+	match(pokemon.CurrentAilment):
+		case 2:
+			return f'{pokemonservice.GetPokemonDisplayName(pokemon, data, False, False)} woke up!\n'
+		case 3:
+			return f'{pokemonservice.GetPokemonDisplayName(pokemon, data, False, False)} thawed out!\n'
+		case 6:
+			return f'{pokemonservice.GetPokemonDisplayName(pokemon, data, False, False)} is no longer confused!\n'
+		case 8:
+			return f'{pokemonservice.GetPokemonDisplayName(pokemon, data, False, False)} is free from the **{moveservice.GetMoveById(trapMove).Name}**!\n'
+		case _:
+			return ''
 
 #endregion

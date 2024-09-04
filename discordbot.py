@@ -37,12 +37,6 @@ async def StartBot():
       logger.info(f'Syncing complete.')
 
     try:
-      os.remove('dataaccess/utility/cache.sqlite3')
-      logger.info(f"Cache Reset")
-    except Exception as e:
-      pass
-
-    try:
       updateStr = ''
       with open('updatefile.txt', 'r') as file:
           updateStr = file.read()

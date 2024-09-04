@@ -16,6 +16,7 @@ class EvolveData:
   EvolveLevel: int|None
   GenderNeeded: int|None
   ItemNeeded: int|None
+  MoveNeeded: int|None
 
   def __init__(self, dict):
     vars(self).update(dict)

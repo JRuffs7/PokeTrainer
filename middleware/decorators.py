@@ -2,6 +2,8 @@ import functools
 import logging
 import functools
 
+import discord
+
 from globals import AdminList
 from services import commandlockservice, serverservice, trainerservice
 from services.utility import discordservice_permission
@@ -92,6 +94,7 @@ def command_lock(function):
 
 def defer(f):
   async def wrapper(self,*args):
-    await args[0].response.defer()
+    if args[0] and type(args[0]) is discord.Interaction and not args[0].response.is_done():
+      await args[0].response.defer()
     return await f(self, *args) 
   return wrapper

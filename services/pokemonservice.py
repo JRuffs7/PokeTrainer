@@ -109,7 +109,7 @@ def GetOwnedPokemonDescription(pokemon: Pokemon, pkmnData: PokemonData = None):
 
 def GetBattlePokemonDescription(pokemon: Pokemon, pkmnData: PokemonData = None):
   pkmn = GetPokemonById(pokemon.Pokemon_Id) if not pkmnData else pkmnData
-  return f"Lvl. {pokemon.Level} ({pokemon.CurrentExp}/{NeededExperience(pokemon, pkmn)}xp | HP: {pokemon.CurrentHP}/{statservice.GenerateStat(pokemon, pkmnData, StatEnum.HP)} | Ailment: {statservice.GetAilment(pokemon.CurrentAilment) if pokemon.CurrentAilment else ' - '}"
+  return f"Lvl. {pokemon.Level} ({pokemon.CurrentExp}/{NeededExperience(pokemon, pkmn)}xp) | HP: {pokemon.CurrentHP}/{statservice.GenerateStat(pokemon, pkmnData, StatEnum.HP)} | Types: {'/'.join([statservice.GetType(t).Name for t in pkmn.Types])} | Ailment: {statservice.GetAilment(pokemon.CurrentAilment) if pokemon.CurrentAilment else ' - '}"
 
 
 def GetPokemonImage(pokemon: Pokemon, pkmnData: PokemonData = None):
@@ -267,7 +267,9 @@ def CanPokemonEvolve(pokemon: Pokemon, pkmn: PokemonData, items: list[Item]):
       continue
     if evData.GenderNeeded and ((evData.GenderNeeded == 1 and not pokemon.IsFemale) or (evData.GenderNeeded == 2 and pokemon.IsFemale)):
       continue
-    if evData.ItemNeeded and (evData.ItemNeeded not in [i.Id for i in items]):
+    if evData.ItemNeeded and not next((i for i in items if i.Id == evData.ItemNeeded), None):
+      continue
+    if evData.MoveNeeded and not next((m for m in pokemon.LearnedMoves if m.MoveId == evData.MoveNeeded), None):
       continue
     return True
   return False
@@ -279,7 +281,9 @@ def AvailableEvolutions(pokemon: Pokemon, pkmnData: PokemonData, items: list[Ite
       continue
     if evData.GenderNeeded and ((evData.GenderNeeded == 1 and not pokemon.IsFemale) or (evData.GenderNeeded == 2 and pokemon.IsFemale)):
       continue
-    if evData.ItemNeeded and (evData.ItemNeeded not in [i.Id for i in items]):
+    if evData.ItemNeeded and not next((i for i in items if i.Id == evData.ItemNeeded), None):
+      continue
+    if evData.MoveNeeded and not next((m for m in pokemon.LearnedMoves if m.MoveId == evData.MoveNeeded), None):
       continue
     evolveIdList.append(evData.EvolveID)
   return evolveIdList
@@ -291,6 +295,9 @@ def GetRandomEvolveList(pkmn: PokemonData, evolveIds: list[int]):
   itemEvolves = [p.EvolveID for p in pkmn.EvolvesInto if p.ItemNeeded and p.EvolveID in evolveIds]
   if len(itemEvolves) > 1:
     return itemEvolves
+  moveEvolves = [p.EvolveID for p in pkmn.EvolvesInto if p.MoveNeeded and p.EvolveID in evolveIds]
+  if len(moveEvolves) > 1:
+    return moveEvolves
   return None
 
 def EvolvePokemon(initial: Pokemon, initialData: PokemonData, evolveData: PokemonData):
@@ -339,7 +346,7 @@ def HealPokemon(pokemon: Pokemon, data: PokemonData):
   pokemon.CurrentHP = statservice.GenerateStat(pokemon, data, StatEnum.HP)
 
 def UseItem(pokemon: Pokemon, data: PokemonData, potion: Potion):
-  pokemon.CurrentHP = min(pokemon.CurrentHP + (potion.HealingAmount or 0), statservice.GenerateStat(pokemon, data, StatEnum.HP))
+  pokemon.CurrentHP = min(pokemon.CurrentHP + (potion.HealingAmount or 1000), statservice.GenerateStat(pokemon, data, StatEnum.HP))
 
   if pokemon.CurrentAilment and pokemon.CurrentAilment in potion.AilmentCures:
     pokemon.CurrentAilment = None

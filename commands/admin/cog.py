@@ -1,9 +1,9 @@
 import asyncio
 import logging
-from random import choice
+from random import choice, sample
 from discord import Interaction, Member, TextChannel, app_commands
 from discord.ext import commands
-from commands.views.Battles.CpuBattleView import CpuBattleView
+from Views.CpuBattleView import CpuBattleView
 from globals import SuperShinyOdds
 from middleware.decorators import is_bot_admin, trainer_check
 from models.Server import Server
@@ -128,13 +128,13 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 	@trainer_check
 	async def testfight(self, inter: Interaction, wild: bool):
 		trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
-		enemyTeam = pokemonservice.GetPokemonByIdList([p for p in ([1] if wild else [1,2,3])])
+		allPkmn = pokemonservice.GetAllPokemon()
+		enemyTeam = [choice(allPkmn)] if wild else sample(allPkmn, 6)
 		await CpuBattleView(
-			inter, 
 			trainer, 
 			enemyTeam[0].Name if len(enemyTeam) == 1 else 'GymTest', 
 			[pokemonservice.GenerateSpawnPokemon(p, shinyOdds=2, level=choice(range(101))) for p in enemyTeam],
-			len(enemyTeam) == 1).send()
+			len(enemyTeam) == 1).send(inter)
 
 	#endregion
 

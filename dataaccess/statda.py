@@ -8,7 +8,7 @@ from models.Stat import Type
 statFile = "collections/stats.json"
 natureFile = "collections/natures.json"
 typeFile = "collections/types.json"
-ailmentFile = "collections/types.json"
+ailmentFile = "collections/ailments.json"
 
 
 def GetAllStats():

@@ -2,7 +2,7 @@ from random import choice
 import discord
 from middleware.decorators import defer
 
-from services import commandlockservice, itemservice, trainerservice, pokemonservice
+from services import commandlockservice, itemservice, moveservice, trainerservice, pokemonservice
 from models.Pokemon import Pokemon, PokemonData
 from models.Trainer import Trainer
 from commands.views.Selection.selectors.OwnedSelector import OwnedSelector
@@ -62,6 +62,8 @@ class EvolveView(discord.ui.View):
 					descArr.append('Female' if evolutionData.GenderNeeded == 1 else 'Male')
 				if evolutionData.ItemNeeded:
 					descArr.append(itemservice.GetItem(evolutionData.ItemNeeded).Name)
+				if evolutionData.MoveNeeded:
+					descArr.append(moveservice.GetMoveById(evolutionData.MoveNeeded).Name)
 				desc = f'Reqs: {" | ".join(descArr)}'
 			evolveListData.append({'Pokemon': a, 'Description': desc})
 		self.evlist = EvolveSelector(evolveListData)

@@ -7,6 +7,10 @@ class MoveData(Base):
 	Priority: int
 	UniqueDamage: bool
 	UserDamage: bool
+	Recharge: bool
+	Charge: bool
+	ChargeImmune: bool
+	ConsecutiveAttack: bool
 	CritRate: int
 	MinAttacks: int
 	MaxAttacks: int

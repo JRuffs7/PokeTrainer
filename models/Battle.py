@@ -4,17 +4,27 @@ from models.Move import MoveData
 from models.Pokemon import Pokemon, PokemonData
 
 class BattleAction(enum.Enum):
+	Error = -1
 	Attack = 0
-	Charge = 1
-	Swap = 2
-	Item = 3
-	Pokeball = 4
-	Flee = 5
+	Missed = 1
+	Failed = 2
+	Charge = 3
+	Recharge = 4
+	Sleep = 5
+	Frozen = 6
+	Paralyzed = 7
+	Confused = 8
+	Swap = 9
+	Item = 10
+	Pokeball = 11
+	Flee = 12
+	Defeated = 13
 
 @dataclass
 class BattleTurn:
 	TurnNum: int = 0
 	TeamA: bool = False
+	PokemonId: str|None = None
 	Action: BattleAction|None = None
 	Move: MoveData|None = None
 	DamageDone: int|None = None
@@ -27,14 +37,25 @@ class BattleTurn:
 
 @dataclass
 class CpuBattle:
+	CurrentTurn: int = 1
+	IsEvent: bool = False
 	IsWild: bool = True
 	TeamAPkmn: Pokemon | None = None
 	TeamBPkmn: Pokemon | None = None
 	AllPkmnData: list[PokemonData] = field(default_factory=list)
 	AllMoveData: list[MoveData] = field(default_factory=list)
 	Turns: list[BattleTurn] = field(default_factory=list)
-	TeamAStats: dict = field(default_factory=dict)
-	TeamBStats: dict = field(default_factory=dict)
+	TeamAStats: dict[str,int] = field(default_factory=dict)
+	TeamBStats: dict[str,int] = field(default_factory=dict)
+	TeamATrapId: int | None = None
+	TeamBTrapId: int | None = None
+	TeamAConsAttacks: int = 0
+	TeamBConsAttacks: int = 0
+	TeamAConfusion: int = 0
+	TeamBConfusion: int = 0
+	TeamATrap: int = 0
+	TeamBTrap: int = 0
+	TeamBConfusion: int = 0
 	TeamAImmune: bool = False
 	TeamBImmune: bool = False
 	TeamABind: int = 0
@@ -49,10 +70,3 @@ class CpuBattle:
 		field_names = {field.name for field in fields(cls)}
 		returnObj = cls(**{k: v for k, v in dict.items() if k in field_names})
 		return returnObj
-
-	@classmethod
-	def reset_stats(cls, teamA: bool):
-		if teamA:
-			cls.TeamAStats = {'1':0,'2':0,'3':0,'4':0,'5':0,'6':0,'7':0,'8':0}
-		else:
-			cls.TeamBStats = {'1':0,'2':0,'3':0,'4':0,'5':0,'6':0,'7':0,'8':0}

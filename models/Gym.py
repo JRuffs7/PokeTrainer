@@ -1,3 +1,6 @@
+from models.Pokemon import Pokemon
+
+
 class GymLeader:
 	Name: str
 	Generation: int
@@ -25,7 +28,16 @@ class SpecialTrainer:
 	Id: int
 	Name: str
 	Sprite: str
-	Team: list[int]
+	Team: list[Pokemon]
+	Reward: tuple[int,int]
+
+	def __init__(self, dict):
+		vars(self).update(dict)
+
+class GymLeader(SpecialTrainer):
+	Generation: int
+	MainType: str
+	BadgeId: int
 
 	def __init__(self, dict):
 		vars(self).update(dict)

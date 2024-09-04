@@ -40,13 +40,14 @@ class EventView(discord.ui.View):
 		timestamp = calendar.timegm((datetime.now(UTC)+timedelta(minutes=self.eventTime)).timetuple())
 		self.embed.title += f'\n(Ends <t:{timestamp}:R>)'
 		self.message = await self.channel.send(embed=self.embed, view=self)
-		if wishUsers:
-			self.messagethread = await self.message.create_thread(
+		self.messagethread = await self.message.create_thread(
 				name=f"{self.server.CurrentEvent.EventName}-{datetime.now(UTC).strftime(ShortDateFormat)}",
 				auto_archive_duration=60)
-			self.server.CurrentEvent.ThreadId = self.messagethread.id
-			serverservice.UpsertServer(self.server)
-			self.eventLog.info(f"{self.server.ServerName} - Created Thread")
+		self.server.CurrentEvent.ThreadId = self.messagethread.id
+		serverservice.UpsertServer(self.server)
+		await self.messagethread.send(f"Wish list: {', '.join([f'<@{u}>' for u in wishUsers])}")
+		if wishUsers:
 			await self.messagethread.send(f"Wish list: {', '.join([f'<@{u}>' for u in wishUsers])}")
+		
 		await asyncio.sleep(self.eventTime*60)
 		await self.endevent()
