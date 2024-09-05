@@ -138,18 +138,27 @@ def GetAllAilments():
 def GetAilment(id: int):
 	return next(a for a in GetAllAilments() if a.Id == id)
 
-def GetAilmentMessage(name: str, ailment: int) -> list[str]:
+def GetAilmentMessage(name: str, ailment: int):
 	match(ailment):
 		case 1:
-			return [f"{name} is paralyzed!","It can't move!"]
-		case 2:
-			return [f'{name} is fast asleep!']
-		case 3:
-			return [f'{name} is frozen solid!']
+			return f'{name} is paralyzed!'
 		case 6:
-			return [f'{name} is confused!','It hurt itself in its confusion!']
+			return f'{name} is confused!'
 		case _:
-			return []
+			return ''
+		
+def GetAilmentFailMessage(name: str, ailment: int):
+	match(ailment):
+		case 1:
+			return f"{GetAilmentMessage(name, ailment)}! It can't move!"
+		case 2:
+			return f'{name} is fast asleep!'
+		case 3:
+			return f'{name} is frozen solid!'
+		case 6:
+			return f'{GetAilmentMessage(name, ailment)}!\nIt hurt itself in its confusion!'
+		case _:
+			return ''
 
 def GetRecoveryMessage(pokemon: Pokemon, data:PokemonData, trapMove: int):
 	match(pokemon.CurrentAilment):

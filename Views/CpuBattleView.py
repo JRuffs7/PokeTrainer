@@ -1,4 +1,5 @@
 import logging
+import math
 from random import choice
 import discord
 
@@ -380,9 +381,13 @@ class CpuBattleView(discord.ui.View):
 		battleservice.AilmentDamage(self.battle.TeamAPkmn, teamAData)
 		match self.battle.TeamAPkmn.CurrentAilment:
 			case 4: #Burn
-				
+				ailmentStrings.append(f"{pokemonservice.GetPokemonDisplayName(self.battle.TeamBPkmn, teamBData, False, False)} is hurt by it's **BURN**.")
 			case 5: #Poison
-				battleservice.BurnDamage(self.battle.TeamAPkmn)
+				ailmentStrings.append(f'{pokemonservice.GetPokemonDisplayName(self.battle.TeamBPkmn, teamBData, False, False)} is hurt by **POISON**.')
+			case 8: #Trap
+				ailmentStrings.append(f'{pokemonservice.GetPokemonDisplayName(self.battle.TeamBPkmn, teamBData, False, False)} is hurt by **{moveservice.GetMoveById(self.battle.TeamATrap).Name}**.')
+			case 18: #Leech
+				ailmentStrings.append(f'{pokemonservice.GetPokemonDisplayName(self.battle.TeamBPkmn, teamBData, False, False)} is hurt by **Leech Seed**.')
 
 	#endregion
 
@@ -400,19 +405,19 @@ class CpuBattleView(discord.ui.View):
 		ailmentCheck = battleservice.AilmentCheck(self.battle.TeamAPkmn)
 		if ailmentCheck is not None and not ailmentCheck and attack:
 			self.useraction = BattleAction.Paralyzed if self.battle.TeamAPkmn.CurrentAilment == 1 else BattleAction.Sleep if self.battle.TeamAPkmn.CurrentAilment == 2 else BattleAction.Frozen if self.battle.TeamAPkmn.CurrentAilment == 3 else BattleAction.Confused
-			self.usermessage.extend(statservice.GetAilmentMessage(self.battle.TeamAPkmn))
+			self.usermessage.append(statservice.GetAilmentFailMessage(pkmnName, self.battle.TeamAPkmn.CurrentAilment))
 			if self.useraction == BattleAction.Confused:
 				battleservice.ConfusionDamage(self.battle.TeamAPkmn, data)
 				if self.battle.TeamAPkmn.CurrentHP == 0:
 					self.usermessage.append(f'{self.usermessage}\n{pkmnName} fainted!')
-			return
 		elif ailmentCheck is not None and ailmentCheck:
-			self.usermessage.append(statservice.GetRecoveryMessage(self.battle.TeamAPkmn, data))
+			self.usermessage.append(statservice.GetRecoveryMessage(self.battle.TeamAPkmn, data))			
 
 		if not attack:
 			return
 
-		#Check Hit
+		self.usermessage.append(statservice.GetAilmentMessage(pkmnName, self.battle.TeamAPkmn.CurrentAilment))
+		#Check Fails/Charges
 		self.useraction = battleservice.SpecialHitCases(self.userattack, self.battle, self.userfirst, True, self.userattack, self.cpuattack)
 		if self.useraction == BattleAction.Failed:
 			self.usermessage.extend([f'{pkmnName} used **{self.userattack.Name}**!','It failed!'])
@@ -421,6 +426,7 @@ class CpuBattleView(discord.ui.View):
 			self.usermessage.extend([f'{pkmnName} used **{self.userattack.Name}**!',"It's charging up..."])
 			return
 		
+
 		if not battleservice.MoveAccuracy(self.userattack, self.battle, True):
 			self.useraction = BattleAction.Missed
 			self.usermessage.extend([f'{pkmnName} used **{self.userattack.Name}**!','It missed!'])
@@ -428,9 +434,13 @@ class CpuBattleView(discord.ui.View):
 		
 
 		# ATTACK THEM
+		damage = battleservice.AttackDamage(self.userattack, self.battle.TeamAPkmn, self.battle.TeamBPkmn, self.battle)
 
+		if self.userattack == 283:
+			self.battle.TeamBPkmn.CurrentHP += math.ceil(damage)
+			self.battle.TeamAPkmn.CurrentHP += math.floor(damage)
 		
-		if self.userattack == 740 and self.useraction == BattleAction.Attack:
+		if self.userattack == 740:
 			for t in self.trainerteam:
 				if t.CurrentAilment in [1,2,3,4,5]:
 					t.CurrentAilment = None

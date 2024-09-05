@@ -110,6 +110,15 @@ def MoveAccuracy(move: MoveData, battle: CpuBattle, teamA: bool):
 		return False
 	if not move.Accuracy:
 		return True
+	if move.Id in [12,32,90,329]:
+		attacking = battle.TeamAPkmn.Level if teamA else battle.TeamBPkmn
+		defending = battle.TeamBPkmn.Level if teamA else battle.TeamAPkmn
+		if attacking.Level < defending.Level:
+			return False
+		acc = 20 if move.Id == 329 and move.MoveType not in next(p for p in battle.AllPkmnData if p.Id == attacking.Pokemon_Id).Types else 30
+		acc += (attacking.Level - defending.Level)
+		return choice(range(1,101)) < acc
+
 	acc = move.Accuracy
 	modif = 1
 	stgMult = (battle.TeamAStats['7'] - battle.TeamBStats['8']) if teamA else (battle.TeamBStats['7'] - battle.TeamAStats['8'])
@@ -120,51 +129,53 @@ def MoveAccuracy(move: MoveData, battle: CpuBattle, teamA: bool):
 
 def SpecialHitCases(move: MoveData, battle: CpuBattle, userFirst: bool, teamA: bool, teamAAttack: MoveData|None, teamBAttack: MoveData|None):
 	pokemon = battle.TeamAPkmn if teamA else battle.TeamBPkmn
-	if move.Id == 68: #Counter
-		prevTurn = next((t for t in battle.Turns if t.PokemonId == pokemon.Id and t.TurnNum < battle.CurrentTurn),None)
-		oppMove = next((t for t in battle.Turns if t.PokemonId != pokemon.Id and battle.Turns.index(t) < battle.Turns.index(prevTurn)), None)
-		if not oppMove or oppMove.Action != BattleAction.Attack or not oppMove.DamageDone or not oppMove.Move or oppMove.Move.AttackType.lower() != 'physical':
-			return BattleAction.Failed
-	if move.Id == 117: #Bide
-		prevTurn = next((t for t in battle.Turns if t.PokemonId == pokemon.Id and t.TurnNum == battle.CurrentTurn-1),None)
-		prevTurn2 = next((t for t in battle.Turns if t.PokemonId == pokemon.Id and t.TurnNum == battle.CurrentTurn-2),None)
-		if not prevTurn or not prevTurn2:
+	
+	if move.Id in [13,19,76,91,130,143,291,340,467,553,554,566,601,669,800,905] and not CheckChargingMove(move.Id, pokemon.Id, battle, 1):
+		return BattleAction.Charge
+	if move.Id in [68,243] and not CheckCounterMove(move.AttackType.lower(), pokemon.Id, battle):
+		return BattleAction.Failed
+
+	if move.Id == 117: 
+		if not CheckChargingMove(117, pokemon.Id, battle, 2):
 			return BattleAction.Charge
-		if not prevTurn.Move or prevTurn.Move.Id != 177 or not prevTurn2.Move or prevTurn2.Move.Id != 117:
-			return BattleAction.Charge
-		if prevTurn.Action != BattleAction.Charge or prevTurn2.Action != BattleAction.Charge:
-			return BattleAction.Charge
-		oppMoves = [t for t in battle.Turns if t.PokemonId != pokemon.Id and battle.Turns.index(t) < battle.Turns.index(prevTurn2)]
+		prevTurn = next((t for t in battle.Turns if t.PokemonId == pokemon.Id and t.TurnNum == battle.CurrentTurn-2),None)
+		oppMoves = [t for t in battle.Turns if t.PokemonId != pokemon.Id and battle.Turns.index(t) < battle.Turns.index(prevTurn)]
 		if not [m for m in oppMoves if m.DamageDone]:
 			return BattleAction.Failed
-	if move.Id == 243: #MirrorCoat
-		prevTurn = next((t for t in battle.Turns if t.PokemonId == pokemon.Id and t.TurnNum < battle.CurrentTurn),None)
-		oppMove = next((t for t in battle.Turns if t.PokemonId != pokemon.Id and battle.Turns.index(t) < battle.Turns.index(prevTurn)), None)
-		if not oppMove or oppMove.Action != BattleAction.Attack or not oppMove.DamageDone or not oppMove.Move or oppMove.Move.AttackType.lower() != 'special':
-			return BattleAction.Failed
-	if move.Id in [252, 660]: #FakeOut, FirstImpression
+	if move.Id in [252, 660]: 
 		prevTurn = next((t for t in battle.Turns if t.PokemonId == pokemon.Id and t.TurnNum == battle.CurrentTurn-1),None)
 		if next((t for t in battle.Turns if t.TurnNum == battle.CurrentTurn),None) or prevTurn or (not teamA and userFirst) or (teamA and not userFirst):
 			return BattleAction.Failed
-	if move.Id == 389: #SuckerPunch
+	if move.Id in [368,389,918]: 
 		checkattack = teamBAttack if teamA else teamAAttack
 		oppMove = next((t for t in battle.Turns if t.PokemonId != pokemon.Id and t.TurnNum == battle.CurrentTurn), None)
-		if oppMove or not checkattack or checkattack.AttackType.lower() not in ['physical','special']:
-			return BattleAction.Failed
-	if move.Id == 389: #SuckerPunch
-		checkattack = teamBAttack if teamA else teamAAttack
-		oppMove = next((t for t in battle.Turns if t.PokemonId != pokemon.Id and t.TurnNum == battle.CurrentTurn), None)
-		if oppMove or not checkattack or checkattack.AttackType.lower() not in ['physical','special'] or checkattack.Priority < 1:
+		if oppMove or not checkattack or checkattack.AttackType.lower() not in ['physical','special'] or (move.Id == 918 and checkattack.Priority < 1):
 			return BattleAction.Failed
 	return BattleAction.Attack
 	
+def CheckCounterMove(attackType: str|None, pokemonId: str, battle: CpuBattle):
+	oppMove = next((t for t in battle.Turns if t.PokemonId != pokemonId and t.TurnNum == battle.CurrentTurn), None)
+	if not oppMove or oppMove.Action != BattleAction.Attack or not oppMove.DamageDone or not oppMove.Move or (attackType is not None and oppMove.Move.AttackType.lower() != attackType):
+		return False
+	return True
+
+def CheckChargingMove(moveId: int, pokemonId: str, battle: CpuBattle, numCharges: int):
+	for i in range(numCharges,0,-1):
+		prevTurn = next((t for t in battle.Turns if t.PokemonId == pokemonId and t.TurnNum == battle.CurrentTurn-i),None)
+		if not prevTurn or not prevTurn.Move or prevTurn.Move.Id != moveId or prevTurn.Action != BattleAction.Charge:
+			return False
+	return True
+
 def SpecialDamage(move: MoveData, battle: CpuBattle, teamA: bool):
 	opponent = battle.TeamBPkmn if teamA else battle.TeamAPkmn
-	effect = typeservice.AttackEffect(move.MoveType, next(p for p in battle.AllPkmnData if p.Id == opponent.Pokemon_Id))
+	oppData = next(p for p in battle.AllPkmnData if p.Id == opponent.Pokemon_Id)
+	effect = typeservice.AttackEffect(move.MoveType, oppData.Types)
 	if move.Id == 265 and opponent.CurrentAilment == 1 and effect: #SmellingSalts
 		opponent.CurrentAilment = None
 		return 2
-	if move.Id == 358 and opponent.CurrentAilment == 2 and effect: #SmellingSalts
+	if move.Id == 329 and move.MoveType in oppData.Types:
+		return 0
+	if move.Id == 358 and opponent.CurrentAilment == 2 and effect: #WakeUpSlap
 		opponent.CurrentAilment = None
 		return 2
 	if move.Id == 664 and opponent.CurrentAilment == 4: #SparklingAria
@@ -173,14 +184,12 @@ def SpecialDamage(move: MoveData, battle: CpuBattle, teamA: bool):
 	return 1
 
 def AttackDamage(move: MoveData, attacking: Pokemon, defending: Pokemon, battle: CpuBattle):
-	if move.Id in moveservice.instantKO:
-		return 1000
+	typedmg = statservice.TypeDamage(move.MoveType, defData.Types)
+	if move.UniqueDamage:
+		return UniqueDamage(move, battle, attacking, defending)*(1 if typedmg > 0 else 0)
 
 	if not move.Power:
 		return 0
-
-	if move.UniqueDamage:
-		return UniqueDamage(move)
 	
 	attData = next(p for p in battle.AllPkmnData if p.Id == attacking.Pokemon_Id)
 	defData = next(p for p in battle.AllPkmnData if p.Id == defending.Pokemon_Id)
@@ -201,7 +210,6 @@ def AttackDamage(move: MoveData, attacking: Pokemon, defending: Pokemon, battle:
 	critical = Critical(move)
 	random = choice(range(85,101))/100
 	stab = 1.5 if move.MoveType in attData.Types else 1
-	typedmg = statservice.TypeDamage(move.MoveType, defData.Types)
 	burn = 0.5 if attacking.CurrentAilment == 4 and move.AttackType.lower() == 'physical' else 1 #burn
 	other = ReduceDamage(move, battle, attacking.Id == battle.TeamAPkmn.Id) if critical == 1 else 1
 	zmove = 1
@@ -249,8 +257,31 @@ def Critical(moveData: MoveData):
 		return 1.5 if critcalc < 12 else 1
 	return 1.5 if critcalc in [0,32,64,95] else 1
 
-def UniqueDamage(moveData: MoveData, battle: CpuBattle, teamA: bool):
-	return 40
+def UniqueDamage(moveData: MoveData, battle: CpuBattle, attacking: Pokemon, defending: Pokemon):
+
+	if moveData.Id in [12,32,90,329]:
+		return 65535
+	if moveData.Id == 49:
+		return 20
+	if moveData.Id in [68,243,368,894]:
+		oppMove = next(t for t in battle.Turns if t.PokemonId == defending.Id and t.TurnNum == battle.CurrentTurn)
+		return oppMove.DamageDone*(2 if moveData.Id in [68,243] else 1.5)
+	if moveData.Id in [69,101]:
+		return attacking.Level
+	if moveData.Id == 82:
+		return 40
+	if moveData.Id == 117:
+		firstMove = next(t for t in battle.Turns if t.PokemonId == attacking.Id and t.TurnNum == battle.CurrentTurn-2)
+		return 2*sum([t.DamageDone for t in battle.Turns if t.PokemonId == defending.Id and battle.Turns.index(t) < battle.Turns.index(firstMove)])
+	if moveData.Id == 149:
+		return max(math.floor((attacking.Level*((10*choice(range(101)))+50))/100), 1)
+	if moveData.Id in [162,877]:
+		return math.floor(defending.CurrentHP/2)
+	if moveData.Id == 283:
+		return (attacking.CurrentHP - defending.CurrentHP) / 2
+	if moveData.Id == 515:
+		return attacking.CurrentHP
+	return moveData.Power
 
 def ApplyStatus(moveData: MoveData, target: Pokemon, battle: CpuBattle):
 	targetData = next(p for p in battle.AllPkmnData if p.Id == target.Pokemon_Id)

@@ -3,8 +3,6 @@ from dataaccess import moveda
 from models.Move import MoveData
 from models.Pokemon import Pokemon, PokemonData
 
-instantKO = [12,32,90,329]
-
 def GetMovesById(ids: list[int]):
 	return moveda.GetMovesByProperty(ids, 'Id')
 
