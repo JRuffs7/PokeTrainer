@@ -1,6 +1,15 @@
 [
   {
-    "CaptureRate": 100,
+    "Id": 0,
+    "Name": "Money",
+    "Url": "",
+    "Description": "Currency of PokeTrainer.",
+    "EvolutionItem": false,
+    "BuyAmount": 0,
+    "SellAmount": 0
+  },
+  {
+    "CaptureRate": 100.0,
     "Id": 1,
     "Name": "Master Ball",
     "Url": "https://pokeapi.co/api/v2/item/1/",
@@ -10,7 +19,7 @@
     "SellAmount": 1000
   },
   {
-    "CaptureRate": 2,
+    "CaptureRate": 2.0,
     "Id": 2,
     "Name": "Ultra Ball",
     "Url": "https://pokeapi.co/api/v2/item/2/",
@@ -30,7 +39,7 @@
     "SellAmount": 300
   },
   {
-    "CaptureRate": 1,
+    "CaptureRate": 1.0,
     "Id": 4,
     "Name": "Poké Ball",
     "Url": "https://pokeapi.co/api/v2/item/4/",
@@ -123,7 +132,9 @@
       3,
       4,
       5,
-      6
+      6,
+      8,
+      18
     ],
     "Id": 23,
     "Name": "Full Restore",
@@ -174,7 +185,9 @@
       3,
       4,
       5,
-      6
+      6,
+      8,
+      18
     ],
     "Id": 27,
     "Name": "Full Heal",
@@ -200,8 +213,8 @@
     "Url": "https://pokeapi.co/api/v2/item/80/",
     "Description": "Item used to evolve a Pokemon.",
     "EvolutionItem": true,
-    "BuyAmount": 5000,
-    "SellAmount": 2500
+    "BuyAmount": 3000,
+    "SellAmount": 1500
   },
   {
     "Id": 81,
@@ -209,8 +222,8 @@
     "Url": "https://pokeapi.co/api/v2/item/81/",
     "Description": "Item used to evolve a Pokemon.",
     "EvolutionItem": true,
-    "BuyAmount": 5000,
-    "SellAmount": 2500
+    "BuyAmount": 3000,
+    "SellAmount": 1500
   },
   {
     "Id": 82,
@@ -218,8 +231,8 @@
     "Url": "https://pokeapi.co/api/v2/item/82/",
     "Description": "Item used to evolve a Pokemon.",
     "EvolutionItem": true,
-    "BuyAmount": 5000,
-    "SellAmount": 2500
+    "BuyAmount": 3000,
+    "SellAmount": 1500
   },
   {
     "Id": 83,
@@ -227,8 +240,8 @@
     "Url": "https://pokeapi.co/api/v2/item/83/",
     "Description": "Item used to evolve a Pokemon.",
     "EvolutionItem": true,
-    "BuyAmount": 5000,
-    "SellAmount": 2500
+    "BuyAmount": 3000,
+    "SellAmount": 1500
   },
   {
     "Id": 84,
@@ -236,8 +249,8 @@
     "Url": "https://pokeapi.co/api/v2/item/84/",
     "Description": "Item used to evolve a Pokemon.",
     "EvolutionItem": true,
-    "BuyAmount": 5000,
-    "SellAmount": 2500
+    "BuyAmount": 3000,
+    "SellAmount": 1500
   },
   {
     "Id": 85,
@@ -245,8 +258,8 @@
     "Url": "https://pokeapi.co/api/v2/item/85/",
     "Description": "Item used to evolve a Pokemon.",
     "EvolutionItem": true,
-    "BuyAmount": 5000,
-    "SellAmount": 2500
+    "BuyAmount": 3000,
+    "SellAmount": 1500
   },
   {
     "Id": 107,
@@ -254,8 +267,8 @@
     "Url": "https://pokeapi.co/api/v2/item/107/",
     "Description": "Item used to evolve a Pokemon.",
     "EvolutionItem": true,
-    "BuyAmount": 5000,
-    "SellAmount": 2500
+    "BuyAmount": 3000,
+    "SellAmount": 1500
   },
   {
     "Id": 108,
@@ -263,8 +276,8 @@
     "Url": "https://pokeapi.co/api/v2/item/108/",
     "Description": "Item used to evolve a Pokemon.",
     "EvolutionItem": true,
-    "BuyAmount": 5000,
-    "SellAmount": 2500
+    "BuyAmount": 3000,
+    "SellAmount": 1500
   },
   {
     "Id": 109,
@@ -272,8 +285,8 @@
     "Url": "https://pokeapi.co/api/v2/item/109/",
     "Description": "Item used to evolve a Pokemon.",
     "EvolutionItem": true,
-    "BuyAmount": 5000,
-    "SellAmount": 2500
+    "BuyAmount": 3000,
+    "SellAmount": 1500
   },
   {
     "Id": 110,
@@ -281,8 +294,8 @@
     "Url": "https://pokeapi.co/api/v2/item/110/",
     "Description": "Item used to evolve a Pokemon.",
     "EvolutionItem": true,
-    "BuyAmount": 5000,
-    "SellAmount": 2500
+    "BuyAmount": 2000,
+    "SellAmount": 1000
   },
   {
     "Id": 198,
@@ -299,8 +312,8 @@
     "Url": "https://pokeapi.co/api/v2/item/203/",
     "Description": "Item used to evolve a Pokemon.",
     "EvolutionItem": true,
-    "BuyAmount": 5000,
-    "SellAmount": 2500
+    "BuyAmount": 2000,
+    "SellAmount": 1000
   },
   {
     "Id": 204,
@@ -308,8 +321,8 @@
     "Url": "https://pokeapi.co/api/v2/item/204/",
     "Description": "Item used to evolve a Pokemon.",
     "EvolutionItem": true,
-    "BuyAmount": 5000,
-    "SellAmount": 2500
+    "BuyAmount": 2000,
+    "SellAmount": 1000
   },
   {
     "Id": 210,
@@ -317,8 +330,8 @@
     "Url": "https://pokeapi.co/api/v2/item/210/",
     "Description": "Item used to evolve a Pokemon.",
     "EvolutionItem": true,
-    "BuyAmount": 5000,
-    "SellAmount": 2500
+    "BuyAmount": 2000,
+    "SellAmount": 1000
   },
   {
     "Id": 212,
@@ -326,8 +339,8 @@
     "Url": "https://pokeapi.co/api/v2/item/212/",
     "Description": "Item used to evolve a Pokemon.",
     "EvolutionItem": true,
-    "BuyAmount": 5000,
-    "SellAmount": 2500
+    "BuyAmount": 2000,
+    "SellAmount": 1000
   },
   {
     "Id": 229,
@@ -335,8 +348,8 @@
     "Url": "https://pokeapi.co/api/v2/item/229/",
     "Description": "Item used to evolve a Pokemon.",
     "EvolutionItem": true,
-    "BuyAmount": 5000,
-    "SellAmount": 2500
+    "BuyAmount": 2000,
+    "SellAmount": 1000
   },
   {
     "Id": 298,
@@ -344,8 +357,8 @@
     "Url": "https://pokeapi.co/api/v2/item/298/",
     "Description": "Item used to evolve a Pokemon.",
     "EvolutionItem": true,
-    "BuyAmount": 5000,
-    "SellAmount": 2500
+    "BuyAmount": 2000,
+    "SellAmount": 1000
   },
   {
     "Id": 299,
@@ -353,8 +366,8 @@
     "Url": "https://pokeapi.co/api/v2/item/299/",
     "Description": "Item used to evolve a Pokemon.",
     "EvolutionItem": true,
-    "BuyAmount": 5000,
-    "SellAmount": 2500
+    "BuyAmount": 2000,
+    "SellAmount": 1000
   },
   {
     "Id": 300,
@@ -362,8 +375,8 @@
     "Url": "https://pokeapi.co/api/v2/item/300/",
     "Description": "Item used to evolve a Pokemon.",
     "EvolutionItem": true,
-    "BuyAmount": 5000,
-    "SellAmount": 2500
+    "BuyAmount": 2000,
+    "SellAmount": 1000
   },
   {
     "Id": 301,
@@ -371,8 +384,8 @@
     "Url": "https://pokeapi.co/api/v2/item/301/",
     "Description": "Item used to evolve a Pokemon.",
     "EvolutionItem": true,
-    "BuyAmount": 5000,
-    "SellAmount": 2500
+    "BuyAmount": 2000,
+    "SellAmount": 1000
   },
   {
     "Id": 302,
@@ -380,8 +393,8 @@
     "Url": "https://pokeapi.co/api/v2/item/302/",
     "Description": "Item used to evolve a Pokemon.",
     "EvolutionItem": true,
-    "BuyAmount": 5000,
-    "SellAmount": 2500
+    "BuyAmount": 2000,
+    "SellAmount": 1000
   },
   {
     "Id": 303,
@@ -407,8 +420,8 @@
     "Url": "https://pokeapi.co/api/v2/item/686/",
     "Description": "Item used to evolve a Pokemon.",
     "EvolutionItem": true,
-    "BuyAmount": 5000,
-    "SellAmount": 2500
+    "BuyAmount": 2000,
+    "SellAmount": 1000
   },
   {
     "Id": 687,
@@ -416,8 +429,8 @@
     "Url": "https://pokeapi.co/api/v2/item/687/",
     "Description": "Item used to evolve a Pokemon.",
     "EvolutionItem": true,
-    "BuyAmount": 5000,
-    "SellAmount": 2500
+    "BuyAmount": 2000,
+    "SellAmount": 1000
   },
   {
     "Id": 885,
@@ -425,8 +438,8 @@
     "Url": "https://pokeapi.co/api/v2/item/885/",
     "Description": "Item used to evolve a Pokemon.",
     "EvolutionItem": true,
-    "BuyAmount": 5000,
-    "SellAmount": 2500
+    "BuyAmount": 3000,
+    "SellAmount": 1500
   },
   {
     "Id": 1167,
@@ -434,8 +447,8 @@
     "Url": "https://pokeapi.co/api/v2/item/1167/",
     "Description": "Item used to evolve a Pokemon.",
     "EvolutionItem": true,
-    "BuyAmount": 5000,
-    "SellAmount": 2500
+    "BuyAmount": 500,
+    "SellAmount": 250
   },
   {
     "Id": 1174,
@@ -443,8 +456,8 @@
     "Url": "https://pokeapi.co/api/v2/item/1174/",
     "Description": "Item used to evolve a Pokemon.",
     "EvolutionItem": true,
-    "BuyAmount": 5000,
-    "SellAmount": 2500
+    "BuyAmount": 2200,
+    "SellAmount": 1100
   },
   {
     "Id": 1175,
@@ -452,8 +465,8 @@
     "Url": "https://pokeapi.co/api/v2/item/1175/",
     "Description": "Item used to evolve a Pokemon.",
     "EvolutionItem": true,
-    "BuyAmount": 5000,
-    "SellAmount": 2500
+    "BuyAmount": 2200,
+    "SellAmount": 1100
   },
   {
     "Experience": 15,
@@ -481,8 +494,8 @@
     "Url": "https://pokeapi.co/api/v2/item/1311/",
     "Description": "Item used to evolve a Pokemon.",
     "EvolutionItem": true,
-    "BuyAmount": 5000,
-    "SellAmount": 2500
+    "BuyAmount": 1600,
+    "SellAmount": 800
   },
   {
     "Id": 1312,
@@ -490,8 +503,8 @@
     "Url": "https://pokeapi.co/api/v2/item/1312/",
     "Description": "Item used to evolve a Pokemon.",
     "EvolutionItem": true,
-    "BuyAmount": 5000,
-    "SellAmount": 2500
+    "BuyAmount": 38000,
+    "SellAmount": 19000
   },
   {
     "Id": 1633,
@@ -499,8 +512,8 @@
     "Url": "https://pokeapi.co/api/v2/item/1633/",
     "Description": "Item used to evolve a Pokemon.",
     "EvolutionItem": true,
-    "BuyAmount": 5000,
-    "SellAmount": 2500
+    "BuyAmount": 3000,
+    "SellAmount": 1500
   },
   {
     "Id": 1643,
@@ -508,8 +521,8 @@
     "Url": "https://pokeapi.co/api/v2/item/1643/",
     "Description": "Item used to evolve a Pokemon.",
     "EvolutionItem": true,
-    "BuyAmount": 5000,
-    "SellAmount": 2500
+    "BuyAmount": 3000,
+    "SellAmount": 1500
   },
   {
     "Id": 1677,
@@ -517,8 +530,8 @@
     "Url": "https://pokeapi.co/api/v2/item/1677/",
     "Description": "Item used to evolve a Pokemon.",
     "EvolutionItem": true,
-    "BuyAmount": 5000,
-    "SellAmount": 2500
+    "BuyAmount": 750,
+    "SellAmount": 375
   },
   {
     "Id": 2045,
@@ -526,8 +539,8 @@
     "Url": "https://pokeapi.co/api/v2/item/2045/",
     "Description": "Item used to evolve a Pokemon.",
     "EvolutionItem": true,
-    "BuyAmount": 5000,
-    "SellAmount": 2500
+    "BuyAmount": 3000,
+    "SellAmount": 1500
   },
   {
     "Id": 10001,
@@ -535,8 +548,8 @@
     "Url": "https://pokeapi.co/api/v2/item/10001/",
     "Description": "Item used to evolve a Pokemon.",
     "EvolutionItem": true,
-    "BuyAmount": 5000,
-    "SellAmount": 2500
+    "BuyAmount": 3000,
+    "SellAmount": 1500
   },
   {
     "Id": 10002,
@@ -544,7 +557,7 @@
     "Url": "https://pokeapi.co/api/v2/item/10002/",
     "Description": "Item used to evolve a Pokemon.",
     "EvolutionItem": true,
-    "BuyAmount": 5000,
-    "SellAmount": 2500
+    "BuyAmount": 3000,
+    "SellAmount": 1500
   }
 ]

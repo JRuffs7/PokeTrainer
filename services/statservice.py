@@ -39,6 +39,12 @@ def TypeDamage(moveType: int, defendingTypes: list[int]):
 
 #region Stats
 
+def GetAllStats():
+	return statda.GetAllStats()
+
+def GetStat(id: int):
+	return next(t for t in GetAllStats() if t.Id == id)
+
 def GenerateStat(pokemon: Pokemon, data: PokemonData, stat: StatEnum):
 	if stat == StatEnum.HP:
 		iv = GetIV(pokemon, 'hp')
@@ -150,17 +156,17 @@ def GetAilmentMessage(name: str, ailment: int):
 def GetAilmentFailMessage(name: str, ailment: int):
 	match(ailment):
 		case 1:
-			return f"{GetAilmentMessage(name, ailment)}! It can't move!"
+			return f"{GetAilmentMessage(name, ailment)} It can't move!"
 		case 2:
 			return f'{name} is fast asleep!'
 		case 3:
 			return f'{name} is frozen solid!'
 		case 6:
-			return f'{GetAilmentMessage(name, ailment)}!\nIt hurt itself in its confusion!'
+			return f'{GetAilmentMessage(name, ailment)}\nIt hurt itself in its confusion!'
 		case _:
 			return ''
 
-def GetRecoveryMessage(pokemon: Pokemon, data:PokemonData, trapMove: int):
+def GetRecoveryMessage(pokemon: Pokemon, data:PokemonData, trapMove: int|None):
 	match(pokemon.CurrentAilment):
 		case 2:
 			return f'{pokemonservice.GetPokemonDisplayName(pokemon, data, False, False)} woke up!\n'
@@ -169,7 +175,26 @@ def GetRecoveryMessage(pokemon: Pokemon, data:PokemonData, trapMove: int):
 		case 6:
 			return f'{pokemonservice.GetPokemonDisplayName(pokemon, data, False, False)} is no longer confused!\n'
 		case 8:
-			return f'{pokemonservice.GetPokemonDisplayName(pokemon, data, False, False)} is free from the **{moveservice.GetMoveById(trapMove).Name}**!\n'
+			return f'{pokemonservice.GetPokemonDisplayName(pokemon, data, False, False)} is free from the **{moveservice.GetMoveById(trapMove).Name if trapMove else "N/A"}**!\n'
+		case _:
+			return ''
+
+def GetAilmentGainedMessage(pokemon: Pokemon, data:PokemonData, trapMove: str):
+	match(pokemon.CurrentAilment):
+		case 1:
+			return f"{pokemonservice.GetPokemonDisplayName(pokemon, data, False, False)} has been paralyzed!"
+		case 2:
+			return f'{pokemonservice.GetPokemonDisplayName(pokemon, data, False, False)} fell asleep!\n'
+		case 3:
+			return f'{pokemonservice.GetPokemonDisplayName(pokemon, data, False, False)} is frozen!\n'
+		case 4:
+			return f'{pokemonservice.GetPokemonDisplayName(pokemon, data, False, False)} is burned!\n'
+		case 5:
+			return f'{pokemonservice.GetPokemonDisplayName(pokemon, data, False, False)} is poisoned!\n'
+		case 6:
+			return f'{pokemonservice.GetPokemonDisplayName(pokemon, data, False, False)} is confused!\n'
+		case 8:
+			return f'{pokemonservice.GetPokemonDisplayName(pokemon, data, False, False)} is trapped by **{trapMove}**!\n'
 		case _:
 			return ''
 

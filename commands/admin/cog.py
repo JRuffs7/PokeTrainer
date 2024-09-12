@@ -6,6 +6,7 @@ from discord.ext import commands
 from Views.CpuBattleView import CpuBattleView
 from globals import SuperShinyOdds
 from middleware.decorators import is_bot_admin, trainer_check
+from models.Gym import GymLeader
 from models.Server import Server
 from services import itemservice, pokemonservice, serverservice, trainerservice
 
@@ -114,27 +115,37 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 			trainer.OwnedPokemon.append(newPkmn)
 			trainerservice.UpsertTrainer(trainer)
 
-	@commands.command(name="testpokemon")
-	@is_bot_admin
-	async def testpokemon(self, ctx: commands.Context, pokemonId: int):
-		if not ctx.guild:
-			return
-		pokemon = pokemonservice.GetPokemonById(pokemonId)
-		if pokemon:
-			print(f"{pokemon.__dict__}")
-
 	@app_commands.command(name="testfight",
                         description="Battle each gym leader from every region.")
 	@trainer_check
 	async def testfight(self, inter: Interaction, wild: bool):
 		trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
 		allPkmn = pokemonservice.GetAllPokemon()
-		enemyTeam = [choice(allPkmn)] if wild else sample(allPkmn, 6)
+		trainer.OwnedPokemon.clear()
+		trainer.OwnedPokemon = [pokemonservice.GenerateSpawnPokemon(p, level=choice(range(1,101))) for p in sample(allPkmn, 6)]
+		trainer.Team = [p.Id for p in trainer.OwnedPokemon]
+		if wild:
+			enemyPkmn = choice(allPkmn)
+			team = [pokemonservice.GenerateSpawnPokemon(enemyPkmn, 2, level=choice(range(1,101)))]
+			name = pokemonservice.GetPokemonDisplayName(team[0], enemyPkmn)
+		else:
+			team =  [pokemonservice.GenerateSpawnPokemon(p, 2, level=choice(range(1,101))) for p in sample(allPkmn, 6)]
+			name = 'GymTest'
+		leader = GymLeader({
+			'Id': 1,
+			'Name': name,
+			'Sprite': '',
+			'Team': team,
+			'Reward': (0,0) if wild else (0,2000),
+			'Generation': 1,
+			'MainType': '' if wild else 'Rock',
+			'BadgeId': 0 if wild else 1
+		})
 		await CpuBattleView(
 			trainer, 
-			enemyTeam[0].Name if len(enemyTeam) == 1 else 'GymTest', 
-			[pokemonservice.GenerateSpawnPokemon(p, shinyOdds=2, level=choice(range(101))) for p in enemyTeam],
-			len(enemyTeam) == 1).send(inter)
+			leader,
+			wild,
+			choice([1,2]) == 1).send(inter)
 
 	#endregion
 

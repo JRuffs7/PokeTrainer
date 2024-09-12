@@ -93,12 +93,6 @@
 			"Body": "You do not have enough Masterballs to make an exchange for a {0}."
 		}
 	],
-	"spawn": [
-		{
-			"Title": "Unable to Spawn",
-			"Body": "You must wait at least 1 minutes in between spawns.\nYour last spawn was at {0} UTC"
-		}
-	],
 	"wishlist": [
 		{
 			"Title": "Successfully Added To Wish List",

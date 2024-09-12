@@ -109,7 +109,7 @@ def GetOwnedPokemonDescription(pokemon: Pokemon, pkmnData: PokemonData = None):
 
 def GetBattlePokemonDescription(pokemon: Pokemon, pkmnData: PokemonData = None):
   pkmn = GetPokemonById(pokemon.Pokemon_Id) if not pkmnData else pkmnData
-  return f"Lvl. {pokemon.Level} ({pokemon.CurrentExp}/{NeededExperience(pokemon, pkmn)}xp) | HP: {pokemon.CurrentHP}/{statservice.GenerateStat(pokemon, pkmnData, StatEnum.HP)} | Types: {'/'.join([statservice.GetType(t).Name for t in pkmn.Types])} | Ailment: {statservice.GetAilment(pokemon.CurrentAilment) if pokemon.CurrentAilment else ' - '}"
+  return f"Lvl {pokemon.Level} | HP: {pokemon.CurrentHP}/{statservice.GenerateStat(pokemon, pkmnData, StatEnum.HP)} | Types: {'/'.join([statservice.GetType(t).Name for t in pkmn.Types])} | Ailment: {statservice.GetAilment(pokemon.CurrentAilment).Name.upper() if pokemon.CurrentAilment else ' - '}"
 
 
 def GetPokemonImage(pokemon: Pokemon, pkmnData: PokemonData = None):
@@ -240,6 +240,11 @@ def CaptureSuccess(pokeball: Pokeball, pokemon: PokemonData, level: int):
 
 #region Trainer Pokemon
 
+def PokeCenter(trainer: Trainer, team: list[Pokemon]):
+  trainer.Money = max(trainer.Money - 500, 0)
+  for p in team:
+    HealPokemon(p, GetPokemonById(p.Pokemon_Id))
+
 def AddExperience(trainerPokemon: Pokemon, pkmnData: PokemonData, exp: int):
   trainerPokemon.CurrentExp += exp
   expNeeded = NeededExperience(trainerPokemon, pkmnData)
@@ -248,14 +253,11 @@ def AddExperience(trainerPokemon: Pokemon, pkmnData: PokemonData, exp: int):
     trainerPokemon.Level += 1
     trainerPokemon.CurrentExp -= expNeeded
     newTotalHP = statservice.GenerateStat(trainerPokemon, pkmnData, StatEnum.HP)
-    trainerPokemon.CurrentHP += (newTotalHP - oldTotalHP)
+    trainerPokemon.CurrentHP = min(trainerPokemon.CurrentHP + (newTotalHP - oldTotalHP), statservice.GenerateStat(trainerPokemon, pkmnData, StatEnum.HP))
     expNeeded = NeededExperience(trainerPokemon, pkmnData)
 
   if trainerPokemon.Level == 100:
     trainerPokemon.CurrentExp = 0
-
-  if trainerPokemon.CurrentHP > statservice.GenerateStat(trainerPokemon, pkmnData, StatEnum.HP):
-    trainerPokemon.CurrentHP = statservice.GenerateStat(trainerPokemon, pkmnData, StatEnum.HP)
 
 def NeededExperience(pokemon: Pokemon, data: PokemonData):
   currLvlExp, nextLvlExp = statservice.ExpCalculator(pokemon, data)

@@ -22,7 +22,6 @@ class Trainer:
   Eggs: list[TrainerEgg] = field(default_factory=list)
   Daycare: dict[str, str] = field(default_factory=dict)
   Wishlist: list[int] = field(default_factory=list)
-  LastSpawnTime: str | None = None
   LastDaily: str | None = None
   Shop: SpecialShop | None = field(default_factory=lambda: None)
   CurrentZone: int = 0

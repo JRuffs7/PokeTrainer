@@ -60,7 +60,7 @@
 	},
 	{
 		"Id": 4,
-		"Name": "Safari",
+		"Name": "Plains",
 		"Url": "",
 		"Types": [
 			1,
@@ -110,7 +110,7 @@
 	},
 	{
 		"Id": 9,
-		"Name": "Generator",
+		"Name": "Power Plant",
 		"Url": "",
 		"Types": [
 			13,

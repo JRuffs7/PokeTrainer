@@ -355,20 +355,6 @@ def SetTeamSlot(trainer: Trainer, slotNum: int, pokemonId: str):
 
 #region Spawn
 
-def CanCallSpawn(trainer: Trainer):
-  canSpawn = False
-  if not trainer.LastSpawnTime:
-    canSpawn = True
-  else:
-    lastSpawn = datetime.strptime(trainer.LastSpawnTime, DateFormat).replace(tzinfo=UTC)
-    if(lastSpawn + timedelta(minutes=1) < datetime.now(UTC)):
-      canSpawn = True
-  
-  if canSpawn:
-    trainer.LastSpawnTime = datetime.now(UTC).strftime(DateFormat)
-    UpsertTrainer(trainer)
-  return canSpawn
-
 def TryCapture(pokeball: Pokeball, trainer: Trainer, spawn: Pokemon):
   caught = False
   pokemon = pokemonservice.GetPokemonById(spawn.Pokemon_Id)

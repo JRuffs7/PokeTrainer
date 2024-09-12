@@ -1,6 +1,7 @@
 from discord import Member, app_commands, Interaction
 from discord.ext import commands
 from typing import List
+from Views.CpuBattleView import CpuBattleView
 from commands.autofills.autofills import autofill_nonteam, autofill_owned, autofill_pokemon, autofill_pokemon_legendary_spawn, autofill_special
 from commands.views.PokeShopView import PokeShopView
 from commands.views.BattleSimView import BattleSimView
@@ -18,6 +19,7 @@ import discordbot
 from commands.views.Selection.EvolveView import EvolveView
 from globals import AdminList
 from middleware.decorators import command_lock, method_logger, trainer_check
+from models.Gym import GymLeader
 from services import commandlockservice, pokemonservice, statservice, trainerservice, zoneservice
 from middleware.decorators import method_logger, trainer_check
 from services.utility import discordservice_pokemon
@@ -40,18 +42,23 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
   @command_lock
   async def spawn(self, inter: Interaction):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
-    if inter.user.id in AdminList or trainerservice.CanCallSpawn(trainer):
-      pokemon = pokemonservice.SpawnPokemon(
-        None if trainer.CurrentZone == 0 else zoneservice.GetZone(trainer.CurrentZone),
-        max([b for b in trainer.Badges if b < 1000]) if len(trainer.Badges) > 0 else 0,
-        #Voltage Reward
-        trainerservice.GetShinyOdds(trainer)
-      )
-      trainerservice.EggInteraction(trainer)
-      await SpawnPokemonView(inter, trainer, pokemon).send()
-    else:
-      commandlockservice.DeleteLock(inter.guild_id, inter.user.id)
-      return await discordservice_pokemon.PrintSpawnResponse(inter, 0, [trainer.LastSpawnTime])
+    pokemon = pokemonservice.SpawnPokemon(
+      None if trainer.CurrentZone == 0 else zoneservice.GetZone(trainer.CurrentZone),
+      max([b for b in trainer.Badges if b < 1000]) if len(trainer.Badges) > 0 else 0,
+      #Voltage Reward
+      trainerservice.GetShinyOdds(trainer)
+    )
+    trainerservice.EggInteraction(trainer)
+    await CpuBattleView(trainer, GymLeader({
+			'Id': 0,
+			'Name': pokemonservice.GetPokemonById(pokemon.Pokemon_Id).Name,
+			'Sprite': '',
+			'Team': [pokemon],
+			'Reward': (0,0),
+			'Generation': 1,
+			'MainType': '',
+			'BadgeId': 0
+		}), True, False).send(inter)
 
   @app_commands.command(name="hatch",
                         description="Hatch one or more of your eggs.")

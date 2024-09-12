@@ -1,3 +1,4 @@
+from copy import deepcopy
 from random import choice
 from models.Battle import BattleAction, CpuBattle
 from models.Move import MoveData
@@ -42,7 +43,9 @@ def ShouldSwitchPokemon(battle: CpuBattle, cpuTeam: list[Pokemon]):
 			mData = next(mo for mo in battle.AllMoveData if mo.Id == m.MoveId)
 			if m.PP == 0 or not mData.Power:
 				pass
-			simAttack = battleservice.AttackDamage(mData, battle.TeamBPkmn, battle.TeamAPkmn, battle)
+			simAttack,crit = battleservice.AttackDamage(mData, deepcopy(battle.TeamBPkmn), deepcopy(battle.TeamAPkmn), battle)
+			while crit and mData.CritRate <= 1:
+				simAttack,crit = battleservice.AttackDamage(mData, deepcopy(battle.TeamBPkmn), deepcopy(battle.TeamAPkmn), battle)
 			if simAttack > battle.TeamAPkmn.CurrentHP:
 				return None
 
@@ -50,7 +53,9 @@ def ShouldSwitchPokemon(battle: CpuBattle, cpuTeam: list[Pokemon]):
 		for m in [mov for mov in battle.TeamBPkmn.LearnedMoves if next(mo for mo in battle.AllMoveData if mo.Id == mov.MoveId).Priority == max([next(mo for mo in battle.AllMoveData if mo.Id == mv.MoveId).Priority for mv in battle.TeamBPkmn.LearnedMoves])]:
 			mData = next(mo for mo in battle.AllMoveData if mo.Id == m.MoveId)
 			if mData.Power:
-				simAttack = battleservice.AttackDamage(next(mo for mo in battle.AllMoveData if mo.Id == m.MoveId), battle.TeamBPkmn, battle.TeamAPkmn, battle)
+				simAttack,crit = battleservice.AttackDamage(next(mo for mo in battle.AllMoveData if mo.Id == m.MoveId), deepcopy(battle.TeamBPkmn), deepcopy(battle.TeamAPkmn), battle)
+				while crit and mData.CritRate <= 1:
+					simAttack,crit = battleservice.AttackDamage(mData, deepcopy(battle.TeamBPkmn), deepcopy(battle.TeamAPkmn), battle)
 				if simAttack > battle.TeamAPkmn.CurrentHP:
 					return None
 
@@ -86,7 +91,9 @@ def BestSwapChoice(opponent: Pokemon, options: list[Pokemon], battle: CpuBattle)
 		for m in [mo for mo in opponent.LearnedMoves if mo.PP > 0]:
 			mData = next(mo for mo in moveData if mo.Id == m.MoveId)
 			if mData.Power:
-				simAttack = battleservice.AttackDamage(mData, opponent, p, battle)
+				simAttack,crit = battleservice.AttackDamage(mData, deepcopy(opponent), deepcopy(p), battle)
+				while crit and mData.CritRate <= 1:
+					simAttack,crit = battleservice.AttackDamage(mData, deepcopy(opponent), deepcopy(p), battle)
 				if simAttack > p.CurrentHP:
 					newValue -= 100
 				elif simAttack > p.CurrentHP/2 and (mData.Priority > max([next(mov for mov in moveData if mov.Id == mo.MoveId).Priority for mo in p.LearnedMoves if m.PP > 0]) or spdA >= spdB):
@@ -161,7 +168,9 @@ def ChooseAttack(battle: CpuBattle):
 	for m in availableMoves:
 		mData = next(mo for mo in battle.AllMoveData if mo.Id == m.MoveId)
 		if mData.Power:
-			simAttack = battleservice.AttackDamage(mData, battle.TeamBPkmn, battle.TeamAPkmn, battle)
+			simAttack,crit = battleservice.AttackDamage(mData, deepcopy(battle.TeamBPkmn), deepcopy(battle.TeamAPkmn), battle)
+			while crit and mData.CritRate <= 1:
+				simAttack,crit = battleservice.AttackDamage(mData, deepcopy(battle.TeamBPkmn), deepcopy(battle.TeamAPkmn), battle)
 			if simAttack > battle.TeamAPkmn.CurrentHP:
 				koAttacks.append(m)
 	if koAttacks:
@@ -183,7 +192,7 @@ def ChooseAttack(battle: CpuBattle):
 			return choice([next(mo for mo in battle.AllMoveData if mo.Id == m.MoveId) for m in statDebuffs])
 	
 	#random attack
-	attackMoves = [m for m in availableMoves if next(mo for mo in battle.AllMoveData if mo.Id == m.MoveId).Power > 0]
+	attackMoves = [m for m in availableMoves if next(mo for mo in battle.AllMoveData if mo.Id == m.MoveId).Power and next(mo for mo in battle.AllMoveData if mo.Id == m.MoveId).Power > 0]
 	return choice([next(mo for mo in battle.AllMoveData if mo.Id == m.MoveId) for m in attackMoves]) if attackMoves else choice([next(mo for mo in battle.AllMoveData if mo.Id == m.MoveId) for m in availableMoves])
 
 def MovesWithStatChange(moveList: list[Move], moveData: list[MoveData]):

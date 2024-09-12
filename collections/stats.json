@@ -31,12 +31,12 @@
 	},
 	{
 		"Id": 7,
-		"Name": "accuracy",
+		"Name": "Accuracy",
 		"Url": "https://pokeapi.co/api/v2/stat/7/"
 	},
 	{
 		"Id": 8,
-		"Name": "evasion",
+		"Name": "Evasion",
 		"Url": "https://pokeapi.co/api/v2/stat/8/"
 	}
 ]

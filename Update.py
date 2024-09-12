@@ -105,7 +105,6 @@ def UpdateTrainers():
 				'Eggs': t['Eggs'] if 'Eggs' in t else [],
 				'Daycare': t['Daycare'] if 'Daycare' in t else {},
 				'Wishlist': t['Wishlist'] if 'Wishlist' in t else [],
-				'LastSpawnTime': t['LastSpawnTime'] if 'LastSpawnTime' in t else None,
 				'LastDaily': t['LastDaily'] if 'LastDaily' in t else None,
 				'Shop': t['Shop'] if 'Shop' in t else None,
 				'CurrentZone': t['CurrentZone'] if 'CurrentZone' in t else 0,
@@ -144,17 +143,18 @@ else:
   load_dotenv('.env.local')
 
 try:
-	print('Cache Reset')
+	print('Cache Delete')
 	os.remove('dataaccess/utility/cache.sqlite3')
 except Exception as e:
 	pass
-print('UPDATES')
+print('Trainers:')
 i = 0
 for trainer in UpdateTrainers():
 	print(f'{i} Trainer: {trainer.ServerId}-{trainer.UserId}')
 	trainerda.UpsertSingleTrainer(trainer)
 	i += 1
 i = 0
+print('Servers:')
 for server in UpdateServers():
 	print(f'{i} Server: {server.ServerId}-{server.ServerName}')
 	serverda.UpsertSingleServer(server)
