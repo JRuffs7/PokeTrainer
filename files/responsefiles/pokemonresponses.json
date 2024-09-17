@@ -53,6 +53,12 @@
 			"Body": "You currently do not own any eggs. To claim an egg, use the **/daily** command that resets every day at midnight UTC."
 		}
 	],
+	"pokecenter": [
+		{
+			"Title": "Not Enough Money",
+			"Body": "You do not have enough money to pay for the PokeCenter. Earn money by battling Gym Leaders and Trainers."
+		}
+	],
 	"pokeinfo": [
 		{
 			"Title": "No Results",
@@ -91,6 +97,12 @@
 		{
 			"Title": "Not Enough Masterballs",
 			"Body": "You do not have enough Masterballs to make an exchange for a {0}."
+		}
+	],
+	"usepotion": [
+		{
+			"Title": "No Potions",
+			"Body": "You do not have any potions available for use! Visit the **/shop** to buy more."
 		}
 	],
 	"wishlist": [

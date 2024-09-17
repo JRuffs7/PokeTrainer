@@ -1,7 +1,7 @@
 import math
 from random import choice
 from models.Battle import BattleAction, BattleTurn, CpuBattle
-from models.Item import Pokeball
+from models.Item import Item, Pokeball
 from models.Pokemon import Pokemon, PokemonData
 from models.Move import MoveData
 from models.Stat import Stat, StatEnum
@@ -24,10 +24,20 @@ def FleeAttempt(battle: CpuBattle, attempts: int):
 
 #region PreAttack
 
-def TeamAAttackFirst(move1: MoveData, move2: MoveData, battle: CpuBattle):
-	if move1.Priority > move2.Priority:
+def GetTurn(battle: CpuBattle, teamA: bool, roundsBefore: int, pokemonId: str|None):
+	turns = [t for t in battle.Turns if t.TeamA == teamA]
+	if not pokemonId:
+		return next((t for t in turns if t.TurnNum == (battle.CurrentTurn - roundsBefore)),None)
+	return next((t for t in turns if t.TurnNum == (battle.CurrentTurn - roundsBefore) and t.PokemonId == pokemonId),None)
+
+def TeamAAttackFirst(teamAMove: MoveData|None, teamBMove: MoveData|None, battle: CpuBattle):
+	if not teamAMove:
 		return True
-	elif move1.Priority < move2.Priority:
+	if not teamBMove:
+		return False
+	if teamAMove.Priority > teamBMove.Priority:
+		return True
+	elif teamAMove.Priority < teamBMove.Priority:
 		return False
 	else:
 		spdA = statservice.GenerateStat(battle.TeamAPkmn, next(p for p in battle.AllPkmnData if p.Id == battle.TeamAPkmn.Pokemon_Id), StatEnum.Speed) + battle.TeamAStats[str(StatEnum.Speed.value)]
@@ -45,20 +55,21 @@ def TeamAAttackFirst(move1: MoveData, move2: MoveData, battle: CpuBattle):
 			return choice([1,2]) == 1
 
 def CanChooseAttack(battle: CpuBattle, teamA: bool):
-	pokemon = battle.TeamAPkmn if teamA else battle.TeamBPkmn
-	prevTurn = next((t for t in battle.Turns if t.PokemonId == pokemon.Id and t.TurnNum == battle.CurrentTurn-1),None)
-	if not prevTurn:
+	turn = GetTurn(battle, teamA, 1, battle.TeamAPkmn.Id)
+	if not turn:
 		return True,BattleAction.Attack
 	
-	if prevTurn.Action == BattleAction.Charge:
-		prevTurn2 = next((t for t in battle.Turns if t.PokemonId == pokemon.Id and t.TurnNum == battle.CurrentTurn-2),None)
-		return (False,BattleAction.Attack) if prevTurn2 and prevTurn2.Action == BattleAction.Charge else (False,BattleAction.Charge)
+	if turn.Action == BattleAction.Charge:
+		if turn.Move.Id in [117,353]:
+			turn2 = GetTurn(battle, teamA, 2, turn.PokemonId)
+			if not turn2 or turn2.Action != BattleAction.Charge:
+				return (False, BattleAction.Charge)
+		return (False, BattleAction.Attack)
 	
-	if prevTurn.Move and prevTurn.Move.Recharge:
+	if turn.Move and turn.Move.Recharge:
 		return False,BattleAction.Recharge
 	
-	consAttack = battle.TeamAConsAttacks if teamA else battle.TeamBConsAttacks
-	if consAttack:
+	if (teamA and battle.TeamAConsAttacks > 0) or (not teamA and battle.TeamBConsAttacks > 0):
 		return False,BattleAction.Attack
 
 	return True,BattleAction.Attack
@@ -66,21 +77,37 @@ def CanChooseAttack(battle: CpuBattle, teamA: bool):
 def SpecialHitCases(move: MoveData, battle: CpuBattle, pokemon: Pokemon, opponent: Pokemon, goingFirst: bool, oppAttack: MoveData|None):	
 	match move.Id:
 		case 13|19|76|91|130|143|248|291|340|467|553|554|566|601|669|800|905:
-			if not CheckChargingMove(move.Id, pokemon.Id, battle, 1):
+			if HasToCharge(move.Id, pokemon.Id, battle, 1):
 				return BattleAction.Charge
 		case 68|243:
-			if not CheckCounterMove(move.AttackType.lower(), pokemon.Id, battle):
+			if not CanCounter(move.AttackType.lower(), opponent.Id, battle):
 				return BattleAction.Failed
-		case 117: 
-			if not CheckChargingMove(117, pokemon.Id, battle, 2):
+		case 113:
+			if (pokemon.Id == battle.TeamAPkmn.Id and battle.TeamASpecReduce) or (pokemon.Id == battle.TeamBPkmn.Id and battle.TeamBSpecReduce):
+				return BattleAction.Failed
+		case 115:
+			if (pokemon.Id == battle.TeamAPkmn.Id and battle.TeamAPhysReduce) or (pokemon.Id == battle.TeamBPkmn.Id and battle.TeamBPhysReduce):
+				return BattleAction.Failed
+		case 117,353: 
+			if HasToCharge(117, pokemon.Id, battle, 2):
 				return BattleAction.Charge
 			prevTurn = next((t for t in battle.Turns if t.PokemonId == pokemon.Id and t.TurnNum == battle.CurrentTurn-2),None)
 			oppMoves = [t for t in battle.Turns if t.PokemonId != pokemon.Id and battle.Turns.index(t) < battle.Turns.index(prevTurn)]
 			if not [m for m in oppMoves if m.DamageDone]:
 				return BattleAction.Failed
+		case 138|171:
+			if opponent.CurrentAilment != 2:
+				return BattleAction.Failed
+		case 173:
+			if pokemon.CurrentAilment != 2:
+				return BattleAction.Failed
 		case 252|660: 
 			prevTurn = next((t for t in battle.Turns if t.PokemonId == pokemon.Id and t.TurnNum == battle.CurrentTurn-1),None)
 			if next((t for t in battle.Turns if t.TurnNum == battle.CurrentTurn),None) or prevTurn or not goingFirst:
+				return BattleAction.Failed
+		case 264:
+			oppMove = next((t for t in battle.Turns if t.PokemonId != pokemon.Id and t.TurnNum == battle.CurrentTurn), None)
+			if oppMove and oppMove.DamageDone:
 				return BattleAction.Failed
 		case 283:
 			if (pokemon.CurrentHP - opponent.CurrentHP) < 2:
@@ -95,20 +122,27 @@ def SpecialHitCases(move: MoveData, battle: CpuBattle, pokemon: Pokemon, opponen
 		case 599:
 			if opponent.CurrentAilment != 5:
 				return BattleAction.Failed
+		case 694:
+			if pokemon.Id == battle.TeamAPkmn.Id:
+				if battle.TeamASpecReduce or battle.TeamAPhysReduce:
+					return BattleAction.Failed
+			else:
+				if battle.TeamBSpecReduce or battle.TeamBPhysReduce:
+					return BattleAction.Failed
 	return BattleAction.Attack
 	
-def CheckCounterMove(attackType: str|None, pokemonId: str, battle: CpuBattle):
-	oppMove = next((t for t in battle.Turns if t.PokemonId != pokemonId and t.TurnNum == battle.CurrentTurn and t.DamageDone), None)
-	if not oppMove or not oppMove.Move or (attackType is not None and oppMove.Move.AttackType.lower() != attackType):
+def CanCounter(attackType: str|None, pokemonId: str, battle: CpuBattle):
+	oppMove = next((t for t in battle.Turns if t.PokemonId == pokemonId and t.TurnNum == battle.CurrentTurn and t.DamageDone), None)
+	if (not oppMove) or (not oppMove.Move) or ((attackType is not None) and oppMove.Move.AttackType.lower() != attackType):
 		return False
 	return True
 
-def CheckChargingMove(moveId: int, pokemonId: str, battle: CpuBattle, numCharges: int):
+def HasToCharge(moveId: int, pokemonId: str, battle: CpuBattle, numCharges: int):
 	for i in range(numCharges,0,-1):
 		prevTurn = next((t for t in battle.Turns if t.PokemonId == pokemonId and t.TurnNum == battle.CurrentTurn-i),None)
 		if not prevTurn or not prevTurn.Move or prevTurn.Move.Id != moveId or prevTurn.Action != BattleAction.Charge:
-			return False
-	return True
+			return True
+	return False
 
 def ConfusionDamage(pokemon: Pokemon, data: PokemonData):
 	dmgA = ((2*pokemon.Level)/5) + 2
@@ -149,7 +183,9 @@ def ConsecutiveAttack(moveData: MoveData, battle: CpuBattle, teamA: bool):
 
 #region Ailments
 
-def AilmentCheck(pokemon: Pokemon, battle: CpuBattle):
+def AilmentCheck(action: BattleAction, pokemon: Pokemon, battle: CpuBattle):
+	if action != BattleAction.Attack:
+		return None
 	match pokemon.CurrentAilment:
 		#Paralysis
 		case 1:
@@ -197,7 +233,7 @@ def AilmentDamage(pokemon: Pokemon, data: PokemonData, targetPokemon: Pokemon, t
 	pokemon.CurrentHP = max(pokemon.CurrentHP - damage, 0)
 	return damage
 
-def ApplyAilment(moveData: MoveData, target: Pokemon, targetData: PokemonData):
+def ApplyAilment(battle: CpuBattle, moveData: MoveData, target: Pokemon, targetData: PokemonData):
 	if not moveData.Ailment or moveData.Ailment == target.CurrentAilment:
 		return None
 	
@@ -208,17 +244,29 @@ def ApplyAilment(moveData: MoveData, target: Pokemon, targetData: PokemonData):
 	  ):
 		return None
 	
+	teamA = target.Id == battle.TeamBPkmn.Id
 	if moveData.AilmentChance in [0, 100] or choice(range(100)) < moveData.AilmentChance:
 		target.CurrentAilment = moveData.Ailment
+		if moveData.Ailment == 6 and teamA:
+			battle.TeamAConfusion = choice([2,3,4,5])
+		if moveData.Ailment == 6 and not teamA:
+			battle.TeamBConfusion = choice([2,3,4,5])
+		elif moveData.Ailment == 8 and teamA:
+			battle.TeamBTrapId = moveData.Id
+			battle.TeamBTrap = choice([4,5])
+		elif moveData.Ailment == 8 and not teamA:
+			battle.TeamATrapId = moveData.Id
+			battle.TeamATrap = choice([4,5])
 		return statservice.GetAilmentGainedMessage(target, targetData, moveData.Name)
 	return None
+
 
 #endregion
 
 #region Attack
 
 def MoveAccuracy(move: MoveData, battle: CpuBattle, teamA: bool):
-	if (teamA and battle.TeamBImmune) or (not teamA and battle.TeamAImmune):
+	if (teamA and battle.TeamBImmune) or ((not teamA) and battle.TeamAImmune):
 		return False
 	if not move.Accuracy:
 		return True
@@ -233,19 +281,23 @@ def MoveAccuracy(move: MoveData, battle: CpuBattle, teamA: bool):
 
 	acc = move.Accuracy
 	modif = 1
-	stgMult = (battle.TeamAStats['7'] - battle.TeamBStats['8']) if teamA else (battle.TeamBStats['7'] - battle.TeamAStats['8'])
+	stgMult = (battle.TeamAStats['7'] - (0 if move.Id == 533 else battle.TeamBStats['8'])) if teamA else (battle.TeamBStats['7'] - (0 if move.Id == 533 else battle.TeamAStats['8']))
 	stg = (3 + (stgMult if stgMult > 0 else 0))/(3 - (stgMult if stgMult < 0 else 0))
 	mBerry = 1
 	affection = 0
 	return choice(range(100)) < (acc*modif*stg*mBerry-affection)
 
 def SpecialDamage(move: MoveData, battle: CpuBattle, teamA: bool):
+	pokemon = battle.TeamAPkmn if teamA else battle.TeamBPkmn
 	opponent = battle.TeamBPkmn if teamA else battle.TeamAPkmn
 	oppData = next(p for p in battle.AllPkmnData if p.Id == opponent.Pokemon_Id)
 	effect = typeservice.AttackEffect(move.MoveType, oppData.Types)
 	match move.Id:
 		case 205|301:
 			return math.pow(2,(5-(battle.TeamAConsAttacks if teamA else battle.TeamBConsAttacks)))
+		case 263:
+			if pokemon.CurrentAilment in [1,4,5]:
+				return 2
 		case 265:
 			if opponent.CurrentAilment == 1 and effect: #SmellingSalts
 				opponent.CurrentAilment = None
@@ -257,10 +309,17 @@ def SpecialDamage(move: MoveData, battle: CpuBattle, teamA: bool):
 			if opponent.CurrentAilment == 2 and effect: #WakeUpSlap
 				opponent.CurrentAilment = None
 				return 2
+		case 506:
+			if opponent.CurrentAilment in [1,2,3,4,5]:
+				return 2
 		case 664:
 			if opponent.CurrentAilment == 4: #SparklingAria
 				opponent.CurrentAilment = None
 				return 1
+		case 808:
+			oppturn = GetTurn(battle, (not teamA), 0, opponent.Id)
+			if oppturn and oppturn.Move and oppturn.Move.StatEffectOpponent and oppturn.Move.StatChanges:
+				return 2
 	return 1
 
 def UniqueDamage(moveData: MoveData, battle: CpuBattle, attacking: Pokemon, defending: Pokemon):
@@ -283,6 +342,8 @@ def UniqueDamage(moveData: MoveData, battle: CpuBattle, attacking: Pokemon, defe
 			return max(math.floor((attacking.Level*((10*choice(range(100)))+50))/100), 1)
 		case 162|877:
 			return math.floor(defending.CurrentHP/2)
+		case 171:
+			return math.floor(statservice.GenerateStat(defending, next(p for p in battle.AllPkmnData if p.Id == defending.Pokemon_Id), StatEnum.HP)/4)
 		case 283:
 			return (attacking.CurrentHP - defending.CurrentHP) / 2
 		case 515:
@@ -293,11 +354,11 @@ def UniqueDamage(moveData: MoveData, battle: CpuBattle, attacking: Pokemon, defe
 def AttackDamage(move: MoveData, attacking: Pokemon, defending: Pokemon, battle: CpuBattle):
 	attData = next(p for p in battle.AllPkmnData if p.Id == attacking.Pokemon_Id)
 	defData = next(p for p in battle.AllPkmnData if p.Id == defending.Pokemon_Id)
-	attStats = battle.TeamAStats if attacking.Id == battle.TeamAPkmn.Id else battle.TeamBStats
-	defStats = battle.TeamBStats if attacking.Id == battle.TeamAPkmn.Id else battle.TeamAStats
-	print(f'{attData.Name} - {attStats}')
-	print(f'{defData.Name} - {defStats}')
+	attStats = battle.TeamAStats if attacking.Id == battle.TeamAPkmn.Id and move.Id != 492 else battle.TeamBStats
+	defStats = battle.TeamBStats if attacking.Id == battle.TeamAPkmn.Id else battle.TeamAStat
 	typedmg = statservice.TypeDamage(move.MoveType, defData.Types)
+	if defending.Pokemon_Id == 292 and typedmg < 2:
+		typedmg = 0
 	if move.UniqueDamage:
 		damage = round(UniqueDamage(move, battle, attacking, defending)*(1 if typedmg > 0 else 0))
 		damage = min(defending.CurrentHP, damage)
@@ -310,18 +371,33 @@ def AttackDamage(move: MoveData, attacking: Pokemon, defending: Pokemon, battle:
 	lastTeamAAttack = next((t for t in battle.Turns if t.TeamA and t.Move), None)
 	lastTeamBAttack = next((t for t in battle.Turns if not t.TeamA and t.Move), None)
 
+	critical = Critical(move)
 	dmgA = ((2*attacking.Level)/5) + 2
 	if move.AttackType.lower() == 'physical':
-		dmgB = (statservice.GenerateStat(attacking, attData, StatEnum.Attack) + attStats[str(StatEnum.Attack.value)])/(statservice.GenerateStat(defending, defData, StatEnum.Defense) + defStats[str(StatEnum.Defense.value)])
+		attSt = statservice.GenerateStat(attacking, attData, StatEnum.Attack)
+		defSt = statservice.GenerateStat(defending, defData, StatEnum.Defense)
+		attMo = max(attStats[str(StatEnum.Attack.value)], 0) if critical > 1 else attStats[str(StatEnum.Attack.value)]
+		defMo = 0 if move.Id == 533 else min(defStats[str(StatEnum.Defense.value)], 0) if critical > 1 else defStats[str(StatEnum.Attack.value)]
 	else:
-		dmgB = (statservice.GenerateStat(attacking, attData, StatEnum.SpecialAttack) + attStats[str(StatEnum.SpecialAttack.value)])/(statservice.GenerateStat(defending, defData, StatEnum.SpecialDefense) + defStats[str(StatEnum.SpecialDefense.value)])
-	power = (move.Power or 0)*SpecialDamage(move, battle, attacking.Id == battle.TeamAPkmn.Id)
+		attSt = statservice.GenerateStat(attacking, attData, StatEnum.SpecialAttack)
+		defSt = statservice.GenerateStat(defending, defData, StatEnum.SpecialDefense)
+		attMo = max(attStats[str(StatEnum.SpecialAttack.value)], 0) if critical > 1 else attStats[str(StatEnum.SpecialAttack.value)]
+		defMo = min(defStats[str(StatEnum.SpecialDefense.value)], 0) if critical > 1 else defStats[str(StatEnum.SpecialDefense.value)]
+	dmgB = (attSt + attMo)/(defSt + defMo)
+	power = CalcPower(move, battle, attacking, attData, defending, defData)
+	if move.Id == 175:
+		prcntHPLeft = attacking.CurrentHP / statservice.GenerateStat(attacking, attData, StatEnum.HP)
+		power = 200 if prcntHPLeft < 4.2 else 150 if prcntHPLeft < 10.4 else 100 if prcntHPLeft < 20.8 else 80 if prcntHPLeft < 35.4 else 40 if prcntHPLeft < 68.8 else 20
+	elif move.Id == 535:
+		prcntWeight = (defending.Weight * 100) / attacking.Weight
+		power = 120 if prcntWeight <= 20 else 100 if prcntWeight <= 25 else 80 if prcntWeight <= 33.34 else 60 if prcntWeight <= 50 else 40
+	else:
+		power = (move.Power or 0)*SpecialDamage(move, battle, attacking.Id == battle.TeamAPkmn.Id)
 	baseDmg = ((dmgA*power*dmgB)/50) + 2
 	targets = 0.75 if move.Targets > 1 else 1
 	pb = 1
 	weather = 1
 	glaive = 2 if ((lastTeamAAttack and lastTeamAAttack.Move.Id == 862 and attacking.Id == battle.TeamAPkmn.Id) or (lastTeamBAttack and lastTeamBAttack.Move.Id == 862 and attacking.Id == battle.TeamBPkmn.Id)) else 1
-	critical = Critical(move)
 	random = choice(range(85,101))/100
 	stab = 1.5 if move.MoveType in attData.Types else 1
 	burn = 0.5 if attacking.CurrentAilment == 4 and move.AttackType.lower() == 'physical' else 1 #burn
@@ -334,21 +410,65 @@ def AttackDamage(move: MoveData, attacking: Pokemon, defending: Pokemon, battle:
 	defending.CurrentHP = max(defending.CurrentHP - damage, 0)
 	return damage,critical>1
 
+def CalcPower(move: MoveData, battle: CpuBattle, attack: Pokemon, attackData: PokemonData, defend: Pokemon, defendData: PokemonData):
+	teamA = attack.Id == battle.TeamAPkmn.Id
+	effect = typeservice.AttackEffect(move.MoveType, defendData.Types)
+	power = move.Power or 0
+	match move.Id:
+		case 175:
+			prcntHPLeft = attack.CurrentHP / statservice.GenerateStat(attack, attackData, StatEnum.HP)
+			return 200 if prcntHPLeft < 4.2 else 150 if prcntHPLeft < 10.4 else 100 if prcntHPLeft < 20.8 else 80 if prcntHPLeft < 35.4 else 40 if prcntHPLeft < 68.8 else 20
+		case 323:
+			return power * attack.CurrentHP / statservice.GenerateStat(attack, attackData, StatEnum.HP)
+		case 535:
+			prcntWeight = (defend.Weight * 100) / attack.Weight
+			return 120 if prcntWeight <= 20 else 100 if prcntWeight <= 25 else 80 if prcntWeight <= 33.34 else 60 if prcntWeight <= 50 else 40
+		case 205|301:
+			return power * math.pow(2,(5-(battle.TeamAConsAttacks if teamA else battle.TeamBConsAttacks)))
+		case 263:
+			if attack.CurrentAilment in [1,4,5]:
+				return power * 2
+		case 265:
+			if defend.CurrentAilment == 1 and effect: #SmellingSalts
+				defend.CurrentAilment = None
+				return power * 2
+		case 329:
+			if move.MoveType in defendData.Types:
+				return 0
+		case 358:
+			if defend.CurrentAilment == 2 and effect: #WakeUpSlap
+				defend.CurrentAilment = None
+				return power * 2
+		case 506:
+			if defend.CurrentAilment in [1,2,3,4,5]:
+				return power * 2
+		case 664:
+			if defend.CurrentAilment == 4: #SparklingAria
+				defend.CurrentAilment = None
+				return power * 1
+		case 808:
+			oppturn = GetTurn(battle, (not teamA), 0, defend.Id)
+			if oppturn and oppturn.Move and oppturn.Move.StatEffectOpponent and oppturn.Move.StatChanges:
+				return power * 2
+		case _:
+			return power
+	return power
+
 def ReduceDamage(moveData: MoveData, battle: CpuBattle, teamA: bool):
 	if moveData.AttackType.lower() == 'physical':
 		if teamA:
-			return 0.5 if battle.TeamBPhysReduce else 1
+			return 0.5 if battle.TeamBPhysReduce > 0 else 1
 		else:
-			return 0.5 if battle.TeamAPhysReduce else 1
+			return 0.5 if battle.TeamAPhysReduce > 0 else 1
 	if moveData.AttackType.lower() == 'special':
 		if teamA:
-			return 0.5 if battle.TeamBSpecReduce else 1
+			return 0.5 if battle.TeamBSpecReduce > 0 else 1
 		else:
-			return 0.5 if battle.TeamASpecReduce else 1
+			return 0.5 if battle.TeamASpecReduce > 0 else 1
 	return 1
 
 def Critical(moveData: MoveData):
-	if moveData.UniqueDamage or moveData.CritRate == 0:
+	if moveData.UniqueDamage or moveData.CritRate == 0 or moveData.Id == 175:
 		return 1
 	if moveData.CritRate > 1:
 		return 1.5
@@ -372,7 +492,7 @@ def SelfDamage(move: MoveData, pokemon: Pokemon, data: PokemonData):
 			damage = min(pokemon.CurrentHP, round(statservice.GenerateStat(pokemon, data, StatEnum.HP)/2))
 			pokemon.CurrentHP = max(pokemon.CurrentHP - damage, 0)
 		#Half Current HP
-		case 10007:
+		case 796,10007:
 			damage = min(pokemon.CurrentHP, round(pokemon.CurrentHP/2))
 			pokemon.CurrentHP = max(pokemon.CurrentHP - damage, 0)
 		#Third HP
@@ -389,12 +509,16 @@ def SelfDamage(move: MoveData, pokemon: Pokemon, data: PokemonData):
 			pokemon.CurrentHP = max(pokemon.CurrentHP - damage, 0)
 		case _:
 			damage = 0
-	return damage
+	return abs(damage)
 
 def MoveDrain(moveData: MoveData, pokemon: Pokemon, data: PokemonData, damage: int):
-	if not moveData.Healing or not damage:
+	if moveData.Id in [120,153,262,515,802]:
+		pokemon.CurrentHP = 0
 		return None
 	
+	if not moveData.Healing or not damage:
+		return None
+
 	heal = math.floor(damage*(moveData.Healing/100))
 	newHp = pokemon.CurrentHP + heal
 	if moveData.Healing > 0:
@@ -498,6 +622,18 @@ def TryCapture(pokeball: Pokeball, trainer: Trainer, battle: CpuBattle):
 #endregion
 
 #region Turns
+
+def CreateTurn(turn: int, teamA: bool, pokemonId: str, action: BattleAction|None = None, move: MoveData|None = None, item: Item|None = None, itemUse: str|None = None):
+	return BattleTurn.from_dict({
+		'TurnNum': turn,
+		'TeamA': teamA,
+		'PokemonId': pokemonId,
+		'Action': action,
+		'Move': move,
+		'DamageDone': None,
+		'ItemUsed': item,
+		'ItemUsedOnId': itemUse
+	})
 
 def ResetStats(battle: CpuBattle, teamA: bool):
 	if teamA:

@@ -246,7 +246,7 @@ def PokeCenter(trainer: Trainer, team: list[Pokemon]):
     HealPokemon(p, GetPokemonById(p.Pokemon_Id))
 
 def AddExperience(trainerPokemon: Pokemon, pkmnData: PokemonData, exp: int):
-  trainerPokemon.CurrentExp += exp
+  trainerPokemon.CurrentExp += exp if trainerPokemon.Level < 100 else 0
   expNeeded = NeededExperience(trainerPokemon, pkmnData)
   while trainerPokemon.CurrentExp >= expNeeded and trainerPokemon.Level < 100:
     oldTotalHP = statservice.GenerateStat(trainerPokemon, pkmnData, StatEnum.HP)
@@ -347,11 +347,15 @@ def HealPokemon(pokemon: Pokemon, data: PokemonData):
   pokemon.CurrentAilment = None
   pokemon.CurrentHP = statservice.GenerateStat(pokemon, data, StatEnum.HP)
 
-def UseItem(pokemon: Pokemon, data: PokemonData, potion: Potion):
-  pokemon.CurrentHP = min(pokemon.CurrentHP + (potion.HealingAmount or 1000), statservice.GenerateStat(pokemon, data, StatEnum.HP))
+def TryUseItem(pokemon: Pokemon, data: PokemonData, potion: Potion):
+  used = False
+  if pokemon.CurrentHP < statservice.GenerateStat(pokemon, data, StatEnum.HP):
+    used = True
+    pokemon.CurrentHP = min(pokemon.CurrentHP + (potion.HealingAmount or 1000), statservice.GenerateStat(pokemon, data, StatEnum.HP))
 
   if pokemon.CurrentAilment and pokemon.CurrentAilment in potion.AilmentCures:
+    used = True
     pokemon.CurrentAilment = None
-
+  return used
 
 #endregion

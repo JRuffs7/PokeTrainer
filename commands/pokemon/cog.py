@@ -1,7 +1,8 @@
 from discord import Member, app_commands, Interaction
 from discord.ext import commands
 from typing import List
-from Views.CpuBattleView import CpuBattleView
+from Views.UsePotionView import UsePotionView
+from Views.Battles.CpuBattleView import CpuBattleView
 from commands.autofills.autofills import autofill_nonteam, autofill_owned, autofill_pokemon, autofill_pokemon_legendary_spawn, autofill_special
 from commands.views.PokeShopView import PokeShopView
 from commands.views.BattleSimView import BattleSimView
@@ -13,16 +14,15 @@ from commands.views.Selection.CandyView import CandyView
 from commands.views.Selection.DaycareAddView import DaycareAddView
 from commands.views.Selection.HatchView import HatchView
 from commands.views.Selection.NicknameView import NicknameView
-from commands.views.SpawnPokemonView import SpawnPokemonView
 import discordbot
 
 from commands.views.Selection.EvolveView import EvolveView
-from globals import AdminList
+from globals import AdminList, PokemonColor
 from middleware.decorators import command_lock, method_logger, trainer_check
 from models.Gym import GymLeader
-from services import commandlockservice, pokemonservice, statservice, trainerservice, zoneservice
+from services import commandlockservice, itemservice, pokemonservice, statservice, trainerservice, zoneservice
 from middleware.decorators import method_logger, trainer_check
-from services.utility import discordservice_pokemon
+from services.utility import discordservice, discordservice_pokemon
 
 
 class PokemonCommands(commands.Cog, name="PokemonCommands"):
@@ -33,7 +33,7 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
     self.bot = bot
     
 
-  #region Spawn
+  #region Pokemon
     
   @app_commands.command(name="spawn",
                         description="Spawn an Pokemon to capture or fight.")
@@ -133,6 +133,35 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
               spawn.IsShiny = (spawn.IsShiny and trainer.Money >= pokemonservice.GetShopValue(pkmn)*2 and trainer.Items["1"] >= 30)
               return await PokeShopView(inter, trainer, spawn).send()
     commandlockservice.DeleteLock(inter.guild_id, inter.user.id)
+
+  @app_commands.command(name="pokecenter",
+                        description="Heal all HP and Ailments from Pokemon on your team.")
+  @method_logger(True)
+  @trainer_check
+  @command_lock
+  async def pokecenter(self, inter: Interaction):
+    trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
+    if trainer.Money < 500:
+      commandlockservice.DeleteLock(inter.guild_id, inter.user.id)
+      return await discordservice_pokemon.PrintPokeCenterResponse(inter, 0, [])
+    for p in trainerservice.GetTeam(trainer):
+      pokemonservice.HealPokemon(p, pokemonservice.GetPokemonById(p.Pokemon_Id))
+    trainer.Money -= 500
+    trainerservice.UpsertTrainer(trainer)
+    commandlockservice.DeleteLock(inter.guild_id, inter.user.id)
+    return await discordservice.SendEmbed(inter, discordservice.CreateEmbed('Healed', 'All Pokemon in your party have been healed to full HP and cured of any ailments.', PokemonColor))
+
+  @app_commands.command(name="usepotion",
+                        description="Use a healing item on one of your party Pokemon.")
+  @method_logger(True)
+  @trainer_check
+  @command_lock
+  async def usepotion(self, inter: Interaction):
+    trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
+    if not itemservice.GetTrainerPotions(trainer):
+      commandlockservice.DeleteLock(inter.guild_id, inter.user.id)
+      return await discordservice_pokemon.PrintUsePotionResponse(inter, 0, [])
+    return await UsePotionView(trainer).send(inter)
 
   #endregion
 

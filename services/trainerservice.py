@@ -3,14 +3,15 @@ import logging
 from random import choice, sample
 import uuid
 from dataaccess import trainerda
-from globals import AdminList, GreatShinyOdds, ShinyOdds, DateFormat, ShortDateFormat, SuperShinyOdds
+from globals import AdminList, GreatShinyOdds, ShinyOdds, ShortDateFormat, SuperShinyOdds
 from models.Egg import TrainerEgg
-from models.Item import Pokeball, Potion
+from models.Gym import GymLeader
+from models.Item import Pokeball
 from models.Mission import TrainerMission
 from models.Shop import SpecialShop
 from models.Trainer import Trainer
 from models.Pokemon import EvolveData, Pokemon, PokemonData
-from services import battleservice, gymservice, itemservice, missionservice, pokemonservice, statservice
+from services import battleservice, gymservice, itemservice, missionservice, pokemonservice
 
 captureLog = logging.getLogger('capture')
 
@@ -57,21 +58,6 @@ def TrainerRemoveLock(serverId: int, userId: int):
 #endregion
 
 #region Inventory/Items
-
-def TryUsePotion(trainer: Trainer, potion: Potion):
-  if trainer.Health == 100:
-    return 0
-
-  preHealth = trainer.Health
-  if potion.HealingAmount == None:
-    trainer.Health = 100
-  else:
-    trainer.Health += potion.HealingAmount
-  if trainer.Health > 100:
-    trainer.Health = 100
-  ModifyItemList(trainer, str(potion.Id), -1)
-  trainerda.UpsertSingleTrainer(trainer)
-  return trainer.Health - preHealth
 
 def TryDaily(trainer: Trainer, freeMasterball: bool):
   if (not trainer.LastDaily or datetime.strptime(trainer.LastDaily, ShortDateFormat).date() < datetime.now(UTC).date()) or trainer.UserId in AdminList:
@@ -307,6 +293,13 @@ def Evolve(trainer: Trainer, initialPkmn: Pokemon, initialData: PokemonData, evo
     for p in pokemonservice.GetPokemonByPokedexId(869):
       if p.Id not in trainer.Shinydex:
         trainer.Shinydex.append(p.Id)
+  
+  if initialPkmn.Pokemon_Id == 290 and len(trainer.Team) < 6: #Nincada
+    shedinja = pokemonservice.GetPokemonById(292)
+    shedinjaSpawn = pokemonservice.GenerateSpawnPokemon(shedinja, level=1)
+    trainer.Team.append(shedinjaSpawn.Id)
+    TryAddToPokedex(trainer, shedinja, shedinjaSpawn.IsShiny)
+
   UpsertTrainer(trainer)
   return newPkmn
 
@@ -383,6 +376,23 @@ def TryCapture(pokeball: Pokeball, trainer: Trainer, spawn: Pokemon):
     trainer.Health = 0 if trainer.Health < 0 else trainer.Health
   UpsertTrainer(trainer)
   return caught
+
+def FightWin(trainer: Trainer, leader: GymLeader, isWild: bool):
+  if isWild:
+    trainer.Money += 25
+    TryAddMissionProgress(trainer, 'Fight', pokemonservice.GetPokemonById(leader.Team[0].Pokemon_Id).Types)
+    candy = itemservice.TryGetCandy()
+    if candy:
+      ModifyItemList(trainer.Items, str(candy.Id), 1)
+    return candy
+  else:
+    if leader.Reward[0] == 0:
+      trainer.Money += leader.Reward[1]
+    else:
+      ModifyItemList(trainer, str(leader.Reward[0]), leader.Reward[1])
+    if leader.BadgeId >= 1:
+      trainer.Badges.append(leader.BadgeId)
+  return None
 
 def TryWildFight(trainer: Trainer, trainerPkmnData: PokemonData, wild: Pokemon, wildData: PokemonData):
     trainerPokemon = next(p for p in trainer.OwnedPokemon if p.Id == trainer.Team[0])

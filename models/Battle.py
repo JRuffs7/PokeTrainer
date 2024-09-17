@@ -2,6 +2,7 @@ from dataclasses import dataclass, field, fields
 import enum
 from models.Move import MoveData
 from models.Pokemon import Pokemon, PokemonData
+from models.Item import Item
 
 class BattleAction(enum.Enum):
 	Error = -1
@@ -28,6 +29,8 @@ class BattleTurn:
 	Action: BattleAction|None = None
 	Move: MoveData|None = None
 	DamageDone: int|None = None
+	ItemUsed: Item|None = None
+	ItemUsedOnId: str|None = None
 
 	@classmethod
 	def from_dict(cls, dict):

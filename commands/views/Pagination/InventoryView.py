@@ -54,13 +54,18 @@ class InventoryView(discord.ui.View):
 
 	def Description(self):
 		title = 'POKEBALLS' if self.currentPage == 0 else 'POTIONS' if self.currentPage == 1 else 'CANDY' if self.currentPage ==  2 else 'EVOLUTION ITEMS'
-		if self.currentPage < 3:
-			itemList = [i for i in self.allitems if type(i) is (Pokeball if self.currentPage == 0 else Potion if self.currentPage == 1 else Candy)]
-		else:
-			itemList = [i for i in self.allitems if i.EvolutionItem]
+		match self.currentPage:
+			case 0:
+				itemList = itemservice.GetAllPokeballs()
+			case 1:
+				itemList = itemservice.GetAllPotions()
+			case 2:
+				itemList = itemservice.GetAllCandies()
+			case _:
+				itemList = itemservice.GetAllEvoItems()
 
-		if not [i for i in itemList if self.trainer.Items[str(i.Id)] > 0]:
-			return f'Money: {self.trainer.Money}\n\n**__{title}__\n\nYou do not own any of these items.'
+		if not [i for i in itemList if str(i.Id) in self.trainer.Items and self.trainer.Items[str(i.Id)] > 0]:
+			return f'**Money: {self.trainer.Money}**\n\n**__{title}__**\n\nYou do not own any {title.lower()}.'
 		
 		newLine = '\n'
 		if self.currentPage == 3:

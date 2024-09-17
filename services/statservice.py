@@ -47,6 +47,8 @@ def GetStat(id: int):
 
 def GenerateStat(pokemon: Pokemon, data: PokemonData, stat: StatEnum):
 	if stat == StatEnum.HP:
+		if pokemon.Pokemon_Id == 292: #Shedinja
+			return 1
 		iv = GetIV(pokemon, 'hp')
 		base = GetBaseStat(data, 'hp')
 		ev = 0
@@ -79,7 +81,7 @@ def ExpCalculator(pokemon: Pokemon, data: PokemonData):
 	nextLevel = pokemon.Level + 1
 
 	if currLevel == 100:
-		return 0
+		return 0,0
 
 	if data.GrowthRate.lower() == 'medium':
 		expToCurrentLvl = math.floor(math.pow(currLevel,3))
@@ -169,13 +171,13 @@ def GetAilmentFailMessage(name: str, ailment: int):
 def GetRecoveryMessage(pokemon: Pokemon, data:PokemonData, trapMove: int|None):
 	match(pokemon.CurrentAilment):
 		case 2:
-			return f'{pokemonservice.GetPokemonDisplayName(pokemon, data, False, False)} woke up!\n'
+			return f'{pokemonservice.GetPokemonDisplayName(pokemon, data, False, False)} woke up!'
 		case 3:
-			return f'{pokemonservice.GetPokemonDisplayName(pokemon, data, False, False)} thawed out!\n'
+			return f'{pokemonservice.GetPokemonDisplayName(pokemon, data, False, False)} thawed out!'
 		case 6:
-			return f'{pokemonservice.GetPokemonDisplayName(pokemon, data, False, False)} is no longer confused!\n'
+			return f'{pokemonservice.GetPokemonDisplayName(pokemon, data, False, False)} is no longer confused!'
 		case 8:
-			return f'{pokemonservice.GetPokemonDisplayName(pokemon, data, False, False)} is free from the **{moveservice.GetMoveById(trapMove).Name if trapMove else "N/A"}**!\n'
+			return f'{pokemonservice.GetPokemonDisplayName(pokemon, data, False, False)} is free from the **{moveservice.GetMoveById(trapMove).Name if trapMove else "N/A"}**!'
 		case _:
 			return ''
 

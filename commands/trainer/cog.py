@@ -47,25 +47,6 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
         break
     return data
 
-  @app_commands.command(name="usepotion",
-                        description="Use a potion to restore trainer health.")
-  @app_commands.autocomplete(potion=autofill_usepotion)
-  @method_logger(True)
-  @trainer_check
-  @command_lock
-  async def usepotion(self, inter: Interaction, potion: int):
-    if potion not in [p.Id for p in itemservice.GetAllPotions()]:
-      await discordservice_trainer.PrintUsePotion(inter, 0, [])
-    else:
-      trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
-      ptn = itemservice.GetPotion(potion)
-      if str(potion) not in trainer.Items or trainer.Items[str(potion.Id)] == 0:
-        await discordservice_trainer.PrintUsePotion(inter, 1, [ptn.Name])
-      else:
-        result = trainerservice.TryUsePotion(trainer, ptn)
-        await discordservice_trainer.PrintUsePotion(inter, 3 if result > 0 else 2, [ptn.Name, result] if result > 0 else [ptn.Name])
-    commandlockservice.DeleteLock(inter.guild_id, inter.user.id)
-
   @app_commands.command(name="daily",
                         description="Claim your daily reward.")
   @method_logger(False)

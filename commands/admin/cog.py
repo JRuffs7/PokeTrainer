@@ -3,7 +3,7 @@ import logging
 from random import choice, sample
 from discord import Interaction, Member, TextChannel, app_commands
 from discord.ext import commands
-from Views.CpuBattleView import CpuBattleView
+from Views.Battles.CpuBattleView import CpuBattleView
 from globals import SuperShinyOdds
 from middleware.decorators import is_bot_admin, trainer_check
 from models.Gym import GymLeader
@@ -29,18 +29,6 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 		if trainer:
 			trainerservice.DeleteTrainer(trainer)
 		
-
-	@commands.command(name="addhealth")
-	@is_bot_admin
-	async def addhealth(self, ctx: commands.Context, amount: int, user: Member = None):
-		if not ctx.guild:
-			return
-		trainer = trainerservice.GetTrainer(ctx.guild.id, user.id if user else ctx.author.id)
-		if trainer:
-			trainer.Health += amount
-			trainer.Health = 100 if trainer.Health > 100 else 0 if trainer.Health < 0 else trainer.Health
-			trainerservice.UpsertTrainer(trainer)
-
 	@commands.command(name="addmoney")
 	@is_bot_admin
 	async def givemoney(self, ctx: commands.Context, amount: int, user: Member = None):

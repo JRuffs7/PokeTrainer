@@ -4,8 +4,21 @@ from models.Battle import BattleAction, CpuBattle
 from models.Move import MoveData
 from models.Pokemon import Pokemon, Move
 from models.Stat import StatEnum
-from services import battleservice, moveservice, statservice, typeservice
+from services import battleservice, itemservice, moveservice, statservice, typeservice
 
+def CreateCpuTurn(battle: CpuBattle, team: list[Pokemon]):
+	cputurn = battleservice.CreateTurn(battle.CurrentTurn,False,battle.TeamBPkmn.Id,None)
+	cpuChoose,cputurn.Action = battleservice.CanChooseAttack(battle, False)
+	if cpuChoose:
+		cputurn.Action, cpuObj = CpuAction(battle, team)
+		cputurn.PokemonId = cpuObj.Id if type(cpuObj) is Pokemon and cputurn.Action == BattleAction.Swap else battle.TeamBPkmn.Id
+		cputurn.Move = cpuObj if type(cpuObj) is MoveData else None
+		cputurn.ItemUsed = itemservice.GetPotion(23) if cputurn.Action == BattleAction.Item else None
+		cputurn.ItemUsedOnId = cpuObj if type(cpuObj) is Pokemon and cputurn.Action == BattleAction.Item else None
+	else:
+		lastTurn = battleservice.GetTurn(battle, False, 1, battle.TeamBPkmn.Id)
+		cputurn.Move = lastTurn.Move if lastTurn.Move else moveservice.GetMoveById(165)
+	return cputurn 
 
 def CpuAction(battle: CpuBattle, cpuTeam: list[Pokemon]):
 	if battle.IsWild:
@@ -26,7 +39,6 @@ def CpuAction(battle: CpuBattle, cpuTeam: list[Pokemon]):
 	if item:
 		return BattleAction.Item,item
 	return BattleAction.Attack,ChooseAttack(battle)
-
 
 def ShouldSwitchPokemon(battle: CpuBattle, cpuTeam: list[Pokemon]):
 	if len(cpuTeam) == 1:
@@ -126,7 +138,7 @@ def BestSwapChoice(opponent: Pokemon, options: list[Pokemon], battle: CpuBattle)
 	return selectedPokemon
 		
 def ShouldUseItem(battle: CpuBattle, team: list[Pokemon]):
-	if len([t for t in battle.Turns if t.Action == BattleAction.Item and not t.TeamA]) == 3:
+	if len([t for t in battle.Turns if t.Action == BattleAction.Item and not t.TeamA]) >= 3:
 		return None
 	if next((t for t in battle.Turns if not t.TeamA),None) and next(t for t in battle.Turns if not t.TeamA).Action == BattleAction.Item:
 		return None
