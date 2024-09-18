@@ -98,9 +98,7 @@ def SpecialShopCheck(trainer: Trainer):
   UpsertTrainer(trainer)
 
 def ModifyItemList(trainer: Trainer, itemId: str, amount: int):
-  newAmount = trainer.Items[itemId] + amount if itemId in trainer.Items else amount
-  if newAmount < 0:
-    newAmount = 0
+  newAmount = max(trainer.Items[itemId] + amount, 0) if itemId in trainer.Items else max(amount, 0)
   trainer.Items.update({ itemId: newAmount })
 
 def HasRegionReward(trainer: Trainer, region: int):
