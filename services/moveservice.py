@@ -1,14 +1,19 @@
-from random import choice
 from dataaccess import moveda
 from models.Move import MoveData
 from models.Pokemon import Pokemon, PokemonData
-from services import statservice, typeservice
+from services import statservice
 
-def GetMovesById(ids: list[int]):
-	return moveda.GetMovesByProperty(ids, 'Id')
+def GetTMMoves():
+	return moveda.GetTMMoves()
+
+def GetMoveByMachineId(id: str):
+	return next(m for m in moveda.GetTMMoves() if m.MachineID == id)
 
 def GetMoveById(id: int):
 	return next(m for m in moveda.GetAllMoves() if m.Id == id)
+
+def GetMovesById(ids: list[int]):
+	return moveda.GetMovesByProperty(ids, 'Id')
 
 def GenerateMoves(pokemon: Pokemon, data: PokemonData):
 	if pokemon.LearnedMoves:

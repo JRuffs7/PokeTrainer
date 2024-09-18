@@ -1,19 +1,10 @@
 [
   {
-    "Id": 0,
-    "Name": "Money",
-    "Url": "",
-    "Description": "Currency of PokeTrainer.",
-    "EvolutionItem": false,
-    "BuyAmount": 0,
-    "SellAmount": 0
-  },
-  {
     "CaptureRate": 100.0,
     "Id": 1,
     "Name": "Master Ball",
     "Url": "https://pokeapi.co/api/v2/item/1/",
-    "Description": "Used for capturing event Pokemon.",
+    "Description": "Captures wild Pokemon guaranteed.",
     "EvolutionItem": false,
     "BuyAmount": 0,
     "SellAmount": 1000
@@ -139,7 +130,7 @@
     "Id": 23,
     "Name": "Full Restore",
     "Url": "https://pokeapi.co/api/v2/item/23/",
-    "Description": "Restores full HP and cures all ailments.",
+    "Description": "Restores HP to full and cures all ailments and confusion.",
     "EvolutionItem": false,
     "BuyAmount": 3000,
     "SellAmount": 1500
@@ -202,10 +193,10 @@
     "Id": 50,
     "Name": "Rare Candy",
     "Url": "https://pokeapi.co/api/v2/item/50/",
-    "Description": "Levels up the Pokemon by 1 level.",
+    "Description": "Level up a Pokemon by 1.",
     "EvolutionItem": false,
     "BuyAmount": 0,
-    "SellAmount": 500
+    "SellAmount": 5000
   },
   {
     "Id": 80,
@@ -469,24 +460,54 @@
     "SellAmount": 1100
   },
   {
-    "Experience": 15,
+    "Experience": 100,
+    "Id": 1182,
+    "Name": "Exp. Candy XS",
+    "Url": "https://pokeapi.co/api/v2/item/1182/",
+    "Description": "Provides a Pokemon with 100 XP.",
+    "EvolutionItem": false,
+    "BuyAmount": 0,
+    "SellAmount": 10
+  },
+  {
+    "Experience": 800,
     "Id": 1183,
     "Name": "Exp. Candy S",
     "Url": "https://pokeapi.co/api/v2/item/1183/",
-    "Description": "Provides a Pokemon with 15 XP.",
+    "Description": "Provides a Pokemon with 800 XP.",
     "EvolutionItem": false,
     "BuyAmount": 0,
-    "SellAmount": 50
+    "SellAmount": 120
   },
   {
-    "Experience": 40,
+    "Experience": 3000,
+    "Id": 1184,
+    "Name": "Exp. Candy M",
+    "Url": "https://pokeapi.co/api/v2/item/1184/",
+    "Description": "Provides a Pokemon with 3000 XP.",
+    "EvolutionItem": false,
+    "BuyAmount": 0,
+    "SellAmount": 500
+  },
+  {
+    "Experience": 10000,
     "Id": 1185,
     "Name": "Exp. Candy L",
     "Url": "https://pokeapi.co/api/v2/item/1185/",
-    "Description": "Provides a Pokemon with 40 XP",
+    "Description": "Provides a Pokemon with 10000 XP.",
     "EvolutionItem": false,
     "BuyAmount": 0,
-    "SellAmount": 125
+    "SellAmount": 1500
+  },
+  {
+    "Experience": 30000,
+    "Id": 1186,
+    "Name": "Exp. Candy XL",
+    "Url": "https://pokeapi.co/api/v2/item/1186/",
+    "Description": "Provides a Pokemon with 30000 XP.",
+    "EvolutionItem": false,
+    "BuyAmount": 0,
+    "SellAmount": 5000
   },
   {
     "Id": 1311,

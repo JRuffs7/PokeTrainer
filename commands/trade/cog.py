@@ -40,7 +40,7 @@ class TradeCommands(commands.Cog, name="TradeCommands"):
 	@app_commands.command(name="trade",
 												description="Trade with another user in the server.")
 	@app_commands.autocomplete(give=autofill_nonteam,receive=autofill_trade)
-	@method_logger(True)
+	@method_logger(False)
 	@trainer_check
 	@command_lock
 	async def trade(self, inter: Interaction, user: Member, give: int, receive: int):

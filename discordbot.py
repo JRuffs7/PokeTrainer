@@ -6,14 +6,13 @@ from random import choice
 
 import discord
 from discord.ext import commands, tasks
-from discord.ext.commands import CommandNotFound
 from commands.views.Events.SpecialBattleEventView import SpecialBattleEventView
 from commands.views.Events.SpecialSpawnEventView import SpecialSpawnEventView
-from globals import HelpColor, eventtimes, updatebulk
+from globals import HelpColor, eventtimes
 from models.Server import Server
 from models.enums import EventType
 
-from services import serverservice, updateservice
+from services import serverservice
 from services.utility import discordservice
 
 intents = discord.Intents.all()
@@ -52,17 +51,12 @@ async def StartBot():
       errorLogger.error(e)
       pass
 
-    if datetime.today().date() == updatebulk.date():
-      updateservice.UpdateTrainers()
-
     event_loop.start()
 
 
   @discordBot.event
   async def on_command_error(ctx, error):
-    if isinstance(error, CommandNotFound):
-        return
-    raise error
+    errorLogger.error(error)
 
 
   async def MessageThread(embed: discord.Embed, server: Server):

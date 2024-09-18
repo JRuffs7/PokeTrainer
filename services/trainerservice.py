@@ -38,9 +38,8 @@ def StartTrainer(pokemon: PokemonData, serverId: int, userId: int):
     'ServerId': serverId,
     'Team': [spawn.Id],
     'Pokedex': [pokemon.PokedexId],
-    'Health': 50,
     'Money': 500,
-    'Pokeballs': { '1': 5, '2': 0, '3': 0, '4': 0 }
+    'Items': { '4': 5 }
   })
   trainer.OwnedPokemon.append(spawn)
   UpsertTrainer(trainer)

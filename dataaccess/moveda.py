@@ -9,6 +9,10 @@ def GetAllMoves():
   moves = GetJson(moveFile)
   return [MoveData(x) for x in moves]
 
+def GetTMMoves():
+  moves = GetJson(moveFile)
+  return [MoveData(x) for x in moves if x['MachineID']]
+
 
 def GetMovesByType(type: int):
   moves = GetJson(moveFile)

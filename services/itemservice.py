@@ -9,15 +9,15 @@ def GetAllItems():
 
 
 def GetAllPokeballs():
-  return [i for i in GetAllItems() if type(i) is Pokeball]
+  return itemda.GetAllPokeballs()
 
 
 def GetAllPotions():
-  return [i for i in GetAllItems() if type(i) is Potion]
+  return itemda.GetAllPotions()
 
 
 def GetAllCandies():
-  return [i for i in GetAllItems() if type(i) is Candy]
+  return itemda.GetAllCandies()
 
 
 def GetAllEvoItems():
@@ -41,13 +41,19 @@ def GetCandy(id: int):
 
 
 def TryGetCandy():
-  if choice(range(1,101)) < 20:
-    randCandy = choice(range(1,101))
-    if randCandy < 10:
+  if choice(range(100)) < 20:
+    randCandy = choice(range(100))
+    if randCandy < 3:
       return GetCandy(50) #Rare Candy
-    elif randCandy < 40:
-      return GetCandy(1185) #Large Candy
-    return GetCandy(1183) #Small Candy
+    elif randCandy < 8:
+      return GetCandy(1186) #XLarge Candy
+    elif randCandy < 18:
+      return GetCandy(1186) #Large Candy
+    elif randCandy < 33:
+      return GetCandy(1186) #Medium Candy
+    elif randCandy < 58:
+      return GetCandy(1186) #Small Candy
+    return GetCandy(1183) #XSmall Candy
   return None
 
 

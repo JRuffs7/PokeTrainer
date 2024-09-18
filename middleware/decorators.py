@@ -12,7 +12,7 @@ from services.utility import discordservice_permission
 cmdLog = logging.getLogger('command')
 errLog = logging.getLogger('error')
 
-def method_logger(eph: bool = False):
+def method_logger(eph: bool):
   def inner_decor(function):
     @functools.wraps(function)
     async def wrapper(self, *args, **kwargs):

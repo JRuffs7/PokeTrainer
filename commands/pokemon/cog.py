@@ -37,7 +37,7 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
     
   @app_commands.command(name="spawn",
                         description="Spawn an Pokemon to capture or fight.")
-  @method_logger(True)
+  @method_logger(False)
   @trainer_check
   @command_lock
   async def spawn(self, inter: Interaction):
@@ -62,7 +62,7 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
 
   @app_commands.command(name="hatch",
                         description="Hatch one or more of your eggs.")
-  @method_logger(True)
+  @method_logger(False)
   @trainer_check
   @command_lock
   async def hatch(self, inter: Interaction):
@@ -77,7 +77,7 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
   @app_commands.command(name="wishlist",
                         description="Add to or view your special spawn wishlist.")
   @app_commands.autocomplete(pokemon=autofill_special)
-  @method_logger(True)
+  @method_logger(False)
   @trainer_check
   @command_lock
   async def wishlist(self, inter: Interaction, pokemon: int = None):
@@ -108,7 +108,7 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
   @app_commands.command(name="pokeshop",
                         description="Buy a specific Pokemon in exchange for Money or Pokeballs.")
   @app_commands.autocomplete(pokemon=autofill_pokemon_legendary_spawn)
-  @method_logger(True)
+  @method_logger(False)
   @trainer_check
   @command_lock
   async def pokeshop(self, inter: Interaction, pokemon: int):
@@ -136,7 +136,7 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
 
   @app_commands.command(name="pokecenter",
                         description="Heal all HP and Ailments from Pokemon on your team.")
-  @method_logger(True)
+  @method_logger(False)
   @trainer_check
   @command_lock
   async def pokecenter(self, inter: Interaction):
@@ -153,7 +153,7 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
 
   @app_commands.command(name="usepotion",
                         description="Use a healing item on one of your party Pokemon.")
-  @method_logger(True)
+  @method_logger(False)
   @trainer_check
   @command_lock
   async def usepotion(self, inter: Interaction):
@@ -196,7 +196,7 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
       app_commands.Choice(name="Type", value="type")
   ])
   @app_commands.autocomplete(filter=filter_autocomplete)
-  @method_logger(True)
+  @method_logger(False)
   async def pokeinfo(self, inter: Interaction, search: app_commands.Choice[str], filter: str):
     if search.value == 'color':
       await self.PokeInfoColor(inter, filter)
@@ -268,7 +268,7 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
   ])
   @app_commands.autocomplete(attacker=autofill_pokemon)
   @app_commands.autocomplete(defender=autofill_pokemon)
-  @method_logger(True)
+  @method_logger(False)
   async def battlesim(self, inter: Interaction, battle: int, attacker: int, defender: int):
     attackMon = pokemonservice.GetPokemonById(attacker)
     defendMon = pokemonservice.GetPokemonById(defender)
@@ -282,7 +282,7 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
   @app_commands.command(name="nickname",
                         description="Nickname one of your Pokemon.")
   @app_commands.autocomplete(pokemon=autofill_owned)
-  @method_logger(True)
+  @method_logger(False)
   @trainer_check
   @command_lock
   async def nickname(self, inter: Interaction, pokemon: int):
@@ -311,7 +311,7 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
   @app_commands.command(name="evolve",
                         description="Evolve your Pokemon.")
   @app_commands.autocomplete(pokemon=autofill_evolve)
-  @method_logger(True)
+  @method_logger(False)
   @trainer_check
   @command_lock
   async def evolve(self, inter: Interaction, pokemon: int | None):
@@ -340,7 +340,7 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
   @app_commands.command(name="givecandy",
                         description="Give a candy to a Pokemon.")
   @app_commands.autocomplete(pokemon=autofill_candy)
-  @method_logger(True)
+  @method_logger(False)
   @trainer_check
   @command_lock
   async def givecandy(self, inter: Interaction, pokemon: int):
@@ -360,7 +360,7 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
   @app_commands.command(name="daycare",
                         description="Add to or check on your daycare.")
   @app_commands.autocomplete(pokemon=autofill_nonteam)
-  @method_logger(True)
+  @method_logger(False)
   @trainer_check
   @command_lock
   async def daycare(self, inter: Interaction, pokemon: int|None):

@@ -142,7 +142,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "4096fabf-10d9-48d4-bc81-7c6a4c1da31d",
-		"Cost": 14000
+		"Cost": 1500
 	},
 	{
 		"Id": 6,
@@ -171,7 +171,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "05b77544-a655-4c11-9b6a-f90ebbf4123a",
-		"Cost": 8000
+		"Cost": 1000
 	},
 	{
 		"Id": 7,
@@ -200,7 +200,7 @@
 		"StatChance": 10,
 		"StatEffectOpponent": false,
 		"MachineID": "dc0a7f77-9c98-492c-b96c-2979b23754e1",
-		"Cost": 15000
+		"Cost": 1500
 	},
 	{
 		"Id": 8,
@@ -229,7 +229,7 @@
 		"StatChance": 10,
 		"StatEffectOpponent": false,
 		"MachineID": "4e9f4cbb-e7f4-4aa8-979b-08fe0897cb7b",
-		"Cost": 15000
+		"Cost": 1500
 	},
 	{
 		"Id": 9,
@@ -258,7 +258,7 @@
 		"StatChance": 10,
 		"StatEffectOpponent": false,
 		"MachineID": "ad1862d1-6c74-4851-89c0-8d223b6ba717",
-		"Cost": 15000
+		"Cost": 1500
 	},
 	{
 		"Id": 10,
@@ -374,7 +374,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "2d9002dd-c95a-4971-bea1-3622b8328c7b",
-		"Cost": 16000
+		"Cost": 2000
 	},
 	{
 		"Id": 14,
@@ -405,7 +405,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "b9211b28-4d68-40af-a55c-b10d0ef8b7c0",
-		"Cost": 15000
+		"Cost": 2000
 	},
 	{
 		"Id": 15,
@@ -434,7 +434,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "1c2e107c-adfa-4406-9bd0-2ca5e8a3cb58",
-		"Cost": 9500
+		"Cost": 1000
 	},
 	{
 		"Id": 16,
@@ -521,7 +521,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "4c0cc7eb-ba04-4802-8c96-2fdd63a0b533",
-		"Cost": 17500
+		"Cost": 2000
 	},
 	{
 		"Id": 20,
@@ -695,7 +695,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "fe35dac0-0060-4889-a58b-603ff68e5917",
-		"Cost": 18000
+		"Cost": 2000
 	},
 	{
 		"Id": 26,
@@ -813,7 +813,7 @@
 		"StatChance": 30,
 		"StatEffectOpponent": false,
 		"MachineID": "8c1c31f9-85e2-4e80-b521-07d5293dbc14",
-		"Cost": 14000
+		"Cost": 1500
 	},
 	{
 		"Id": 30,
@@ -900,7 +900,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "be1816e6-fbff-4f2f-b4c5-cc751d308b1f",
-		"Cost": 0
+		"Cost": 4000
 	},
 	{
 		"Id": 33,
@@ -958,7 +958,7 @@
 		"StatChance": 30,
 		"StatEffectOpponent": false,
 		"MachineID": "1082ac20-43de-481c-884c-0181c7294bb4",
-		"Cost": 17000
+		"Cost": 2000
 	},
 	{
 		"Id": 35,
@@ -1016,7 +1016,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "9f254df1-3113-4e75-ad5c-661b2fb6b64c",
-		"Cost": 15500
+		"Cost": 2000
 	},
 	{
 		"Id": 37,
@@ -1074,7 +1074,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "1f4b10f1-d453-4017-8a3a-42935c8d2a84",
-		"Cost": 24000
+		"Cost": 2500
 	},
 	{
 		"Id": 39,
@@ -1192,7 +1192,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "1a62f8b4-e18d-4737-ba75-bbcb81cf8c3d",
-		"Cost": 5000
+		"Cost": 500
 	},
 	{
 		"Id": 43,
@@ -1459,7 +1459,7 @@
 		"StatChance": 10,
 		"StatEffectOpponent": false,
 		"MachineID": "c16bc755-f5f5-4798-b91d-13b8c0886602",
-		"Cost": 18000
+		"Cost": 2000
 	},
 	{
 		"Id": 55,
@@ -1488,7 +1488,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "ff573a82-4457-4e1c-a99e-3a71d4f01357",
-		"Cost": 8000
+		"Cost": 1000
 	},
 	{
 		"Id": 56,
@@ -1517,7 +1517,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "eac0b02b-18fa-4e2a-b2ba-5fd84a6091ca",
-		"Cost": 18000
+		"Cost": 2000
 	},
 	{
 		"Id": 57,
@@ -1546,7 +1546,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "2741a5c2-d300-448a-b1bf-926e7dcbdf85",
-		"Cost": 18000
+		"Cost": 2000
 	},
 	{
 		"Id": 58,
@@ -1575,7 +1575,7 @@
 		"StatChance": 10,
 		"StatEffectOpponent": false,
 		"MachineID": "829d1bf5-ea96-48e3-b571-13075d8cc68c",
-		"Cost": 18000
+		"Cost": 2000
 	},
 	{
 		"Id": 59,
@@ -1604,7 +1604,7 @@
 		"StatChance": 10,
 		"StatEffectOpponent": false,
 		"MachineID": "783a5768-9cfe-4ca4-878e-78bce4770360",
-		"Cost": 15500
+		"Cost": 2000
 	},
 	{
 		"Id": 60,
@@ -1633,7 +1633,7 @@
 		"StatChance": 10,
 		"StatEffectOpponent": false,
 		"MachineID": "c6953ce3-ac35-49d3-af40-af8ad0a3fd51",
-		"Cost": 13000
+		"Cost": 1500
 	},
 	{
 		"Id": 61,
@@ -1664,7 +1664,7 @@
 		"StatChance": 10,
 		"StatEffectOpponent": true,
 		"MachineID": "e5312d17-b21c-4492-8795-a9df0195d27c",
-		"Cost": 13000
+		"Cost": 1500
 	},
 	{
 		"Id": 62,
@@ -1724,7 +1724,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "8d15a480-0d46-46e0-83df-9eb2dbbecc7b",
-		"Cost": 27000
+		"Cost": 3000
 	},
 	{
 		"Id": 64,
@@ -1811,7 +1811,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "8b4af753-d78d-4d06-a789-86177eb587a4",
-		"Cost": 13000
+		"Cost": 1500
 	},
 	{
 		"Id": 68,
@@ -1840,7 +1840,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "81032fa6-d74b-4805-aa6c-bc2ca15e14ec",
-		"Cost": 0
+		"Cost": 2000
 	},
 	{
 		"Id": 69,
@@ -1869,7 +1869,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "d1063072-a0e0-48bc-85e2-aadf00fe5dab",
-		"Cost": 0
+		"Cost": 2000
 	},
 	{
 		"Id": 70,
@@ -1898,7 +1898,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "aca3204a-e2ed-452d-aaa9-8dba227a07b6",
-		"Cost": 16000
+		"Cost": 2000
 	},
 	{
 		"Id": 71,
@@ -1956,7 +1956,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "78348701-a300-44e9-8039-077629f7fc32",
-		"Cost": 8000
+		"Cost": 1000
 	},
 	{
 		"Id": 73,
@@ -2075,7 +2075,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "9f994b2c-1536-4786-a5df-1cab32754898",
-		"Cost": 24000
+		"Cost": 2500
 	},
 	{
 		"Id": 77,
@@ -2251,7 +2251,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "c3abe8b3-17f3-4b7c-a0e1-fba526075392",
-		"Cost": 0
+		"Cost": 2000
 	},
 	{
 		"Id": 83,
@@ -2280,7 +2280,7 @@
 		"StatChance": 100,
 		"StatEffectOpponent": false,
 		"MachineID": "07d4ae62-7cb0-4cc4-9d92-c6f0f333a123",
-		"Cost": 6000
+		"Cost": 1000
 	},
 	{
 		"Id": 84,
@@ -2338,7 +2338,7 @@
 		"StatChance": 10,
 		"StatEffectOpponent": false,
 		"MachineID": "acb89bc3-26c8-4f53-8a74-de989af9b229",
-		"Cost": 18000
+		"Cost": 2000
 	},
 	{
 		"Id": 86,
@@ -2367,7 +2367,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "c1933e69-025c-45ab-a325-0f1088c205f9",
-		"Cost": 7500
+		"Cost": 1500
 	},
 	{
 		"Id": 87,
@@ -2396,7 +2396,7 @@
 		"StatChance": 30,
 		"StatEffectOpponent": false,
 		"MachineID": "a7e3e574-744e-4a63-b7ab-00a372688673",
-		"Cost": 15500
+		"Cost": 2000
 	},
 	{
 		"Id": 88,
@@ -2454,7 +2454,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "fd5833c4-49b0-46cc-8ec3-28529b6a8204",
-		"Cost": 20000
+		"Cost": 2000
 	},
 	{
 		"Id": 90,
@@ -2483,7 +2483,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "39ad9aa0-a8a9-4536-ae1c-b4b54d4653ce",
-		"Cost": 0
+		"Cost": 4000
 	},
 	{
 		"Id": 91,
@@ -2512,7 +2512,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "687e858a-a2d2-4069-839e-ccaa9a1b2304",
-		"Cost": 16000
+		"Cost": 2000
 	},
 	{
 		"Id": 92,
@@ -2541,7 +2541,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "16881560-e6ae-4518-bcc1-620d9cb9b532",
-		"Cost": 7500
+		"Cost": 1500
 	},
 	{
 		"Id": 93,
@@ -2601,7 +2601,7 @@
 		"StatChance": 10,
 		"StatEffectOpponent": true,
 		"MachineID": "15328b9c-eaa8-441d-ab31-5c7f5c11094c",
-		"Cost": 18000
+		"Cost": 2000
 	},
 	{
 		"Id": 95,
@@ -2692,7 +2692,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "936f0671-a2bc-4f82-ad60-95cb1bcbfb7b",
-		"Cost": 15000
+		"Cost": 2000
 	},
 	{
 		"Id": 98,
@@ -2750,7 +2750,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "b1c18b78-52b0-440e-8148-25d587a33177",
-		"Cost": 4000
+		"Cost": 500
 	},
 	{
 		"Id": 101,
@@ -2779,7 +2779,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "1b5ca874-714e-4daa-84c8-61ac1ba0295c",
-		"Cost": 0
+		"Cost": 2000
 	},
 	{
 		"Id": 103,
@@ -2810,7 +2810,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": true,
 		"MachineID": "eec8b386-f0ca-4adb-9b9a-678f5ed0a30b",
-		"Cost": 7500
+		"Cost": 1500
 	},
 	{
 		"Id": 104,
@@ -2841,7 +2841,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "0741ddd2-c625-4e02-814f-4071c577f34d",
-		"Cost": 7500
+		"Cost": 1500
 	},
 	{
 		"Id": 106,
@@ -2963,7 +2963,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "caac4f75-f3b9-43af-9d51-61fe4db4f041",
-		"Cost": 7500
+		"Cost": 1500
 	},
 	{
 		"Id": 110,
@@ -3025,7 +3025,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "e6a0d427-abe1-45fa-a6a9-fa87ad5ed10c",
-		"Cost": 7500
+		"Cost": 1500
 	},
 	{
 		"Id": 112,
@@ -3085,7 +3085,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "ba6a5088-e511-47a8-9284-e5694d7fbe36",
-		"Cost": 7500
+		"Cost": 1500
 	},
 	{
 		"Id": 115,
@@ -3114,7 +3114,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "980d773a-db76-431b-982a-7f3d3c6cbe01",
-		"Cost": 7500
+		"Cost": 1500
 	},
 	{
 		"Id": 117,
@@ -3143,7 +3143,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "351565ad-a346-40d0-9f22-d7b269dc1b8d",
-		"Cost": 0
+		"Cost": 2000
 	},
 	{
 		"Id": 120,
@@ -3172,7 +3172,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "d53877c2-f738-42f5-a2e2-f047747e1bb3",
-		"Cost": 40000
+		"Cost": 4000
 	},
 	{
 		"Id": 121,
@@ -3201,7 +3201,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "0b804d39-45fc-4099-8efb-a74e69bbe35b",
-		"Cost": 15000
+		"Cost": 1500
 	},
 	{
 		"Id": 122,
@@ -3346,7 +3346,7 @@
 		"StatChance": 10,
 		"StatEffectOpponent": false,
 		"MachineID": "eac3f509-c8f8-4c96-b2ca-8082fafb11a6",
-		"Cost": 19000
+		"Cost": 2000
 	},
 	{
 		"Id": 127,
@@ -3375,7 +3375,7 @@
 		"StatChance": 20,
 		"StatEffectOpponent": false,
 		"MachineID": "d4db5add-cbb5-4c74-b6c5-a391eb8a5f8b",
-		"Cost": 16000
+		"Cost": 2000
 	},
 	{
 		"Id": 128,
@@ -3433,7 +3433,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "c3aaf750-7d1a-4319-838c-6f9411662ab4",
-		"Cost": 0
+		"Cost": 1500
 	},
 	{
 		"Id": 130,
@@ -3462,7 +3462,7 @@
 		"StatChance": 100,
 		"StatEffectOpponent": false,
 		"MachineID": "45f5b091-8eb6-46c5-99c9-bb5a57b18248",
-		"Cost": 26000
+		"Cost": 3000
 	},
 	{
 		"Id": 131,
@@ -3553,7 +3553,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "7d927eef-dd1b-4f9b-953d-2d4a11f7f7ce",
-		"Cost": 15000
+		"Cost": 2000
 	},
 	{
 		"Id": 134,
@@ -3671,7 +3671,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "2f36c4e2-6b12-4d5b-bdf1-1da832ccd177",
-		"Cost": 20000
+		"Cost": 2000
 	},
 	{
 		"Id": 139,
@@ -3758,7 +3758,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "136991b3-40b0-482c-bb38-16e5454a149e",
-		"Cost": 16000
+		"Cost": 2000
 	},
 	{
 		"Id": 142,
@@ -3816,7 +3816,7 @@
 		"StatChance": 30,
 		"StatEffectOpponent": false,
 		"MachineID": "447bd85b-840d-4299-b2fa-43264db358ef",
-		"Cost": 25500
+		"Cost": 3000
 	},
 	{
 		"Id": 145,
@@ -3936,7 +3936,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": true,
 		"MachineID": "f22a1ca8-8f06-4045-a1ac-89ab8956d0a4",
-		"Cost": 7500
+		"Cost": 1500
 	},
 	{
 		"Id": 149,
@@ -3965,7 +3965,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "167fa197-e007-4a03-92a9-55600cb393bd",
-		"Cost": 0
+		"Cost": 2000
 	},
 	{
 		"Id": 151,
@@ -4054,7 +4054,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "eaf09f77-a1ee-466c-ab2a-ac76e110fedd",
-		"Cost": 50000
+		"Cost": 5000
 	},
 	{
 		"Id": 154,
@@ -4141,7 +4141,7 @@
 		"StatChance": 30,
 		"StatEffectOpponent": false,
 		"MachineID": "66c9d8e4-0986-4cd1-99c9-d5d56d056dce",
-		"Cost": 13500
+		"Cost": 1500
 	},
 	{
 		"Id": 158,
@@ -4230,7 +4230,7 @@
 		"StatChance": 20,
 		"StatEffectOpponent": false,
 		"MachineID": "46fe4fcb-5023-4479-a617-a8716d29f182",
-		"Cost": 16000
+		"Cost": 2000
 	},
 	{
 		"Id": 162,
@@ -4259,7 +4259,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "7b9a0213-1d9a-4f53-9e10-4636593cb024",
-		"Cost": 0
+		"Cost": 2000
 	},
 	{
 		"Id": 163,
@@ -4375,7 +4375,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "149c3528-eb8e-45ea-964b-2459b287ed4f",
-		"Cost": 12000
+		"Cost": 1500
 	},
 	{
 		"Id": 171,
@@ -4404,7 +4404,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "63c03fc1-e3e7-4584-8d00-36729d4b36bd",
-		"Cost": 7500
+		"Cost": 1500
 	},
 	{
 		"Id": 172,
@@ -4462,7 +4462,7 @@
 		"StatChance": 30,
 		"StatEffectOpponent": false,
 		"MachineID": "3e75aac6-f6c5-498c-afd6-220c38358cb0",
-		"Cost": 10000
+		"Cost": 1000
 	},
 	{
 		"Id": 175,
@@ -4640,7 +4640,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": true,
 		"MachineID": "ff7201d9-3d42-47fd-83da-8bcd0211d650",
-		"Cost": 7500
+		"Cost": 1500
 	},
 	{
 		"Id": 185,
@@ -4727,7 +4727,7 @@
 		"StatChance": 30,
 		"StatEffectOpponent": false,
 		"MachineID": "8889b0fe-9163-4e71-9a65-49d9c5b158fb",
-		"Cost": 18000
+		"Cost": 2000
 	},
 	{
 		"Id": 189,
@@ -4758,7 +4758,7 @@
 		"StatChance": 100,
 		"StatEffectOpponent": true,
 		"MachineID": "2fe20b44-bca7-4a03-880a-52be543cf616",
-		"Cost": 4000
+		"Cost": 500
 	},
 	{
 		"Id": 190,
@@ -4818,7 +4818,7 @@
 		"StatChance": 100,
 		"StatEffectOpponent": false,
 		"MachineID": "b02f350d-7627-4e81-b5c5-2806091bbd56",
-		"Cost": 12000
+		"Cost": 1500
 	},
 	{
 		"Id": 196,
@@ -4849,7 +4849,7 @@
 		"StatChance": 100,
 		"StatEffectOpponent": true,
 		"MachineID": "bc08106f-915a-40c6-a7b5-ec3319362075",
-		"Cost": 10500
+		"Cost": 1500
 	},
 	{
 		"Id": 198,
@@ -4907,7 +4907,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "dcd1fdcf-df5b-4d94-8347-6888c03c0bae",
-		"Cost": 24000
+		"Cost": 2500
 	},
 	{
 		"Id": 202,
@@ -4936,7 +4936,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "0bcafecb-0ba8-4ca2-8e28-750c1454e2ee",
-		"Cost": 15000
+		"Cost": 1500
 	},
 	{
 		"Id": 204,
@@ -4967,7 +4967,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": true,
 		"MachineID": "cea9cd07-df2b-44b6-ab49-6434137b2903",
-		"Cost": 7500
+		"Cost": 1500
 	},
 	{
 		"Id": 205,
@@ -4996,7 +4996,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "5d46a39f-8848-4918-a773-02d239d5087d",
-		"Cost": 5500
+		"Cost": 1000
 	},
 	{
 		"Id": 206,
@@ -5025,7 +5025,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "00a399a2-f33f-4979-b2d0-b54063f1b58f",
-		"Cost": 8000
+		"Cost": 1000
 	},
 	{
 		"Id": 207,
@@ -5056,7 +5056,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": true,
 		"MachineID": "87bec8a5-fcca-4122-9365-b1fb3144aff4",
-		"Cost": 15000
+		"Cost": 2000
 	},
 	{
 		"Id": 209,
@@ -5114,7 +5114,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "2a3b82e8-b45e-47e0-b5f9-33762f8bca79",
-		"Cost": 8000
+		"Cost": 1000
 	},
 	{
 		"Id": 211,
@@ -5145,7 +5145,7 @@
 		"StatChance": 10,
 		"StatEffectOpponent": false,
 		"MachineID": "f27c32c0-af26-44a8-aca3-d7db8706abba",
-		"Cost": 13000
+		"Cost": 1500
 	},
 	{
 		"Id": 221,
@@ -5203,7 +5203,7 @@
 		"StatChance": 100,
 		"StatEffectOpponent": false,
 		"MachineID": "9aa22d2f-8bc9-43cf-9b5c-69aafe94f566",
-		"Cost": 10000
+		"Cost": 1000
 	},
 	{
 		"Id": 224,
@@ -5232,7 +5232,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "55b42368-ac98-4bfd-912f-36845df1a182",
-		"Cost": 20500
+		"Cost": 2500
 	},
 	{
 		"Id": 225,
@@ -5261,7 +5261,7 @@
 		"StatChance": 30,
 		"StatEffectOpponent": false,
 		"MachineID": "69182256-a7c7-47f3-a8ae-60a501615e54",
-		"Cost": 12000
+		"Cost": 1500
 	},
 	{
 		"Id": 228,
@@ -5352,7 +5352,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": true,
 		"MachineID": "7e47d38d-b3ea-468b-a4c1-fb2a9447bbfe",
-		"Cost": 7500
+		"Cost": 1500
 	},
 	{
 		"Id": 231,
@@ -5383,7 +5383,7 @@
 		"StatChance": 30,
 		"StatEffectOpponent": true,
 		"MachineID": "7a77c030-ce17-490d-87e8-3398f1e1cb1a",
-		"Cost": 15000
+		"Cost": 1500
 	},
 	{
 		"Id": 232,
@@ -5414,7 +5414,7 @@
 		"StatChance": 10,
 		"StatEffectOpponent": false,
 		"MachineID": "2601b7ee-d489-47a0-9a7a-77ee01b449df",
-		"Cost": 9500
+		"Cost": 1000
 	},
 	{
 		"Id": 233,
@@ -5472,7 +5472,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "eebd52b5-2643-43f2-ad8b-1d265a70568b",
-		"Cost": 12000
+		"Cost": 1500
 	},
 	{
 		"Id": 238,
@@ -5561,7 +5561,7 @@
 		"StatChance": 20,
 		"StatEffectOpponent": true,
 		"MachineID": "40456400-b003-465d-9bcb-bd025a4b7bf6",
-		"Cost": 16000
+		"Cost": 2000
 	},
 	{
 		"Id": 243,
@@ -5685,7 +5685,7 @@
 		"StatChance": 20,
 		"StatEffectOpponent": true,
 		"MachineID": "b4867175-1d28-4ff9-a54a-f77d2a5a5c53",
-		"Cost": 16000
+		"Cost": 2000
 	},
 	{
 		"Id": 248,
@@ -5714,7 +5714,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "1d2f0f2e-5f83-4f39-9f6e-e22d4cb4005f",
-		"Cost": 24000
+		"Cost": 2500
 	},
 	{
 		"Id": 249,
@@ -5745,7 +5745,7 @@
 		"StatChance": 50,
 		"StatEffectOpponent": true,
 		"MachineID": "e1eebfc6-7784-49ef-a95d-e9ae7739a587",
-		"Cost": 8000
+		"Cost": 1000
 	},
 	{
 		"Id": 250,
@@ -5774,7 +5774,7 @@
 		"StatChance": 100,
 		"StatEffectOpponent": false,
 		"MachineID": "7132db52-724c-407c-b365-9e697487e2cd",
-		"Cost": 6000
+		"Cost": 1000
 	},
 	{
 		"Id": 252,
@@ -5832,7 +5832,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "b4986482-cd3d-47cf-af51-725d1d3c3f63",
-		"Cost": 18000
+		"Cost": 2000
 	},
 	{
 		"Id": 254,
@@ -5893,7 +5893,7 @@
 		"StatChance": 10,
 		"StatEffectOpponent": false,
 		"MachineID": "943cbda4-a1f0-4e4a-b888-12409d6a1aac",
-		"Cost": 17500
+		"Cost": 2000
 	},
 	{
 		"Id": 260,
@@ -5953,7 +5953,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "29cb9759-ed64-4332-9f1c-025aa9453cc1",
-		"Cost": 7500
+		"Cost": 1500
 	},
 	{
 		"Id": 262,
@@ -6014,7 +6014,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "42d4408c-69b8-4488-b04e-1788b2952b46",
-		"Cost": 14000
+		"Cost": 1500
 	},
 	{
 		"Id": 264,
@@ -6043,7 +6043,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "760fc12c-cd9f-4321-8042-8ed30e41cb9a",
-		"Cost": 30000
+		"Cost": 3000
 	},
 	{
 		"Id": 265,
@@ -6103,7 +6103,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "38bf2b15-2f35-49a4-b6f0-fcb2e756570b",
-		"Cost": 7500
+		"Cost": 1500
 	},
 	{
 		"Id": 276,
@@ -6135,7 +6135,7 @@
 		"StatChance": 100,
 		"StatEffectOpponent": false,
 		"MachineID": "5f31c84e-0dcb-46b7-b072-7aafc2aab084",
-		"Cost": 24000
+		"Cost": 2500
 	},
 	{
 		"Id": 279,
@@ -6164,7 +6164,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "752aa1da-90bb-4aed-9d32-d8457ae17c6e",
-		"Cost": 12000
+		"Cost": 1500
 	},
 	{
 		"Id": 280,
@@ -6193,7 +6193,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "8b78f1a1-752b-4bf6-9413-8d8b6419546c",
-		"Cost": 15000
+		"Cost": 1500
 	},
 	{
 		"Id": 282,
@@ -6222,7 +6222,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "102c58d4-6840-4cc2-911d-89ef31ea2faf",
-		"Cost": 13000
+		"Cost": 1500
 	},
 	{
 		"Id": 283,
@@ -6251,7 +6251,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "1ea45d5d-3756-461b-8c08-d6f55e5098d2",
-		"Cost": 0
+		"Cost": 2000
 	},
 	{
 		"Id": 284,
@@ -6309,7 +6309,7 @@
 		"StatChance": 30,
 		"StatEffectOpponent": true,
 		"MachineID": "235c1597-1cd5-44de-b9af-33041590c434",
-		"Cost": 14000
+		"Cost": 1500
 	},
 	{
 		"Id": 291,
@@ -6338,7 +6338,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "696c4ecc-2bd6-413e-96a4-f8791990e3a7",
-		"Cost": 16000
+		"Cost": 2000
 	},
 	{
 		"Id": 292,
@@ -6491,7 +6491,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": true,
 		"MachineID": "506085a5-a8bd-4a1b-9090-0f6054715c15",
-		"Cost": 7500
+		"Cost": 1500
 	},
 	{
 		"Id": 298,
@@ -6549,7 +6549,7 @@
 		"StatChance": 10,
 		"StatEffectOpponent": false,
 		"MachineID": "9b4914ac-559f-4a08-9eee-feef8d6ef721",
-		"Cost": 15500
+		"Cost": 2000
 	},
 	{
 		"Id": 301,
@@ -6636,7 +6636,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "9af2647c-59cd-44be-b777-548e8c93cd00",
-		"Cost": 18000
+		"Cost": 2000
 	},
 	{
 		"Id": 305,
@@ -6725,7 +6725,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "ee055760-e37f-48f5-8b10-ca1986068cc0",
-		"Cost": 27000
+		"Cost": 3000
 	},
 	{
 		"Id": 308,
@@ -6754,7 +6754,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "c31c6317-28f8-40b7-bced-3329ddc06c40",
-		"Cost": 27000
+		"Cost": 3000
 	},
 	{
 		"Id": 309,
@@ -6843,7 +6843,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "17e0ce23-dfa8-4e6c-918a-cb9fe84bfba8",
-		"Cost": 10000
+		"Cost": 1000
 	},
 	{
 		"Id": 313,
@@ -6874,7 +6874,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": true,
 		"MachineID": "60db7bb2-74b2-4010-8ef3-4a4dfa99b846",
-		"Cost": 7500
+		"Cost": 1500
 	},
 	{
 		"Id": 314,
@@ -6903,7 +6903,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "be485d58-c0a3-450f-bffc-4c596a6edb1f",
-		"Cost": 11500
+		"Cost": 1500
 	},
 	{
 		"Id": 315,
@@ -6934,7 +6934,7 @@
 		"StatChance": 100,
 		"StatEffectOpponent": false,
 		"MachineID": "8dccaa6d-796a-4929-8d17-9e4aac01edde",
-		"Cost": 23500
+		"Cost": 2500
 	},
 	{
 		"Id": 317,
@@ -6965,7 +6965,7 @@
 		"StatChance": 100,
 		"StatEffectOpponent": true,
 		"MachineID": "95a3ba06-413f-4d2a-86e2-b5e4ce3934c9",
-		"Cost": 11500
+		"Cost": 1500
 	},
 	{
 		"Id": 318,
@@ -7000,7 +7000,7 @@
 		"StatChance": 10,
 		"StatEffectOpponent": false,
 		"MachineID": "972f9abf-9ff9-4ca0-95a6-b46a0f1bd58f",
-		"Cost": 12000
+		"Cost": 1500
 	},
 	{
 		"Id": 319,
@@ -7031,7 +7031,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": true,
 		"MachineID": "f7664189-822b-404f-9600-97e043b96c70",
-		"Cost": 7500
+		"Cost": 1500
 	},
 	{
 		"Id": 320,
@@ -7124,7 +7124,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "dccc6301-98c2-4d4a-9240-8463532ab180",
-		"Cost": 15000
+		"Cost": 2000
 	},
 	{
 		"Id": 323,
@@ -7298,7 +7298,7 @@
 		"StatChance": 100,
 		"StatEffectOpponent": false,
 		"MachineID": "8b633131-6099-4aeb-bdb8-f327981a2604",
-		"Cost": 6000
+		"Cost": 1000
 	},
 	{
 		"Id": 329,
@@ -7358,7 +7358,7 @@
 		"StatChance": 30,
 		"StatEffectOpponent": true,
 		"MachineID": "e3d47abd-db5a-45a2-96cc-31f1dcdaa3d4",
-		"Cost": 15500
+		"Cost": 2000
 	},
 	{
 		"Id": 331,
@@ -7387,7 +7387,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "84a37bea-c44b-40e2-b369-521dc862cd51",
-		"Cost": 5000
+		"Cost": 500
 	},
 	{
 		"Id": 332,
@@ -7416,7 +7416,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "80fe8923-0885-498b-81bb-d1ff506e8128",
-		"Cost": 0
+		"Cost": 1500
 	},
 	{
 		"Id": 333,
@@ -7445,7 +7445,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "321fafd5-9815-4245-afb2-159a607ddc2d",
-		"Cost": 5000
+		"Cost": 500
 	},
 	{
 		"Id": 334,
@@ -7476,7 +7476,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "e9d7b4a0-eb44-43dd-9860-d0b89d31d8ba",
-		"Cost": 15000
+		"Cost": 2000
 	},
 	{
 		"Id": 336,
@@ -7536,7 +7536,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "4fa9c897-62df-4030-84fb-e2073375a0ff",
-		"Cost": 16000
+		"Cost": 2000
 	},
 	{
 		"Id": 338,
@@ -7565,7 +7565,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "87941055-5d93-400d-bdf5-a0dd9e46dfe1",
-		"Cost": 27000
+		"Cost": 3000
 	},
 	{
 		"Id": 339,
@@ -7597,7 +7597,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "f67e7aa5-2fc6-449f-b906-7ffbdfc906c8",
-		"Cost": 15000
+		"Cost": 2000
 	},
 	{
 		"Id": 340,
@@ -7626,7 +7626,7 @@
 		"StatChance": 30,
 		"StatEffectOpponent": false,
 		"MachineID": "c7f9d1e0-b12b-4763-854c-0b6765af9ae1",
-		"Cost": 14500
+		"Cost": 1500
 	},
 	{
 		"Id": 341,
@@ -7657,7 +7657,7 @@
 		"StatChance": 100,
 		"StatEffectOpponent": true,
 		"MachineID": "d437dcf4-75f4-4fe1-bb17-ce0dd80e270c",
-		"Cost": 10500
+		"Cost": 1500
 	},
 	{
 		"Id": 342,
@@ -7686,7 +7686,7 @@
 		"StatChance": 10,
 		"StatEffectOpponent": false,
 		"MachineID": "a136bd1c-41a4-4b22-ba24-741322ed8432",
-		"Cost": 10000
+		"Cost": 1000
 	},
 	{
 		"Id": 343,
@@ -7773,7 +7773,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "1cb3d589-aefb-4ca6-bbed-e57f27104a61",
-		"Cost": 0
+		"Cost": 1500
 	},
 	{
 		"Id": 347,
@@ -7805,7 +7805,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "c9bcd562-6c83-4c44-bddf-e68073a537a8",
-		"Cost": 15000
+		"Cost": 2000
 	},
 	{
 		"Id": 348,
@@ -7834,7 +7834,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "fdda7a84-dcb7-4a2d-8f5c-f9f8e3650b7d",
-		"Cost": 18000
+		"Cost": 2000
 	},
 	{
 		"Id": 349,
@@ -7866,7 +7866,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "acddfaa4-7073-46d6-8ac3-347d2e7657c4",
-		"Cost": 15000
+		"Cost": 2000
 	},
 	{
 		"Id": 350,
@@ -7895,7 +7895,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "3ee22cac-113f-49e7-b838-0c5bb67757db",
-		"Cost": 4500
+		"Cost": 500
 	},
 	{
 		"Id": 351,
@@ -7924,7 +7924,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "c17978eb-fdd2-42e3-860c-2c8b1655aff8",
-		"Cost": 0
+		"Cost": 1500
 	},
 	{
 		"Id": 352,
@@ -7953,7 +7953,7 @@
 		"StatChance": 20,
 		"StatEffectOpponent": false,
 		"MachineID": "22dd4660-c861-47c2-b005-4b6ba5594722",
-		"Cost": 12000
+		"Cost": 1500
 	},
 	{
 		"Id": 353,
@@ -8102,7 +8102,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "172914ae-47c6-415b-a8ee-3ca7ef8a5d52",
-		"Cost": 13000
+		"Cost": 1500
 	},
 	{
 		"Id": 364,
@@ -8160,7 +8160,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "1e64b05b-7cb5-42ab-b56d-1cdb4e408b0c",
-		"Cost": 12000
+		"Cost": 1500
 	},
 	{
 		"Id": 368,
@@ -8218,7 +8218,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "069020d1-cd1a-4758-964c-1261a7f605f9",
-		"Cost": 14000
+		"Cost": 1500
 	},
 	{
 		"Id": 370,
@@ -8250,7 +8250,7 @@
 		"StatChance": 100,
 		"StatEffectOpponent": false,
 		"MachineID": "46ac56c2-0089-468d-b992-284f66214887",
-		"Cost": 24000
+		"Cost": 2500
 	},
 	{
 		"Id": 371,
@@ -8279,7 +8279,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "3f98b7e7-fa06-44c3-958c-6b47d8d36f60",
-		"Cost": 10000
+		"Cost": 1000
 	},
 	{
 		"Id": 372,
@@ -8308,7 +8308,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "f2128351-8b03-4ca2-8a29-05f1fa9f9d32",
-		"Cost": 12000
+		"Cost": 1500
 	},
 	{
 		"Id": 387,
@@ -8395,7 +8395,7 @@
 		"StatChance": 10,
 		"StatEffectOpponent": false,
 		"MachineID": "ec5e09ba-d702-4f70-8139-a500b96f44ec",
-		"Cost": 24000
+		"Cost": 2500
 	},
 	{
 		"Id": 395,
@@ -8453,7 +8453,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "bef26701-81be-4567-b102-cac2bbc27dae",
-		"Cost": 0
+		"Cost": 2000
 	},
 	{
 		"Id": 397,
@@ -8484,7 +8484,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "148b5688-4e28-4d6c-bfdb-45b25fabe5b4",
-		"Cost": 15000
+		"Cost": 2000
 	},
 	{
 		"Id": 398,
@@ -8513,7 +8513,7 @@
 		"StatChance": 30,
 		"StatEffectOpponent": false,
 		"MachineID": "2f487142-b6f8-4393-b7f1-7ec2b51b22d8",
-		"Cost": 16000
+		"Cost": 2000
 	},
 	{
 		"Id": 399,
@@ -8542,7 +8542,7 @@
 		"StatChance": 20,
 		"StatEffectOpponent": false,
 		"MachineID": "79dd0ee3-17d3-4043-ae26-bf1ef33d32ec",
-		"Cost": 16000
+		"Cost": 2000
 	},
 	{
 		"Id": 400,
@@ -8629,7 +8629,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "dedcb191-f9c8-4824-bc7a-c0f2fe47e684",
-		"Cost": 16000
+		"Cost": 2000
 	},
 	{
 		"Id": 403,
@@ -8658,7 +8658,7 @@
 		"StatChance": 30,
 		"StatEffectOpponent": false,
 		"MachineID": "ac8e72dd-2dfa-4e14-8ba0-159e003a12c9",
-		"Cost": 14500
+		"Cost": 1500
 	},
 	{
 		"Id": 404,
@@ -8687,7 +8687,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "333a25a1-126b-4af8-a4bc-f4453c258b1f",
-		"Cost": 16000
+		"Cost": 2000
 	},
 	{
 		"Id": 405,
@@ -8718,7 +8718,7 @@
 		"StatChance": 10,
 		"StatEffectOpponent": true,
 		"MachineID": "1b35db4a-e6c5-4f23-8197-c20b7117dab3",
-		"Cost": 18000
+		"Cost": 2000
 	},
 	{
 		"Id": 406,
@@ -8747,7 +8747,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "31e77086-8f05-40f8-876c-b71756cdd933",
-		"Cost": 17000
+		"Cost": 2000
 	},
 	{
 		"Id": 407,
@@ -8805,7 +8805,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "07058119-1bd3-44c1-84ce-724661b30d5a",
-		"Cost": 16000
+		"Cost": 2000
 	},
 	{
 		"Id": 409,
@@ -8834,7 +8834,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "147e40fb-9477-4454-bef7-341a3fe8d4f5",
-		"Cost": 15000
+		"Cost": 1500
 	},
 	{
 		"Id": 410,
@@ -8863,7 +8863,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "62d3d380-8012-47e2-be03-254586e7f888",
-		"Cost": 8000
+		"Cost": 1000
 	},
 	{
 		"Id": 411,
@@ -8894,7 +8894,7 @@
 		"StatChance": 10,
 		"StatEffectOpponent": true,
 		"MachineID": "e5476101-bb35-46da-819d-0870663a250d",
-		"Cost": 17000
+		"Cost": 2000
 	},
 	{
 		"Id": 412,
@@ -8925,7 +8925,7 @@
 		"StatChance": 10,
 		"StatEffectOpponent": true,
 		"MachineID": "a55b5f26-aa2c-4795-87fe-065224a9314f",
-		"Cost": 18000
+		"Cost": 2000
 	},
 	{
 		"Id": 413,
@@ -8954,7 +8954,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "036909b9-1ff2-4c49-86c4-d4b219114114",
-		"Cost": 24000
+		"Cost": 2500
 	},
 	{
 		"Id": 414,
@@ -8985,7 +8985,7 @@
 		"StatChance": 10,
 		"StatEffectOpponent": true,
 		"MachineID": "ac994600-f49d-43d4-b679-aa1d7f69325c",
-		"Cost": 18000
+		"Cost": 2000
 	},
 	{
 		"Id": 416,
@@ -9014,7 +9014,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "d5e7e5d1-fa24-414c-aa10-2d7cfad59d3a",
-		"Cost": 27000
+		"Cost": 3000
 	},
 	{
 		"Id": 417,
@@ -9045,7 +9045,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "b37cc357-b380-47cf-86a3-36452a81082a",
-		"Cost": 15000
+		"Cost": 2000
 	},
 	{
 		"Id": 418,
@@ -9103,7 +9103,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "ee4880ea-0dae-4e39-86dc-c63cd914b6d9",
-		"Cost": 12000
+		"Cost": 1500
 	},
 	{
 		"Id": 420,
@@ -9161,7 +9161,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "1e42d946-0013-4048-9586-4189e1db672a",
-		"Cost": 14000
+		"Cost": 1500
 	},
 	{
 		"Id": 422,
@@ -9190,7 +9190,7 @@
 		"StatChance": 10,
 		"StatEffectOpponent": false,
 		"MachineID": "e767985b-cd1c-4399-b2f8-285726760628",
-		"Cost": 12500
+		"Cost": 1500
 	},
 	{
 		"Id": 423,
@@ -9219,7 +9219,7 @@
 		"StatChance": 10,
 		"StatEffectOpponent": false,
 		"MachineID": "0c0fde82-f468-4d68-abce-560fe01f1e07",
-		"Cost": 12500
+		"Cost": 1500
 	},
 	{
 		"Id": 424,
@@ -9248,7 +9248,7 @@
 		"StatChance": 10,
 		"StatEffectOpponent": false,
 		"MachineID": "0497da1a-978c-4cc2-b0fb-2b90e107d20a",
-		"Cost": 12500
+		"Cost": 1500
 	},
 	{
 		"Id": 425,
@@ -9337,7 +9337,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "86041e72-fd78-42ea-9620-bbfeede49946",
-		"Cost": 14000
+		"Cost": 1500
 	},
 	{
 		"Id": 428,
@@ -9366,7 +9366,7 @@
 		"StatChance": 20,
 		"StatEffectOpponent": false,
 		"MachineID": "3b84b617-b9f0-4701-b885-bdd1ad7dd920",
-		"Cost": 14500
+		"Cost": 1500
 	},
 	{
 		"Id": 429,
@@ -9428,7 +9428,7 @@
 		"StatChance": 10,
 		"StatEffectOpponent": true,
 		"MachineID": "dcb5e292-49ff-4da5-b55e-18d85357fb23",
-		"Cost": 16000
+		"Cost": 2000
 	},
 	{
 		"Id": 431,
@@ -9457,7 +9457,7 @@
 		"StatChance": 20,
 		"StatEffectOpponent": false,
 		"MachineID": "7d8ab3d0-a54e-46b4-81a0-8f7c5698d079",
-		"Cost": 15500
+		"Cost": 2000
 	},
 	{
 		"Id": 432,
@@ -9488,7 +9488,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": true,
 		"MachineID": "52180e83-3a38-4314-bcb2-225abdc2c927",
-		"Cost": 7500
+		"Cost": 1500
 	},
 	{
 		"Id": 434,
@@ -9519,7 +9519,7 @@
 		"StatChance": 100,
 		"StatEffectOpponent": false,
 		"MachineID": "d2d3ec7f-91f9-4380-9487-41a1d94da1f8",
-		"Cost": 23500
+		"Cost": 2500
 	},
 	{
 		"Id": 435,
@@ -9608,7 +9608,7 @@
 		"StatChance": 100,
 		"StatEffectOpponent": false,
 		"MachineID": "b3e70240-16c0-41e2-a4f3-688dc6e89d6c",
-		"Cost": 23500
+		"Cost": 2500
 	},
 	{
 		"Id": 438,
@@ -9637,7 +9637,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "f0238159-0166-4bab-ae2c-5166ee5e2a78",
-		"Cost": 20500
+		"Cost": 2500
 	},
 	{
 		"Id": 439,
@@ -9695,7 +9695,7 @@
 		"StatChance": 10,
 		"StatEffectOpponent": false,
 		"MachineID": "964d1195-735b-4761-8687-b791d4f1e2c4",
-		"Cost": 14000
+		"Cost": 1500
 	},
 	{
 		"Id": 441,
@@ -9724,7 +9724,7 @@
 		"StatChance": 30,
 		"StatEffectOpponent": false,
 		"MachineID": "04e605d6-a231-418d-8562-acd3e9b99347",
-		"Cost": 19500
+		"Cost": 2000
 	},
 	{
 		"Id": 442,
@@ -9753,7 +9753,7 @@
 		"StatChance": 30,
 		"StatEffectOpponent": false,
 		"MachineID": "d968db52-6df3-4a18-96df-9af15d294226",
-		"Cost": 16000
+		"Cost": 2000
 	},
 	{
 		"Id": 443,
@@ -9811,7 +9811,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "1e23d2bd-34bc-47ee-bb1e-910740e5f4b3",
-		"Cost": 16000
+		"Cost": 2000
 	},
 	{
 		"Id": 445,
@@ -9842,7 +9842,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": true,
 		"MachineID": "d83e86dd-7b28-48b2-b314-c38b3b6bf19e",
-		"Cost": 7500
+		"Cost": 1500
 	},
 	{
 		"Id": 448,
@@ -9929,7 +9929,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "204552e8-b289-48c9-a689-2d73f3eea9b7",
-		"Cost": 12000
+		"Cost": 1500
 	},
 	{
 		"Id": 451,
@@ -9960,7 +9960,7 @@
 		"StatChance": 70,
 		"StatEffectOpponent": false,
 		"MachineID": "f61181eb-c16d-4037-b11b-ade34bed9392",
-		"Cost": 9000
+		"Cost": 1000
 	},
 	{
 		"Id": 452,
@@ -10380,7 +10380,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "773ed8c3-3034-4d66-b714-d3d1d56fac77",
-		"Cost": 15000
+		"Cost": 2000
 	},
 	{
 		"Id": 473,
@@ -10409,7 +10409,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "71469a3e-2faf-49a9-95fe-b35c179d78e4",
-		"Cost": 16000
+		"Cost": 2000
 	},
 	{
 		"Id": 474,
@@ -10438,7 +10438,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "e5545f0d-a405-44d9-b76b-edbdba4fc905",
-		"Cost": 13000
+		"Cost": 1500
 	},
 	{
 		"Id": 475,
@@ -10498,7 +10498,7 @@
 		"StatChance": 100,
 		"StatEffectOpponent": false,
 		"MachineID": "cf896374-bbf9-4e94-bb9d-394770263f96",
-		"Cost": 10000
+		"Cost": 1000
 	},
 	{
 		"Id": 480,
@@ -10585,7 +10585,7 @@
 		"StatChance": 10,
 		"StatEffectOpponent": false,
 		"MachineID": "bd69dbf3-029e-408d-87bd-db2c2488d15e",
-		"Cost": 19000
+		"Cost": 2000
 	},
 	{
 		"Id": 483,
@@ -10678,7 +10678,7 @@
 		"StatChance": 100,
 		"StatEffectOpponent": false,
 		"MachineID": "37547196-befe-46fa-b1fe-bb70e917ad50",
-		"Cost": 10000
+		"Cost": 1000
 	},
 	{
 		"Id": 489,
@@ -10742,7 +10742,7 @@
 		"StatChance": 100,
 		"StatEffectOpponent": true,
 		"MachineID": "237d2ece-0277-436c-9cfb-77e9170e6732",
-		"Cost": 13000
+		"Cost": 1500
 	},
 	{
 		"Id": 491,
@@ -10773,7 +10773,7 @@
 		"StatChance": 100,
 		"StatEffectOpponent": true,
 		"MachineID": "8c4723da-e24a-437a-8719-469d6b43635f",
-		"Cost": 8000
+		"Cost": 1000
 	},
 	{
 		"Id": 492,
@@ -10802,7 +10802,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "607fe622-d936-4281-b25a-c8c10330359a",
-		"Cost": 19000
+		"Cost": 2000
 	},
 	{
 		"Id": 496,
@@ -10831,7 +10831,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "3bc9aa15-d099-4f60-950b-3295978a2aeb",
-		"Cost": 12000
+		"Cost": 1500
 	},
 	{
 		"Id": 497,
@@ -10860,7 +10860,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "fcd2c4a3-efa4-408e-9485-b55b9f1c8279",
-		"Cost": 8000
+		"Cost": 1000
 	},
 	{
 		"Id": 498,
@@ -10947,7 +10947,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "29991bd2-d813-49bd-ad66-0d6196ca040f",
-		"Cost": 4000
+		"Cost": 500
 	},
 	{
 		"Id": 503,
@@ -10976,7 +10976,7 @@
 		"StatChance": 30,
 		"StatEffectOpponent": false,
 		"MachineID": "de7d3826-1d57-4ae2-9c70-4ef17f31aa6e",
-		"Cost": 16000
+		"Cost": 2000
 	},
 	{
 		"Id": 504,
@@ -11040,7 +11040,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "4d6a7aa6-3227-4389-88cc-b67593aa6600",
-		"Cost": 13000
+		"Cost": 1500
 	},
 	{
 		"Id": 507,
@@ -11069,7 +11069,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "5ee409db-3463-43fd-8815-81a6bfcdc14b",
-		"Cost": 12000
+		"Cost": 1500
 	},
 	{
 		"Id": 508,
@@ -11159,7 +11159,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "c482035e-2cb9-4925-b25c-ee0e3416c660",
-		"Cost": 12000
+		"Cost": 1500
 	},
 	{
 		"Id": 512,
@@ -11188,7 +11188,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "d9e8532c-77e8-4f4c-9dc7-8695e0190940",
-		"Cost": 11000
+		"Cost": 1500
 	},
 	{
 		"Id": 514,
@@ -11217,7 +11217,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "6e80b239-9cc7-4093-a7b1-5762edca973d",
-		"Cost": 14000
+		"Cost": 1500
 	},
 	{
 		"Id": 515,
@@ -11304,7 +11304,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "beec1a48-8692-4296-808f-740ff885bc3b",
-		"Cost": 16000
+		"Cost": 2000
 	},
 	{
 		"Id": 519,
@@ -11333,7 +11333,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "af5e936e-ce53-4895-8c66-3c84253c2ad8",
-		"Cost": 16000
+		"Cost": 2000
 	},
 	{
 		"Id": 520,
@@ -11362,7 +11362,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "8f055441-28f3-4346-b26c-1a6fcc2b9b91",
-		"Cost": 16000
+		"Cost": 2000
 	},
 	{
 		"Id": 521,
@@ -11391,7 +11391,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "9845eaf9-9b7e-4a45-a795-7ba2a32b50e9",
-		"Cost": 14000
+		"Cost": 1500
 	},
 	{
 		"Id": 522,
@@ -11422,7 +11422,7 @@
 		"StatChance": 100,
 		"StatEffectOpponent": true,
 		"MachineID": "b26b9a1f-6c09-4b53-8edf-b6809d105511",
-		"Cost": 10000
+		"Cost": 1000
 	},
 	{
 		"Id": 523,
@@ -11453,7 +11453,7 @@
 		"StatChance": 100,
 		"StatEffectOpponent": true,
 		"MachineID": "7c33f01f-a3ab-44e0-b87a-8d4f9b06fe67",
-		"Cost": 12000
+		"Cost": 1500
 	},
 	{
 		"Id": 524,
@@ -11482,7 +11482,7 @@
 		"StatChance": 100,
 		"StatEffectOpponent": false,
 		"MachineID": "997ac7e2-9390-4417-8e71-ae8ac4182b79",
-		"Cost": 11000
+		"Cost": 1500
 	},
 	{
 		"Id": 525,
@@ -11511,7 +11511,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "1057cd0a-7ae7-4c2b-bcea-2fcc4dda2435",
-		"Cost": 11000
+		"Cost": 1500
 	},
 	{
 		"Id": 526,
@@ -11543,7 +11543,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "249df719-dee2-4d39-9bcb-c4add3c06539",
-		"Cost": 15000
+		"Cost": 2000
 	},
 	{
 		"Id": 527,
@@ -11574,7 +11574,7 @@
 		"StatChance": 100,
 		"StatEffectOpponent": true,
 		"MachineID": "8b77b513-57cd-4371-ab9d-78a8d3ad4fbb",
-		"Cost": 10500
+		"Cost": 1500
 	},
 	{
 		"Id": 528,
@@ -11603,7 +11603,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "4ac492d0-b852-43e2-b97c-5e1486250caf",
-		"Cost": 18000
+		"Cost": 2000
 	},
 	{
 		"Id": 529,
@@ -11632,7 +11632,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "a45df84d-b1b2-4565-b26a-937e1fa0fd7e",
-		"Cost": 15500
+		"Cost": 2000
 	},
 	{
 		"Id": 530,
@@ -11779,7 +11779,7 @@
 		"StatChance": 50,
 		"StatEffectOpponent": true,
 		"MachineID": "8a0fc7ee-577f-452b-a5bd-633672582cc1",
-		"Cost": 14500
+		"Cost": 1500
 	},
 	{
 		"Id": 535,
@@ -11808,7 +11808,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "ce8ae870-cf00-4619-b3fd-22b65f44cef5",
-		"Cost": 0
+		"Cost": 2000
 	},
 	{
 		"Id": 536,
@@ -11988,7 +11988,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "60a939c2-757d-401d-93c6-bd54d3d9bc5a",
-		"Cost": 4500
+		"Cost": 500
 	},
 	{
 		"Id": 542,
@@ -12017,7 +12017,7 @@
 		"StatChance": 30,
 		"StatEffectOpponent": false,
 		"MachineID": "9633b85b-28c1-4b0f-94ef-d0e6b99dcc62",
-		"Cost": 15500
+		"Cost": 2000
 	},
 	{
 		"Id": 543,
@@ -12400,7 +12400,7 @@
 		"StatChance": 100,
 		"StatEffectOpponent": true,
 		"MachineID": "49f52cf7-b46f-4254-b8aa-fc505efe63f8",
-		"Cost": 10500
+		"Cost": 1500
 	},
 	{
 		"Id": 556,
@@ -12636,7 +12636,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "1dfe4fa2-2766-49da-a333-be97ecf6a875",
-		"Cost": 18000
+		"Cost": 2000
 	},
 	{
 		"Id": 568,
@@ -12726,7 +12726,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "d3342dfc-9ac6-4ca8-b898-259bd9123715",
-		"Cost": 18000
+		"Cost": 2000
 	},
 	{
 		"Id": 573,
@@ -12784,7 +12784,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "30f5cdbe-de89-4525-971d-c4b68886283a",
-		"Cost": 0
+		"Cost": 1000
 	},
 	{
 		"Id": 575,
@@ -12845,7 +12845,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "b5ca6a49-5db9-41ce-96f4-f617388fcd28",
-		"Cost": 10000
+		"Cost": 1000
 	},
 	{
 		"Id": 583,
@@ -12876,7 +12876,7 @@
 		"StatChance": 10,
 		"StatEffectOpponent": true,
 		"MachineID": "757cca5d-9f9c-4100-9f9a-632af9bfc90d",
-		"Cost": 16500
+		"Cost": 2000
 	},
 	{
 		"Id": 584,
@@ -13027,7 +13027,7 @@
 		"StatChance": 100,
 		"StatEffectOpponent": true,
 		"MachineID": "73dc4fef-f080-4cb2-9df6-28d42adb100b",
-		"Cost": 7500
+		"Cost": 1500
 	},
 	{
 		"Id": 591,
@@ -13176,7 +13176,7 @@
 		"StatChance": 100,
 		"StatEffectOpponent": true,
 		"MachineID": "41435327-5cf7-477b-ae5f-bdf322fef5ea",
-		"Cost": 15000
+		"Cost": 1500
 	},
 	{
 		"Id": 598,
@@ -13207,7 +13207,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": true,
 		"MachineID": "4525991b-57ab-4611-a845-13584dd05b59",
-		"Cost": 7500
+		"Cost": 1500
 	},
 	{
 		"Id": 599,
@@ -13240,7 +13240,7 @@
 		"StatChance": 100,
 		"StatEffectOpponent": true,
 		"MachineID": "e5cc06aa-0cad-4b14-b83f-25c43dc884f3",
-		"Cost": 15000
+		"Cost": 2000
 	},
 	{
 		"Id": 601,
@@ -13302,7 +13302,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "0a0b9f87-3301-4ee1-ae25-62033be75e7f",
-		"Cost": 16000
+		"Cost": 2000
 	},
 	{
 		"Id": 608,
@@ -13420,7 +13420,7 @@
 		"StatChance": 100,
 		"StatEffectOpponent": false,
 		"MachineID": "baaffdf9-0cc0-44b2-9ea3-c93227147c17",
-		"Cost": 4000
+		"Cost": 500
 	},
 	{
 		"Id": 612,
@@ -13451,7 +13451,7 @@
 		"StatChance": 100,
 		"StatEffectOpponent": false,
 		"MachineID": "16e61b25-9a24-471c-ac33-da9ad11b2574",
-		"Cost": 8000
+		"Cost": 1000
 	},
 	{
 		"Id": 613,
@@ -13833,7 +13833,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "e14b8d9f-7f72-4436-90c2-b87a43de2299",
-		"Cost": 17000
+		"Cost": 2000
 	},
 	{
 		"Id": 664,
@@ -13922,7 +13922,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "e7adb835-3e6b-4719-9da1-fcd5f1fc4ed9",
-		"Cost": 18500
+		"Cost": 2000
 	},
 	{
 		"Id": 668,
@@ -13982,7 +13982,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "5be20b21-add2-431c-b85c-06c11d7e9699",
-		"Cost": 25000
+		"Cost": 2500
 	},
 	{
 		"Id": 670,
@@ -14071,7 +14071,7 @@
 		"StatChance": 100,
 		"StatEffectOpponent": false,
 		"MachineID": "17e80be5-e848-4cd9-a026-8b627ea70444",
-		"Cost": 16000
+		"Cost": 2000
 	},
 	{
 		"Id": 676,
@@ -14100,7 +14100,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "7f4aa1ee-88a4-4058-ba75-de6ea7e91f8c",
-		"Cost": 18000
+		"Cost": 2000
 	},
 	{
 		"Id": 677,
@@ -14160,7 +14160,7 @@
 		"StatChance": 100,
 		"StatEffectOpponent": true,
 		"MachineID": "39055992-a371-4f1c-bf42-6b5cbca2c6f4",
-		"Cost": 16000
+		"Cost": 2000
 	},
 	{
 		"Id": 680,
@@ -14278,7 +14278,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "5464a232-eb1f-4f5a-b4dd-e47ead353a78",
-		"Cost": 0
+		"Cost": 1500
 	},
 	{
 		"Id": 686,
@@ -14485,7 +14485,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "bcb3dd65-16dc-4ff7-aa03-8de073723e2a",
-		"Cost": 12000
+		"Cost": 1500
 	},
 	{
 		"Id": 694,
@@ -14514,7 +14514,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "6201efa0-2971-47cf-a1b0-61f367ecc47a",
-		"Cost": 7500
+		"Cost": 1500
 	},
 	{
 		"Id": 695,
@@ -14841,7 +14841,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "845c1dac-795f-4f71-a770-8ad9515b955b",
-		"Cost": 17000
+		"Cost": 2000
 	},
 	{
 		"Id": 707,
@@ -14870,7 +14870,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "74aa716c-fae5-4288-af13-fc62bf3cc900",
-		"Cost": 15000
+		"Cost": 1500
 	},
 	{
 		"Id": 708,
@@ -14961,7 +14961,7 @@
 		"StatChance": 20,
 		"StatEffectOpponent": true,
 		"MachineID": "a9c3effd-095c-4342-8273-71719ed6a41d",
-		"Cost": 17000
+		"Cost": 2000
 	},
 	{
 		"Id": 711,
@@ -16670,7 +16670,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "c572189a-0f68-4e95-9ee9-3a12a48b8842",
-		"Cost": 16000
+		"Cost": 2000
 	},
 	{
 		"Id": 778,
@@ -16879,7 +16879,7 @@
 		"StatChance": 100,
 		"StatEffectOpponent": true,
 		"MachineID": "3863b956-cdbd-408b-b558-efaad142824a",
-		"Cost": 12000
+		"Cost": 1500
 	},
 	{
 		"Id": 785,
@@ -17175,7 +17175,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "60d09c37-5128-42ed-9fb6-3135f0ab8e76",
-		"Cost": 27000
+		"Cost": 3000
 	},
 	{
 		"Id": 797,
@@ -17204,7 +17204,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "1f66480f-bea1-4acd-a836-181294448691",
-		"Cost": 16000
+		"Cost": 2000
 	},
 	{
 		"Id": 798,
@@ -17262,7 +17262,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "a2a2b30b-1ecd-4bba-846e-a7a3911dba0d",
-		"Cost": 4500
+		"Cost": 500
 	},
 	{
 		"Id": 800,
@@ -17291,7 +17291,7 @@
 		"StatChance": 100,
 		"StatEffectOpponent": false,
 		"MachineID": "443cb2cf-5272-4438-955e-dc5fc2787073",
-		"Cost": 22000
+		"Cost": 2500
 	},
 	{
 		"Id": 801,
@@ -17349,7 +17349,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "19a2f183-4c5c-4eaa-8c9b-d89e9d6933bc",
-		"Cost": 20000
+		"Cost": 2000
 	},
 	{
 		"Id": 803,
@@ -17378,7 +17378,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "a28acb18-eeef-4e0f-a280-6218690543fd",
-		"Cost": 11000
+		"Cost": 1500
 	},
 	{
 		"Id": 804,
@@ -17467,7 +17467,7 @@
 		"StatChance": 100,
 		"StatEffectOpponent": true,
 		"MachineID": "a4e3f4c4-6070-4014-87b8-741889ebd55e",
-		"Cost": 13000
+		"Cost": 1500
 	},
 	{
 		"Id": 807,
@@ -17496,7 +17496,7 @@
 		"StatChance": 100,
 		"StatEffectOpponent": false,
 		"MachineID": "be522923-a4fc-4068-91b5-7147a1193fa7",
-		"Cost": 14000
+		"Cost": 1500
 	},
 	{
 		"Id": 808,
@@ -17525,7 +17525,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "20e2cd30-b8f9-4fc7-a5fb-1cd7bcdb4ed0",
-		"Cost": 15000
+		"Cost": 1500
 	},
 	{
 		"Id": 812,
@@ -17554,7 +17554,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "9b4ef824-0950-4fa0-bab4-35d183581214",
-		"Cost": 12000
+		"Cost": 1500
 	},
 	{
 		"Id": 813,
@@ -17583,7 +17583,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "705e8a45-00fa-419f-83fe-35ac72941f1c",
-		"Cost": 4000
+		"Cost": 500
 	},
 	{
 		"Id": 814,
@@ -17612,7 +17612,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "6dbb8167-9136-4161-9d79-f9666359460b",
-		"Cost": 7500
+		"Cost": 1000
 	},
 	{
 		"Id": 815,
@@ -17641,7 +17641,7 @@
 		"StatChance": 30,
 		"StatEffectOpponent": false,
 		"MachineID": "771262bf-c2fb-4e63-b792-78a398dd466c",
-		"Cost": 14000
+		"Cost": 1500
 	},
 	{
 		"Id": 817,
@@ -18513,7 +18513,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "b8ff63e5-66b0-42de-8caa-fad2613e6090",
-		"Cost": 16000
+		"Cost": 2000
 	},
 	{
 		"Id": 853,
@@ -18745,7 +18745,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "cd1be46d-577c-42fb-9500-9b0703784ae3",
-		"Cost": 16000
+		"Cost": 2000
 	},
 	{
 		"Id": 862,
@@ -19209,7 +19209,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": true,
 		"MachineID": "a1084e88-c16f-4a58-ad5c-010ae6209abe",
-		"Cost": 10000
+		"Cost": 1000
 	},
 	{
 		"Id": 885,
@@ -19238,7 +19238,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "66e2bc1c-6006-4ae5-9e07-53b0000a0165",
-		"Cost": 10000
+		"Cost": 1000
 	},
 	{
 		"Id": 886,
@@ -19267,7 +19267,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": true,
 		"MachineID": "bc302434-e216-457e-a7ec-60e2461f499b",
-		"Cost": 10000
+		"Cost": 1000
 	},
 	{
 		"Id": 887,
@@ -19992,7 +19992,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "dcb7cc38-be1a-4e27-9beb-fae0681f3313",
-		"Cost": 16000
+		"Cost": 2000
 	},
 	{
 		"Id": 915,
@@ -20021,7 +20021,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "e27c4bba-45af-420d-b1bb-cca97a74d53c",
-		"Cost": 15000
+		"Cost": 1500
 	},
 	{
 		"Id": 916,
@@ -20050,7 +20050,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "e81511e1-3733-42db-9fdb-0e006e7b152b",
-		"Cost": 19000
+		"Cost": 2000
 	},
 	{
 		"Id": 917,
@@ -20079,7 +20079,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "00dd42c6-9068-45d1-87d9-33cfa0e48bb7",
-		"Cost": 15000
+		"Cost": 1500
 	},
 	{
 		"Id": 918,
@@ -20108,7 +20108,7 @@
 		"StatChance": null,
 		"StatEffectOpponent": false,
 		"MachineID": "788d9044-b9fc-4644-a413-bce71b4ffcd8",
-		"Cost": 13000
+		"Cost": 1500
 	},
 	{
 		"Id": 919,

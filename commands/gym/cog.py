@@ -16,7 +16,7 @@ class GymCommands(commands.Cog, name="GymCommands"):
 
     @app_commands.command(name="gymbattle",
                         description="Battle each gym leader from every region.")
-    @method_logger(True)
+    @method_logger(False)
     @trainer_check
     @command_lock
     async def gymbattle(self, inter: Interaction):
@@ -57,7 +57,7 @@ class GymCommands(commands.Cog, name="GymCommands"):
     @app_commands.command(name="gyminfo",
                         description="Get information about a specific gym leader.")
     @app_commands.autocomplete(gymleader=gymleader_autocomplete)
-    @method_logger(True)
+    @method_logger(False)
     async def gyminfo(self, inter: Interaction, gymleader: int):
         leader = gymservice.GetGymLeaderByBadge(gymleader)
         trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)

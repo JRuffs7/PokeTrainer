@@ -90,7 +90,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
   @app_commands.command(name="changezone",
                         description="Change a zone to spawn specific types.")
   @app_commands.autocomplete(zone=autofill_zones)
-  @method_logger(True)
+  @method_logger(False)
   @trainer_check
   @command_lock
   async def changezone(self, inter: Interaction, zone: int):
@@ -112,7 +112,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
 
   @app_commands.command(name="inventory",
                         description="Displays trainer inventory.")
-  @method_logger(True)
+  @method_logger(False)
   @trainer_check
   async def inventory(self,
                     interaction: Interaction):
@@ -126,7 +126,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
   @app_commands.command(name="modifyteam",
                         description="Add a specified Pokemon into a team slot or modify existing team.")
   @app_commands.autocomplete(pokemon=autofill_nonteam)
-  @method_logger(True)
+  @method_logger(False)
   @trainer_check
   @command_lock
   async def modifyteam(self, inter: Interaction, pokemon: int | None):
@@ -146,7 +146,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
 
   @app_commands.command(name="myteam",
                         description="View your current team.")
-  @method_logger(True)
+  @method_logger(False)
   @trainer_check
   async def myteam(self, inter: Interaction):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
@@ -266,7 +266,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
   @app_commands.command(name="release",
                         description="Choose a Pokemon to release.")
   @app_commands.autocomplete(pokemon=autofill_nonteam)
-  @method_logger(True)
+  @method_logger(False)
   @trainer_check
   @command_lock
   async def release(self, inter: Interaction,
@@ -321,7 +321,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
 
   @app_commands.command(name="delete",
                         description="Delete all your PokeTrainer data :(")
-  @method_logger(True)
+  @method_logger(False)
   @trainer_check
   @command_lock
   async def delete(self, inter: Interaction):

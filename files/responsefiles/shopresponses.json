@@ -1,4 +1,24 @@
 {
+	"buy": [
+		{
+			"Title": "Not Enough Money",
+			"Body": "You do not have enough Money to purchase anything from the shop. Win battles or sell items to receive more funds and try again."
+		},
+		{
+			"Title": "Purchase Complete",
+			"Body": "You purchased **{0} {1}(s)** for ${2}.\nYou now have ${3}."
+		}
+	],
+	"sell": [
+		{
+			"Title": "No Items",
+			"Body": "You do not have any items available to sell. You can obtain items with **/buy** or by finding them through wild battles."
+		},
+		{
+			"Title": "Sale Complete",
+			"Body": "You sold **{0} {1}(s)** for ${2}.\nYou now have ${3}."
+		}
+	],
 	"specialshop": [
 		{
 			"Title": "No Items",
