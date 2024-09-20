@@ -126,7 +126,8 @@ def GetPokemonImage(pokemon: Pokemon, pkmnData: PokemonData = None):
 
 #region Spawns
 
-def ExpForPokemon(pokemon: Pokemon, data: PokemonData, expShare: bool, victorLevel: int):
+def ExpForPokemon(pokemon: Pokemon, data: PokemonData, isWild: bool, expShare: bool, victorLevel: int):
+  a = 1 if isWild else 1.5
   b = data.BaseDefeatExp
   L = pokemon.Level
   s = 1 if not expShare else 2
@@ -141,7 +142,7 @@ def ExpForPokemon(pokemon: Pokemon, data: PokemonData, expShare: bool, victorLev
   part2 = 1/s
   part3 = math.pow((((2*L) + 10)/(L + Lp + 10)),2.5)
   part4 = (part1*part2*part3) + 1
-  return round(part4*t*e*v*f*p)
+  return round(part4*a*t*e*v*f*p)
 
 
 

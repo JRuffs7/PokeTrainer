@@ -50,11 +50,11 @@ class GymBattleView(CpuBattleView):
 				for expPkmn in self.exppokemon[pokemon.Id]:
 					pkmn = next(p for p in self.trainerteam if p.Id == expPkmn)
 					pkmnData = next(p for p in self.battle.AllPkmnData if p.Id == pkmn.Pokemon_Id)
-					pkmnOut = pkmn.Id == self.battle.TeamAPkmn.Id
 					self.experience = pokemonservice.ExpForPokemon(
 							pokemon, 
 							data, 
-							not pkmnOut,
+							False,
+							pkmn.Id != self.battle.TeamAPkmn.Id,
 							self.battle.TeamAPkmn.Level)
 					if self.leader.BadgeId in self.trainer.Badges:
 						self.experience = int(self.experience/2)

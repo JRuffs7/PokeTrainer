@@ -614,7 +614,7 @@ def TryCapture(pokeball: Pokeball, trainer: Trainer, battle: CpuBattle):
 				pokemonservice.AddExperience(
 					p, 
 					next(t for t in battle.AllPkmnData if t.Id == p.Pokemon_Id), 
-					math.floor(pokemonservice.ExpForPokemon(battle.TeamBPkmn, pkmnData, False, battle.TeamAPkmn.Level)/4))
+					math.floor(pokemonservice.ExpForPokemon(battle.TeamBPkmn, pkmnData, True, False, battle.TeamAPkmn.Level)/4))
 		if len(trainer.Team) < 6:
 			trainer.Team.append(battle.TeamBPkmn.Id)
 	return capture
