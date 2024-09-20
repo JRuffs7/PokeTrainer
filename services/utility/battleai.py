@@ -14,7 +14,7 @@ def CreateCpuTurn(battle: CpuBattle, team: list[Pokemon]):
 		cputurn.PokemonId = cpuObj.Id if type(cpuObj) is Pokemon and cputurn.Action == BattleAction.Swap else battle.TeamBPkmn.Id
 		cputurn.Move = cpuObj if type(cpuObj) is MoveData else None
 		cputurn.ItemUsed = itemservice.GetPotion(23) if cputurn.Action == BattleAction.Item else None
-		cputurn.ItemUsedOnId = cpuObj if type(cpuObj) is Pokemon and cputurn.Action == BattleAction.Item else None
+		cputurn.ItemUsedOnId = cpuObj.Id if type(cpuObj) is Pokemon and cputurn.Action == BattleAction.Item else None
 	else:
 		lastTurn = battleservice.GetTurn(battle, False, 1, battle.TeamBPkmn.Id)
 		cputurn.Move = lastTurn.Move if lastTurn.Move else moveservice.GetMoveById(165)

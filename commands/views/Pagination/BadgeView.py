@@ -3,7 +3,7 @@ import discord
 from commands.views.Pagination.BasePaginationView import BasePaginationView
 
 from globals import TrainerColor, region_name
-from models.Gym import Badge
+from models.Cpu import Badge
 from services import gymservice
 from services.utility import discordservice
 

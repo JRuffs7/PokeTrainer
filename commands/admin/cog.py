@@ -6,9 +6,9 @@ from discord.ext import commands
 from Views.Battles.CpuBattleView import CpuBattleView
 from globals import SuperShinyOdds
 from middleware.decorators import is_bot_admin, trainer_check
-from models.Gym import GymLeader
+from models.Cpu import CpuTrainer
 from models.Server import Server
-from services import gymservice, itemservice, pokemonservice, serverservice, trainerservice
+from services import commandlockservice, gymservice, pokemonservice, serverservice, trainerservice
 
 class AdminCommands(commands.Cog, name="AdminCommands"):
 
@@ -71,6 +71,13 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 			trainer.OwnedPokemon.append(newPkmn)
 			trainerservice.UpsertTrainer(trainer)
 
+	@commands.command(name="clearlock")
+	@is_bot_admin
+	async def clearlock(self, ctx: commands.Context, user: Member|None = None):
+		if not ctx.guild:
+			return
+		commandlockservice.DeleteLock(ctx.guild.id, user.id if user else ctx.author.id)
+
 	@app_commands.command(name="testfight",
                         description="Battle each gym leader from every region.")
 	@trainer_check
@@ -87,7 +94,7 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 		else:
 			team =  [pokemonservice.GenerateSpawnPokemon(p, 2, level=choice(range(1,101))) for p in sample(allPkmn, 6)]
 			name = 'GymTest'
-		leader = GymLeader({
+		leader = CpuTrainer.from_dict({
 			'Id': 1,
 			'Name': name,
 			'Sprite': '',

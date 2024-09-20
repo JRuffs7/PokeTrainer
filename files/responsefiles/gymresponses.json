@@ -1,12 +1,26 @@
 {
 	"gymbattle": [
 		{
-			"Title": "No Battles Left",
-			"Body": "Congratulations! You have beaten all the gym leaders! Check out your badges by using **/badges**."
+			"Title": "No Pokemon Available",
+			"Body": "Your current team is wiped out! Visit the **/pokecenter** to revive your team, or swap them out with **/modifyteam**."
 		},
 		{
-			"Title": "Not Enough Money",
-			"Body": "This gym would cost ${0} if you were to be defeated. You only have ${1} available. Fight wild Pokemon using **/spawn** or sell items to gain more money and try again."
+			"Title": "Gym Leader Does Not Exist",
+			"Body": "The Gym Leader you specified does not exist. Please select from the list of Gym Leaders provided."
+		},
+		{
+			"Title": "Incorrect Region",
+			"Body": "The Gym Leader you specified is in the **{0}** region! Swap to that region using **/changeregion** in order to battle them."
+		},
+		{
+			"Title": "Too High Level",
+			"Body": "You are using Pokemon in your team that exceed this Gym Leaders level cap of: {0}\n\nLook at **/gyminfo** for more details about this gym.\nUse **/modifyteam** to swap out for Pokemon within the level cap."
+		}
+	],
+	"gyminfo": [
+		{
+			"Title": "Gym Leader Does Not Exist",
+			"Body": "The Gym Leader you specified does not exist. Please select from the list of Gym Leaders provided."
 		}
 	]
 }

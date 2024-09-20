@@ -42,7 +42,6 @@ def UpdateTrainers():
 			newTrainer = Trainer.from_dict({
 				'UserId': t['UserId'] if 'UserId' in t else 0,
 				'ServerId': t['ServerId'] if 'ServerId' in t else 0,
-				'Health': t['Health'] if 'Health' in t else 0,
 				'Money': t['Money'] if 'Money' in t else 0,
 				'Items': {
 					'1': (t['Pokeballs']['4'] if '4' in t['Pokeballs'] else 0) if 'Pokeballs' in t else 0,
@@ -106,8 +105,7 @@ def UpdateTrainers():
 				'Daycare': t['Daycare'] if 'Daycare' in t else {},
 				'Wishlist': t['Wishlist'] if 'Wishlist' in t else [],
 				'LastDaily': t['LastDaily'] if 'LastDaily' in t else None,
-				'Shop': t['Shop'] if 'Shop' in t else None,
-				'CurrentZone': t['CurrentZone'] if 'CurrentZone' in t else 0,
+				'Region': 1,
 				'DailyMission': t['DailyMission'] if 'DailyMission' in t else None,
 				'WeeklyMission': t['WeeklyMission'] if 'WeeklyMission' in t else None
 			})

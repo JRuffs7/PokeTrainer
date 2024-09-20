@@ -147,9 +147,9 @@ def ExpForPokemon(pokemon: Pokemon, data: PokemonData, expShare: bool, victorLev
 
 
 
-def SpawnPokemon(specialZone: Zone|None, badgeBonus: int, shinyOdds: int):
+def SpawnPokemon(region: int|None, badgeBonus: int, shinyOdds: int):
   pokemonList = pokemonda.GetPokemonByProperty([1, 2, 3], 'Rarity')
-  if specialZone:
+  if region:
     pokemonList = [p for p in pokemonList if len(set(specialZone.Types).intersection(set(p.Types))) > 0]
   pokemon = None
   while not pokemon:

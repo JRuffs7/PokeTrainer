@@ -8,8 +8,7 @@ from commands.views.Events.EventView import EventView
 
 from globals import EventColor, FightReaction, ShortDateFormat
 from middleware.decorators import trainer_check
-from models.Gym import SpecialTrainer
-from models.Item import Pokeball
+from models.Cpu import CpuTrainer
 from models.Pokemon import Pokemon
 from models.Server import Server
 from models.Trainer import Trainer
@@ -18,7 +17,7 @@ from services.utility import discordservice
 
 class SpecialBattleEventView(EventView):
 
-	def __init__(self, server: Server, channel: discord.TextChannel, sTrainer: SpecialTrainer):
+	def __init__(self, server: Server, channel: discord.TextChannel, sTrainer: CpuTrainer):
 		self.captureLog = logging.getLogger('capture')
 		self.strainer = sTrainer
 		self.sTeam = pokemonservice.GetPokemonByIdList(sTrainer.Team)

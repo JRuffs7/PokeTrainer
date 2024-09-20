@@ -86,30 +86,6 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
       trainer.Eggs)
     await teamViewer.send() 
 
-
-  @app_commands.command(name="changezone",
-                        description="Change a zone to spawn specific types.")
-  @app_commands.autocomplete(zone=autofill_zones)
-  @method_logger(False)
-  @trainer_check
-  @command_lock
-  async def changezone(self, inter: Interaction, zone: int):
-    trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
-    zoneData = zoneservice.GetZone(zone)
-    if trainer.CurrentZone == zone:
-      await discordservice_trainer.PrintChangeZone(inter, 0 if zone != 0 else 2, [zoneData.Name])
-    else:
-      trainer.CurrentZone = zone
-      trainerservice.UpsertTrainer(trainer)
-      zoneTypes = [statservice.GetType(t).Name for t in zone.Types] if zone.Id != 0 else ["All"]
-      zoneTypes.sort()
-      if zone == 0:
-        await discordservice_trainer.PrintChangeZone(inter, 2, [])
-      else:
-        await discordservice_trainer.PrintChangeZone(inter, 1, ['/'.join(zoneTypes), zoneData.Name])
-    commandlockservice.DeleteLock(inter.guild_id, inter.user.id)
-    
-
   @app_commands.command(name="inventory",
                         description="Displays trainer inventory.")
   @method_logger(False)

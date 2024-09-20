@@ -355,7 +355,7 @@ def AttackDamage(move: MoveData, attacking: Pokemon, defending: Pokemon, battle:
 	attData = next(p for p in battle.AllPkmnData if p.Id == attacking.Pokemon_Id)
 	defData = next(p for p in battle.AllPkmnData if p.Id == defending.Pokemon_Id)
 	attStats = battle.TeamAStats if attacking.Id == battle.TeamAPkmn.Id and move.Id != 492 else battle.TeamBStats
-	defStats = battle.TeamBStats if attacking.Id == battle.TeamAPkmn.Id else battle.TeamAStat
+	defStats = battle.TeamBStats if attacking.Id == battle.TeamAPkmn.Id else battle.TeamAStats
 	typedmg = statservice.TypeDamage(move.MoveType, defData.Types)
 	if defending.Pokemon_Id == 292 and typedmg < 2:
 		typedmg = 0

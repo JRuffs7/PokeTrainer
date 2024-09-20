@@ -1,18 +1,16 @@
 from datetime import UTC, datetime
-from models.Item import Potion
 from models.Trainer import Trainer
-from services import missionservice, pokemonservice, gymservice, trainerservice, zoneservice
+from services import missionservice, pokemonservice, gymservice, trainerservice
 from services.utility import discordservice
 from discord import Interaction, Member
-from globals import HelpColor, ShortDateFormat, TrainerColor
+from globals import ShortDateFormat, TrainerColor, region_name
 
 responseFile = "files/responsefiles/trainerresponses.json"
 
 async def PrintTrainer(interaction: Interaction, trainer: Trainer, targetUser: Member):
 	newDay = datetime.strptime(trainer.LastDaily, ShortDateFormat).date() < datetime.now(UTC).date() if trainer.LastDaily else True
 	#Stats Section
-	healthString = f'HP: {trainer.Health}'
-	zoneString = f'Current Zone: **{zoneservice.GetZone(trainer.CurrentZone).Name}**'
+	regionStr = f'Current Region: **{region_name(trainer.Region)}**'
 	if newDay:
 		dailyString = f'Daily Reward: **Ready**'
 	else:
@@ -23,7 +21,7 @@ async def PrintTrainer(interaction: Interaction, trainer: Trainer, targetUser: M
 		shopString = 'Sp. Shop Refresh: On cooldown'
 
 	newLine = '\n'
-	stats = f'__Trainer Stats__\n{newLine.join([healthString, zoneString, dailyString, shopString])}'
+	stats = f'__Trainer Stats__\n{newLine.join([regionStr, dailyString, shopString])}'
 
 	#Mission Section
 	dailyMission = missionservice.GetDailyMission(trainer.DailyMission.MissionId) if trainer.DailyMission else None

@@ -41,7 +41,6 @@ class BattleTurn:
 @dataclass
 class CpuBattle:
 	CurrentTurn: int = 1
-	IsEvent: bool = False
 	IsWild: bool = True
 	TeamAPkmn: Pokemon | None = None
 	TeamBPkmn: Pokemon | None = None

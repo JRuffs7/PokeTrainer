@@ -1,68 +1,23 @@
-import logging
 from dataaccess import gymda
+from models.Pokemon import Pokemon
+from models.Stat import StatEnum
 from models.Trainer import Trainer
-from services import battleservice, pokemonservice, trainerservice
-from models.Gym import GymLeader
+from services import pokemonservice, statservice
 
 #region Gym Leaders
 
 def GetAllGymLeaders():
 	return gymda.GetAllGymLeaders()
 
-
-def GetNextTrainerGym(trainerBadges: list[int]):
-	badges = GetAllBadges()
-	badges.sort(key=lambda b: b.Id)
-	for b in badges:
-		if b.Id not in trainerBadges:
-			return next(g for g in gymda.GetAllGymLeaders() if g.BadgeId == b.Id)
-	return None
-
-
-def GetBattleTeam(team: list[int]):
-	return [p for p in [pokemonservice.GetPokemonById(id) for id in team] if p]
-
-
-def GymLeaderFight(trainer: Trainer, leader: GymLeader):
-	trainerTeam = [{ 'Pokemon': pokemonservice.GetPokemonById(t.Pokemon_Id), 'Id': t.Id, 'Level': t.Level } for t in trainerservice.GetTeam(trainer)]
-	leaderTeam = GetBattleTeam(leader.Team)
-	fightResults: list[bool] = []
-	expList: dict[str, int] = {}
-	trainerInd = leaderInd = 0
-	while trainerInd < len(trainerTeam) and leaderInd < len(leaderTeam):
-		trainerFighter = trainerTeam[trainerInd]
-		leaderFighter = leaderTeam[leaderInd]
-		fight = battleservice.GymFight(trainerFighter['Pokemon'], leaderFighter, trainerFighter['Level'], leader.BadgeId)
-		fightResults.append(fight)
-		if fight:
-			group = pokemonservice.RarityGroup(leaderTeam[leaderInd])
-			if trainerFighter['Id'] in expList:
-				expList[trainerFighter['Id']] += (15 if group == 1 else 25 if group == 2 else 35)*(5 if leader.BadgeId not in trainer.GymAttempts else 2)
-			else:
-				expList[trainerFighter['Id']] = (15 if group == 1 else 25 if group == 2 else 35)*(5 if leader.BadgeId not in trainer.GymAttempts else 2)
-			leaderInd += 1
-		else:
-			trainerInd += 1
-
-	for pId in expList:
-		tPokemon = next(p for p in trainer.OwnedPokemon if pId == p.Id)
-		tData = next(d['Pokemon'] for d in trainerTeam if d['Id'] == tPokemon.Id)
-		pokemonservice.AddExperience(tPokemon, tData, expList[pId])
-
-	if fightResults.count(True) == len(leader.Team):
-		trainer.Money += leader.Reward
-		trainer.Badges.append(leader.BadgeId)
-	else:
-		trainer.Money -= int(leader.Reward/2)
-	if leader.BadgeId not in trainer.GymAttempts:
-		trainer.GymAttempts.append(leader.BadgeId)
-	trainerservice.TryAddMissionProgress(trainer, 'Gym', [])
-	trainerservice.UpsertTrainer(trainer)
-	return fightResults
-
-
 def GetGymLeaderByBadge(badgeId: int):
-	return next(l for l in GetAllGymLeaders() if l.BadgeId == badgeId)
+	return next((l for l in GetAllGymLeaders() if l.BadgeId == badgeId),None)
+
+def SetUpGymBattle(leaderTeam: list[Pokemon]):
+	dataList = pokemonservice.GetPokemonByIdList([p.Pokemon_Id for p in leaderTeam])
+	for p in leaderTeam:
+		p.CurrentAilment = None
+		p.CurrentExp = 0
+		p.CurrentHP = statservice.GenerateStat(p, next(po for po in dataList if po.Id == p.Pokemon_Id), StatEnum.HP)
 
 #endregion
 

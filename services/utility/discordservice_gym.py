@@ -13,3 +13,13 @@ async def PrintGymBattleResponse(interaction: Interaction, response: int, params
 		color=BattleColor, 
 		params=params,
 		eph=True)
+
+async def PrintGymInfoResponse(interaction: Interaction, response: int, params: list):
+	return await discordservice.SendCommandResponse(
+		interaction=interaction, 
+		filename=responseFile, 
+		command='gyminfo', 
+		responseInd=response, 
+		color=BattleColor, 
+		params=params,
+		eph=True)

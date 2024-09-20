@@ -1,17 +1,15 @@
 from datetime import UTC, datetime, timedelta
 import logging
-from random import choice, sample
+from random import choice
 import uuid
 from dataaccess import trainerda
 from globals import AdminList, GreatShinyOdds, ShinyOdds, ShortDateFormat, SuperShinyOdds
 from models.Egg import TrainerEgg
-from models.Gym import GymLeader
 from models.Item import Pokeball
 from models.Mission import TrainerMission
-from models.Shop import SpecialShop
 from models.Trainer import Trainer
 from models.Pokemon import EvolveData, Pokemon, PokemonData
-from services import battleservice, gymservice, itemservice, missionservice, pokemonservice
+from services import gymservice, itemservice, missionservice, pokemonservice
 
 captureLog = logging.getLogger('capture')
 
@@ -44,15 +42,6 @@ def StartTrainer(pokemon: PokemonData, serverId: int, userId: int):
   trainer.OwnedPokemon.append(spawn)
   UpsertTrainer(trainer)
   return trainer
-
-def CheckTrainerLock(serverId: int, userId: int):
-  return f'{serverId}{userId}' in commandLocks
-
-def TrainerCommandLock(serverId: int, userId: int):
-  commandLocks.append(f'{serverId}{userId}')
-
-def TrainerRemoveLock(serverId: int, userId: int):
-  commandLocks.remove(f'{serverId}{userId}')
 
 #endregion
 
@@ -88,14 +77,6 @@ def TryDaily(trainer: Trainer, freeMasterball: bool):
     UpsertTrainer(trainer)
     return addEgg
   return -1
-
-def SpecialShopCheck(trainer: Trainer):
-  if not trainer.Shop:
-    trainer.Shop = SpecialShop({'LastRecycle': datetime.now(UTC).strftime(ShortDateFormat), 'ItemIds': [i.Id for i in sample(itemservice.GetAllItems(), 4)]})
-  elif datetime.strptime(trainer.Shop.LastRecycle, ShortDateFormat).date() < datetime.now(UTC).date():
-    trainer.Shop.LastRecycle = datetime.now(UTC).strftime(ShortDateFormat)
-    trainer.Shop.ItemIds = [i.Id for i in sample(itemservice.GetAllItems(), 4)]
-  UpsertTrainer(trainer)
 
 def ModifyItemList(trainer: Trainer, itemId: str, amount: int):
   newAmount = max(trainer.Items[itemId] + amount, 0) if itemId in trainer.Items else max(amount, 0)
@@ -169,13 +150,13 @@ def GetTrainerItemList(trainer: Trainer, itemType: int | None = None):
 def TryAddNewEgg(trainer: Trainer):
   #Galar Reward
   if(len(trainer.Eggs) < (8 if HasRegionReward(trainer, 8) else 5)):
-    randId = choice(range(1, 101))
+    randId = choice(range(100))
 
     #Johta Reward
     if HasRegionReward(trainer, 2):
-      newEggId = 1 if randId <= 50 else 2 if randId <= 90 else 3
+      newEggId = 1 if randId < 56 else 2 if randId < 95 else 3
     else:
-      newEggId = 1 if randId <= 65 else 2 if randId <= 95 else 3
+      newEggId = 1 if randId < 66 else 2 if randId < 98 else 3
 
     trainer.Eggs.append(TrainerEgg.from_dict({
       'Id': uuid.uuid4().hex,
@@ -368,62 +349,8 @@ def TryCapture(pokeball: Pokeball, trainer: Trainer, spawn: Pokemon):
     if len(trainer.Team) < 6:
       trainer.Team.append(spawn.Id)
     caught = True
-  else:
-    trainer.Health -= (5-pokeball.Id)
-    trainer.Health = 0 if trainer.Health < 0 else trainer.Health
   UpsertTrainer(trainer)
   return caught
-
-def FightWin(trainer: Trainer, leader: GymLeader, isWild: bool):
-  if isWild:
-    trainer.Money += 25
-    TryAddMissionProgress(trainer, 'Fight', pokemonservice.GetPokemonById(leader.Team[0].Pokemon_Id).Types)
-    candy = itemservice.TryGetCandy()
-    if candy:
-      ModifyItemList(trainer.Items, str(candy.Id), 1)
-    return candy
-  else:
-    if leader.Reward[0] == 0:
-      trainer.Money += leader.Reward[1]
-    else:
-      ModifyItemList(trainer, str(leader.Reward[0]), leader.Reward[1])
-    if leader.BadgeId >= 1:
-      trainer.Badges.append(leader.BadgeId)
-  return None
-
-def TryWildFight(trainer: Trainer, trainerPkmnData: PokemonData, wild: Pokemon, wildData: PokemonData):
-    trainerPokemon = next(p for p in trainer.OwnedPokemon if p.Id == trainer.Team[0])
-    healthLost = battleservice.WildFight(trainerPkmnData, wildData, trainerPokemon.Level, wild.Level)
-
-    #Hoenn Reward
-    if HasRegionReward(trainer, 3) and choice(range(1, 101)) < 11:
-      healthLost = 0
-      
-    trainer.Health -= healthLost
-    trainer.Health = 0 if trainer.Health < 0 else trainer.Health
-    if healthLost < 10 and trainer.Health > 0:
-      exp = wildData.Rarity*wild.Level*2 if wildData.Rarity <= 2 else wildData.Rarity*wild.Level
-      pokemonservice.AddExperience(
-        trainerPokemon, 
-        trainerPkmnData, 
-        exp)
-      trainer.Money += 25
-      TryAddMissionProgress(trainer, 'Fight', wildData.Types)
-      #Kanto Reward
-      if HasRegionReward(trainer, 1) and len(trainer.Team) > 1:
-        teamMember = next(p for p in trainer.OwnedPokemon if p.Id == trainer.Team[1])
-        pkmn = pokemonservice.GetPokemonById(teamMember.Pokemon_Id)
-        pokemonservice.AddExperience(
-          teamMember, 
-          pkmn, 
-          int(exp/2))
-
-    candy = itemservice.TryGetCandy() if healthLost < 10 else None
-    if candy:
-      ModifyItemList(trainer.Items, str(candy.Id), 1)
-    
-    UpsertTrainer(trainer)
-    return (healthLost,candy)
 
 def TryAddWishlist(trainer: Trainer, pokemonId: int):
   if pokemonId in trainer.Wishlist:
