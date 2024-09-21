@@ -30,7 +30,7 @@ def DeleteTrainer(trainer: Trainer):
   return trainerda.DeleteSingleTrainer(trainer)
 
 def StartTrainer(pokemon: PokemonData, serverId: int, userId: int):
-  spawn = pokemonservice.GenerateSpawnPokemon(pokemon, level=5)
+  spawn = pokemonservice.GenerateSpawnPokemon(pokemon, 5)
   trainer = Trainer.from_dict({
     'UserId': userId,
     'ServerId': serverId,
@@ -154,13 +154,14 @@ def TryAddNewEgg(trainer: Trainer):
 
     #Johta Reward
     if HasRegionReward(trainer, 2):
-      newEggId = 1 if randId < 56 else 2 if randId < 95 else 3
+      newEggId = 1 if randId < 75 else 2 if randId < 95 else 3
     else:
-      newEggId = 1 if randId < 66 else 2 if randId < 98 else 3
+      newEggId = 1 if randId < 83 else 2 if randId < 98 else 3
 
     trainer.Eggs.append(TrainerEgg.from_dict({
       'Id': uuid.uuid4().hex,
-      'EggId': newEggId
+      'EggId': newEggId,
+      'Generation': trainer.Region
     }))
     return newEggId
   return 0
@@ -188,7 +189,7 @@ def TryHatchEgg(trainer: Trainer, eggId: str):
   pkmn = choice(pokemonservice.GetPokemonByRarity(eggData.Hatch))
   while pkmn.EvolvesInto and pkmn.Rarity == 3:
     pkmn = choice(pokemonservice.GetPokemonByRarity(eggData.Hatch))
-  newPokemon = pokemonservice.GenerateSpawnPokemon(pkmn, GetShinyOdds(trainer), 1)
+  newPokemon = pokemonservice.GenerateSpawnPokemon(pkmn, 1, GetShinyOdds(trainer))
   if not newPokemon.IsShiny:
     newPokemon.IsShiny = choice(range(0, GetShinyOdds(trainer))) == int(GetShinyOdds(trainer)/2)
   trainer.OwnedPokemon.append(newPokemon)
@@ -196,8 +197,7 @@ def TryHatchEgg(trainer: Trainer, eggId: str):
   TryAddToPokedex(trainer, pkmn, newPokemon.IsShiny)
   if len(trainer.Team) < 6:
     trainer.Team.append(newPokemon.Id)
-  UpsertTrainer(trainer)
-  return newPokemon.Id
+  return newPokemon
 
 #endregion
 
@@ -274,7 +274,7 @@ def Evolve(trainer: Trainer, initialPkmn: Pokemon, initialData: PokemonData, evo
   
   if initialPkmn.Pokemon_Id == 290 and len(trainer.Team) < 6: #Nincada
     shedinja = pokemonservice.GetPokemonById(292)
-    shedinjaSpawn = pokemonservice.GenerateSpawnPokemon(shedinja, level=1)
+    shedinjaSpawn = pokemonservice.GenerateSpawnPokemon(shedinja, 1, GetShinyOdds(trainer))
     trainer.Team.append(shedinjaSpawn.Id)
     TryAddToPokedex(trainer, shedinja, shedinjaSpawn.IsShiny)
 
@@ -352,16 +352,10 @@ def TryCapture(pokeball: Pokeball, trainer: Trainer, spawn: Pokemon):
   UpsertTrainer(trainer)
   return caught
 
-def TryAddWishlist(trainer: Trainer, pokemonId: int):
-  if pokemonId in trainer.Wishlist:
-    return False
-  trainer.Wishlist.append(pokemonId)
-  UpsertTrainer(trainer)
-  return True
-
 def GetShinyOdds(trainer: Trainer):
   totalPkmn = pokemonservice.GetAllPokemon()
   totalPkdx = len(set(p.PokedexId for p in totalPkmn))
+  #Voltage Reward
   if HasRegionReward(trainer, 1000) and len(trainer.Pokedex) == totalPkdx:
     return SuperShinyOdds
   elif HasRegionReward(trainer, 1000) or len(trainer.Pokedex) == totalPkdx:

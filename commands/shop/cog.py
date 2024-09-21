@@ -1,6 +1,6 @@
 from discord import app_commands, Interaction
 from discord.ext import commands
-from Views.Shop.ShopView import ShopView
+from Views.ShopView import ShopView
 from middleware.decorators import command_lock, method_logger, trainer_check
 from models.Move import MoveData
 from services import commandlockservice, itemservice, moveservice, trainerservice

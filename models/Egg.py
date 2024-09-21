@@ -13,6 +13,7 @@ class Egg(Base):
 class TrainerEgg:
 	Id: str = ''
 	EggId: int = 0
+	Generation: int = 1
 	SpawnCount: int = 0
 
 	@classmethod

@@ -84,21 +84,21 @@ async def PrintPokeShopResponse(interaction: Interaction, response: int, pkmnnam
 		params=[pkmnname],
 		eph=True)
 
-async def PrintUsePotionResponse(interaction: Interaction, response: int, params: list):
+async def PrintSpawnLegendaryResponse(interaction: Interaction, response: int, params: list):
 	return await discordservice.SendCommandResponse(
 		interaction=interaction, 
 		filename=responseFile, 
-		command='usepotion', 
+		command='spawnlegendary', 
 		responseInd=response, 
 		color=PokemonColor, 
 		params=params,
 		eph=True)
 
-async def PrintPokeCenterResponse(interaction: Interaction, response: int, params: list):
+async def PrintUsePotionResponse(interaction: Interaction, response: int, params: list):
 	return await discordservice.SendCommandResponse(
 		interaction=interaction, 
 		filename=responseFile, 
-		command='pokecenter', 
+		command='usepotion', 
 		responseInd=response, 
 		color=PokemonColor, 
 		params=params,

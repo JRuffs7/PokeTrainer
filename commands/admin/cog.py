@@ -67,7 +67,7 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 		trainer = trainerservice.GetTrainer(ctx.guild.id, user.id if user else ctx.author.id)
 		pokemon = pokemonservice.GetPokemonById(pokemonId)
 		if trainer and pokemon:
-			newPkmn = pokemonservice.GenerateSpawnPokemon(pokemon, SuperShinyOdds, level)
+			newPkmn = pokemonservice.GenerateSpawnPokemon(pokemon, level, SuperShinyOdds)
 			trainer.OwnedPokemon.append(newPkmn)
 			trainerservice.UpsertTrainer(trainer)
 
@@ -85,14 +85,14 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 		trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
 		allPkmn = pokemonservice.GetAllPokemon()
 		trainer.OwnedPokemon.clear()
-		trainer.OwnedPokemon = [pokemonservice.GenerateSpawnPokemon(p, level=choice(range(1,101))) for p in sample(allPkmn, 6)]
+		trainer.OwnedPokemon = [pokemonservice.GenerateSpawnPokemon(p, choice(range(1,101))) for p in sample(allPkmn, 6)]
 		trainer.Team = [p.Id for p in trainer.OwnedPokemon]
 		if wild:
 			enemyPkmn = choice(allPkmn)
-			team = [pokemonservice.GenerateSpawnPokemon(enemyPkmn, 2, level=choice(range(1,101)))]
+			team = [pokemonservice.GenerateSpawnPokemon(enemyPkmn, choice(range(1,101)), 2)]
 			name = pokemonservice.GetPokemonDisplayName(team[0], enemyPkmn)
 		else:
-			team =  [pokemonservice.GenerateSpawnPokemon(p, 2, level=choice(range(1,101))) for p in sample(allPkmn, 6)]
+			team =  [pokemonservice.GenerateSpawnPokemon(p, choice(range(1,101)), 2) for p in sample(allPkmn, 6)]
 			name = 'GymTest'
 		leader = CpuTrainer.from_dict({
 			'Id': 1,

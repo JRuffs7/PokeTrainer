@@ -1,22 +1,26 @@
 import discord
 from commands.views.Selection.selectors.OwnedSelector import OwnedSelector
+from globals import SuccessColor
 from middleware.decorators import defer
 
 from models.Pokemon import Pokemon, PokemonData
 from services import commandlockservice, pokemonservice, trainerservice
 from models.Trainer import Trainer
+from services.utility import discordservice
 
 
 class NicknameView(discord.ui.View):
   
-	def __init__(self, interaction: discord.Interaction, trainer: Trainer, pokemon: list[Pokemon]):
-		self.interaction = interaction
+	def __init__(self, trainer: Trainer, pokemon: list[Pokemon]):
 		self.trainer = trainer
 		self.pokemon = pokemon
 		self.pokemondata = pokemonservice.GetPokemonById(pokemon[0].Pokemon_Id)
 		super().__init__(timeout=300)
 		self.ownlist = OwnedSelector(pokemon, 1, defer=False)
+		cancelbtn = discord.ui.Button(label="Cancel", style=discord.ButtonStyle.red)
+		cancelbtn.callback = self.cancel_button
 		self.add_item(self.ownlist)
+		self.add_item(cancelbtn)
 
 	async def on_timeout(self):
 		await self.message.delete(delay=0.1)
@@ -33,16 +37,14 @@ class NicknameView(discord.ui.View):
 		self.nameinput = NicknameModal(self.trainer, self.pokemondata, self.message, choices[0])
 		await inter.response.send_modal(self.nameinput)
 
-	@discord.ui.button(label="Cancel", style=discord.ButtonStyle.red)
 	@defer
-	async def cancel_button(self, inter: discord.Interaction,
-												button: discord.ui.Button):
+	async def cancel_button(self, inter: discord.Interaction):
 		await self.on_timeout()
 
 
-	async def send(self):
-		await self.interaction.followup.send(view=self)
-		self.message = await self.interaction.original_response()
+	async def send(self, inter: discord.Interaction):
+		await inter.followup.send(view=self)
+		self.message = await inter.original_response()
 
 
 class NicknameModal(discord.ui.Modal):
@@ -58,10 +60,13 @@ class NicknameModal(discord.ui.Modal):
 		self.add_item(self.nameInput)
 		
 	@defer
-	async def on_submit(self, interaction: discord.Interaction):
+	async def on_submit(self, inter: discord.Interaction):
 		await self.message.delete(delay=0.1)
 		oldname = self.pokemon.Nickname if self.pokemon.Nickname else self.data.Name
 		self.pokemon.Nickname = self.nameInput.value if self.nameInput.value else None
 		trainerservice.UpsertTrainer(self.trainer)
 		commandlockservice.DeleteLock(self.trainer.ServerId, self.trainer.UserId)
-		await interaction.followup.send(content=f'{oldname} now has the nickname {self.pokemon.Nickname if self.pokemon.Nickname else self.data.Name}', ephemeral=True)
+		await inter.followup.send(embed=discordservice.CreateEmbed(
+			'Nickname Set', 
+			f'<@{inter.user.id}> changed {oldname} to now have the {f"nickname **{self.pokemon.Nickname}**" if self.pokemon.Nickname else f"name **{self.data.Name}**"}.',
+			SuccessColor))

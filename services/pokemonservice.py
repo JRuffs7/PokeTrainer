@@ -5,10 +5,9 @@ from random import choice, uniform
 from models.Item import Item, Pokeball, Potion
 from models.Stat import StatEnum
 from models.Trainer import Trainer
-from models.Zone import Zone
 from models.enums import SpecialSpawn
 
-from services import battleservice, moveservice, statservice, trainerservice
+from services import moveservice, statservice, trainerservice
 from dataaccess import pokemonda
 from globals import FemaleSign, MaleSign, ShinyOdds, ShinySign
 from models.Pokemon import Move, PokemonData, Pokemon
@@ -144,22 +143,42 @@ def ExpForPokemon(pokemon: Pokemon, data: PokemonData, isWild: bool, expShare: b
   part4 = (part1*part2*part3) + 1
   return round(part4*a*t*e*v*f*p)
 
-
-
-
-
-def SpawnPokemon(region: int|None, badgeBonus: int, shinyOdds: int):
-  pokemonList = pokemonda.GetPokemonByProperty([1, 2, 3], 'Rarity')
-  if region:
-    pokemonList = [p for p in pokemonList if len(set(specialZone.Types).intersection(set(p.Types))) > 0]
+def SpawnPokemon(region: int, badgesInRegion: int, shinyOdds: int):
+  pokemonList = pokemonda.GetPokemonByProperty([1,2] if badgesInRegion < 3 else [1,2,3], 'Rarity')
   pokemon = None
   while not pokemon:
     pokemon = choice(pokemonList)
-    if not CanSpawn(pokemon):
+    if not CanSpawn(pokemon, pokemonList, region):
       pokemon = None
 
-  spawn = GenerateSpawnPokemon(pokemon, shinyOdds)
-  spawn.Level += floor(badgeBonus/2)
+  range1 = 2 + (5*badgesInRegion)
+  range2 = 10 + (5*badgesInRegion)
+  level = choice(range(range1, range2))
+  spawn = GenerateSpawnPokemon(pokemon, level, shinyOdds)
+  evos = AvailableEvolutions(spawn, pokemon, [])
+  print(evos)
+  if evos and choice(range(100)) < 40:
+    evData = GetPokemonById(choice(evos))
+    spawn = EvolvePokemon(spawn, pokemon, evData)
+    spawn.CurrentHP = statservice.GenerateStat(spawn, evData, StatEnum.HP)
+  return spawn
+
+def SpawnLegendary(region: int, shinyOdds: int, ownedList: list[int]):
+  pokemonList = [p for p in pokemonda.GetPokemonByProperty([8,9,10], 'Rarity') if p.Generation == region and p.Id not in ownedList]
+  if not pokemonList:
+    return None
+  evolveList = []
+  for p in pokemonList:
+    if p.EvolvesInto:
+      evolveList.extend([e.EvolveID for e in p.EvolvesInto])
+  pokemon = None
+  while not pokemon:
+    pokemon = choice(pokemonList)
+    if pokemon.Id in evolveList:
+      pokemon = None
+
+  level = 50 if pokemon.IsMythical or pokemon.IsParadox or pokemon.Rarity < 10 else 60 if pokemon.IsUltraBeast else 75
+  spawn = GenerateSpawnPokemon(pokemon, level, shinyOdds)
   return spawn
 
 def GetSpecialSpawn():
@@ -170,23 +189,21 @@ def GetSpecialSpawn():
     pkmn = choice(pokemonList)
     if pkmn.IsFossil and not pkmn.EvolvesInto:
       pkmn = None
-  return GenerateSpawnPokemon(pkmn, level=5 if pkmn.IsStarter or pkmn.IsFossil else 75 if pkmn.IsLegendary or pkmn.IsMythical else 40)
+  return GenerateSpawnPokemon(pkmn, 5 if pkmn.IsStarter or pkmn.IsFossil else 75 if pkmn.IsLegendary or pkmn.IsMythical else 40)
 
-def GenerateSpawnPokemon(pokemon: PokemonData, shinyOdds: int = ShinyOdds, level: int | None = None):
-  shiny = choice(range(0, shinyOdds)) == int(shinyOdds / 2)
-  height = round(
-      uniform((pokemon.Height * 0.9), (pokemon.Height * 1.1)) / 10, 2)
-  weight = round(
-      uniform((pokemon.Weight * 0.9), (pokemon.Weight * 1.1)) / 10, 2)
-  female = choice(range(0, 100)) < int(pokemon.FemaleChance / 8 * 100) if pokemon.FemaleChance >= 0 else None
+def GenerateSpawnPokemon(pokemon: PokemonData, level: int, shinyOdds: int = ShinyOdds):
+  isshiny = choice(range(0, shinyOdds)) == int(shinyOdds / 2)
+  height = round(uniform((pokemon.Height * 0.9), (pokemon.Height * 1.1)) / 10, 2)
+  weight = round(uniform((pokemon.Weight * 0.9), (pokemon.Weight * 1.1)) / 10, 2)
+  isfemale = choice(range(0, 100)) < int(pokemon.FemaleChance / 8 * 100) if pokemon.FemaleChance and pokemon.FemaleChance >= 0 else None
   spawn = Pokemon.from_dict({
       'Id': uuid.uuid4().hex,
       'Pokemon_Id': pokemon.Id,
-      'Height': height if height > 0.00 else 0.01,
-      'Weight': weight if weight > 0.00 else 0.01,
-      'IsShiny': shiny,
-      'IsFemale': female,
-      'Level': level if level else choice(range(3,8)) if pokemon.Rarity <= 2 else choice(range(20,26)) if pokemon.Rarity == 3 else choice(range(30,36)),
+      'Height': max(height, 0.01),
+      'Weight': max(weight, 0.01),
+      'IsShiny': isshiny,
+      'IsFemale': isfemale,
+      'Level': level,
       'CurrentExp': 0,
       'Nature': choice(statservice.GetAllNatures()).Id,
       'IVs': {
@@ -209,7 +226,10 @@ def GenerateSpawnPokemon(pokemon: PokemonData, shinyOdds: int = ShinyOdds, level
   spawn.CurrentHP = statservice.GenerateStat(spawn, pokemon, StatEnum.HP)
   return spawn
 
-def CanSpawn(pokemon: PokemonData):
+def CanSpawn(pokemon: PokemonData, pokemonList: list[PokemonData], region: int):
+  if pokemon.Generation != region:
+    return False
+
   if pokemon.IsMega or pokemon.IsUltraBeast or pokemon.IsParadox or pokemon.IsLegendary or pokemon.IsMythical or pokemon.IsFossil:
     return False
   
@@ -219,7 +239,7 @@ def CanSpawn(pokemon: PokemonData):
   if not pokemon.Sprite and not pokemon.ShinySprite:
     return False
   
-  for pkmn in GetStarterPokemon():
+  for pkmn in [p for p in pokemonList if p.IsStarter]:
     if pkmn.PokedexId <= pokemon.PokedexId <= pkmn.PokedexId+2:
       return False
 
@@ -255,6 +275,13 @@ def AddExperience(trainerPokemon: Pokemon, pkmnData: PokemonData, exp: int):
     trainerPokemon.CurrentExp -= expNeeded
     newTotalHP = statservice.GenerateStat(trainerPokemon, pkmnData, StatEnum.HP)
     trainerPokemon.CurrentHP = min(trainerPokemon.CurrentHP + (newTotalHP - oldTotalHP), statservice.GenerateStat(trainerPokemon, pkmnData, StatEnum.HP))
+    if len(trainerPokemon.LearnedMoves) < 4:
+      newMoves = [int(m) for m in pkmnData.LevelUpMoves if (pkmnData.LevelUpMoves[m] == trainerPokemon.Level) and (int(m) not in [mo.MoveId for mo in trainerPokemon.LearnedMoves])]
+      if newMoves:
+        for n in newMoves:
+          if len(trainerPokemon.LearnedMoves) < 4:
+            newMove = moveservice.GetMoveById(n)
+            trainerPokemon.LearnedMoves.append(Move({'MoveId': newMove.Id, 'PP': newMove.BasePP}))
     expNeeded = NeededExperience(trainerPokemon, pkmnData)
 
   if trainerPokemon.Level == 100:
@@ -304,8 +331,8 @@ def GetRandomEvolveList(pkmn: PokemonData, evolveIds: list[int]):
   return None
 
 def EvolvePokemon(initial: Pokemon, initialData: PokemonData, evolveData: PokemonData):
-  currTotalHP = statservice.GenerateStat(initial, initialData)
-  spawn = GenerateSpawnPokemon(evolveData)
+  currTotalHP = statservice.GenerateStat(initial, initialData, StatEnum.HP)
+  spawn = GenerateSpawnPokemon(evolveData, initial.Level)
   evolved = Pokemon.from_dict({
       'Id': initial.Id,
       'Pokemon_Id': evolveData.Id,
@@ -318,11 +345,11 @@ def EvolvePokemon(initial: Pokemon, initialData: PokemonData, evolveData: Pokemo
       'CurrentExp': initial.CurrentExp,
       'Nature': initial.Nature,
       'IVs': initial.IVs,
-      'LearnedMoves': initial.LearnedMoves,
       'CurrentAilment': initial.CurrentAilment
     })
-  evolveTotalHP = statservice.GenerateStat(evolved, evolveData)
+  evolveTotalHP = statservice.GenerateStat(evolved, evolveData, StatEnum.HP)
   evolved.CurrentHP += (evolveTotalHP - currTotalHP)
+  evolved.LearnedMoves = initial.LearnedMoves
   if evolved.CurrentHP > evolveTotalHP:
     evolved.CurrentHP = evolveTotalHP
   return evolved
@@ -347,6 +374,8 @@ def RarityGroup(pokemon: PokemonData):
 def HealPokemon(pokemon: Pokemon, data: PokemonData):
   pokemon.CurrentAilment = None
   pokemon.CurrentHP = statservice.GenerateStat(pokemon, data, StatEnum.HP)
+  for m in pokemon.LearnedMoves:
+    m.PP = moveservice.GetMoveById(m.MoveId).BasePP
 
 def TryUseItem(pokemon: Pokemon, data: PokemonData, potion: Potion):
   used = False

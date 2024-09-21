@@ -52,8 +52,8 @@ class GymLeaderView(discord.ui.View):
 		await self.message.edit(embed=embed, view=self)
 
 	@defer
-	async def page_button(self, interaction: discord.Interaction):
-		if interaction.data['custom_id'] == 'prev':
+	async def page_button(self, inter: discord.Interaction):
+		if inter.data['custom_id'] == 'prev':
 			self.currentpage -= 1
 		else:
 			self.currentpage += 1

@@ -4,6 +4,11 @@ from globals import DateFormat
 
 collection: str = 'CommandLock'
 
+
+def CheckLock(serverId: int, userId: int):
+	return sqliteda.KeyExists(collection, f'{serverId}{userId}')
+
+
 def AddLock(serverId: int, userId: int):
 	if sqliteda.KeyExists(collection, f'{serverId}{userId}'):
 		date = datetime.strptime(sqliteda.Load(collection, f'{serverId}{userId}'), DateFormat)

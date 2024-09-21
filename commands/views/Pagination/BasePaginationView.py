@@ -6,9 +6,7 @@ from middleware.decorators import defer
 
 class BasePaginationView(discord.ui.View):
 
-	def __init__(self, interaction: discord.Interaction, pageLength: int, dataList: list):
-		self.interaction = interaction
-		self.user = interaction.user
+	def __init__(self, pageLength: int, dataList: list):
 		self.pageLength = pageLength
 		self.data = dataList
 		self.currentPage = 1

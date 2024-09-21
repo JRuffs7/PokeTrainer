@@ -3,8 +3,8 @@ from discord import Member, app_commands, Interaction
 from discord.ext import commands
 from commands.views.Pagination.InventoryView import InventoryView
 from globals import HelpColor, TrainerColor, freemasterball
-from commands.autofills.autofills import autofill_nonteam, autofill_owned, autofill_types, autofill_zones
-from commands.views.Pagination.EggView import EggView
+from commands.autofills.autofills import autofill_nonteam, autofill_owned, autofill_types
+from Views.EggView import EggView
 from commands.views.Pagination.MyPokemonView import MyPokemonView
 from commands.views.Selection.TeamSelectorView import TeamSelectorView
 from commands.views.Selection.ReleaseView import ReleaseView
@@ -12,7 +12,7 @@ from commands.views.Pagination.BadgeView import BadgeView
 from commands.views.DeleteView import DeleteView
 
 from middleware.decorators import command_lock, method_logger, trainer_check
-from services import commandlockservice, gymservice, pokemonservice, statservice, trainerservice, itemservice, zoneservice
+from services import commandlockservice, gymservice, pokemonservice, trainerservice, itemservice
 from services.utility import discordservice, discordservice_trainer
 
 
@@ -33,19 +33,6 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
     targetUser = member if member else interaction.user
     trainer = trainerservice.GetTrainer(interaction.guild_id, targetUser.id)
     return await discordservice_trainer.PrintTrainer(interaction, trainer, targetUser)
-
-
-  async def autofill_usepotion(self, inter: Interaction, current:str):
-    data = []
-    trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
-    ptnList = trainerservice.GetTrainerItemList(self.trainer, 1)
-    ptnList.sort(key=lambda x: x.HealingAmount)
-    for ptn in ptnList:
-      if current.lower() in ptn.Name.lower():
-        data.append(app_commands.Choice(name=ptn.Name, value=ptn.Id))
-      if len(data) == 25:
-        break
-    return data
 
   @app_commands.command(name="daily",
                         description="Claim your daily reward.")
@@ -76,15 +63,12 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
   async def myeggs(self, inter: Interaction,
                    images: app_commands.Choice[int] | None,
                    user: Member | None):
+    if not user:
+      user = inter.user
     trainer = trainerservice.GetTrainer(inter.guild_id, user.id if user else inter.user.id)
     if not trainer.Eggs:
-      return await discordservice_trainer.PrintMyEggs(inter) 
-    teamViewer = EggView(
-      inter,
-      user if user else inter.user,
-      1 if images else 10, 
-      trainer.Eggs)
-    await teamViewer.send() 
+      return await discordservice_trainer.PrintMyEggsResponse(inter, 0, []) 
+    await EggView(user, trainer, images != None, user.id == inter.user.id).send(inter)
 
   @app_commands.command(name="inventory",
                         description="Displays trainer inventory.")

@@ -67,16 +67,6 @@ async def PrintTrainer(interaction: Interaction, trainer: Trainer, targetUser: M
 	embed.set_thumbnail(url=targetUser.display_avatar.url)
 	return await interaction.followup.send(embed=embed)
 
-async def PrintUsePotion(interaction: Interaction, responseId: int, params: list):
-	return await discordservice.SendCommandResponse(
-		interaction=interaction, 
-		filename=responseFile, 
-		command='usepotion', 
-		responseInd=responseId, 
-		color=TrainerColor, 
-		params=params,
-		eph=True)
-
 async def PrintModifyTeam(interaction: Interaction, response: int, params: list):
 	return await discordservice.SendCommandResponse(
 		interaction=interaction, 
@@ -127,14 +117,14 @@ async def PrintDaily(interaction: Interaction, success: bool, boosted: bool, fre
 		color=TrainerColor, 
 		params=['20' if boosted else '10', '500' if boosted else '200', missionStr, eggName])
 
-async def PrintMyEggs(interaction: Interaction):
+async def PrintMyEggsResponse(inter: Interaction, response: int, params: list):
 	return await discordservice.SendCommandResponse(
-		interaction=interaction, 
+		interaction=inter, 
 		filename=responseFile, 
 		command='myeggs', 
-		responseInd=0, 
+		responseInd=response, 
 		color=TrainerColor, 
-		params=[],
+		params=params,
 		eph=True)
 
 async def PrintMyPokemon(interaction: Interaction):

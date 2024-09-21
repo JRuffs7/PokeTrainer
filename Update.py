@@ -103,12 +103,12 @@ def UpdateTrainers():
 				'GymAttempts': t['GymAttempts'] if 'GymAttempts' in t else [],
 				'Eggs': t['Eggs'] if 'Eggs' in t else [],
 				'Daycare': t['Daycare'] if 'Daycare' in t else {},
-				'Wishlist': t['Wishlist'] if 'Wishlist' in t else [],
 				'LastDaily': t['LastDaily'] if 'LastDaily' in t else None,
 				'Region': 1,
 				'DailyMission': t['DailyMission'] if 'DailyMission' in t else None,
 				'WeeklyMission': t['WeeklyMission'] if 'WeeklyMission' in t else None
 			})
+			
 			for p in newTrainer.OwnedPokemon:
 				if p.Pokemon_Id == 10057:
 					newTrainer.OwnedPokemon.remove(p)
@@ -127,6 +127,7 @@ def UpdateTrainers():
 					p.CurrentHP = statservice.GenerateStat(p, pData, StatEnum.HP)
 					p.LearnedMoves = []
 					moveservice.GenerateMoves(p, pData)
+
 			if newTrainer.ServerId and newTrainer.UserId:
 				updateList.append(newTrainer)
 		except Exception:

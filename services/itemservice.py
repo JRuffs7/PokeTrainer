@@ -40,8 +40,9 @@ def GetCandy(id: int):
   return next(i for i in GetAllCandies() if i.Id == id)
 
 
-def TryGetCandy():
-  if choice(range(100)) < 20:
+def TryGetCandy(reward: bool):
+  #Kanto Reward
+  if choice(range(100)) < (40 if reward else 20):
     randCandy = choice(range(100))
     if randCandy < 3:
       return GetCandy(50) #Rare Candy

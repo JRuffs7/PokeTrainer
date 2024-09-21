@@ -53,12 +53,6 @@
 			"Body": "You currently do not own any eggs. To claim an egg, use the **/daily** command that resets every day at midnight UTC."
 		}
 	],
-	"pokecenter": [
-		{
-			"Title": "Not Enough Money",
-			"Body": "You do not have enough money to pay for the PokeCenter. Earn money by battling Gym Leaders and Trainers."
-		}
-	],
 	"pokeinfo": [
 		{
 			"Title": "No Results",
@@ -97,6 +91,20 @@
 		{
 			"Title": "Not Enough Masterballs",
 			"Body": "You do not have enough Masterballs to make an exchange for a {0}."
+		}
+	],
+	"spawnlegendary": [
+		{
+			"Title": "Cannot Find A Legendary",
+			"Body": "You have not completed the gym challenge for this region! Defeat all Gym Leaders then try again."
+		},
+		{
+			"Title": "Cannot Find A Legendary",
+			"Body": "You have already captured a Legendary Pokemon in this region! Defeat the Elite Four to be able to find more."
+		},
+		{
+			"Title": "Cannot Find A Legendary",
+			"Body": "You have already captured all Legendary Pokemon in this region! Swap to another region to find more."
 		}
 	],
 	"usepotion": [

@@ -7,7 +7,7 @@ from middleware.decorators import defer
 from models.Battle import BattleAction
 from models.Pokemon import Pokemon, PokemonData
 from models.Trainer import Trainer
-from services import commandlockservice, pokemonservice, trainerservice
+from services import commandlockservice, itemservice, pokemonservice, trainerservice
 from services.utility import discordservice
 
 
@@ -30,20 +30,20 @@ class WildBattleView(CpuBattleView):
 		self.clear_items()
 		await self.message.delete(delay=0.1)
 		ephemeral = False
-		if self.useraction == BattleAction.Pokeball:
+		if self.victory == None and self.userturn.Action == BattleAction.Pokeball:
 			caughtMsg = f'<@{inter.user.id}> used a {self.userturn.ItemUsed.Name} and captured a wild **{pokemonservice.GetPokemonDisplayName(self.pokemon, self.data)} (Lvl. {self.pokemon.Level})**!'
 			expMsg = f'\nYour entire team also gained some XP!' if trainerservice.HasRegionReward(self.trainer, 9) else ''
 			embed = discordservice.CreateEmbed(
 				'Caught', 
 				f'{caughtMsg}{expMsg}', 
 				SuccessColor)
-		elif self.useraction == BattleAction.Flee:
+		elif self.victory == None and self.userturn.Action == BattleAction.Flee:
 			embed = discordservice.CreateEmbed(
 				'Ran Away', 
 				f'<@{inter.user.id}> ran away from **{pokemonservice.GetPokemonDisplayName(self.pokemon, self.data)} (Lvl. {self.pokemon.Level})**.', 
 				BattleColor)
 		elif self.victory:
-			candyStr = f'\nFound a **{self.candy.Name}**!' if self.candy else ''
+			candyStr = f'\nFound one **{self.candy.Name}**!' if self.candy else ''
 			rewardStr = f'<@{inter.user.id}> defeated a wild **{pokemonservice.GetPokemonDisplayName(self.pokemon, self.data)} (Lvl. {self.pokemon.Level})**! Gained **$25**{candyStr}'
 			embed = discordservice.CreateEmbed('Victory', rewardStr, BattleColor)
 		else:
@@ -75,6 +75,7 @@ class WildBattleView(CpuBattleView):
 			else:
 				battleOver = True
 				self.victory = True
+				self.candy = itemservice.TryGetCandy(trainerservice.HasRegionReward(self.trainer, 1))
 				for expPkmn in self.exppokemon[pokemon.Id]:
 					pkmn = next(p for p in self.trainerteam if p.Id == expPkmn)
 					pkmnData = next(p for p in self.battle.AllPkmnData if p.Id == pkmn.Pokemon_Id)

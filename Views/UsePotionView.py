@@ -50,9 +50,9 @@ class UsePotionView(discord.ui.View):
 			if pokemonservice.TryUseItem(self.pkmnchoice, self.pkmnchoicedata, self.itemchoice):
 				trainerservice.ModifyItemList(self.trainer, str(self.itemchoice.Id), -1)
 				trainerservice.UpsertTrainer(self.trainer)
-				message = f'Used a **{self.itemchoice.Name} on {pokemonservice.GetPokemonDisplayName(self.pkmnchoice, self.pkmnchoicedata)}.'
+				message = f'Used a **{self.itemchoice.Name}** on {pokemonservice.GetPokemonDisplayName(self.pkmnchoice, self.pkmnchoicedata)}.'
 			else:
-				message = f'Cannot use **{self.itemchoice.Name} on {pokemonservice.GetPokemonDisplayName(self.pkmnchoice, self.pkmnchoicedata)}.'
+				message = f'Cannot use **{self.itemchoice.Name}** on {pokemonservice.GetPokemonDisplayName(self.pkmnchoice, self.pkmnchoicedata)}.'
 		self.AddSelectors()
 		await self.message.edit(content=message, view=self)
 
