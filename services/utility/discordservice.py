@@ -5,8 +5,8 @@ from dataaccess.utility.jsonreader import GetJson
 
 errorLogger = logging.getLogger('error')
 
-async def SendEmbed(interaction: Interaction, embed: Embed, eph: bool = False):
-  return await interaction.followup.send(embed=embed, ephemeral=eph)
+async def SendEmbed(interaction: Interaction, embed: Embed):
+  return await interaction.followup.send(embed=embed)
 
 
 async def SendDMs(interaction: Interaction, embedList: list[Embed]):
@@ -16,10 +16,10 @@ async def SendDMs(interaction: Interaction, embedList: list[Embed]):
     errorLogger.error(f'DM Error: {e}')
 
 
-async def SendCommandResponse(interaction: Interaction, filename: str, command: str, responseInd: int, color, params: list=[], eph: bool=False):
+async def SendCommandResponse(interaction: Interaction, filename: str, command: str, responseInd: int, color, params: list=[]):
   response = GetJson(filename)[command][responseInd]
   return await interaction.followup.send(embed=CreateEmbed(
-      response["Title"], response["Body"].format(*params), color), ephemeral=eph)
+      response["Title"], response["Body"].format(*params), color))
 
 
 def CreateEmbed(title, desc, color, url = None):

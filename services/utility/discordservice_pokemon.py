@@ -11,18 +11,16 @@ async def PrintPokeInfoResponse(interaction: Interaction, response: int, params:
 		command='pokeinfo', 
 		responseInd=response, 
 		color=PokemonColor, 
-		params=params,
-		eph=True)
+		params=params)
 
-async def PrintEvolveResponse(interaction: Interaction, response: int, pkmnname: str|None = None):
+async def PrintEvolveResponse(interaction: Interaction, response: int, params: list):
 	return await discordservice.SendCommandResponse(
 		interaction=interaction, 
 		filename=responseFile, 
 		command='evolve', 
 		responseInd=response, 
 		color=PokemonColor, 
-		params=[pkmnname],
-		eph=True)
+		params=params)
 
 async def PrintHatchResponse(interaction: Interaction, response: int):
 	return await discordservice.SendCommandResponse(
@@ -31,8 +29,7 @@ async def PrintHatchResponse(interaction: Interaction, response: int):
 		command='hatch', 
 		responseInd=response, 
 		color=PokemonColor, 
-		params=[],
-		eph=True)
+		params=[])
 
 async def PrintGiveCandyResponse(interaction: Interaction, response: int, params: list):
 	return await discordservice.SendCommandResponse(
@@ -41,8 +38,7 @@ async def PrintGiveCandyResponse(interaction: Interaction, response: int, params
 		command='givecandy', 
 		responseInd=response, 
 		color=PokemonColor, 
-		params=params,
-		eph=True)
+		params=params)
 
 async def PrintDaycareResponse(interaction: Interaction, response: int, params: list):
 	return await discordservice.SendCommandResponse(
@@ -51,8 +47,7 @@ async def PrintDaycareResponse(interaction: Interaction, response: int, params: 
 		command='daycare', 
 		responseInd=response, 
 		color=PokemonColor, 
-		params=params,
-		eph=True)
+		params=params)
 
 async def PrintBattleSimResponse(interaction: Interaction, response: int, params: list):
 	return await discordservice.SendCommandResponse(
@@ -61,8 +56,7 @@ async def PrintBattleSimResponse(interaction: Interaction, response: int, params
 		command='battlesim', 
 		responseInd=response, 
 		color=PokemonColor, 
-		params=params,
-		eph=True)
+		params=params)
 
 async def PrintWishlistResponse(interaction: Interaction, response: int, pkmnname: str|None = None):
 	return await discordservice.SendCommandResponse(
@@ -71,8 +65,7 @@ async def PrintWishlistResponse(interaction: Interaction, response: int, pkmnnam
 		command='wishlist', 
 		responseInd=response, 
 		color=ErrorColor if response else SuccessColor, 
-		params=[pkmnname],
-		eph=True)
+		params=[pkmnname])
 
 async def PrintPokeShopResponse(interaction: Interaction, response: int, pkmnname: str|None = None):
 	return await discordservice.SendCommandResponse(
@@ -81,8 +74,7 @@ async def PrintPokeShopResponse(interaction: Interaction, response: int, pkmnnam
 		command='pokeshop', 
 		responseInd=response, 
 		color=ErrorColor, 
-		params=[pkmnname],
-		eph=True)
+		params=[pkmnname])
 
 async def PrintSpawnLegendaryResponse(interaction: Interaction, response: int, params: list):
 	return await discordservice.SendCommandResponse(
@@ -91,8 +83,7 @@ async def PrintSpawnLegendaryResponse(interaction: Interaction, response: int, p
 		command='spawnlegendary', 
 		responseInd=response, 
 		color=PokemonColor, 
-		params=params,
-		eph=True)
+		params=params)
 
 async def PrintUsePotionResponse(interaction: Interaction, response: int, params: list):
 	return await discordservice.SendCommandResponse(
@@ -101,5 +92,4 @@ async def PrintUsePotionResponse(interaction: Interaction, response: int, params
 		command='usepotion', 
 		responseInd=response, 
 		color=PokemonColor, 
-		params=params,
-		eph=True)
+		params=params)

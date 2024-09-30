@@ -11,8 +11,7 @@ async def PrintBuyResponse(interaction: Interaction, response: int, params: list
 		command='buy', 
 		responseInd=response, 
 		color=TradeColor, 
-		params=params,
-		eph=response == 0)
+		params=params)
 
 async def PrintSellResponse(interaction: Interaction, response: int, params: list):
 	return await discordservice.SendCommandResponse(
@@ -21,8 +20,7 @@ async def PrintSellResponse(interaction: Interaction, response: int, params: lis
 		command='sell', 
 		responseInd=response, 
 		color=TradeColor, 
-		params=params,
-		eph=response == 0)
+		params=params)
 
 async def PrintSpecialShopResponse(interaction: Interaction):
 	return await discordservice.SendCommandResponse(
@@ -31,5 +29,4 @@ async def PrintSpecialShopResponse(interaction: Interaction):
 		command='specialshop', 
 		responseInd=0, 
 		color=BattleColor, 
-		params=[],
-		eph=True)
+		params=[])

@@ -189,6 +189,12 @@ def ChooseAttack(battle: CpuBattle):
 		koAttacks.sort(key=lambda x: (next(mo for mo in battle.AllMoveData if mo.Id == x.MoveId).Power,next(mo for mo in battle.AllMoveData if mo.Id == x.MoveId).Accuracy))
 		return next(mo for mo in battle.AllMoveData if mo.Id == koAttacks[0].MoveId)
 
+	pkmnFullHP = statservice.GenerateStat(battle.TeamBPkmn, next(po for po in battle.AllPkmnData if po.Id == battle.TeamBPkmn.Pokemon_Id), StatEnum.HP)
+
+	healMoves = [m for m in battle.TeamBPkmn.LearnedMoves if next(mo for mo in battle.AllMoveData if mo.Id == m.MoveId).Healing]
+	if battle.TeamBPkmn.CurrentHP < pkmnFullHP/2 and healMoves:
+		return choice([next(mo for mo in battle.AllMoveData if mo.Id == m.MoveId) for m in healMoves])
+
 	#if the opponent does not have an ailment and one of the moves gives it
 	ailmentMoves = [m for m in battle.TeamBPkmn.LearnedMoves if next(mo for mo in battle.AllMoveData if mo.Id == m.MoveId).Ailment and m.PP > 0]
 	if not battle.TeamAPkmn.CurrentAilment and ailmentMoves:

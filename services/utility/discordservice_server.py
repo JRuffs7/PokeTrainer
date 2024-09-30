@@ -16,8 +16,7 @@ async def PrintRegisterResponse(interaction: Interaction, serv: Server | None):
 		command='register', 
 		responseInd=0 if serv else 1, 
 		color=ServerColor if serv else ErrorColor, 
-		params=[serv.ServerName, serv.ChannelId, serv.CurrentEvent.EventName if serv.CurrentEvent else ''],
-		eph=True)
+		params=[serv.ServerName, serv.ChannelId, serv.CurrentEvent.EventName if serv.CurrentEvent else ''])
 
 async def PrintServerResponse(interaction: Interaction, serv: Server):
 	return await discordservice.SendCommandResponse(
@@ -26,8 +25,7 @@ async def PrintServerResponse(interaction: Interaction, serv: Server):
 		command='server', 
 		responseInd=0, 
 		color=ServerColor, 
-		params=[serv.ServerName, serv.ChannelId, serv.CurrentEvent.EventName if serv.CurrentEvent else ''],
-		eph=True)
+		params=[serv.ServerName, serv.ChannelId, serv.CurrentEvent.EventName if serv.CurrentEvent else ''])
 
 async def PrintSwapChannelResponse(interaction: Interaction, response: bool):
 	return await discordservice.SendCommandResponse(
@@ -36,8 +34,7 @@ async def PrintSwapChannelResponse(interaction: Interaction, response: bool):
 		command='swapchannel', 
 		responseInd=0 if response else 1, 
 		color=ServerColor, 
-		params=[],
-		eph=True)
+		params=[])
 
 async def PrintUnregisterResponse(interaction: Interaction):
 	return await discordservice.SendCommandResponse(
@@ -46,8 +43,7 @@ async def PrintUnregisterResponse(interaction: Interaction):
 		command='unregister', 
 		responseInd=0, 
 		color=ServerColor, 
-		params=[],
-		eph=True)
+		params=[])
 
 async def PrintInviteResponse(interaction: Interaction):
 	return await discordservice.SendCommandResponse(
@@ -56,5 +52,4 @@ async def PrintInviteResponse(interaction: Interaction):
 		command='invite', 
 		responseInd=0, 
 		color=ServerColor, 
-		params=[],
-		eph=True)
+		params=[])

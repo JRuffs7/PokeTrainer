@@ -104,7 +104,7 @@ def GetPokemonDisplayName(pokemon: Pokemon, pkmn: PokemonData = None, showGender
 
 def GetOwnedPokemonDescription(pokemon: Pokemon, pkmnData: PokemonData = None):
   pkmn = GetPokemonById(pokemon.Pokemon_Id) if not pkmnData else pkmnData
-  return f"Lvl. {pokemon.Level} ({pokemon.CurrentExp}/{NeededExperience(pokemon, pkmn)}xp | H:{pokemon.Height} | W:{pokemon.Weight} | Types: {'/'.join([statservice.GetType(t).Name for t in pkmn.Types])}"
+  return f"Lvl. {pokemon.Level} | H:{pokemon.Height} | W:{pokemon.Weight} | Types: {'/'.join([statservice.GetType(t).Name for t in pkmn.Types])}"
 
 def GetBattlePokemonDescription(pokemon: Pokemon, pkmnData: PokemonData = None):
   pkmn = GetPokemonById(pokemon.Pokemon_Id) if not pkmnData else pkmnData
@@ -291,19 +291,6 @@ def NeededExperience(pokemon: Pokemon, data: PokemonData):
   currLvlExp, nextLvlExp = statservice.ExpCalculator(pokemon, data)
   return nextLvlExp - currLvlExp
 
-def CanPokemonEvolve(pokemon: Pokemon, pkmn: PokemonData, items: list[Item]):
-  for evData in pkmn.EvolvesInto:
-    if evData.EvolveLevel and pokemon.Level < evData.EvolveLevel:
-      continue
-    if evData.GenderNeeded and ((evData.GenderNeeded == 1 and not pokemon.IsFemale) or (evData.GenderNeeded == 2 and pokemon.IsFemale)):
-      continue
-    if evData.ItemNeeded and not next((i for i in items if i.Id == evData.ItemNeeded), None):
-      continue
-    if evData.MoveNeeded and not next((m for m in pokemon.LearnedMoves if m.MoveId == evData.MoveNeeded), None):
-      continue
-    return True
-  return False
-
 def AvailableEvolutions(pokemon: Pokemon, pkmnData: PokemonData, items: list[Item]):
   evolveIdList: list[int] = []
   for evData in pkmnData.EvolvesInto:
@@ -354,11 +341,10 @@ def EvolvePokemon(initial: Pokemon, initialData: PokemonData, evolveData: Pokemo
     evolved.CurrentHP = evolveTotalHP
   return evolved
 
-def GetPokemonThatCanEvolve(trainer: Trainer, ownedPokemon: list[Pokemon]):
-  if not ownedPokemon:
-    return None
-  dataList = GetPokemonByIdList([p.Pokemon_Id for p in ownedPokemon])
-  return [p for p in ownedPokemon if CanPokemonEvolve(p, next(pk for pk in dataList if pk.Id == p.Pokemon_Id), trainerservice.GetTrainerItemList(trainer, 3))]
+def GetPokemonThatCanEvolve(trainer: Trainer):
+  trainerTeam = trainerservice.GetTeam(trainer)
+  dataList = GetPokemonByIdList([p.Pokemon_Id for p in trainerTeam])
+  return [p for p in trainerTeam if AvailableEvolutions(p, next(pk for pk in dataList if pk.Id == p.Pokemon_Id), trainerservice.GetTrainerItemList(trainer))]
 
 def SimulateLevelGain(pokemon: Pokemon, data: PokemonData, exp: int):
   simPokemon = Pokemon.from_dict({'Level': pokemon.Level, 'CurrentExp': pokemon.CurrentExp, 'IVs': pokemon.IVs, 'CurrentHP': pokemon.CurrentHP})

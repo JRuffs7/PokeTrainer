@@ -11,5 +11,4 @@ async def PrintTradeResponse(interaction: Interaction, response: int, params: li
 		command='trade', 
 		responseInd=response, 
 		color=TradeColor, 
-		params=params,
-		eph=True)
+		params=params)

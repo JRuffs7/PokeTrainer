@@ -1,30 +1,29 @@
 from random import choice
 import discord
+from Views.Selectors import TeamSelector, EvolveSelector
+from globals import SuccessColor
 from middleware.decorators import defer
 
 from services import commandlockservice, itemservice, moveservice, trainerservice, pokemonservice
 from models.Pokemon import Pokemon, PokemonData
 from models.Trainer import Trainer
-from commands.views.Selection.selectors.OwnedSelector import OwnedSelector
-from commands.views.Selection.selectors.EvolveSelector import EvolveSelector
+from services.utility import discordservice
 
 
 class EvolveView(discord.ui.View):
   
-	def __init__(self, interaction: discord.Interaction, trainer: Trainer, evolveMon: list[Pokemon]):
-		self.interaction = interaction
-		self.user = interaction.user
+	def __init__(self, trainer: Trainer, evolveMon: list[Pokemon]):
 		self.trainer = trainer
 		self.evolveMon = evolveMon
 		self.pkmnChoiceData = None
 		self.evolvechoice = None
 		self.randomidlist = None
 		super().__init__(timeout=300)
-		self.ownlist = OwnedSelector(evolveMon, 1)
+		self.ownlist = TeamSelector(evolveMon)
 		self.add_item(self.ownlist)
 
 	async def on_timeout(self):
-		await self.message.delete()
+		await self.message.delete(delay=0.1)
 		commandlockservice.DeleteLock(self.trainer.ServerId, self.trainer.UserId)
 		return await super().on_timeout()
 
@@ -32,16 +31,16 @@ class EvolveView(discord.ui.View):
 		evId = choice(self.randomidlist) if evchoice == "-1" else int(evchoice)
 		self.evolvechoice = next(p for p in self.pkmnChoiceData.EvolvesInto if evId == p.EvolveID)
 
-	async def PokemonSelection(self, inter: discord.Interaction, choice: list[str]):
+	async def PokemonSelection(self, inter: discord.Interaction, choice: str):
 		for item in self.children:
 			if type(item) is not discord.ui.Button:
 				self.remove_item(item)
 
-		self.pokemonchoice = next(p for p in self.trainer.OwnedPokemon if p.Id == choice[0])
+		self.pokemonchoice = next(p for p in self.evolveMon if p.Id == choice)
 		self.pkmnChoiceData = pokemonservice.GetPokemonById(self.pokemonchoice.Pokemon_Id)
 		self.evolvechoice = None
-		self.ownlist = OwnedSelector(self.evolveMon, 1, choice[0])
-		availableList = pokemonservice.GetPokemonByIdList(pokemonservice.AvailableEvolutions(self.pokemonchoice, self.pkmnChoiceData, trainerservice.GetTrainerItemList(self.trainer, 3)))
+		self.ownlist = TeamSelector(self.evolveMon, choice)
+		availableList = pokemonservice.GetPokemonByIdList(pokemonservice.AvailableEvolutions(self.pokemonchoice, self.pkmnChoiceData, trainerservice.GetTrainerItemList(self.trainer)))
 		if self.pkmnChoiceData.RandomEvolve and len(availableList) > 1:
 			self.randomidlist = pokemonservice.GetRandomEvolveList(self.pkmnChoiceData, [a.Id for a in availableList])
 			if self.randomidlist:
@@ -73,21 +72,22 @@ class EvolveView(discord.ui.View):
 
 	@discord.ui.button(label="Cancel", style=discord.ButtonStyle.red)
 	@defer
-	async def cancel_button(self, inter: discord.Interaction,
-												button: discord.ui.Button):
-		commandlockservice.DeleteLock(self.trainer.ServerId, self.trainer.UserId)
-		await self.message.edit(content='Canceled evolution.', view=None)
+	async def cancel_button(self, inter: discord.Interaction, button: discord.ui.Button):
+		await self.on_timeout()
 
 	@discord.ui.button(label="Submit", style=discord.ButtonStyle.green)
 	@defer
-	async def submit_button(self, inter: discord.Interaction,
-												button: discord.ui.Button):
+	async def submit_button(self, inter: discord.Interaction, button: discord.ui.Button):
 		if self.pokemonchoice and self.evolvechoice:
 			evPkmn = trainerservice.Evolve(self.trainer, self.pokemonchoice, self.pkmnChoiceData, self.evolvechoice)
 			displayMon = Pokemon.from_dict({'IsFemale': evPkmn.IsFemale, 'IsShiny': evPkmn.IsShiny, 'Pokemon_Id': self.evolvechoice.EvolveID})
-			await self.message.edit(content=f"**{pokemonservice.GetPokemonDisplayName(self.pokemonchoice, self.pkmnChoiceData)}** evolved into **{pokemonservice.GetPokemonDisplayName(displayMon)}**", embed=None, view=None)
 			commandlockservice.DeleteLock(self.trainer.ServerId, self.trainer.UserId)
+			await self.message.delete(delay=0.1)
+			await inter.followup.send(embed=discordservice.CreateEmbed(
+				'Evolution Success',
+				f"<@{inter.user.id}> evolved **{pokemonservice.GetPokemonDisplayName(self.pokemonchoice, self.pkmnChoiceData)}** into **{pokemonservice.GetPokemonDisplayName(displayMon)}**!",
+				SuccessColor))
 
-	async def send(self):
-		await self.interaction.followup.send(view=self)
-		self.message = await self.interaction.original_response()
+	async def send(self, inter: discord.Interaction):
+		await inter.followup.send(view=self)
+		self.message = await inter.original_response()

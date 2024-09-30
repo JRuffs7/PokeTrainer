@@ -75,6 +75,8 @@ def CanChooseAttack(battle: CpuBattle, teamA: bool):
 	return True,BattleAction.Attack
 
 def SpecialHitCases(move: MoveData, battle: CpuBattle, pokemon: Pokemon, opponent: Pokemon, goingFirst: bool, oppAttack: MoveData|None):	
+	if move.Healing and pokemon.CurrentHP == statservice.GenerateStat(pokemon, next(p for p in battle.AllPkmnData if p.Id == pokemon.Pokemon_Id), StatEnum.HP):
+		return BattleAction.Failed
 	match move.Id:
 		case 13|19|76|91|130|143|248|291|340|467|553|554|566|601|669|800|905:
 			if HasToCharge(move.Id, pokemon.Id, battle, 1):
@@ -121,6 +123,9 @@ def SpecialHitCases(move: MoveData, battle: CpuBattle, pokemon: Pokemon, opponen
 				return BattleAction.Failed
 		case 599:
 			if opponent.CurrentAilment != 5:
+				return BattleAction.Failed
+		case 685:
+			if opponent.CurrentAilment not in [1,2,3,4,5]:
 				return BattleAction.Failed
 		case 694:
 			if pokemon.Id == battle.TeamAPkmn.Id:
@@ -260,7 +265,6 @@ def ApplyAilment(battle: CpuBattle, moveData: MoveData, target: Pokemon, targetD
 		return statservice.GetAilmentGainedMessage(target, targetData, moveData.Name)
 	return None
 
-
 #endregion
 
 #region Attack
@@ -365,7 +369,7 @@ def AttackDamage(move: MoveData, attacking: Pokemon, defending: Pokemon, battle:
 		defending.CurrentHP = max(defending.CurrentHP - damage, 0)
 		return damage,False
 
-	if not move.Power:
+	if not move.Power and move.Id not in [67,360,484,486]:
 		return 0,False
 	
 	lastTeamAAttack = next((t for t in battle.Turns if t.TeamA and t.Move), None)
@@ -397,7 +401,7 @@ def AttackDamage(move: MoveData, attacking: Pokemon, defending: Pokemon, battle:
 	targets = 0.75 if move.Targets > 1 else 1
 	pb = 1
 	weather = 1
-	glaive = 2 if ((lastTeamAAttack and lastTeamAAttack.Move.Id == 862 and attacking.Id == battle.TeamAPkmn.Id) or (lastTeamBAttack and lastTeamBAttack.Move.Id == 862 and attacking.Id == battle.TeamBPkmn.Id)) else 1
+	glaive = 2 if ((lastTeamAAttack and lastTeamAAttack.Move and lastTeamAAttack.Move.Id == 862 and attacking.Id == battle.TeamAPkmn.Id) or (lastTeamBAttack and lastTeamBAttack.Move and lastTeamBAttack.Move.Id == 862 and attacking.Id == battle.TeamBPkmn.Id)) else 1
 	random = choice(range(85,101))/100
 	stab = 1.5 if move.MoveType in attData.Types else 1
 	burn = 0.5 if attacking.CurrentAilment == 4 and move.AttackType.lower() == 'physical' else 1 #burn
@@ -415,6 +419,9 @@ def CalcPower(move: MoveData, battle: CpuBattle, attack: Pokemon, attackData: Po
 	effect = typeservice.AttackEffect(move.MoveType, defendData.Types)
 	power = move.Power or 0
 	match move.Id:
+		case 67:
+			weight = defendData.Weight/10
+			return 20 if weight < 10 else 40 if weight < 25 else 60 if weight < 50 else 80 if weight < 100 else 100 if weight < 200 else 120
 		case 175:
 			prcntHPLeft = attack.CurrentHP / statservice.GenerateStat(attack, attackData, StatEnum.HP)
 			return 200 if prcntHPLeft < 4.2 else 150 if prcntHPLeft < 10.4 else 100 if prcntHPLeft < 20.8 else 80 if prcntHPLeft < 35.4 else 40 if prcntHPLeft < 68.8 else 20
@@ -439,6 +446,39 @@ def CalcPower(move: MoveData, battle: CpuBattle, attack: Pokemon, attackData: Po
 			if defend.CurrentAilment == 2 and effect: #WakeUpSlap
 				defend.CurrentAilment = None
 				return power * 2
+		case 360:
+			targetStats = battle.TeamAStats[str(StatEnum.Speed.value)] if attack.Id == battle.TeamBPkmn.Id else battle.TeamBStats[str(StatEnum.Speed.value)]
+			userStats = battle.TeamBStats[str(StatEnum.Speed.value)] if attack.Id == battle.TeamBPkmn.Id else battle.TeamAStats[str(StatEnum.Speed.value)]
+			targetSpeed = statservice.GenerateStat(defend, defendData, StatEnum.Speed) + targetStats
+			if defend.CurrentAilment == 1: #Paralysis
+				targetSpeed = targetSpeed/2
+			userSpeed = statservice.GenerateStat(attack, attackData, StatEnum.Speed) + userStats
+			if attack.CurrentAilment == 1: #Paralysis
+				userSpeed = userSpeed/2
+			power = ((25*max(targetSpeed,1))/max(userSpeed,1))+1
+			return min(150,int(power))
+		case 386:
+			targetStats = battle.TeamAStats if attack.Id == battle.TeamBPkmn.Id else battle.TeamBStats
+			increase = 0
+			for st in targetStats:
+				increase += (targetStats[st] if targetStats[st] > 0 else 0)
+			return min(200,(60 + (20*increase)))
+		case 484:
+			weightDiff = defendData.Weight/attackData.Weight*100
+			return 40 if weightDiff > 50 else 60 if weightDiff > 33.34 else 80 if weightDiff > 25 else 100 if weightDiff > 20 else 120
+		case 486:
+			targetStats = battle.TeamAStats[str(StatEnum.Speed.value)] if attack.Id == battle.TeamBPkmn.Id else battle.TeamBStats[str(StatEnum.Speed.value)]
+			userStats = battle.TeamBStats[str(StatEnum.Speed.value)] if attack.Id == battle.TeamBPkmn.Id else battle.TeamAStats[str(StatEnum.Speed.value)]
+			targetSpeed = statservice.GenerateStat(defend, defendData, StatEnum.Speed) + targetStats
+			if defend.CurrentAilment == 1: #Paralysis
+				targetSpeed = targetSpeed/2
+			userSpeed = statservice.GenerateStat(attack, attackData, StatEnum.Speed) + userStats
+			if attack.CurrentAilment == 1: #Paralysis
+				userSpeed = userSpeed/2
+			speedComp = targetSpeed/userSpeed*100
+			if speedComp < 0.01 or speedComp > 100:
+				return 40
+			return 150 if speedComp <= 25 else 120 if speedComp <= 33.33 else 80 if speedComp <= 50 else 60
 		case 506:
 			if defend.CurrentAilment in [1,2,3,4,5]:
 				return power * 2
@@ -516,16 +556,20 @@ def MoveDrain(moveData: MoveData, pokemon: Pokemon, data: PokemonData, damage: i
 		pokemon.CurrentHP = 0
 		return None
 	
-	if not moveData.Healing or not damage:
-		return None
-
-	heal = math.floor(damage*(moveData.Healing/100))
-	newHp = pokemon.CurrentHP + heal
-	if moveData.Healing > 0:
-		pokemon.CurrentHP = min(newHp, statservice.GenerateStat(pokemon, data, StatEnum.HP))
+	maxHp = statservice.GenerateStat(pokemon, data, StatEnum.HP)
+	heal = 0
+	if moveData.Healing:
+		heal = min(max*(moveData.Healing/100), maxHp - pokemon.CurrentHP)
+	if moveData.Drain > 0:
+		heal = min(math.floor(damage*(moveData.Drain/100)), maxHp - pokemon.CurrentHP)
+	if heal:
+		pokemon.CurrentHP += heal
 		return f'{pokemonservice.GetPokemonDisplayName(pokemon, data, False, False)} regained **{heal}** HP!'
-	pokemon.CurrentHP = max(newHp, 0)
-	return f'{pokemonservice.GetPokemonDisplayName(pokemon, data, False, False)} took **{heal}** recoil damage!'
+	
+	recoil = min(abs(math.floor(damage*(moveData.Drain/100))), pokemon.CurrentHP)
+	if recoil:
+		pokemon.CurrentHP -= recoil
+		return f'{pokemonservice.GetPokemonDisplayName(pokemon, data, False, False)} took **{recoil}** recoil damage!'
 
 def ApplyStatChange(moveData: MoveData, battle: CpuBattle, teamA: bool):
 	if not moveData.StatChanges:

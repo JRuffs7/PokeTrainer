@@ -13,7 +13,7 @@ from commands.views.Selection.DaycareAddView import DaycareAddView
 from commands.views.Selection.NicknameView import NicknameView
 import discordbot
 
-from commands.views.Selection.EvolveView import EvolveView
+from Views.EvolveView import EvolveView
 from globals import PokemonColor
 from middleware.decorators import command_lock, method_logger, trainer_check
 from services import commandlockservice, itemservice, pokemonservice, statservice, trainerservice, typeservice
@@ -160,7 +160,7 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
       dexViewer = PokedexView(user if user else inter.user,trainer,dex,False,data)
     else:
       data = pokemonservice.GetPokemonById(pokemon)
-      dexViewer = PokedexView(user if user else inter.user,trainer,dex,True,[data, data] if not data.SpriteFemale else [data, data, data, data])
+      dexViewer = PokedexView(user if user else inter.user,trainer,dex,True,[data, data, data] if not data.SpriteFemale else [data, data, data, data, data])
     await dexViewer.send(inter)
 
   @app_commands.command(name="nickname",
@@ -179,33 +179,18 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
 
   #region Evolution
 
-  async def autofill_evolve(self, inter: Interaction, current: str):
-    data = []
-    trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
-    evList = pokemonservice.GetPokemonThatCanEvolve(trainer, [p for p in trainer.OwnedPokemon])
-    pkmnList = pokemonservice.GetPokemonByIdList([e.Pokemon_Id for e in evList])
-    pkmnList.sort(key=lambda x: x.Name)
-    for pkmn in pkmnList:
-      if current.lower() in pkmn.Name.lower():
-        data.append(app_commands.Choice(name=pkmn.Name, value=pkmn.Id))
-      if len(data) == 25:
-        break
-    return data
-
   @app_commands.command(name="evolve",
-                        description="Evolve your Pokemon.")
-  @app_commands.autocomplete(pokemon=autofill_evolve)
-  @method_logger(False)
+                        description="Evolve one of your party Pokemon.")
+  @method_logger(True)
   @trainer_check
   @command_lock
-  async def evolve(self, inter: Interaction, pokemon: int | None):
+  async def evolve(self, inter: Interaction):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
-    pokeList = pokemonservice.GetPokemonThatCanEvolve(trainer, [p for p in trainer.OwnedPokemon if (p.Pokemon_Id == pokemon if pokemon else True)])
+    pokeList = pokemonservice.GetPokemonThatCanEvolve(trainer)
     if not pokeList:
-      pkmn = pokemonservice.GetPokemonById(pokemon)
       commandlockservice.DeleteLock(inter.guild_id, inter.user.id)
-      return await discordservice_pokemon.PrintEvolveResponse(inter, 1 if pokemon else 0, pkmn.Name if pkmn else 'N/A')
-    return await EvolveView(inter, trainer, pokeList).send()
+      return await discordservice_pokemon.PrintEvolveResponse(inter, 0, [])
+    return await EvolveView(trainer, pokeList).send(inter)
 
 
   async def autofill_candy(self, inter: Interaction, current: str):

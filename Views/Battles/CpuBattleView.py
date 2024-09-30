@@ -452,9 +452,9 @@ class CpuBattleView(discord.ui.View):
 			attack.CurrentAilment = 6
 			messages.append(statservice.GetAilmentGainedMessage(attack, attackData, None))
 
-		healStr = battleservice.MoveDrain(turn.Move, attack, attackData, damage)
-		if healStr:
-			messages.append(healStr)
+		drainStr = battleservice.MoveDrain(turn.Move, attack, attackData, damage)
+		if drainStr:
+			messages.append(drainStr)
 			if attack.CurrentHP == 0:
 				team = self.trainerteam if teamA else self.oppteam
 				if teamA and [t for t in team if t.CurrentHP > 0]:
@@ -482,6 +482,15 @@ class CpuBattleView(discord.ui.View):
 			else:
 				self.battle.TeamBPhysReduce = 5
 			messages.append('Physical attacks will now deal less damage!')
+		if turn.Move.Id == 156:
+			attack.CurrentAilment = 2
+			messages.append(f'{pkmnName} fell asleep!')
+		if turn.Move.Id == 229 and attack.CurrentAilment in [8,18]:
+			if attack.CurrentAilment == 8:
+				messages.append(f'{pkmnName} escaped from {moveservice.GetMoveById(self.battle.TeamATrap if teamA else self.battle.TeamBTrap).Name}!')
+			if attack.CurrentAilment == 18:
+				messages.append(f'{pkmnName} was freed from Leech Seed!')
+			attack.CurrentAilment = None
 		if turn.Move.Id == 283:
 			defend.CurrentHP -= math.ceil(damage)
 			attack.CurrentHP += math.floor(damage)
@@ -498,6 +507,9 @@ class CpuBattleView(discord.ui.View):
 				if t.CurrentAilment in [1,2,3,4,5]:
 					t.CurrentAilment = None
 			messages.append('Cured all allies of status conditions!')
+		if turn.Move.Id == 816 and attack.CurrentAilment in [1,2,3,4,5]:
+			attack.CurrentAilment = None
+			messages.append('Cured all status conditions!')
 		return damage
 
 	def Description(self):

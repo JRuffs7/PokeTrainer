@@ -6,7 +6,7 @@ from globals import Dexmark, TrainerColor, region_name
 from middleware.decorators import defer
 from models.Pokemon import PokemonData
 from models.Trainer import Trainer
-from services import statservice
+from services import itemservice, moveservice, pokemonservice, statservice
 from services.utility import discordservice
 
 
@@ -33,21 +33,27 @@ class PokedexView(discord.ui.View):
 		self.add_item(self.nextbtn)
 		self.add_item(self.lastbtn)
 
+	async def on_timeout(self):
+		self.message.delete(delay=0.1)
+		return await super().on_timeout()
+
 	async def update_message(self):
 		data = self.get_currentPage_data()
 		dexCompletion = f'({len(self.trainer.Pokedex) if not self.dex else len(self.trainer.Formdex) if self.dex == 1 else len(self.trainer.Shinydex)}/{len(set(p.PokedexId for p in self.data)) if not self.dex else len(self.data) if not self.single else 1})'
 		embed = discordservice.CreateEmbed(
 				f"{self.targetuser.display_name}'s {'Pokedex' if not self.dex else 'Form Dex' if self.dex == 1 else 'Shiny Dex'} {dexCompletion}",
-				self.SingleEmbedDesc(data[0]) if self.single else self.ListEmbedDesc(data),
+				self.SingleEmbedDesc(data) if self.single else self.ListEmbedDesc(data),
 				TrainerColor)
-		if self.single:
-			embed.set_image(url=data[0].Sprite if self.currentPage == 1 else data[0].ShinySprite if self.currentPage == 2 else data[0].SpriteFemale if self.currentPage == 3 else data[0].ShinySpriteFemale)
+		if self.single and self.currentPage <= len([i for i in [data.Sprite, data.ShinySprite, data.SpriteFemale, data.ShinySpriteFemale] if i]):
+			embed.set_image(url=data.Sprite if self.currentPage == 1 else data.ShinySprite if self.currentPage == 2 else data.SpriteFemale if self.currentPage == 3 else data.ShinySpriteFemale)
 		else:
 			embed.set_thumbnail(url=self.targetuser.display_avatar.url)
 		embed.set_footer(text=f"{self.currentPage}/{ceil(len(self.data)/(1 if self.single else 10))}")
 		await self.message.edit(embed=embed, view=self)
 
 	def get_currentPage_data(self):
+		if self.single:
+			return self.data[0]
 		until_item = self.currentPage * (1 if self.single else 10)
 		from_item = until_item - (1 if self.single else 10)
 		if self.currentPage == ceil(len(self.data)/(1 if self.single else 10)):
@@ -72,21 +78,46 @@ class PokedexView(discord.ui.View):
 		await self.update_message()
 
 	def SingleEmbedDesc(self, pokemon: PokemonData):
-		trainerdex = self.trainer.Pokedex if not self.dex else self.trainer.Formdex
-		growth = '^' if pokemon.GrowthRate == 'fluctuating' else '^^' if pokemon.GrowthRate == 'slow' else '^^^' if pokemon.GrowthRate == 'mediumslow' else '^^^^' if pokemon.GrowthRate == 'medium' else '^^^^^' if pokemon.GrowthRate == 'fast' else '^^^^^^'
-		pkmnData = t2a(body=[['Pokedex:', pokemon.PokedexId, '|', 'Height:', pokemon.Height/10],
-											 	 ['Region:', region_name(pokemon.Generation), '|', 'Weight:', pokemon.Weight/10],
-                         ['Color:',pokemon.Color, '|','Growth:', growth], 
-                         ['Capture:',f'{pokemon.CaptureRate}/255', '|','Female:', f'{pokemon.FemaleChance}/8' if pokemon.FemaleChance >= 0 else 'N/A'], 
-                         ['Types:', f'{"/".join([statservice.GetType(t).Name for t in pokemon.Types])}', Merge.LEFT, Merge.LEFT, Merge.LEFT]], 
-                      first_col_heading=False,
-                      alignments=[Alignment.LEFT,Alignment.LEFT,Alignment.CENTER,Alignment.LEFT,Alignment.LEFT],
-                      style=PresetStyle.plain,
-                      cell_padding=0) if pokemon.PokedexId in self.trainer.Pokedex else ''
-		dataString = f'\n```{pkmnData}```' if pkmnData else ''
-		if self.currentPage in [1,3]:
-			return f"**__{pokemon.Name}__** {Dexmark if (pokemon.PokedexId if not self.dex else pokemon.Id) in trainerdex else ''}{dataString}"
-		return f"**__{pokemon.Name}__** {Dexmark if pokemon.Id in self.trainer.Shinydex else ''}{dataString}"
+		if self.currentPage < len(self.data):
+			trainerdex = self.trainer.Pokedex if not self.dex else self.trainer.Formdex
+			pkmnData = t2a(
+				body=[
+					['Pokedex:', pokemon.PokedexId, '|', 'Height:', pokemon.Height/10],
+					['Region:', region_name(pokemon.Generation), '|', 'Weight:', pokemon.Weight/10],
+					['Color:',pokemon.Color, '|','Female:', f'{pokemon.FemaleChance}/8' if pokemon.FemaleChance >= 0 else 'N/A'], 
+					['Types:', f'{"/".join([statservice.GetType(t).Name for t in pokemon.Types])}', Merge.LEFT, Merge.LEFT, Merge.LEFT]], 
+				first_col_heading=False,
+				alignments=[Alignment.LEFT,Alignment.LEFT,Alignment.CENTER,Alignment.LEFT,Alignment.LEFT],
+				style=PresetStyle.plain,
+				cell_padding=0) if pokemon.PokedexId in self.trainer.Pokedex else ''
+			dataString = f'\n```{pkmnData}```' if pkmnData else ''
+			if self.currentPage in [1,3]:
+				return f"**__{pokemon.Name}__** {Dexmark if (pokemon.PokedexId if not self.dex else pokemon.Id) in trainerdex else ''}{dataString}"
+			return f"**__{pokemon.Name}__** {Dexmark if pokemon.Id in self.trainer.Shinydex else ''}{dataString}"
+		else:
+			evolveArr: list[list[str]] = []
+			for e in pokemon.EvolvesInto:
+				evData = pokemonservice.GetPokemonById(e.EvolveID)
+				if evolveArr:
+					evolveArr.append([''])
+				evolveArr.append([evData.Name])
+				evolveArr.append([''.join(['-' for _ in evData.Name])])
+				if e.EvolveLevel:
+					evolveArr.append([f'Level:  {e.EvolveLevel}'])
+				if e.GenderNeeded:
+					evolveArr.append([f'Gender: {"Female" if e.GenderNeeded == 1 else "Male"}'])
+				if e.ItemNeeded:
+					evolveArr.append([f'Item:   {itemservice.GetItem(e.ItemNeeded).Name}'])
+				if e.MoveNeeded:
+					evolveArr.append([f'Move:   {moveservice.GetMoveById(e.MoveNeeded).Name}'])
+			pkmnData = t2a(
+				body=evolveArr, 
+				first_col_heading=False,
+				alignments=[Alignment.LEFT],
+				style=PresetStyle.plain,
+				cell_padding=0,
+				column_widths=[max([len(e[0]) for e in evolveArr])])
+			return f"**__{pokemon.Name} Evolutions__**\n\n```{pkmnData}```"
 
 	def ListEmbedDesc(self, data: list[PokemonData]):
 		trainerdex = self.trainer.Pokedex if not self.dex else self.trainer.Formdex if self.dex == 1 else self.trainer.Shinydex

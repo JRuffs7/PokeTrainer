@@ -128,6 +128,18 @@ def UpdateTrainers():
 					p.LearnedMoves = []
 					moveservice.GenerateMoves(p, pData)
 
+			badges: list[int] = []
+			for b in newTrainer.Badges:
+				if 34 <= b < 41:
+					badges.append(b+1)
+				elif 42 <= b < 49:
+					badges.append(b+2)
+				elif b < 1000:
+					badges.append(b+11)
+				else:
+					badges.append(b)
+				
+
 			if newTrainer.ServerId and newTrainer.UserId:
 				updateList.append(newTrainer)
 		except Exception:

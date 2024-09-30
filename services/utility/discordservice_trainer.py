@@ -74,8 +74,7 @@ async def PrintModifyTeam(interaction: Interaction, response: int, params: list)
 		command='modifyteam', 
 		responseInd=response, 
 		color=TrainerColor, 
-		params=params,
-		eph=True)
+		params=params)
 
 async def PrintStarter(interaction: Interaction, response: int, params: list):
 	await discordservice.SendCommandResponse(
@@ -93,8 +92,7 @@ async def PrintBadges(interaction: Interaction, targetUser: Member, region: str 
 		command='badges', 
 		responseInd=0 if not region else 1, 
 		color=TrainerColor,
-		params=[targetUser.display_name] if not region else [region],
-		eph=True)
+		params=[targetUser.display_name] if not region else [region])
 
 async def PrintRelease(interaction: Interaction, params: list):
 	return await discordservice.SendCommandResponse(
@@ -103,8 +101,7 @@ async def PrintRelease(interaction: Interaction, params: list):
 		command='release', 
 		responseInd=0, 
 		color=TrainerColor, 
-		params=params,
-		eph=True)
+		params=params)
 
 async def PrintDaily(interaction: Interaction, success: bool, boosted: bool, freeMasterball: bool, newWeekly: bool, eggName: str|None):
 	responseID = 0 if not success else 1 if not eggName else 2
@@ -124,8 +121,7 @@ async def PrintMyEggsResponse(inter: Interaction, response: int, params: list):
 		command='myeggs', 
 		responseInd=response, 
 		color=TrainerColor, 
-		params=params,
-		eph=True)
+		params=params)
 
 async def PrintMyPokemon(interaction: Interaction):
 	return await discordservice.SendCommandResponse(
@@ -134,8 +130,7 @@ async def PrintMyPokemon(interaction: Interaction):
 		command='mypokemon', 
 		responseInd=0, 
 		color=TrainerColor, 
-		params=[],
-		eph=True)
+		params=[])
 
 async def PrintChangeZone(interaction: Interaction, responseId: int, params: list[str]):
 	return await discordservice.SendCommandResponse(
@@ -144,5 +139,4 @@ async def PrintChangeZone(interaction: Interaction, responseId: int, params: lis
 		command='changezone', 
 		responseInd=responseId, 
 		color=TrainerColor, 
-		params=params,
-		eph=True)
+		params=params)

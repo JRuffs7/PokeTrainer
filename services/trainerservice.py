@@ -134,14 +134,14 @@ def TryAddMissionProgress(trainer: Trainer, action: str, types: list[int], addit
 
 def GetTrainerItemList(trainer: Trainer, itemType: int | None = None):
   if itemType == 0: #Pokeball
-    return [itemservice.GetPokeball(i) for i in trainer.Items if trainer.Items[i] > 0 and i in [str(p.Id) for p in itemservice.GetAllPokeballs()]]
+    return [itemservice.GetPokeball(int(i)) for i in trainer.Items if trainer.Items[i] > 0 and i in [str(p.Id) for p in itemservice.GetAllPokeballs()]]
   if itemType == 1: #Potions
-    return [itemservice.GetPotion(i) for i in trainer.Items if trainer.Items[i] > 0 and i in [str(p.Id) for p in itemservice.GetAllPotions()]]
+    return [itemservice.GetPotion(int(i)) for i in trainer.Items if trainer.Items[i] > 0 and i in [str(p.Id) for p in itemservice.GetAllPotions()]]
   if itemType == 2: #Candy
-    return [itemservice.GetCandy(i) for i in trainer.Items if trainer.Items[i] > 0 and i in [str(c.Id) for c in itemservice.GetAllCandies()]]
+    return [itemservice.GetCandy(int(i)) for i in trainer.Items if trainer.Items[i] > 0 and i in [str(c.Id) for c in itemservice.GetAllCandies()]]
   if itemType == 3: #EvoItems
-    return [itemservice.GetEvoItem(i) for i in trainer.Items if trainer.Items[i] > 0 and i in [str(e.Id) for e in itemservice.GetAllEvoItems()]]
-  return [itemservice.GetItem(i) for i in trainer.Items if trainer.Items[i] > 0]
+    return [itemservice.GetEvoItem(int(i)) for i in trainer.Items if trainer.Items[i] > 0 and i in [str(e.Id) for e in itemservice.GetAllEvoItems()]]
+  return [itemservice.GetItem(int(i)) for i in trainer.Items if trainer.Items[i] > 0]
 
 #endregion
 

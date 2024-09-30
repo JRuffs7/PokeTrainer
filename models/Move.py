@@ -14,7 +14,8 @@ class MoveData(Base):
 	CritRate: int
 	MinAttacks: int
 	MaxAttacks: int
-	Healing: int
+	Drain: int
+	Healing: int|None
 	Ailment: int|None
 	AilmentChance: int
 	AttackType: str

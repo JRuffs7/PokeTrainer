@@ -12,9 +12,8 @@ async def PrintHelpResponse(interaction: Interaction, response: int, commandName
 		command='help', 
 		responseInd=response, 
 		color=HelpColor, 
-		params=[commandName],
-		eph=True)
+		params=[commandName])
 
 async def PrintCommandHelp(interaction: Interaction, helpCommand: Help):
 	embed = discordservice.CreateEmbed(f"Help: {helpCommand.Name} Command" if helpCommand.ShortString else f"Help: {helpCommand.Name}", helpCommand.HelpString, HelpColor)
-	return await discordservice.SendEmbed(interaction, embed, True)
+	return await discordservice.SendEmbed(interaction, embed)
