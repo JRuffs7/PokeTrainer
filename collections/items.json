@@ -1,6 +1,6 @@
 [
   {
-    "CaptureRate": 100.0,
+    "CaptureRate": 100,
     "Id": 1,
     "Name": "Master Ball",
     "Url": "https://pokeapi.co/api/v2/item/1/",
@@ -10,7 +10,7 @@
     "SellAmount": 1000
   },
   {
-    "CaptureRate": 2.0,
+    "CaptureRate": 2,
     "Id": 2,
     "Name": "Ultra Ball",
     "Url": "https://pokeapi.co/api/v2/item/2/",
@@ -30,7 +30,7 @@
     "SellAmount": 300
   },
   {
-    "CaptureRate": 1.0,
+    "CaptureRate": 1,
     "Id": 4,
     "Name": "Poké Ball",
     "Url": "https://pokeapi.co/api/v2/item/4/",
@@ -193,7 +193,7 @@
     "Id": 50,
     "Name": "Rare Candy",
     "Url": "https://pokeapi.co/api/v2/item/50/",
-    "Description": "Level up a Pokemon by 1.",
+    "Description": "Levels up the Pokemon by 1 level.",
     "EvolutionItem": false,
     "BuyAmount": 0,
     "SellAmount": 5000
@@ -474,7 +474,7 @@
     "Id": 1183,
     "Name": "Exp. Candy S",
     "Url": "https://pokeapi.co/api/v2/item/1183/",
-    "Description": "Provides a Pokemon with 800 XP.",
+    "Description": "Provides a Pokemon with 800 XP",
     "EvolutionItem": false,
     "BuyAmount": 0,
     "SellAmount": 120
@@ -494,7 +494,7 @@
     "Id": 1185,
     "Name": "Exp. Candy L",
     "Url": "https://pokeapi.co/api/v2/item/1185/",
-    "Description": "Provides a Pokemon with 10000 XP.",
+    "Description": "Provides a Pokemon with 10000 XP",
     "EvolutionItem": false,
     "BuyAmount": 0,
     "SellAmount": 1500

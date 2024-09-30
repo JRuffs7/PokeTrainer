@@ -53,7 +53,7 @@ class PokemonData(Base):
   Weight: int
   Rarity: int
   LevelUpMoves: dict[str,int]
-  MachineMoves: list[str]
+  MachineMoves: list[int]
   BaseStats: dict[str,int]
 
   def __init__(self, dict):

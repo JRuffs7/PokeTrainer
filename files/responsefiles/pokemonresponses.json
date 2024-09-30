@@ -26,11 +26,7 @@
 	"evolve": [
 		{
 			"Title": "Cannot Evolve",
-			"Body": "You have no Pokemon currently able to evolve. Level your Pokemon up by fighting gym leaders using **/gymbattle** and wild Pokemon using **/spawn**."
-		},
-		{
-			"Title": "Cannot Evolve",
-			"Body": "You do not own any **{0}** that are able to evolve. Level your Pokemon up by fighting gym leaders using **/gymbattle** and wild Pokemon using **/spawn**."
+			"Body": "You have no Pokemon in your party that are able to evolve. Level your Pokemon up by fighting or feeding it candy."
 		}
 	],
 	"givecandy": [
