@@ -28,7 +28,7 @@ def SetUpGymBattle(leaderTeam: list[Pokemon]):
 #region Elite Four
 
 def GetAllEliteFour():
-	return gymda.GetAllGymLeaders()
+	return gymda.GetAllEliteFour()
 
 def GetEliteFourByRegion(region: int):
 	return [l for l in GetAllEliteFour() if l.Generation == region]
