@@ -1,3 +1,4 @@
+from random import uniform
 from dataaccess import gymda
 from models.Pokemon import Pokemon
 from models.Stat import StatEnum
@@ -15,9 +16,12 @@ def GetGymLeaderByBadge(badgeId: int):
 def SetUpGymBattle(leaderTeam: list[Pokemon]):
 	dataList = pokemonservice.GetPokemonByIdList([p.Pokemon_Id for p in leaderTeam])
 	for p in leaderTeam:
+		data = next(po for po in dataList if po.Id == p.Pokemon_Id)
+		p.Height = round(uniform((data.Height * 0.9), (data.Height * 1.1)) / 10, 2)
+		p.Weight = round(uniform((data.Weight * 0.9), (data.Weight * 1.1)) / 10, 2)
 		p.CurrentAilment = None
 		p.CurrentExp = 0
-		p.CurrentHP = statservice.GenerateStat(p, next(po for po in dataList if po.Id == p.Pokemon_Id), StatEnum.HP)
+		p.CurrentHP = statservice.GenerateStat(p, data, StatEnum.HP)
 
 #endregion
 
