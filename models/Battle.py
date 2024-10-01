@@ -19,7 +19,7 @@ class BattleAction(enum.Enum):
 	Item = 10
 	Pokeball = 11
 	Flee = 12
-	Defeated = 13
+	Loaf = 13
 
 @dataclass
 class BattleTurn:

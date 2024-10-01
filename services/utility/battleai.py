@@ -9,13 +9,13 @@ from services import battleservice, itemservice, moveservice, statservice, types
 def CreateCpuTurn(battle: CpuBattle, team: list[Pokemon]):
 	cputurn = battleservice.CreateTurn(battle.CurrentTurn,False,battle.TeamBPkmn.Id,None)
 	cpuChoose,cputurn.Action = battleservice.CanChooseAttack(battle, False)
-	if cpuChoose:
+	if cpuChoose and cputurn.Action != BattleAction.Loaf:
 		cputurn.Action, cpuObj = CpuAction(battle, team)
 		cputurn.PokemonId = cpuObj.Id if type(cpuObj) is Pokemon and cputurn.Action == BattleAction.Swap else battle.TeamBPkmn.Id
 		cputurn.Move = cpuObj if type(cpuObj) is MoveData else None
 		cputurn.ItemUsed = itemservice.GetPotion(23) if cputurn.Action == BattleAction.Item else None
 		cputurn.ItemUsedOnId = cpuObj.Id if type(cpuObj) is Pokemon and cputurn.Action == BattleAction.Item else None
-	else:
+	elif not cpuChoose:
 		lastTurn = battleservice.GetTurn(battle, False, 1, battle.TeamBPkmn.Id)
 		cputurn.Move = lastTurn.Move if lastTurn.Move else moveservice.GetMoveById(165)
 	return cputurn 

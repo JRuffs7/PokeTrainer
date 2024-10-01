@@ -55,24 +55,35 @@ def TeamAAttackFirst(teamAMove: MoveData|None, teamBMove: MoveData|None, battle:
 			return choice([1,2]) == 1
 
 def CanChooseAttack(battle: CpuBattle, teamA: bool):
-	turn = GetTurn(battle, teamA, 1, battle.TeamAPkmn.Id)
+	pkmn = battle.TeamAPkmn if teamA else battle.TeamBPkmn
+	turn = GetTurn(battle, teamA, 1, pkmn.Id)
 	if not turn:
 		return True,BattleAction.Attack
 	
+	mustLoaf = False
+	if pkmn.Pokemon_Id in [287, 289]:
+		lastAttack = next((t for t in battle.Turns if t.TeamA == teamA and t.TurnNum < battle.CurrentTurn and t.PokemonId == pkmn.Id and t.Action in [BattleAction.Attack,BattleAction.Charge]),None)
+		lastLoaf = next((t for t in battle.Turns if t.TeamA == teamA and t.TurnNum < battle.CurrentTurn and t.PokemonId == pkmn.Id and t.Action in [BattleAction.Loaf,BattleAction.Recharge]),None)
+		lastSwap = next((t for t in battle.Turns if t.TeamA == teamA and t.TurnNum < battle.CurrentTurn and t.Action == BattleAction.Swap),None)
+		if lastAttack:
+			if (lastSwap and lastSwap.TurnNum < lastAttack.TurnNum) or not lastSwap:
+				if (lastLoaf and lastLoaf.TurnNum < lastAttack.TurnNum) or not lastLoaf:
+					mustLoaf = True
+
 	if turn.Action == BattleAction.Charge:
 		if turn.Move.Id in [117,353]:
 			turn2 = GetTurn(battle, teamA, 2, turn.PokemonId)
 			if not turn2 or turn2.Action != BattleAction.Charge:
 				return (False, BattleAction.Charge)
-		return (False, BattleAction.Attack)
+		return (False, BattleAction.Attack) if not mustLoaf else (True, BattleAction.Loaf)
 	
 	if turn.Move and turn.Move.Recharge:
 		return False,BattleAction.Recharge
 	
 	if (teamA and battle.TeamAConsAttacks > 0) or (not teamA and battle.TeamBConsAttacks > 0):
-		return False,BattleAction.Attack
+		return False,BattleAction.Attack if not mustLoaf else (True, BattleAction.Loaf)
 
-	return True,BattleAction.Attack
+	return True,BattleAction.Attack if not mustLoaf else (True,BattleAction.Loaf)
 
 def SpecialHitCases(move: MoveData, battle: CpuBattle, pokemon: Pokemon, opponent: Pokemon, goingFirst: bool, oppAttack: MoveData|None):	
 	if move.Healing and pokemon.CurrentHP == statservice.GenerateStat(pokemon, next(p for p in battle.AllPkmnData if p.Id == pokemon.Pokemon_Id), StatEnum.HP):

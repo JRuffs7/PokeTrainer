@@ -92,7 +92,7 @@ class CpuBattleView(discord.ui.View):
 			self.remove_item(item)
 
 		canChoose,self.useraction = battleservice.CanChooseAttack(self.battle, True)
-		if canChoose:
+		if canChoose and self.useraction != BattleAction.Loaf:
 			if [m for m in self.battle.TeamAPkmn.LearnedMoves if m.PP > 0]:
 				self.add_item(MoveSelector([m for m in self.battle.TeamAPkmn.LearnedMoves if m.PP > 0]))
 				backBtn = discord.ui.Button(label="Back", style=discord.ButtonStyle.secondary, disabled=False)
@@ -101,9 +101,12 @@ class CpuBattleView(discord.ui.View):
 				await self.message.edit(view=self)
 			else:
 				await self.MoveSelection(inter, '165')
-		else:
+		elif not canChoose:
 			lastTurn = battleservice.GetTurn(self.battle, True, 1, self.battle.TeamAPkmn.Id)
 			await self.MoveSelection(inter, str(lastTurn.Move.Id) if lastTurn.Move else '165')
+		else:
+			self.userturn = battleservice.CreateTurn(self.battle.CurrentTurn, True, self.battle.TeamAPkmn.Id, self.useraction, None)
+			await self.TakeTurn(inter)
 
 	async def MoveSelection(self, inter: discord.Interaction, choice: str): 
 		self.userturn = battleservice.CreateTurn(self.battle.CurrentTurn, True, self.battle.TeamAPkmn.Id, self.useraction, moveservice.GetMoveById(int(choice)))
@@ -261,6 +264,14 @@ class CpuBattleView(discord.ui.View):
 			self.battle.Turns.insert(0, self.cputurn)
 			self.usermessage.append(f'You used a **{self.cputurn.ItemUsed.Name.upper()}** on {pokemonservice.GetPokemonDisplayName(pkmn, data, False, False)}!')
 		
+		if self.userturn.Action == BattleAction.Loaf:
+			self.battle.Turns.insert(0, self.userturn)
+			self.usermessage.append(f'{pokemonservice.GetPokemonDisplayName(pkmn, data, False, False)} is loafing around!')
+		if self.cputurn.Action == BattleAction.Loaf:
+			self.battle.Turns.insert(0, self.userturn)
+			self.usermessage.append(f'{pokemonservice.GetPokemonDisplayName(pkmn, data, False, False)} is loafing around!')
+
+
 		if battleservice.TeamAAttackFirst(self.userturn.Move, self.cputurn.Move, self.battle):
 			if self.userturn.Move:
 				self.userturn.DamageDone = await self.Attack(self.battle.TeamAPkmn, self.battle.TeamBPkmn, True)
