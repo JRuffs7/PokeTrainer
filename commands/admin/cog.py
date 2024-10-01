@@ -78,6 +78,13 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 			return
 		commandlockservice.DeleteLock(ctx.guild.id, user.id if user else ctx.author.id)
 
+	@commands.command(name="testspawnrate")
+	@is_bot_admin
+	async def testspawnrate(self, ctx: commands.Context, generation: int|None = None):
+		rates = [p for p in pokemonservice.GetAllPokemon() if p.EncounterChance and (not generation or generation == p.Generation)]
+		rates.sort(key=lambda x: (x.EncounterChance, x.Name))
+		print([f'{r.EncounterChance} - {r.Name}' for r in rates])
+
 	@app_commands.command(name="testfight",
                         description="Battle each gym leader from every region.")
 	@trainer_check

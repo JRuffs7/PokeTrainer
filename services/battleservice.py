@@ -78,12 +78,12 @@ def CanChooseAttack(battle: CpuBattle, teamA: bool):
 		return (False, BattleAction.Attack) if not mustLoaf else (True, BattleAction.Loaf)
 	
 	if turn.Move and turn.Move.Recharge:
-		return False,BattleAction.Recharge
+		return (False,BattleAction.Recharge)
 	
 	if (teamA and battle.TeamAConsAttacks > 0) or (not teamA and battle.TeamBConsAttacks > 0):
-		return False,BattleAction.Attack if not mustLoaf else (True, BattleAction.Loaf)
+		return (False,BattleAction.Attack) if not mustLoaf else (True, BattleAction.Loaf)
 
-	return True,BattleAction.Attack if not mustLoaf else (True,BattleAction.Loaf)
+	return (True,BattleAction.Attack) if not mustLoaf else (True,BattleAction.Loaf)
 
 def SpecialHitCases(move: MoveData, battle: CpuBattle, pokemon: Pokemon, opponent: Pokemon, goingFirst: bool, oppAttack: MoveData|None):	
 	if move.Healing and pokemon.CurrentHP == statservice.GenerateStat(pokemon, next(p for p in battle.AllPkmnData if p.Id == pokemon.Pokemon_Id), StatEnum.HP):

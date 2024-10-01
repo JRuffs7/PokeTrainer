@@ -105,7 +105,7 @@ class CpuBattleView(discord.ui.View):
 			lastTurn = battleservice.GetTurn(self.battle, True, 1, self.battle.TeamAPkmn.Id)
 			await self.MoveSelection(inter, str(lastTurn.Move.Id) if lastTurn.Move else '165')
 		else:
-			self.userturn = battleservice.CreateTurn(self.battle.CurrentTurn, True, self.battle.TeamAPkmn.Id, self.useraction, None)
+			self.userturn = battleservice.CreateTurn(self.battle.CurrentTurn, True, self.battle.TeamAPkmn.Id, self.useraction)
 			await self.TakeTurn(inter)
 
 	async def MoveSelection(self, inter: discord.Interaction, choice: str): 
@@ -217,6 +217,7 @@ class CpuBattleView(discord.ui.View):
 		teamAData = next(p for p in self.battle.AllPkmnData if p.Id == self.battle.TeamAPkmn.Pokemon_Id)
 		teamBData = next(p for p in self.battle.AllPkmnData if p.Id == self.battle.TeamBPkmn.Pokemon_Id)
 		self.cputurn = battleai.CreateCpuTurn(self.battle, self.oppteam)
+
 		if self.userturn.Action == BattleAction.Flee:
 			self.battle.Turns.insert(0, self.userturn)
 			if self.fleeattempts == 3 or battleservice.FleeAttempt(self.battle, self.fleeattempts):
@@ -266,10 +267,10 @@ class CpuBattleView(discord.ui.View):
 		
 		if self.userturn.Action == BattleAction.Loaf:
 			self.battle.Turns.insert(0, self.userturn)
-			self.usermessage.append(f'{pokemonservice.GetPokemonDisplayName(pkmn, data, False, False)} is loafing around!')
+			self.usermessage.append(f'{pokemonservice.GetPokemonDisplayName(self.battle.TeamAPkmn, teamAData, False, False)} is loafing around!')
 		if self.cputurn.Action == BattleAction.Loaf:
 			self.battle.Turns.insert(0, self.userturn)
-			self.usermessage.append(f'{pokemonservice.GetPokemonDisplayName(pkmn, data, False, False)} is loafing around!')
+			self.usermessage.append(f'{pokemonservice.GetPokemonDisplayName(self.battle.TeamBPkmn, teamBData, False, False)} is loafing around!')
 
 
 		if battleservice.TeamAAttackFirst(self.userturn.Move, self.cputurn.Move, self.battle):

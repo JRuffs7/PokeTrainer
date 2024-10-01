@@ -44,6 +44,7 @@ class PokemonData(Base):
   IsMythical: bool
   #Pokemon Properties
   BaseDefeatExp: int
+  EncounterChance: int
   Height: int
   Sprite: str
   ShinySprite: str
