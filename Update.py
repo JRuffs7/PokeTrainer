@@ -127,6 +127,8 @@ def UpdateTrainers():
 					p.CurrentHP = statservice.GenerateStat(p, pData, StatEnum.HP)
 					p.LearnedMoves = []
 					moveservice.GenerateMoves(p, pData)
+				if p.Pokemon_Id == 132 and p.Id in newTrainer.Team:
+					newTrainer.Team = [t for t in newTrainer.Team if t != p.Id]
 
 			badges: list[int] = []
 			for b in newTrainer.Badges:

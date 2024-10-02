@@ -91,6 +91,16 @@ def command_lock(function):
     return await function(self, *args, **kwargs)
   return wrapper
 
+def elitefour_check(function):
+  @functools.wraps(function)
+  async def wrapper(self, *args, **kwargs):
+    inter = args[0]
+    if commandlockservice.IsEliteFourLocked(inter.guild_id, inter.user.id):
+      await discordservice_permission.SendError(inter, 'elitefourlock')
+      return
+    return await function(self, *args, **kwargs)
+  return wrapper
+
 
 def defer(f):
   async def wrapper(self,*args):

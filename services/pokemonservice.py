@@ -62,7 +62,7 @@ def GetEvolutionLine(pokemonId: int, pokemonData: list[PokemonData] | None):
   return idArray
 
 def IsLegendaryPokemon(pokemon: PokemonData):
-  return pokemon.IsLegendary or pokemon.IsMythical or pokemon.IsUltraBeast
+  return pokemon.IsLegendary or pokemon.IsMythical or pokemon.IsUltraBeast or pokemon.IsParadox
 
 def IsSpecialSpawn(pokemon: PokemonData):
   return IsLegendaryPokemon(pokemon) or pokemon.IsParadox or pokemon.IsStarter or (pokemon.IsFossil and pokemon.EvolvesInto)
@@ -144,11 +144,22 @@ def ExpForPokemon(pokemon: Pokemon, data: PokemonData, isWild: bool, expShare: b
   return round(part4*a*t*e*v*f*p)
 
 def SpawnPokemon(region: int, badgesInRegion: int, shinyOdds: int):
-  pokemonList = pokemonda.GetPokemonByProperty([1,2] if badgesInRegion < 3 else [1,2,3], 'Rarity')
+  encounterRng = choice(range(100))
+  spawnChance = (
+    4 if encounterRng%2 == 0 else 
+    3 if encounterRng < 60 else
+    2 if encounterRng < 97 else 1)
+  pokemonList = [p for p in pokemonda.GetPokemonByProperty([1,2] if badgesInRegion < 3 else [1,2,3], 'Rarity') if p.Generation == region and p.EncounterChance == spawnChance]
+  while not pokemonList and spawnChance < 4:
+    spawnChance += 1
+    pokemonList = [p for p in pokemonda.GetPokemonByProperty([1,2] if badgesInRegion < 3 else [1,2,3], 'Rarity') if p.Generation == region and p.EncounterChance == spawnChance]
+  if not pokemonList:
+    return None,None
+  
   pokemon = None
   while not pokemon:
     pokemon = choice(pokemonList)
-    if not CanSpawn(pokemon, pokemonList, region):
+    if not CanSpawn(pokemon, pokemonList):
       pokemon = None
 
   range1 = 2 + (5*badgesInRegion)
@@ -156,15 +167,14 @@ def SpawnPokemon(region: int, badgesInRegion: int, shinyOdds: int):
   level = choice(range(range1, range2))
   spawn = GenerateSpawnPokemon(pokemon, level, shinyOdds)
   evos = AvailableEvolutions(spawn, pokemon, [])
-  print(evos)
-  if evos and choice(range(100)) < 40:
+  if evos and spawn.Level >= 20 and choice(range(100)) < 30:
     evData = GetPokemonById(choice(evos))
     spawn = EvolvePokemon(spawn, pokemon, evData)
     spawn.CurrentHP = statservice.GenerateStat(spawn, evData, StatEnum.HP)
-  return spawn
+  return (spawn,choice(range(100)) < 1)
 
 def SpawnLegendary(region: int, shinyOdds: int, ownedList: list[int]):
-  pokemonList = [p for p in pokemonda.GetPokemonByProperty([8,9,10], 'Rarity') if p.Generation == region and p.Id not in ownedList]
+  pokemonList = [p for p in pokemonda.GetAllPokemon() if p.Generation == region and IsLegendaryPokemon(p) and p.Id not in ownedList]
   if not pokemonList:
     return None
   evolveList = []
@@ -180,6 +190,9 @@ def SpawnLegendary(region: int, shinyOdds: int, ownedList: list[int]):
   level = 50 if pokemon.IsMythical or pokemon.IsParadox or pokemon.Rarity < 10 else 60 if pokemon.IsUltraBeast else 75
   spawn = GenerateSpawnPokemon(pokemon, level, shinyOdds)
   return spawn
+
+def GetLegendaryInRegion(region: int):
+  return [p for p in pokemonda.GetAllPokemon() if p.Generation == region and IsLegendaryPokemon(p)]
 
 def GetSpecialSpawn():
   spawnType = choice(list(SpecialSpawn))
@@ -226,8 +239,8 @@ def GenerateSpawnPokemon(pokemon: PokemonData, level: int, shinyOdds: int = Shin
   spawn.CurrentHP = statservice.GenerateStat(spawn, pokemon, StatEnum.HP)
   return spawn
 
-def CanSpawn(pokemon: PokemonData, pokemonList: list[PokemonData], region: int):
-  if pokemon.Generation != region:
+def CanSpawn(pokemon: PokemonData, pokemonList: list[PokemonData]):
+  if pokemon.Id == 132:
     return False
 
   if pokemon.IsMega or pokemon.IsUltraBeast or pokemon.IsParadox or pokemon.IsLegendary or pokemon.IsMythical or pokemon.IsFossil:
@@ -291,7 +304,7 @@ def NeededExperience(pokemon: Pokemon, data: PokemonData):
   currLvlExp, nextLvlExp = statservice.ExpCalculator(pokemon, data)
   return nextLvlExp - currLvlExp
 
-def AvailableEvolutions(pokemon: Pokemon, pkmnData: PokemonData, items: list[Item]):
+def AvailableEvolutions(pokemon: Pokemon, pkmnData: PokemonData, items: list[Item], spawn: bool = False):
   evolveIdList: list[int] = []
   for evData in pkmnData.EvolvesInto:
     if evData.EvolveLevel and pokemon.Level < evData.EvolveLevel:
@@ -300,7 +313,7 @@ def AvailableEvolutions(pokemon: Pokemon, pkmnData: PokemonData, items: list[Ite
       continue
     if evData.ItemNeeded and not next((i for i in items if i.Id == evData.ItemNeeded), None):
       continue
-    if evData.MoveNeeded and not next((m for m in pokemon.LearnedMoves if m.MoveId == evData.MoveNeeded), None):
+    if not spawn and evData.MoveNeeded and not next((m for m in pokemon.LearnedMoves if m.MoveId == evData.MoveNeeded), None):
       continue
     evolveIdList.append(evData.EvolveID)
   return evolveIdList

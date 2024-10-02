@@ -15032,7 +15032,7 @@
 				"Item2": 5400
 			},
 			"Generation": 1,
-			"MainType": null,
+			"MainType": "Ice",
 			"BadgeId": 0
 		},
 		{
@@ -15238,7 +15238,7 @@
 				"Item2": 5600
 			},
 			"Generation": 1,
-			"MainType": null,
+			"MainType": "Fighting",
 			"BadgeId": 0
 		},
 		{
@@ -15444,7 +15444,7 @@
 				"Item2": 5800
 			},
 			"Generation": 1,
-			"MainType": null,
+			"MainType": "Ghost",
 			"BadgeId": 0
 		},
 		{
@@ -15646,7 +15646,7 @@
 				"Item2": 6000
 			},
 			"Generation": 1,
-			"MainType": null,
+			"MainType": "Dragon",
 			"BadgeId": 0
 		},
 		{
@@ -15888,7 +15888,7 @@
 				"Item2": 6300
 			},
 			"Generation": 1,
-			"MainType": null,
+			"MainType": "Various",
 			"BadgeId": 0
 		},
 		{
@@ -16094,7 +16094,7 @@
 				"Item2": 5040
 			},
 			"Generation": 2,
-			"MainType": null,
+			"MainType": "Psychic",
 			"BadgeId": 0
 		},
 		{
@@ -16292,7 +16292,7 @@
 				"Item2": 5280
 			},
 			"Generation": 2,
-			"MainType": null,
+			"MainType": "Poison",
 			"BadgeId": 0
 		},
 		{
@@ -16494,7 +16494,7 @@
 				"Item2": 5520
 			},
 			"Generation": 2,
-			"MainType": null,
+			"MainType": "Fighting",
 			"BadgeId": 0
 		},
 		{
@@ -16696,7 +16696,7 @@
 				"Item2": 5640
 			},
 			"Generation": 2,
-			"MainType": null,
+			"MainType": "Dark",
 			"BadgeId": 0
 		},
 		{
@@ -16950,7 +16950,7 @@
 				"Item2": 10000
 			},
 			"Generation": 2,
-			"MainType": null,
+			"MainType": "Dragon",
 			"BadgeId": 0
 		},
 		{
@@ -17160,7 +17160,7 @@
 				"Item2": 8320
 			},
 			"Generation": 3,
-			"MainType": null,
+			"MainType": "Dark",
 			"BadgeId": 0
 		},
 		{
@@ -17362,7 +17362,7 @@
 				"Item2": 8480
 			},
 			"Generation": 3,
-			"MainType": null,
+			"MainType": "Ghost",
 			"BadgeId": 0
 		},
 		{
@@ -17560,7 +17560,7 @@
 				"Item2": 8640
 			},
 			"Generation": 3,
-			"MainType": null,
+			"MainType": "Ice",
 			"BadgeId": 0
 		},
 		{
@@ -17770,7 +17770,7 @@
 				"Item2": 8800
 			},
 			"Generation": 3,
-			"MainType": null,
+			"MainType": "Dragon",
 			"BadgeId": 0
 		},
 		{
@@ -18020,7 +18020,7 @@
 				"Item2": 11800
 			},
 			"Generation": 3,
-			"MainType": null,
+			"MainType": "Steel",
 			"BadgeId": 0
 		},
 		{
@@ -18234,7 +18234,7 @@
 				"Item2": 7068
 			},
 			"Generation": 4,
-			"MainType": null,
+			"MainType": "Bug",
 			"BadgeId": 0
 		},
 		{
@@ -18448,7 +18448,7 @@
 				"Item2": 7316
 			},
 			"Generation": 4,
-			"MainType": null,
+			"MainType": "Ground",
 			"BadgeId": 0
 		},
 		{
@@ -18658,7 +18658,7 @@
 				"Item2": 7564
 			},
 			"Generation": 4,
-			"MainType": null,
+			"MainType": "Fire",
 			"BadgeId": 0
 		},
 		{
@@ -18864,7 +18864,7 @@
 				"Item2": 7812
 			},
 			"Generation": 4,
-			"MainType": null,
+			"MainType": "Psychic",
 			"BadgeId": 0
 		},
 		{
@@ -19118,7 +19118,7 @@
 				"Item2": 13464
 			},
 			"Generation": 4,
-			"MainType": null,
+			"MainType": "Various",
 			"BadgeId": 0
 		},
 		{
@@ -19328,7 +19328,7 @@
 				"Item2": 7440
 			},
 			"Generation": 5,
-			"MainType": null,
+			"MainType": "Ghost",
 			"BadgeId": 0
 		},
 		{
@@ -19542,7 +19542,7 @@
 				"Item2": 7440
 			},
 			"Generation": 5,
-			"MainType": null,
+			"MainType": "Fighting",
 			"BadgeId": 0
 		},
 		{
@@ -19752,7 +19752,7 @@
 				"Item2": 7440
 			},
 			"Generation": 5,
-			"MainType": null,
+			"MainType": "Dark",
 			"BadgeId": 0
 		},
 		{
@@ -19966,7 +19966,7 @@
 				"Item2": 7440
 			},
 			"Generation": 5,
-			"MainType": null,
+			"MainType": "Psychic",
 			"BadgeId": 0
 		},
 		{
@@ -20216,7 +20216,7 @@
 				"Item2": 12600
 			},
 			"Generation": 5,
-			"MainType": null,
+			"MainType": "Dragon",
 			"BadgeId": 0
 		},
 		{
@@ -20386,7 +20386,7 @@
 				"Item2": 13000
 			},
 			"Generation": 6,
-			"MainType": null,
+			"MainType": "Fire",
 			"BadgeId": 0
 		},
 		{
@@ -20560,7 +20560,7 @@
 				"Item2": 13000
 			},
 			"Generation": 6,
-			"MainType": null,
+			"MainType": "Water",
 			"BadgeId": 0
 		},
 		{
@@ -20722,7 +20722,7 @@
 				"Item2": 13000
 			},
 			"Generation": 6,
-			"MainType": null,
+			"MainType": "Steel",
 			"BadgeId": 0
 		},
 		{
@@ -20896,7 +20896,7 @@
 				"Item2": 13000
 			},
 			"Generation": 6,
-			"MainType": null,
+			"MainType": "Dragon",
 			"BadgeId": 0
 		},
 		{
@@ -21146,7 +21146,7 @@
 				"Item2": 16320
 			},
 			"Generation": 6,
-			"MainType": null,
+			"MainType": "Various",
 			"BadgeId": 0
 		},
 		{
@@ -21356,7 +21356,7 @@
 				"Item2": 11400
 			},
 			"Generation": 7,
-			"MainType": null,
+			"MainType": "Steel",
 			"BadgeId": 0
 		},
 		{
@@ -21550,7 +21550,7 @@
 				"Item2": 11400
 			},
 			"Generation": 7,
-			"MainType": null,
+			"MainType": "Rock",
 			"BadgeId": 0
 		},
 		{
@@ -21756,7 +21756,7 @@
 				"Item2": 11400
 			},
 			"Generation": 7,
-			"MainType": null,
+			"MainType": "Ghost",
 			"BadgeId": 0
 		},
 		{
@@ -21970,7 +21970,7 @@
 				"Item2": 11400
 			},
 			"Generation": 7,
-			"MainType": null,
+			"MainType": "Flying",
 			"BadgeId": 0
 		},
 		{
@@ -22208,7 +22208,7 @@
 				"Item2": 13920
 			},
 			"Generation": 7,
-			"MainType": null,
+			"MainType": "Various",
 			"BadgeId": 0
 		},
 		{
@@ -22422,7 +22422,7 @@
 				"Item2": 16800
 			},
 			"Generation": 8,
-			"MainType": null,
+			"MainType": "Various",
 			"BadgeId": 0
 		},
 		{
@@ -22628,7 +22628,7 @@
 				"Item2": 11840
 			},
 			"Generation": 8,
-			"MainType": null,
+			"MainType": "Dark",
 			"BadgeId": 0
 		},
 		{
@@ -22842,7 +22842,7 @@
 				"Item2": 11840
 			},
 			"Generation": 8,
-			"MainType": null,
+			"MainType": "Steel",
 			"BadgeId": 0
 		},
 		{
@@ -23092,7 +23092,7 @@
 				"Item2": 14000
 			},
 			"Generation": 8,
-			"MainType": null,
+			"MainType": "Various",
 			"BadgeId": 0
 		},
 		{
@@ -23302,7 +23302,7 @@
 				"Item2": 19200
 			},
 			"Generation": 8,
-			"MainType": null,
+			"MainType": "Various",
 			"BadgeId": 0
 		},
 		{
@@ -23504,7 +23504,7 @@
 				"Item2": 12296
 			},
 			"Generation": 9,
-			"MainType": null,
+			"MainType": "Ground",
 			"BadgeId": 0
 		},
 		{
@@ -23714,7 +23714,7 @@
 				"Item2": 12508
 			},
 			"Generation": 9,
-			"MainType": null,
+			"MainType": "Steel",
 			"BadgeId": 0
 		},
 		{
@@ -23924,7 +23924,7 @@
 				"Item2": 12720
 			},
 			"Generation": 9,
-			"MainType": null,
+			"MainType": "Flying",
 			"BadgeId": 0
 		},
 		{
@@ -24134,7 +24134,7 @@
 				"Item2": 12932
 			},
 			"Generation": 9,
-			"MainType": null,
+			"MainType": "Dragon",
 			"BadgeId": 0
 		},
 		{
@@ -24388,7 +24388,7 @@
 				"Item2": 14880
 			},
 			"Generation": 9,
-			"MainType": null,
+			"MainType": "Various",
 			"BadgeId": 0
 		}
 	]

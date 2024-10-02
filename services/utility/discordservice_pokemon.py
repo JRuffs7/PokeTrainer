@@ -76,6 +76,15 @@ async def PrintPokeShopResponse(interaction: Interaction, response: int, pkmnnam
 		color=ErrorColor, 
 		params=[pkmnname])
 
+async def PrintSpawnResponse(interaction: Interaction, response: int, params: list):
+	return await discordservice.SendCommandResponse(
+		interaction=interaction, 
+		filename=responseFile, 
+		command='spawn', 
+		responseInd=response, 
+		color=PokemonColor, 
+		params=params)
+
 async def PrintSpawnLegendaryResponse(interaction: Interaction, response: int, params: list):
 	return await discordservice.SendCommandResponse(
 		interaction=interaction, 

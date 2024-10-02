@@ -18,12 +18,13 @@ from services.utility import battleai, discordservice
 
 class CpuBattleView(discord.ui.View):
 
-	def __init__(self, trainer: Trainer, oppName: str, opponentTeam: list[Pokemon], wildBattle: bool):
+	def __init__(self, trainer: Trainer, oppName: str, opponentTeam: list[Pokemon], wildBattle: bool, ditto: bool = False):
 		self.battleLog = logging.getLogger('battle')
 		self.trainer = trainer
 		self.trainerteam = trainerservice.GetTeam(trainer)
 		self.oppname = oppName
 		self.oppteam = opponentTeam
+		self.ditto = ditto
 		self.fleeattempts = 0
 		self.usermessage: list[str] = []
 		self.cpumessage: list[str] = []
@@ -32,6 +33,7 @@ class CpuBattleView(discord.ui.View):
 		self.exppokemon: dict[str,list[str]] = {}
 		self.victory = None
 		self.candy = None
+		self.experience = None
 		moveIds: list[int] = []
 		pokeIds: list[int] = []
 		for p in self.trainerteam + self.oppteam:
@@ -40,7 +42,7 @@ class CpuBattleView(discord.ui.View):
 				pokeIds.append(p.Pokemon_Id)
 		self.battle = CpuBattle.from_dict({
 			'IsWild': wildBattle,
-			'TeamAPkmn': self.trainerteam[0],
+			'TeamAPkmn': next(p for p in self.trainerteam if p.CurrentHP > 0),
 			'TeamBPkmn': self.oppteam[0],
 			'AllPkmnData': pokemonservice.GetPokemonByIdList(pokeIds),
 			'AllMoveData': moveservice.GetMovesById(moveIds),
@@ -232,23 +234,23 @@ class CpuBattleView(discord.ui.View):
 				self.AddMainButtons()
 				await self.message.edit(embeds=self.GetEmbeds(), view=self)
 			self.battle.Turns.insert(0, self.userturn)
-			if battleservice.TryCapture(self.userturn.ItemUsed, self.trainer, self.battle):
+			if battleservice.TryCapture(self.userturn.ItemUsed, self.trainer, self.battle, self.ditto):
 				trainerservice.UpsertTrainer(self.trainer)
 				return await self.next_button(inter)
 			self.usermessage.append(f'Tried to capture using a **{self.userturn.ItemUsed.Name}**...it broke free!')
 
 		if self.userturn.Action == BattleAction.Swap:
 			battleservice.ResetStats(self.battle, True)
+			self.battle.TeamAPkmn = next(p for p in self.trainerteam if p.Id == self.userturn.PokemonId)
 			teamAData = next(p for p in self.battle.AllPkmnData if p.Id == self.battle.TeamAPkmn.Pokemon_Id)
 			self.exppokemon[self.battle.TeamBPkmn.Id].append(self.userturn.PokemonId)
-			self.battle.TeamAPkmn = next(p for p in self.trainerteam if p.Id == self.userturn.PokemonId)
 			self.battle.Turns.insert(0, self.userturn)
 			self.usermessage.append(f'You swapped in {pokemonservice.GetPokemonDisplayName(self.battle.TeamAPkmn, teamAData, False, False)}!')
 		if self.cputurn.Action == BattleAction.Swap:
 			battleservice.ResetStats(self.battle, False)
+			self.battle.TeamBPkmn = next(p for p in self.oppteam if p.Id == self.cputurn.PokemonId)
 			teamBData = next(p for p in self.battle.AllPkmnData if p.Id == self.battle.TeamBPkmn.Pokemon_Id)
 			self.exppokemon[self.battle.TeamBPkmn.Id] = [self.battle.TeamAPkmn.Id]
-			self.battle.TeamBPkmn = next(p for p in self.oppteam if p.Id == self.cputurn.PokemonId)
 			self.battle.Turns.insert(0, self.cputurn)
 			self.cpumessage.append(f'{self.oppname} swapped in {pokemonservice.GetPokemonDisplayName(self.battle.TeamBPkmn, teamBData, False, False)}!')
 
@@ -299,17 +301,24 @@ class CpuBattleView(discord.ui.View):
 		if self.CheckFainting(self.battle.TeamAPkmn, teamAData):
 			self.userailmentmessage.append(f'{pokemonservice.GetPokemonDisplayName(self.battle.TeamAPkmn, teamAData, False, False)} fainted!')
 			if self.victory is None:
+				self.battle.TeamAPkmn = next(p for p in self.trainerteam if p.CurrentHP > 0)
+				if self.battle.TeamBPkmn.CurrentHP > 0:
+					self.exppokemon[self.battle.TeamBPkmn.Id].append(self.battle.TeamAPkmn.Id)
 				teamAData = next(p for p in self.battle.AllPkmnData if p.Id == self.battle.TeamAPkmn.Pokemon_Id)
-				self.userailmentmessage.append(f'You swapped in {pokemonservice.GetPokemonDisplayName(self.battle.TeamAPkmn, next(p for p in self.battle.AllPkmnData if p.Id == self.battle.TeamAPkmn.Pokemon_Id), False, False)}!')
+				self.userailmentmessage.append(f'You swapped in {pokemonservice.GetPokemonDisplayName(self.battle.TeamAPkmn, teamAData, False, False)}!')
 			shouldReturn = True
 		if self.CheckFainting(self.battle.TeamBPkmn, teamBData):
 			self.cpuailmentmessage.append(f'{pokemonservice.GetPokemonDisplayName(self.battle.TeamBPkmn, teamBData, False, False)} fainted!')
-			if self.battle.TeamAPkmn.CurrentHP > 0:
+			if len(self.exppokemon[self.battle.TeamBPkmn.Id]) > 0:
 				self.cpuailmentmessage.append(f'{pokemonservice.GetPokemonDisplayName(self.battle.TeamAPkmn, teamAData, False, False)} gained {self.experience} XP!')
-			if len(self.exppokemon[self.battle.TeamBPkmn.Id]) > 1:
-				self.cpuailmentmessage.append(f'Other participants gained shared XP!')
+				if len(self.exppokemon[self.battle.TeamBPkmn.Id]) > 1:
+					self.cpuailmentmessage.append(f'Other participants gained shared XP!')
 			if self.victory is None:
-				self.cpuailmentmessage.append(f'{self.oppname} swapped in {pokemonservice.GetPokemonDisplayName(self.battle.TeamBPkmn, next(p for p in self.battle.AllPkmnData if p.Id == self.battle.TeamBPkmn.Pokemon_Id), False, False)}!')
+				self.battle.TeamBPkmn = next(p for p in self.oppteam if p.CurrentHP > 0)
+				if self.battle.TeamAPkmn.CurrentHP > 0:
+					self.exppokemon[self.battle.TeamBPkmn.Id] = [self.battle.TeamAPkmn.Id]
+				teamBData = next(p for p in self.battle.AllPkmnData if p.Id == self.battle.TeamBPkmn.Pokemon_Id)
+				self.cpuailmentmessage.append(f'{self.oppname} swapped in {pokemonservice.GetPokemonDisplayName(self.battle.TeamBPkmn, teamBData, False, False)}!')
 			shouldReturn = True
 		if shouldReturn:
 			return
@@ -328,7 +337,11 @@ class CpuBattleView(discord.ui.View):
 		if self.CheckFainting(self.battle.TeamAPkmn, teamAData):
 			self.userailmentmessage.append(f'{pokemonservice.GetPokemonDisplayName(self.battle.TeamAPkmn, teamAData, False, False)} fainted!')
 			if self.victory is None:
-				self.userailmentmessage.append(f'You swapped in {pokemonservice.GetPokemonDisplayName(self.battle.TeamAPkmn, next(p for p in self.battle.AllPkmnData if p.Id == self.battle.TeamAPkmn.Pokemon_Id), False, False)}!')
+				self.battle.TeamAPkmn = next(p for p in self.trainerteam if p.CurrentHP > 0)
+				if self.battle.TeamBPkmn.CurrentHP > 0:
+					self.exppokemon[self.battle.TeamBPkmn.Id].append(self.battle.TeamAPkmn.Id)
+				teamAData = next(p for p in self.battle.AllPkmnData if p.Id == self.battle.TeamAPkmn.Pokemon_Id)
+				self.userailmentmessage.append(f'You swapped in {pokemonservice.GetPokemonDisplayName(self.battle.TeamAPkmn, teamAData, False, False)}!')
 			return
 		
 		ailDmg = battleservice.AilmentDamage(self.battle.TeamBPkmn, teamBData, self.battle.TeamAPkmn, teamAData)
@@ -344,11 +357,16 @@ class CpuBattleView(discord.ui.View):
 				self.userailmentmessage.append(f'{pokemonservice.GetPokemonDisplayName(self.battle.TeamAPkmn, teamAData, False, False)} is healed **{ailDmg} by **Leech Seed**.')
 		if self.CheckFainting(self.battle.TeamBPkmn, teamBData):
 			self.cpuailmentmessage.append(f'{pokemonservice.GetPokemonDisplayName(self.battle.TeamBPkmn, teamBData, False, False)} fainted!')
-			self.cpuailmentmessage.append(f'{pokemonservice.GetPokemonDisplayName(self.battle.TeamAPkmn, teamAData, False, False)} gained {self.experience} XP!')
-			if len(self.exppokemon[self.battle.TeamBPkmn.Id]) > 1:
-				self.cpuailmentmessage.append(f'Other participants gained XP as well!')
+			if len(self.exppokemon[self.battle.TeamBPkmn.Id]) > 0:
+				self.cpuailmentmessage.append(f'{pokemonservice.GetPokemonDisplayName(self.battle.TeamAPkmn, teamAData, False, False)} gained {self.experience} XP!')
+				if len(self.exppokemon[self.battle.TeamBPkmn.Id]) > 1:
+					self.cpuailmentmessage.append(f'Other participants gained shared XP!')
 			if self.victory is None:
-				self.userailmentmessage.append(f'{self.oppname} swapped in {pokemonservice.GetPokemonDisplayName(self.battle.TeamBPkmn, next(p for p in self.battle.AllPkmnData if p.Id == self.battle.TeamBPkmn.Pokemon_Id), False, False)}!')
+				self.battle.TeamBPkmn = next(p for p in self.oppteam if p.CurrentHP > 0)
+				if self.battle.TeamAPkmn.CurrentHP > 0:
+					self.exppokemon[self.battle.TeamBPkmn.Id] = [self.battle.TeamAPkmn.Id]
+				teamBData = next(p for p in self.battle.AllPkmnData if p.Id == self.battle.TeamBPkmn.Pokemon_Id)
+				self.cpuailmentmessage.append(f'{self.oppname} swapped in {pokemonservice.GetPokemonDisplayName(self.battle.TeamBPkmn, teamBData, False, False)}!')
 			return
 
 	#endregion
@@ -571,6 +589,9 @@ class CpuBattleView(discord.ui.View):
 
 	#endregion
 
-	async def send(self, inter: discord.Interaction):
-		await inter.followup.send(embeds=self.GetEmbeds(), view=self, ephemeral=True)
-		self.message = await inter.original_response()
+	async def send(self, inter: discord.Interaction|None):
+		if inter:
+			await inter.followup.send(embeds=self.GetEmbeds(), view=self, ephemeral=True)
+			self.message = await inter.original_response()
+		else:
+			await self.message.edit(embeds=self.GetEmbeds(), view=self)

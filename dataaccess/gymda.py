@@ -9,7 +9,7 @@ trainersFile = "collections/cputrainers.json"
 
 def GetAllGymLeaders():
   gyms = GetJson(trainersFile)
-  return [CpuTrainer.from_dict(g) for g in gyms['Gymleaders']]
+  return [CpuTrainer.from_dict(g) for g in gyms['GymLeaders']]
 
 #endregion
 

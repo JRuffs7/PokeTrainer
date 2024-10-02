@@ -1,5 +1,6 @@
 import asyncio
 import logging
+import math
 from random import choice, sample
 from discord import Interaction, Member, TextChannel, app_commands
 from discord.ext import commands
@@ -58,6 +59,16 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 		if trainer and gymservice.GetBadgeById(badge) and badge not in trainer.Badges:
 			trainer.Badges.append(badge)
 			trainerservice.UpsertTrainer(trainer)
+			
+	@commands.command(name="addelitefour")
+	@is_bot_admin
+	async def addbadge(self, ctx: commands.Context, id: int, user: Member|None = None):
+		if not ctx.guild:
+			return
+		trainer = trainerservice.GetTrainer(ctx.guild.id, user.id if user else ctx.author.id)
+		if trainer and next((e for e in gymservice.GetAllEliteFour() if e.Id == id),None) and id not in trainer.CurrentEliteFour:
+			trainer.CurrentEliteFour.append(id)
+			trainerservice.UpsertTrainer(trainer)
 
 	@commands.command(name="addpokemon")
 	@is_bot_admin
@@ -80,10 +91,12 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 
 	@commands.command(name="testspawnrate")
 	@is_bot_admin
-	async def testspawnrate(self, ctx: commands.Context, generation: int|None = None):
-		rates = [p for p in pokemonservice.GetAllPokemon() if p.EncounterChance and (not generation or generation == p.Generation)]
+	async def testspawnrate(self, ctx: commands.Context, spawnrate: int|None = None):
+		rates = [p for p in pokemonservice.GetAllPokemon() if p.EncounterChance and (not spawnrate or p.EncounterChance == (5 if spawnrate > 5 else 1 if spawnrate < 1 else spawnrate))]
 		rates.sort(key=lambda x: (x.EncounterChance, x.Name))
-		print([f'{r.EncounterChance} - {r.Name}' for r in rates])
+		substr = math.floor((2000-(4*len(rates)))/len(rates))
+		print(substr)
+		await ctx.reply(content=[r.Name[0:substr] for r in rates], ephemeral=True)
 
 	@app_commands.command(name="testfight",
                         description="Battle each gym leader from every region.")

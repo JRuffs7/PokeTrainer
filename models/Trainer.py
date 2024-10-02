@@ -15,6 +15,7 @@ class Trainer:
   Formdex: list[int] = field(default_factory=list)
   Team: list[str] = field(default_factory=list)
   Badges: list[int] = field(default_factory=list)
+  CurrentEliteFour: list[int] = field(default_factory=list)
   EliteFour: list[int] = field(default_factory=list)
   SpTrainerWins: list[int] = field(default_factory=list)
   Eggs: list[TrainerEgg] = field(default_factory=list)

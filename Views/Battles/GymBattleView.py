@@ -17,14 +17,30 @@ class GymBattleView(CpuBattleView):
 		self.battleLog = logging.getLogger('battle')
 		self.leader = leader
 		super(GymBattleView, self).__init__(trainer, self.leader.Name, self.leader.Team, False)
+		self.clear_items()
+		cancelbtn = discord.ui.Button(label="Cancel", style=discord.ButtonStyle.danger)
+		cancelbtn.callback = self.cancel_button
+		startbtn = discord.ui.Button(label="Start", style=discord.ButtonStyle.success)
+		startbtn.callback = self.start_button
+		self.add_item(cancelbtn)
+		self.add_item(startbtn)
 
 	async def on_timeout(self):
-		await self.message.edit(content=f'Battle with {self.leader.Name} canceled. No exp given and all stats reset.', embed=None, view=None)
+		await self.message.edit(content=f'Battle with **Gym Leader {self.leader.Name}** canceled. No exp given and all stats reset.', embed=None, view=None)
 		return await super().on_timeout()
 	
 	@defer
+	async def cancel_button(self, inter: discord.Interaction):
+		await self.on_timeout()
+
+	@defer
+	async def start_button(self, inter: discord.Interaction):
+		self.clear_items()
+		self.AddMainButtons()
+		await self.send(None)
+	
+	@defer
 	async def next_button(self, inter: discord.Interaction):
-		commandlockservice.DeleteLock(inter.guild.id, inter.user.id)
 		self.clear_items()
 		await self.message.delete(delay=0.1)
 		ephemeral = False
@@ -36,7 +52,7 @@ class GymBattleView(CpuBattleView):
 			embed = discordservice.CreateEmbed('Victory', rewardStr, BattleColor)
 			embed.set_thumbnail(url=gymservice.GetBadgeById(self.leader.BadgeId).Sprite)
 		else:
-			embed = discordservice.CreateEmbed('Defeat', f'<@{inter.user.id}> was defeated by **Gym leader {self.leader.Name}**.\nRan to the PokeCenter and paid $500 to revive your party.', BattleColor)
+			embed = discordservice.CreateEmbed('Defeat', f'<@{inter.user.id}> was defeated by **Gym leader {self.leader.Name}**.\nRan to the PokeCenter and revived your party.', BattleColor)
 		return await inter.followup.send(embed=embed, view=self, ephemeral=ephemeral)
 	
 	def CheckFainting(self, pokemon: Pokemon, data: PokemonData):
@@ -44,7 +60,10 @@ class GymBattleView(CpuBattleView):
 			if pokemon.Id == self.battle.TeamAPkmn.Id:
 				team = self.trainerteam
 				for exp in self.exppokemon:
-					self.exppokemon[exp] = [e for e in self.exppokemon[exp] if e != pokemon.Id]
+					if exp == self.battle.TeamBPkmn.Id:
+						self.exppokemon[exp] = []
+					else:
+						self.exppokemon[exp] = [e for e in self.exppokemon[exp] if e != pokemon.Id]
 			else:
 				team = self.oppteam
 				for expPkmn in self.exppokemon[pokemon.Id]:
@@ -74,6 +93,7 @@ class GymBattleView(CpuBattleView):
 						rewardMoney = self.leader.Reward[1]
 						self.trainer.Badges.append(self.leader.BadgeId)
 					self.trainer.Money += rewardMoney
+				commandlockservice.DeleteLock(self.trainer.ServerId, self.trainer.UserId)
 				trainerservice.UpsertTrainer(self.trainer)
 
 				if not self.victory:
@@ -84,12 +104,15 @@ class GymBattleView(CpuBattleView):
 				nxtbtn = discord.ui.Button(label="Next", style=discord.ButtonStyle.primary)
 				nxtbtn.callback = self.next_button
 				self.add_item(nxtbtn)
-			elif pokemon.Id == self.battle.TeamAPkmn.Id:
-				self.battle.TeamAPkmn = next(p for p in team if p.CurrentHP > 0)
-				self.exppokemon[self.battle.TeamBPkmn.Id].append(self.battle.TeamAPkmn.Id)
-			else:
-				self.battle.TeamBPkmn = next(p for p in team if p.CurrentHP > 0)
-				if self.battle.TeamAPkmn.CurrentHP > 0:
-					self.exppokemon[self.battle.TeamBPkmn.Id] = [self.battle.TeamAPkmn.Id]
 			return True
 		return False
+	
+	async def start(self, inter: discord.Interaction):
+		embed = discordservice.CreateEmbed(
+			'Gym Challenge!',
+			f'You are challenging **Gym Leader {self.leader.Name}**!',
+			BattleColor
+		)
+		embed.set_image(url=self.leader.Sprite)
+		await inter.followup.send(embeds=[embed], view=self, ephemeral=True)
+		self.message = await inter.original_response()

@@ -113,7 +113,7 @@ async def autofill_owned(inter: Interaction, current: str):
 async def autofill_nonteam(inter: Interaction, current: str):
     data = []
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
-    pkmnList = pokemonservice.GetPokemonByIdList([p.Pokemon_Id for p in trainer.OwnedPokemon if p.Id not in trainer.Team and p.Id not in trainer.Daycare])
+    pkmnList = pokemonservice.GetPokemonByIdList([p.Pokemon_Id for p in trainer.OwnedPokemon if p.Id not in trainer.Team and p.Id not in trainer.Daycare and p.Pokemon_Id != 132])
     pkmnList.sort(key=lambda x: x.Name)
     for pkmn in pkmnList:
       if current.lower() in pkmn.Name.lower():

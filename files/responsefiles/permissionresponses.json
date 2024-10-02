@@ -11,6 +11,12 @@
 			"Body": "You are currently in an interaction that prevents use of this command. Complete the other command, then try again."
 		}
 	],
+	"elitefourlock": [
+		{
+			"Title": "Command Locked",
+			"Body": "You are currently going through an Elite Four Challenge! This command will be unlocked once you fail or complete the challenge."
+		}
+	],
 	"server": [
 		{
 			"Title": "Server Not Registered",

@@ -89,14 +89,20 @@
 			"Body": "You do not have enough Masterballs to make an exchange for a {0}."
 		}
 	],
+	"spawn": [
+		{
+			"Title": "Failed To Spawn",
+			"Body": "Something went wrong trying to spawn a Pokemon. This interaction still went towards any egg progress you may have."
+		}
+	],
 	"spawnlegendary": [
 		{
 			"Title": "Cannot Find A Legendary",
-			"Body": "You have not completed the gym challenge for this region! Defeat all Gym Leaders then try again."
+			"Body": "You have not completed the gym challenge for this region! Defeat all Gym Leaders through **/gymbattle** and try again."
 		},
 		{
 			"Title": "Cannot Find A Legendary",
-			"Body": "You have already captured a Legendary Pokemon in this region! Defeat the Elite Four to be able to find more."
+			"Body": "You have already captured a Legendary Pokemon in this region! Defeat the Elite Four through **/elitefour** to be able to find more."
 		},
 		{
 			"Title": "Cannot Find A Legendary",

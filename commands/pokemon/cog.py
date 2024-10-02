@@ -16,7 +16,7 @@ import discordbot
 from Views.EvolveView import EvolveView
 from globals import PokemonColor
 from middleware.decorators import command_lock, method_logger, trainer_check
-from services import commandlockservice, itemservice, pokemonservice, statservice, trainerservice, typeservice
+from services import commandlockservice, gymservice, itemservice, pokemonservice, statservice, trainerservice, typeservice
 from middleware.decorators import method_logger, trainer_check
 from services.utility import discordservice, discordservice_pokemon
 
@@ -38,13 +38,16 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
   @command_lock
   async def spawn(self, inter: Interaction):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
-    pokemon = pokemonservice.SpawnPokemon(trainer.Region,
+    pokemon,ditto = pokemonservice.SpawnPokemon(trainer.Region,
       max([b for b in trainer.Badges if b < 1000]) if len(trainer.Badges) > 0 else 0,
       #Voltage Reward
       trainerservice.GetShinyOdds(trainer)
     )
     trainerservice.EggInteraction(trainer)
-    await WildBattleView(trainer, pokemon).send(inter)
+    if not pokemon:
+      commandlockservice.DeleteLock(trainer.ServerId, trainer.UserId)
+      await discordservice_pokemon.PrintSpawnResponse(inter, 0, [])
+    await WildBattleView(trainer, pokemon, ditto).send(inter)
 
   @app_commands.command(name="spawnlegendary",
                         description="Spawn a Legendary Pokemon to capture or fight.")
@@ -53,13 +56,13 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
   @command_lock
   async def spawnlegendary(self, inter: Interaction):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
-    #for b in gymservice.GetBadgesByRegion(trainer.Region):
-    #  if b not in trainer.Badges:
-    #    commandlockservice.DeleteLock(trainer.ServerId, trainer.UserId)
-    #    return await discordservice_pokemon.PrintSpawnLegendaryResponse(inter, 0, [])
-    #if trainer.Region not in trainer.EliteFour:
-    #  commandlockservice.DeleteLock(trainer.ServerId, trainer.UserId)
-    #  return await discordservice_pokemon.PrintSpawnLegendaryResponse(inter, 1, [])
+    for b in gymservice.GetBadgesByRegion(trainer.Region):
+      if b not in trainer.Badges:
+        commandlockservice.DeleteLock(trainer.ServerId, trainer.UserId)
+        return await discordservice_pokemon.PrintSpawnLegendaryResponse(inter, 0, [])
+    if trainer.Region not in trainer.EliteFour and [p for p in trainer.OwnedPokemon if p.Pokemon_Id in [po.Id for po in pokemonservice.GetLegendaryInRegion(trainer.Region)]]:
+      commandlockservice.DeleteLock(trainer.ServerId, trainer.UserId)
+      return await discordservice_pokemon.PrintSpawnLegendaryResponse(inter, 1, [])
     pokemon = pokemonservice.SpawnLegendary(trainer.Region, trainerservice.GetShinyOdds(trainer), [p.Pokemon_Id for p in trainer.OwnedPokemon])
     if not pokemon:
       commandlockservice.DeleteLock(trainer.ServerId, trainer.UserId)

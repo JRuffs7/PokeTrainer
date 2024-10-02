@@ -629,7 +629,7 @@ def ApplyStatChange(moveData: MoveData, battle: CpuBattle, teamA: bool):
 
 #region Capture
 
-def TryCapture(pokeball: Pokeball, trainer: Trainer, battle: CpuBattle):
+def TryCapture(pokeball: Pokeball, trainer: Trainer, battle: CpuBattle, ditto: bool):
 	trainerservice.ModifyItemList(trainer, str(pokeball.Id), -1)
 	pkmnData = next(p for p in battle.AllPkmnData if p.Id == battle.TeamBPkmn.Pokemon_Id)
 	capture = False
@@ -658,6 +658,10 @@ def TryCapture(pokeball: Pokeball, trainer: Trainer, battle: CpuBattle):
 			shake += 1
 	
 	if capture:
+		if ditto:
+			pkmnData = pokemonservice.GetPokemonById(132)
+			battle.TeamBPkmn = pokemonservice.GenerateSpawnPokemon(pkmnData, battle.TeamBPkmn.Level, trainerservice.GetShinyOdds(trainer))
+
 		if len(trainer.Team) >= 6:
 			pokemonservice.HealPokemon(battle.TeamBPkmn, pkmnData)
 		trainer.OwnedPokemon.append(battle.TeamBPkmn)
@@ -670,7 +674,7 @@ def TryCapture(pokeball: Pokeball, trainer: Trainer, battle: CpuBattle):
 					p, 
 					next(t for t in battle.AllPkmnData if t.Id == p.Pokemon_Id), 
 					math.floor(pokemonservice.ExpForPokemon(battle.TeamBPkmn, pkmnData, True, False, battle.TeamAPkmn.Level)/4))
-		if len(trainer.Team) < 6:
+		if len(trainer.Team) < 6 and battle.TeamBPkmn.Pokemon_Id != 132:
 			trainer.Team.append(battle.TeamBPkmn.Id)
 	return capture
 
