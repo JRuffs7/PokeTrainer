@@ -40,7 +40,7 @@ class PokedexView(discord.ui.View):
 	async def update_message(self):
 		data = self.get_currentPage_data()
 		dexCompletion = f'({len(self.trainer.Pokedex) if not self.dex else len(self.trainer.Formdex) if self.dex == 1 else len(self.trainer.Shinydex)}/{len(set(p.PokedexId for p in self.data)) if not self.dex else len(self.data) if not self.single else 1})'
-		if self.single and self.currentPage <= len([i for i in [data.Sprite, data.ShinySprite, data.SpriteFemale, data.ShinySpriteFemale] if i])
+		if self.single and self.currentPage <= len([i for i in [data.Sprite, data.ShinySprite, data.SpriteFemale, data.ShinySpriteFemale] if i]):
 			image = data.Sprite if self.currentPage == 1 else data.ShinySprite if self.currentPage == 2 else data.SpriteFemale if self.currentPage == 3 else data.ShinySpriteFemale
 		else:
 			image = None
