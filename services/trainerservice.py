@@ -40,6 +40,7 @@ def StartTrainer(pokemon: PokemonData, serverId: int, userId: int):
     'Items': { '4': 5 }
   })
   trainer.OwnedPokemon.append(spawn)
+  TryAddToPokedex(trainer, pokemon, spawn.IsShiny)
   UpsertTrainer(trainer)
   return trainer
 

@@ -34,15 +34,20 @@ class PokedexView(discord.ui.View):
 		self.add_item(self.lastbtn)
 
 	async def on_timeout(self):
-		self.message.delete(delay=0.1)
+		await self.message.delete(delay=0.1)
 		return await super().on_timeout()
 
 	async def update_message(self):
 		data = self.get_currentPage_data()
 		dexCompletion = f'({len(self.trainer.Pokedex) if not self.dex else len(self.trainer.Formdex) if self.dex == 1 else len(self.trainer.Shinydex)}/{len(set(p.PokedexId for p in self.data)) if not self.dex else len(self.data) if not self.single else 1})'
-		if self.single and self.currentPage <= len([i for i in [data.Sprite, data.ShinySprite, data.SpriteFemale, data.ShinySpriteFemale] if i]):
-			image = data.Sprite if self.currentPage == 1 else data.ShinySprite if self.currentPage == 2 else data.SpriteFemale if self.currentPage == 3 else data.ShinySpriteFemale
+		if self.single:
+			dexCompletion = f'{"1" if data.PokedexId in self.trainer.Pokedex else "0"}/1'
+			if self.currentPage <= len([i for i in [data.Sprite, data.ShinySprite, data.SpriteFemale, data.ShinySpriteFemale] if i]):
+				image = data.Sprite if self.currentPage == 1 else data.ShinySprite if self.currentPage == 2 else data.SpriteFemale if self.currentPage == 3 else data.ShinySpriteFemale
+			else:
+				image = None
 		else:
+			dexCompletion = f'({len(self.trainer.Pokedex) if not self.dex else len(self.trainer.Formdex) if self.dex == 1 else len(self.trainer.Shinydex)}/{len(set(p.PokedexId for p in self.data)) if not self.dex else len(self.data) if not self.single else 1})'
 			image = None
 		embed = discordservice.CreateEmbed(
 				f"{self.targetuser.display_name}'s {'Pokedex' if not self.dex else 'Form Dex' if self.dex == 1 else 'Shiny Dex'} {dexCompletion}",
@@ -112,6 +117,8 @@ class PokedexView(discord.ui.View):
 					evolveArr.append([f'Item:   {itemservice.GetItem(e.ItemNeeded).Name}'])
 				if e.MoveNeeded:
 					evolveArr.append([f'Move:   {moveservice.GetMoveById(e.MoveNeeded).Name}'])
+			if not evolveArr:
+				evolveArr.append([f'This Pokemon does not evolve.'])
 			pkmnData = t2a(
 				body=evolveArr, 
 				first_col_heading=False,

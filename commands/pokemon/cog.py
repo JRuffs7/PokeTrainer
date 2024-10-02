@@ -13,7 +13,7 @@ from commands.views.Selection.NicknameView import NicknameView
 import discordbot
 
 from Views.EvolveView import EvolveView
-from globals import PokemonColor
+from globals import PokemonColor, botImage
 from middleware.decorators import command_lock, elitefour_check, method_logger, trainer_check
 from services import commandlockservice, gymservice, itemservice, pokemonservice, statservice, trainerservice, typeservice
 from middleware.decorators import method_logger, trainer_check
@@ -82,7 +82,11 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
       pokemonservice.HealPokemon(p, pokemonservice.GetPokemonById(p.Pokemon_Id))
     trainerservice.UpsertTrainer(trainer)
     commandlockservice.DeleteLock(inter.guild_id, inter.user.id)
-    return await discordservice.SendEmbed(inter, discordservice.CreateEmbed('Healed', 'All Pokemon in your party have been healed to full HP and cured of any ailments.', PokemonColor))
+    return await discordservice.SendEmbed(inter, discordservice.CreateEmbed(
+      'Healed', 
+      'All Pokemon in your party have been healed to full HP and cured of any ailments.', 
+      PokemonColor,
+      thumbnail=botImage))
 
   @app_commands.command(name="usepotion",
                         description="Use a healing item on one of your party Pokemon.")
@@ -165,7 +169,8 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
       dexViewer = PokedexView(user if user else inter.user,trainer,dex,False,data)
     else:
       data = pokemonservice.GetPokemonById(pokemon)
-      dexViewer = PokedexView(user if user else inter.user,trainer,dex,True,[data, data, data] if not data.SpriteFemale else [data, data, data, data, data])
+      dataList = [data for d in [data.Sprite, data.ShinySprite, data.SpriteFemale, data.ShinySpriteFemale] if d]
+      dexViewer = PokedexView(user if user else inter.user,trainer,dex,True,dataList+[data])
     await dexViewer.send(inter)
 
   @app_commands.command(name="nickname",
