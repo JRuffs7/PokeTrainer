@@ -1,11 +1,11 @@
-import logging
 import math
 from random import choice
 import discord
 
 from table2ascii import table2ascii as t2a, PresetStyle, Alignment
 
-from Views.Battles.BattleTools import ItemSelector, MoveSelector, PokemonSelector
+from Views.Battles.BattleTools import MoveSelector, PokemonSelector
+from Views.Selectors import ItemSelector
 from globals import Dexmark, Formmark, PokemonColor
 from middleware.decorators import defer
 from models.Battle import BattleAction, CpuBattle
@@ -19,7 +19,6 @@ from services.utility import battleai, discordservice
 class CpuBattleView(discord.ui.View):
 
 	def __init__(self, trainer: Trainer, oppName: str, opponentTeam: list[Pokemon], wildBattle: bool, ditto: bool = False):
-		self.battleLog = logging.getLogger('battle')
 		self.trainer = trainer
 		self.trainerteam = trainerservice.GetTeam(trainer)
 		self.oppname = oppName
@@ -257,13 +256,13 @@ class CpuBattleView(discord.ui.View):
 		if self.userturn.Action == BattleAction.Item:
 			pkmn = next(p for p in self.trainerteam if p.Id == self.userturn.ItemUsedOnId)
 			data = next(p for p in self.battle.AllPkmnData if p.Id == pkmn.Pokemon_Id)
-			pokemonservice.TryUseItem(pkmn, data, self.userturn.ItemUsed)
+			pokemonservice.TryUsePotion(pkmn, data, self.userturn.ItemUsed)
 			self.battle.Turns.insert(0, self.userturn)
 			self.usermessage.append(f'You used a **{self.userturn.ItemUsed.Name.upper()}** on {pokemonservice.GetPokemonDisplayName(pkmn, data, False, False)}!')
 		if self.cputurn.Action == BattleAction.Item:
 			pkmn = next(p for p in self.oppteam if p.Id == self.cputurn.ItemUsedOnId)
 			data = next(p for p in self.battle.AllPkmnData if p.Id == pkmn.Pokemon_Id)
-			pokemonservice.TryUseItem(pkmn, data, self.cputurn.ItemUsed)
+			pokemonservice.TryUsePotion(pkmn, data, self.cputurn.ItemUsed)
 			self.battle.Turns.insert(0, self.cputurn)
 			self.usermessage.append(f'You used a **{self.cputurn.ItemUsed.Name.upper()}** on {pokemonservice.GetPokemonDisplayName(pkmn, data, False, False)}!')
 		

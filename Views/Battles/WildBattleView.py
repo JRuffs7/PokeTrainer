@@ -1,5 +1,3 @@
-import logging
-
 import discord
 from globals import BattleColor, SuccessColor
 from Views.Battles.CpuBattleView import CpuBattleView
@@ -7,14 +5,13 @@ from middleware.decorators import defer
 from models.Battle import BattleAction
 from models.Pokemon import Pokemon, PokemonData
 from models.Trainer import Trainer
-from services import commandlockservice, itemservice, pokemonservice, trainerservice
+from services import commandlockservice, pokemonservice, trainerservice
 from services.utility import discordservice
 
 
 class WildBattleView(CpuBattleView):
 
 	def __init__(self, trainer: Trainer, pokemon: Pokemon, ditto: bool):
-		self.battleLog = logging.getLogger('battle')
 		self.pokemon = pokemon
 		self.data = pokemonservice.GetPokemonById(pokemon.Pokemon_Id)
 		self.ditto = ditto
@@ -32,8 +29,8 @@ class WildBattleView(CpuBattleView):
 		embed = discordservice.CreateEmbed(
 				'Ran Away', 
 				message, 
-				BattleColor)
-		embed.set_thumbnail(url=pokemonservice.GetPokemonImage(self.pokemon, self.data))
+				BattleColor,
+				thumbnail=pokemonservice.GetPokemonImage(self.pokemon, self.data))
 		await self.message.edit(embed=embed, view=None)
 		return await super().on_timeout()
 	
@@ -55,19 +52,24 @@ class WildBattleView(CpuBattleView):
 			embed = discordservice.CreateEmbed(
 				'Caught', 
 				f'{caughtMsg}{expMsg}', 
-				SuccessColor)
+				SuccessColor,
+				thumbnail=pokemonservice.GetPokemonImage(self.pokemon, self.data))
 		elif self.victory == None and self.userturn.Action == BattleAction.Flee:
 			embed = discordservice.CreateEmbed(
 				'Ran Away', 
 				f'<@{inter.user.id}> ran away from **{pokemonservice.GetPokemonDisplayName(self.pokemon, self.data)} (Lvl. {self.pokemon.Level})**.', 
-				BattleColor)
+				BattleColor,
+				thumbnail=pokemonservice.GetPokemonImage(self.pokemon, self.data))
 		elif self.victory:
 			candyStr = f'\nFound one **{self.candy.Name}**!' if self.candy else ''
 			rewardStr = f'<@{inter.user.id}> defeated a wild **{pokemonservice.GetPokemonDisplayName(self.pokemon, self.data)} (Lvl. {self.pokemon.Level})**! Gained **$25**{candyStr}'
-			embed = discordservice.CreateEmbed('Victory', rewardStr, BattleColor)
+			embed = discordservice.CreateEmbed('Victory', rewardStr, BattleColor, thumbnail=pokemonservice.GetPokemonImage(self.pokemon, self.data))
 		else:
-			embed = discordservice.CreateEmbed('Defeat', f'<@{inter.user.id}> was defeated by **{pokemonservice.GetPokemonDisplayName(self.pokemon, self.data)} (Lvl. {self.pokemon.Level})**.\nRan to the PokeCenter and paid $500 to revive your party.', BattleColor)
-		embed.set_thumbnail(url=pokemonservice.GetPokemonImage(self.pokemon, self.data))
+			embed = discordservice.CreateEmbed(
+				'Defeat', 
+				f'<@{inter.user.id}> was defeated by **{pokemonservice.GetPokemonDisplayName(self.pokemon, self.data)} (Lvl. {self.pokemon.Level})**.\nRan to the PokeCenter and paid $500 to revive your party.', 
+				BattleColor,
+				thumbnail=pokemonservice.GetPokemonImage(self.pokemon, self.data))
 		return await inter.followup.send(embed=embed, view=self, ephemeral=ephemeral)
 	
 	def CheckFainting(self, pokemon: Pokemon, data: PokemonData):

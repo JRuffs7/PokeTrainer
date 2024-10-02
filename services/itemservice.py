@@ -70,3 +70,6 @@ def GetTrainerPokeballs(trainer: Trainer):
 
 def GetTrainerPotions(trainer: Trainer):
   return [p for p in GetAllPotions() if str(p.Id) in trainer.Items and trainer.Items[str(p.Id)] > 0]
+
+def GetTrainerCandy(trainer: Trainer):
+  return [c for c in GetAllCandies() if str(c.Id) in trainer.Items and trainer.Items[str(c.Id)] > 0]

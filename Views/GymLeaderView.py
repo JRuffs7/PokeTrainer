@@ -42,13 +42,11 @@ class GymLeaderView(discord.ui.View):
 		embed = discordservice.CreateEmbed(
 				self.leader.Name if leaderView else f"{self.leader.Name}'s Team",
 				self.GymLeaderDesc() if leaderView else self.PokemonDesc(self.leader.Team[self.currentpage-2]),
-				BattleColor)
-		if leaderView:
-			embed.set_image(url=self.leader.Sprite)
-			embed.set_thumbnail(url=self.badge.Sprite)
-		else:
-			embed.set_image(url=pokemonservice.GetPokemonImage(self.leader.Team[self.currentpage-2]))
-		embed.set_footer(icon_url=self.badge.Sprite, text=f"{self.badge.Name} Badge")
+				BattleColor,
+				image=(self.leader.Sprite if leaderView else pokemonservice.GetPokemonImage(self.leader.Team[self.currentpage-2])),
+				thumbnail=(pokemonservice.GetPokemonImage(self.leader.Team[self.currentpage-2]) if not leaderView else None),
+				footerIcon=self.badge.Sprite,
+				footer=f'{self.badge.Name} Badge')
 		await self.message.edit(embed=embed, view=self)
 
 	@defer

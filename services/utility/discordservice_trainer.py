@@ -63,8 +63,8 @@ async def PrintTrainer(interaction: Interaction, trainer: Trainer, targetUser: M
 	embed = discordservice.CreateEmbed(
 			f"{targetUser.display_name}'s Trainer Info", 
 			f"{stats}\n\n{mission}\n\n{dex}\n\n{other}", 
-			TrainerColor)
-	embed.set_thumbnail(url=targetUser.display_avatar.url)
+			TrainerColor,
+			thumbnail=targetUser.display_avatar.url)
 	return await interaction.followup.send(embed=embed)
 
 async def PrintModifyTeam(interaction: Interaction, response: int, params: list):

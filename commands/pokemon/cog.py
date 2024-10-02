@@ -2,20 +2,19 @@ from discord import Member, app_commands, Interaction
 from discord.ext import commands
 from typing import List
 from Views.Battles.WildBattleView import WildBattleView
+from Views.GiveCandyView import GiveCandyView
 from Views.PokedexView import PokedexView
 from Views.UsePotionView import UsePotionView
 from commands.autofills.autofills import autofill_nonteam, autofill_owned, autofill_pokemon
-from commands.views.BattleSimView import BattleSimView
 from commands.views.Pagination.DaycareView import DaycareView
 from commands.views.Pagination.PokemonSearchView import PokemonSearchView
-from commands.views.Selection.CandyView import CandyView
 from commands.views.Selection.DaycareAddView import DaycareAddView
 from commands.views.Selection.NicknameView import NicknameView
 import discordbot
 
 from Views.EvolveView import EvolveView
 from globals import PokemonColor
-from middleware.decorators import command_lock, method_logger, trainer_check
+from middleware.decorators import command_lock, elitefour_check, method_logger, trainer_check
 from services import commandlockservice, gymservice, itemservice, pokemonservice, statservice, trainerservice, typeservice
 from middleware.decorators import method_logger, trainer_check
 from services.utility import discordservice, discordservice_pokemon
@@ -35,6 +34,7 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
                         description="Spawn an Pokemon to capture or fight.")
   @method_logger(True)
   @trainer_check
+  @elitefour_check
   @command_lock
   async def spawn(self, inter: Interaction):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
@@ -53,6 +53,7 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
                         description="Spawn a Legendary Pokemon to capture or fight.")
   @method_logger(True)
   @trainer_check
+  @elitefour_check
   @command_lock
   async def spawnlegendary(self, inter: Interaction):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
@@ -73,6 +74,7 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
                         description="Heal all HP and Ailments from Pokemon on your team.")
   @method_logger(False)
   @trainer_check
+  @elitefour_check
   @command_lock
   async def pokecenter(self, inter: Interaction):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
@@ -195,38 +197,20 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
       return await discordservice_pokemon.PrintEvolveResponse(inter, 0, [])
     return await EvolveView(trainer, pokeList).send(inter)
 
-
-  async def autofill_candy(self, inter: Interaction, current: str):
-    data = []
-    trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
-    pkmnList = pokemonservice.GetPokemonByIdList([p.Pokemon_Id for p in trainer.OwnedPokemon if p.Level < 100])
-    pkmnList.sort(key=lambda x: x.Name)
-    for pkmn in pkmnList:
-      if current.lower() in pkmn.Name.lower():
-        data.append(app_commands.Choice(name=pkmn.Name, value=pkmn.Id))
-      if len(data) == 25:
-        break
-    return data
-
-
   @app_commands.command(name="givecandy",
                         description="Give a candy to a Pokemon.")
-  @app_commands.autocomplete(pokemon=autofill_candy)
-  @method_logger(False)
+  @method_logger(True)
   @trainer_check
   @command_lock
-  async def givecandy(self, inter: Interaction, pokemon: int):
+  async def givecandy(self, inter: Interaction):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
-    if not trainerservice.GetTrainerItemList(trainer, 2): 
-      await discordservice_pokemon.PrintGiveCandyResponse(inter, 0, [])
-    else:
-      pokeList = [p for p in trainer.OwnedPokemon if p.Pokemon_Id == pokemon and p.Level < 100]
-      if not pokeList:
-        pkmn = pokemonservice.GetPokemonById(pokemon)
-        await discordservice_pokemon.PrintGiveCandyResponse(inter, 1, [pkmn.Name] if pkmn else ['N/A'])
-      else:
-        return await CandyView(inter, trainer, pokeList).send()
-    commandlockservice.DeleteLock(inter.guild_id, inter.user.id)
+    if not itemservice.GetTrainerCandy(trainer):
+      commandlockservice.DeleteLock(inter.guild_id, inter.user.id)
+      return await discordservice_pokemon.PrintGiveCandyResponse(inter, 0, [])
+    if not [p for p in trainerservice.GetTeam(trainer) if p.Level < 100]:
+      commandlockservice.DeleteLock(inter.guild_id, inter.user.id)
+      return await discordservice_pokemon.PrintGiveCandyResponse(inter, 1, [])
+    return await GiveCandyView(trainer).send(inter)
 
 
   @app_commands.command(name="daycare",

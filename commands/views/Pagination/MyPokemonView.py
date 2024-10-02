@@ -32,12 +32,10 @@ class MyPokemonView(BasePaginationView):
     embed = discordservice.CreateEmbed(
         self.title,
         self.SingleEmbedDesc(data[0]) if self.pageLength == 1 else self.ListEmbedDesc(data),
-        TrainerColor)
-    if self.pageLength == 1:
-      embed.set_image(url=pokemonservice.GetPokemonImage(data[0],next(p for p in self.pokemondata if p.Id == data[0].Pokemon_Id)))
-    else:
-      embed.set_thumbnail(url=self.targetuser.display_avatar.url)
-    embed.set_footer(text=f"{self.currentPage}/{ceil(len(self.data)/self.pageLength)}")
+        TrainerColor,
+        image=(pokemonservice.GetPokemonImage(data[0],next(p for p in self.pokemondata if p.Id == data[0].Pokemon_Id)) if self.pageLength == 1 else None),
+        thumbnail=(self.targetuser.display_avatar.url if self.pageLength > 1 else None),
+        footer=f"{self.currentPage}/{ceil(len(self.data)/self.pageLength)}")
     await self.message.edit(embed=embed, view=self)
 
   @discord.ui.button(label="|<", style=discord.ButtonStyle.green, custom_id="first")

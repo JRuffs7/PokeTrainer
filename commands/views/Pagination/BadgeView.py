@@ -25,12 +25,10 @@ class BadgeView(BasePaginationView):
 		embed = discordservice.CreateEmbed(
 				self.title,
 				self.SingleEmbedDesc(data[0]) if self.pageLength == 1 else self.ListEmbedDesc(data),
-				TrainerColor)
-		if self.pageLength == 1:
-			embed.set_image(url=data[0].Sprite)
-		else:
-			embed.set_thumbnail(url=self.targetuser.display_avatar.url)
-		embed.set_footer(text=f"{self.currentPage}/{ceil(len(self.data)/self.pageLength)}")
+				TrainerColor,
+				image=(data[0].Sprite if self.pageLength == 1 else None),
+				thumbnail=(self.targetuser.display_avatar.url if self.pageLength > 1 else None),
+				footer=f"{self.currentPage}/{ceil(len(self.data)/self.pageLength)}")
 		await self.message.edit(embed=embed, view=self)
 
 	@discord.ui.button(label="|<", style=discord.ButtonStyle.green, custom_id="first")

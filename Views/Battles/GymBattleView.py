@@ -1,5 +1,3 @@
-import logging
-
 import discord
 from globals import BattleColor
 from Views.Battles.CpuBattleView import CpuBattleView
@@ -14,7 +12,6 @@ from services.utility import discordservice
 class GymBattleView(CpuBattleView):
 
 	def __init__(self, trainer: Trainer, leader: CpuTrainer):
-		self.battleLog = logging.getLogger('battle')
 		self.leader = leader
 		super(GymBattleView, self).__init__(trainer, self.leader.Name, self.leader.Team, False)
 		self.clear_items()
@@ -49,10 +46,14 @@ class GymBattleView(CpuBattleView):
 				rewardStr = f'<@{inter.user.id}> defeated **Gym leader {self.leader.Name}**!\nWon ${int(self.leader.Reward[1]/2)}!'
 			else:
 				rewardStr = f'<@{inter.user.id}> defeated **Gym leader {self.leader.Name}** and obtained the {gymservice.GetBadgeById(self.leader.BadgeId).Name} Badge!\nWon ${self.leader.Reward[1]}!'
-			embed = discordservice.CreateEmbed('Victory', rewardStr, BattleColor)
-			embed.set_thumbnail(url=gymservice.GetBadgeById(self.leader.BadgeId).Sprite)
 		else:
-			embed = discordservice.CreateEmbed('Defeat', f'<@{inter.user.id}> was defeated by **Gym leader {self.leader.Name}**.\nRan to the PokeCenter and revived your party.', BattleColor)
+			rewardStr = f'<@{inter.user.id}> was defeated by **Gym leader {self.leader.Name}**.\nRan to the PokeCenter and revived your party.'
+		
+		embed = discordservice.CreateEmbed(
+			'Victory' if self.victory else 'Defeat', 
+			rewardStr,
+			BattleColor, 
+			thumbnail=gymservice.GetBadgeById(self.leader.BadgeId).Sprite)
 		return await inter.followup.send(embed=embed, view=self, ephemeral=ephemeral)
 	
 	def CheckFainting(self, pokemon: Pokemon, data: PokemonData):

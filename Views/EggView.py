@@ -44,12 +44,10 @@ class EggView(discord.ui.View):
 		embed = discordservice.CreateEmbed(
 				f"{self.user.display_name}'s Egg List",
 				self.SingleEmbedDesc() if self.images else self.ListEmbedDesc(),
-				TrainerColor)
-		if self.images == 1:
-			embed.set_image(url=itemservice.GetEgg(self.trainer.Eggs[self.currentpage-1].EggId).Sprite)
-			embed.set_footer(text=f"{self.currentpage}/{len(self.trainer.Eggs)}")
-		else:
-			embed.set_thumbnail(url=self.user.display_avatar.url)
+				TrainerColor,
+				image=(itemservice.GetEgg(self.trainer.Eggs[self.currentpage-1].EggId).Sprite if self.images else None),
+				thumbnail=(self.user.display_avatar.url if not self.images else None),
+				footer=(f"{self.currentpage}/{len(self.trainer.Eggs)}" if self.images else None))
 		await self.message.edit(embed=embed, view=self)
 	
 	@defer

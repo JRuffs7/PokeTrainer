@@ -1,6 +1,6 @@
 import discord
 from table2ascii import table2ascii as t2a, PresetStyle, Alignment
-from globals import TradeColor
+from globals import TradeColor, botImage
 from middleware.decorators import defer
 
 from models.Trainer import Trainer
@@ -21,7 +21,6 @@ class TradeView(discord.ui.View):
 		self.targettradelist = targetTradeList
 		self.userdata = userData
 		self.targetdata = targetData
-		self.botimg = botimg
 		self.initial = True
 		super().__init__(timeout=30)
 		self.ownlist = OwnedSelector(self.usertradelist, 1, customId='ownedTradeList')
@@ -65,8 +64,8 @@ class TradeView(discord.ui.View):
 			embed = discordservice.CreateEmbed(
 				f'Trade Offer From {self.user.display_name}', 
 				f'__You Give__:\n{self.PrintPkmnDetails(self.targetpkmnchoice, self.targetdata)}\n\n__You Receive__:\n{self.PrintPkmnDetails(self.userpkmnchoice, self.userdata)}', 
-				TradeColor)
-			embed.set_thumbnail(url=self.botimg)
+				TradeColor,
+				thumbnail=botImage)
 			self.message = await inter.followup.send(content=f'<@{self.targettrainer.UserId}>', embed=embed, view=self, ephemeral=False)
 		else:
 			if inter.user.id != self.targettrainer.UserId:

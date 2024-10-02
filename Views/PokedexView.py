@@ -40,15 +40,17 @@ class PokedexView(discord.ui.View):
 	async def update_message(self):
 		data = self.get_currentPage_data()
 		dexCompletion = f'({len(self.trainer.Pokedex) if not self.dex else len(self.trainer.Formdex) if self.dex == 1 else len(self.trainer.Shinydex)}/{len(set(p.PokedexId for p in self.data)) if not self.dex else len(self.data) if not self.single else 1})'
+		if self.single and self.currentPage <= len([i for i in [data.Sprite, data.ShinySprite, data.SpriteFemale, data.ShinySpriteFemale] if i])
+			image = data.Sprite if self.currentPage == 1 else data.ShinySprite if self.currentPage == 2 else data.SpriteFemale if self.currentPage == 3 else data.ShinySpriteFemale
+		else:
+			image = None
 		embed = discordservice.CreateEmbed(
 				f"{self.targetuser.display_name}'s {'Pokedex' if not self.dex else 'Form Dex' if self.dex == 1 else 'Shiny Dex'} {dexCompletion}",
 				self.SingleEmbedDesc(data) if self.single else self.ListEmbedDesc(data),
-				TrainerColor)
-		if self.single and self.currentPage <= len([i for i in [data.Sprite, data.ShinySprite, data.SpriteFemale, data.ShinySpriteFemale] if i]):
-			embed.set_image(url=data.Sprite if self.currentPage == 1 else data.ShinySprite if self.currentPage == 2 else data.SpriteFemale if self.currentPage == 3 else data.ShinySpriteFemale)
-		else:
-			embed.set_thumbnail(url=self.targetuser.display_avatar.url)
-		embed.set_footer(text=f"{self.currentPage}/{ceil(len(self.data)/(1 if self.single else 10))}")
+				TrainerColor,
+				image=image,
+				thumbnail=(self.targetuser.display_avatar.url if not self.single else None),
+				footer=f'{self.currentPage}/{ceil(len(self.data)/(1 if self.single else 10))}')
 		await self.message.edit(embed=embed, view=self)
 
 	def get_currentPage_data(self):

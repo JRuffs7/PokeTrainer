@@ -31,16 +31,3 @@ class PokemonSelector(discord.ui.Select):
 	async def callback(self, inter: discord.Interaction):
 		await inter.response.defer()
 		await self.view.PokemonSelection(inter, self.values[0])
-
-class ItemSelector(discord.ui.Select):
-	def __init__(self, trainerItems: dict[str,int], items: list[Item]):
-			options=[discord.SelectOption(
-						label=f'{i.Name} ({trainerItems[str(i.Id)]} left)',
-            description= i.Description,
-						value=str(i.Id)
-					) for i in items]
-			super().__init__(options=options, max_values=1, min_values=1, placeholder='Choose Item')
-	
-	async def callback(self, inter: discord.Interaction):
-		await inter.response.defer()
-		await self.view.ItemSelection(inter, self.values[0])

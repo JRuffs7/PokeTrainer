@@ -1,5 +1,3 @@
-import logging
-
 import discord
 from globals import BattleColor, region_name
 from Views.Battles.CpuBattleView import CpuBattleView
@@ -7,14 +5,13 @@ from middleware.decorators import defer
 from models.Cpu import CpuTrainer
 from models.Pokemon import Pokemon, PokemonData
 from models.Trainer import Trainer
-from services import commandlockservice, gymservice, pokemonservice, trainerservice
+from services import commandlockservice, pokemonservice, trainerservice
 from services.utility import discordservice
 
 
 class EliteFourBattleView(CpuBattleView):
 
 	def __init__(self, trainer: Trainer, leader: CpuTrainer):
-		self.battleLog = logging.getLogger('battle')
 		self.leader = leader
 		super(EliteFourBattleView, self).__init__(trainer, self.leader.Name, self.leader.Team, False)
 		self.clear_items()
@@ -90,8 +87,7 @@ class EliteFourBattleView(CpuBattleView):
 				rewardStr += f'\n\nTo challenge the next Elite Four Member, use the **/elitefour** command again. Reminder, some commands are locked until you leave the challenge.'
 			else:
 				rewardStr += f'\n\nTo challenge the Elite Four Champion, use the **/elitefour** command again. Reminder, some commands are locked until you leave the challenge.'
-			embed = discordservice.CreateEmbed('Victory', rewardStr, BattleColor)
-			embed.set_thumbnail(url=self.leader.Sprite)
+			embed = discordservice.CreateEmbed('Victory', rewardStr, BattleColor, thumbnail=self.leader.Sprite)
 		else:
 			embed = discordservice.CreateEmbed('Defeat', f'<@{inter.user.id}> was defeated by **Elite Four {"Member" if self.leader.Id%5 != 0 else "Champion"} {self.leader.Name}**.\nRan to the PokeCenter and revived your party.', BattleColor)
 		return await inter.followup.send(embed=embed, view=self, ephemeral=ephemeral)

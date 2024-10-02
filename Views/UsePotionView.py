@@ -1,7 +1,6 @@
-import logging
 import discord
 
-from Views.Battles.BattleTools import ItemSelector, PokemonSelector
+from Views.Selectors import TeamSelector, ItemSelector
 from middleware.decorators import defer
 from models.Trainer import Trainer
 from services import commandlockservice, itemservice, pokemonservice, trainerservice
@@ -9,7 +8,6 @@ from services import commandlockservice, itemservice, pokemonservice, trainerser
 class UsePotionView(discord.ui.View):
 
 	def __init__(self, trainer: Trainer):
-		self.battleLog = logging.getLogger('battle')
 		self.trainer = trainer
 		self.trainerteam = trainerservice.GetTeam(trainer)
 		self.pkmndata = pokemonservice.GetPokemonByIdList([p.Pokemon_Id for p in self.trainerteam])
@@ -18,12 +16,12 @@ class UsePotionView(discord.ui.View):
 		super().__init__(timeout=300)
 		self.AddSelectors()
 
-	async def AddSelectors(self):
+	def AddSelectors(self):
 		for item in self.children:
 			if type(item) is not discord.ui.Button:
 				self.remove_item(item)
 		self.add_item(ItemSelector(self.trainer.Items, itemservice.GetTrainerPotions(self.trainer)))
-		self.add_item(PokemonSelector([p for p in self.trainerteam if p.CurrentHP > 0], self.pkmndata))
+		self.add_item(TeamSelector([p for p in self.trainerteam if p.CurrentHP > 0], descType=2))
 
 	async def on_timeout(self):
 		commandlockservice.DeleteLock(self.trainer.ServerId, self.trainer.UserId)
@@ -47,7 +45,7 @@ class UsePotionView(discord.ui.View):
 	async def submit_button(self, inter: discord.Interaction, button: discord.ui.Button):
 		message = None
 		if self.pkmnchoice and self.itemchoice:
-			if pokemonservice.TryUseItem(self.pkmnchoice, self.pkmnchoicedata, self.itemchoice):
+			if pokemonservice.TryUsePotion(self.pkmnchoice, self.pkmnchoicedata, self.itemchoice):
 				trainerservice.ModifyItemList(self.trainer, str(self.itemchoice.Id), -1)
 				trainerservice.UpsertTrainer(self.trainer)
 				message = f'Used a **{self.itemchoice.Name}** on {pokemonservice.GetPokemonDisplayName(self.pkmnchoice, self.pkmnchoicedata)}.'

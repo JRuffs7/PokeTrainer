@@ -1,8 +1,8 @@
 import math
 import uuid
-from math import ceil, floor
+from math import ceil
 from random import choice, uniform
-from models.Item import Item, Pokeball, Potion
+from models.Item import Candy, Item, Pokeball, Potion
 from models.Stat import StatEnum
 from models.Trainer import Trainer
 from models.enums import SpecialSpawn
@@ -101,15 +101,19 @@ def GetPokemonDisplayName(pokemon: Pokemon, pkmn: PokemonData = None, showGender
   shinyEmoji = f"{f'{ShinySign}' if pokemon.IsShiny else ''}" if showShiny else ""
   return f"{name}{genderEmoji}{shinyEmoji}"
 
-
-def GetOwnedPokemonDescription(pokemon: Pokemon, pkmnData: PokemonData = None):
-  pkmn = GetPokemonById(pokemon.Pokemon_Id) if not pkmnData else pkmnData
-  return f"Lvl. {pokemon.Level} | H:{pokemon.Height} | W:{pokemon.Weight} | Types: {'/'.join([statservice.GetType(t).Name for t in pkmn.Types])}"
+def GetOwnedPokemonDescription(pokemon: Pokemon, pkmnData: PokemonData = None, descType: int = 0):
+  data = GetPokemonById(pokemon.Pokemon_Id) if not pkmnData else pkmnData
+  match descType:
+    case 1: #Experience
+      return f"Lvl. {pokemon.Level} | XP: {pokemon.CurrentExp}/{NeededExperience(pokemon, data)}"
+    case 2: #Potion
+      return f"Lvl. {pokemon.Level} | HP: {pokemon.CurrentHP}/{statservice.GenerateStat(pokemon, data, StatEnum.HP)} | Ailment: {pokemon.CurrentAilment}"
+    case _:
+      return f"Lvl. {pokemon.Level} | H:{pokemon.Height} | W:{pokemon.Weight} | Types: {'/'.join([statservice.GetType(t).Name for t in data.Types])}"
 
 def GetBattlePokemonDescription(pokemon: Pokemon, pkmnData: PokemonData = None):
   pkmn = GetPokemonById(pokemon.Pokemon_Id) if not pkmnData else pkmnData
   return f"Lvl {pokemon.Level} | HP: {pokemon.CurrentHP}/{statservice.GenerateStat(pokemon, pkmnData, StatEnum.HP)} | Types: {'/'.join([statservice.GetType(t).Name for t in pkmn.Types])} | Ailment: {statservice.GetAilment(pokemon.CurrentAilment).Name.upper() if pokemon.CurrentAilment else ' - '}"
-
 
 def GetPokemonImage(pokemon: Pokemon, pkmnData: PokemonData = None):
   pkmn = GetPokemonById(pokemon.Pokemon_Id) if not pkmnData else pkmnData
@@ -376,7 +380,7 @@ def HealPokemon(pokemon: Pokemon, data: PokemonData):
   for m in pokemon.LearnedMoves:
     m.PP = moveservice.GetMoveById(m.MoveId).BasePP
 
-def TryUseItem(pokemon: Pokemon, data: PokemonData, potion: Potion):
+def TryUsePotion(pokemon: Pokemon, data: PokemonData, potion: Potion):
   used = False
   if pokemon.CurrentHP < statservice.GenerateStat(pokemon, data, StatEnum.HP):
     used = True
@@ -386,5 +390,26 @@ def TryUseItem(pokemon: Pokemon, data: PokemonData, potion: Potion):
     used = True
     pokemon.CurrentAilment = None
   return used
+
+def TryUseCandy(pokemon: Pokemon, data: PokemonData, candy: Candy, amount: int):
+  num = 0
+  if candy.Experience == None:
+    while num < amount and pokemon.Level < 100:
+      AddExperience(
+        pokemon, 
+        data, 
+        (NeededExperience(pokemon, data) - pokemon.CurrentExp))
+      num += 1
+  else:
+    while num < amount and pokemon.Level < 100:
+      nextLevel = NeededExperience(pokemon, data) - pokemon.CurrentExp
+      numToNextLvl = ceil(nextLevel/candy.Experience)
+      numToUse = min(numToNextLvl, amount, amount - num)
+      AddExperience(
+        pokemon, 
+        data, 
+        candy.Experience*numToUse)
+      num += numToUse
+  return num
 
 #endregion

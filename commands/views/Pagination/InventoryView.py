@@ -37,9 +37,9 @@ class InventoryView(discord.ui.View):
 		embed = discordservice.CreateEmbed(
 				f'{self.interaction.user.display_name}s Inventory',
 				desc,
-				TrainerColor)
-		embed.set_thumbnail(url=self.interaction.user.display_avatar.url)
-		embed.set_footer(text=f'{self.currentPage+1}/4')
+				TrainerColor,
+				thumbnail=self.interaction.user.display_avatar.url,
+				footer=f'{self.currentPage+1}/4')
 		await self.message.edit(embed=embed, view=self)
 
 	@defer

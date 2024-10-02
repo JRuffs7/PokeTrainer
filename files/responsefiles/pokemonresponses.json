@@ -32,11 +32,11 @@
 	"givecandy": [
 		{
 			"Title": "No Candies",
-			"Body": "You do not have any candies to give to your Pokemon. You can buy some through the **/shop**."
+			"Body": "You do not have any candies to give to your Pokemon. You can find them from fighting wild Pokemon with **/spawn**."
 		},
 		{
-			"Title": "Cannot Give Candy",
-			"Body": "You do not own any **{0}** to give a candy to. Try again."
+			"Title": "No Available Pokemon",
+			"Body": "All Pokemon in your party are Level 100! Switch them out to lower levels using **/modifyteam** and try again."
 		}
 	],
 	"hatch": [
