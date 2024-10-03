@@ -1,7 +1,7 @@
 from discord import app_commands, Interaction
 from discord.ext import commands
 from Views.ShopView import ShopView
-from middleware.decorators import command_lock, method_logger, trainer_check
+from middleware.decorators import command_lock, elitefour_check, method_logger, trainer_check
 from models.Move import MoveData
 from services import commandlockservice, itemservice, moveservice, trainerservice
 from services.utility import discordservice_shop
@@ -50,6 +50,7 @@ class ShopCommands(commands.Cog, name="ShopCommands"):
   @app_commands.autocomplete(item=buy_autocomplete)
   @method_logger(False)
   @trainer_check
+  @elitefour_check
   @command_lock
   async def buy(self, inter: Interaction, item: str, amount: int):
     if item == 'n/a':
@@ -103,6 +104,7 @@ class ShopCommands(commands.Cog, name="ShopCommands"):
   @app_commands.autocomplete(item=sell_autocomplete)
   @method_logger(False)
   @trainer_check
+  @elitefour_check
   @command_lock
   async def sell(self, inter: Interaction, item: str, amount: int):
     if item == 'n/a':

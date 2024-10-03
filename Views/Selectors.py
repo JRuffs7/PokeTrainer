@@ -6,7 +6,7 @@ from models.Pokemon import Pokemon
 from services import pokemonservice
 
 class PokemonSelector(discord.ui.Select):
-	def __init__(self, owned: list[Pokemon], defaultId: str = None, descType: int = 0):
+	def __init__(self, owned: list[Pokemon], defaultId: str = None, descType: int = 0, customId: str = None):
 		pkmnData = pokemonservice.GetPokemonByIdList([t.Pokemon_Id for t in owned])
 		options=[discord.SelectOption(
 			label=pokemonservice.GetPokemonDisplayName(t, next(p for p in pkmnData if t.Pokemon_Id == p.Id)),
@@ -14,7 +14,7 @@ class PokemonSelector(discord.ui.Select):
 			value=t.Id,
 			default=(defaultId and t.Id == defaultId)
 		) for t in owned]
-		super().__init__(options=options, placeholder='Select Pokemon')
+		super().__init__(options=options, placeholder='Select Pokemon', custom_id=(customId or discord.utils.MISSING))
 	
 	@defer
 	async def callback(self, inter: discord.Interaction):

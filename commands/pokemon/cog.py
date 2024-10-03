@@ -224,6 +224,7 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
   @app_commands.autocomplete(pokemon=autofill_boxpkmn)
   @method_logger(True)
   @trainer_check
+  @elitefour_check
   async def daycare(self, inter: Interaction, user: Member|None = None, pokemon: int|None = None):
     if not user or user.id == inter.user.id:
       if commandlockservice.IsLocked(inter.guild.id, inter.user.id):
