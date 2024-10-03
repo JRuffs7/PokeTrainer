@@ -1,9 +1,7 @@
-from math import ceil
 import discord
 
 from globals import Dexmark, TrainerColor
 from middleware.decorators import defer
-from models.Egg import TrainerEgg
 from models.Trainer import Trainer
 from services import commandlockservice, itemservice, pokemonservice, trainerservice
 from services.utility import discordservice
@@ -15,7 +13,7 @@ class EggView(discord.ui.View):
 		self.user = user
 		self.trainer = trainer
 		self.owneggs = ownEggs
-		self.currentpage = 1
+		self.currentpage = 0
 		self.images = images
 		super().__init__(timeout=300)
 		if self.images:
@@ -35,8 +33,13 @@ class EggView(discord.ui.View):
 			htchbtn = discord.ui.Button(label="Hatch All", style=discord.ButtonStyle.green)
 			htchbtn.callback = self.hatch_button
 			self.add_item(htchbtn)
+		clsbtn = discord.ui.Button(label="Close", style=discord.ButtonStyle.gray)
+		clsbtn.callback = self.close_button
+		self.add_item(clsbtn)
 
 	async def on_timeout(self):
+		if self.owneggs:
+			commandlockservice.DeleteLock(self.trainer.ServerId, self.trainer.UserId)
 		await self.message.delete(delay=0.1)
 		return await super().on_timeout()
 
@@ -47,29 +50,32 @@ class EggView(discord.ui.View):
 				TrainerColor,
 				image=(itemservice.GetEgg(self.trainer.Eggs[self.currentpage-1].EggId).Sprite if self.images else None),
 				thumbnail=(self.user.display_avatar.url if not self.images else None),
-				footer=(f"{self.currentpage}/{len(self.trainer.Eggs)}" if self.images else None))
+				footer=(f"{self.currentpage+1}/{len(self.trainer.Eggs)}" if self.images else None))
 		await self.message.edit(embed=embed, view=self)
 	
+	@defer
+	async def close_button(self, inter: discord.Interaction):
+		await self.on_timeout()
+
 	@defer
 	async def page_button(self, inter: discord.Interaction):
 		if inter.data['custom_id'] == 'prev':
 			self.currentpage -= 1
 		else:
 			self.currentpage += 1
-		self.prevBtn.disabled = self.currentpage == 1
-		self.nextBtn.disabled = self.currentpage == len(self.trainer.Eggs)
+		self.prevBtn.disabled = self.currentpage == 0
+		self.nextBtn.disabled = self.currentpage == (len(self.trainer.Eggs)-1)
 		await self.update_message()
 
 	@defer
 	async def hatch_button(self, inter: discord.Interaction):
-		if not self.owneggs:
+		if not self.owneggs or inter.user.id != self.user.id:
 			return
-		if commandlockservice.IsLocked(self.trainer.ServerId, self.trainer.UserId):
-			return await self.message.edit(content=f'You are in the middle of another interaction. Complete that operation, then try again.')
-		
+	
+		commandlockservice.DeleteLock(self.trainer.ServerId, self.trainer.UserId)
 		hatchMessage = None
 		if self.images:
-			egg = self.trainer.Eggs[self.currentpage-1]
+			egg = self.trainer.Eggs[self.currentpage]
 			hatch = trainerservice.TryHatchEgg(self.trainer, egg.Id)
 			if hatch:
 				hatchMessage = f'{itemservice.GetEgg(egg.EggId).Name} hatched into a **{pokemonservice.GetPokemonDisplayName(hatch)}**'
@@ -83,16 +89,15 @@ class EggView(discord.ui.View):
 				hatchMessage = '\n'.join(hatchArr)
 		
 		if hatchMessage:
-			commandlockservice.DeleteLock(self.trainer.ServerId, self.trainer.UserId)
-			trainerservice.UpsertTrainer(self.trainer)
 			self.clear_items()
+			trainerservice.UpsertTrainer(self.trainer)
 			await self.message.edit(content=hatchMessage, embeds=[], view=None)
 			self.stop()
 		else:
 			await self.message.edit(content=f'Nothing to hatch! Progress your eggs by using the **/spawn** command!')
 
 	def SingleEmbedDesc(self):
-		egg = self.trainer.Eggs[self.currentpage-1]
+		egg = self.trainer.Eggs[self.currentpage]
 		eggData = itemservice.GetEgg(egg.EggId)
 		return f'**__{eggData.Name}{f" {Dexmark}" if egg.SpawnCount == eggData.SpawnsNeeded else ""}__**\nGeneration: {egg.Generation}\nProgress (/spawn): {egg.SpawnCount}/{eggData.SpawnsNeeded}'
 

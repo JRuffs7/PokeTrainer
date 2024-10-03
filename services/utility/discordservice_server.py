@@ -9,47 +9,38 @@ errorLog = logging.getLogger('error')
 
 responseFile = "files/responsefiles/serverresponses.json"
 
-async def PrintRegisterResponse(interaction: Interaction, serv: Server | None):
+async def PrintRegisterResponse(interaction: Interaction, response: int, params: list):
 	return await discordservice.SendCommandResponse(
 		interaction=interaction, 
 		filename=responseFile, 
 		command='register', 
-		responseInd=0 if serv else 1, 
-		color=ServerColor if serv else ErrorColor, 
-		params=[serv.ServerName, serv.ChannelId, serv.CurrentEvent.EventName if serv.CurrentEvent else ''])
+		responseInd=response, 
+		color=ServerColor if params else ErrorColor, 
+		params=params)
 
-async def PrintServerResponse(interaction: Interaction, serv: Server):
+async def PrintServerResponse(interaction: Interaction, response: int, params: list):
 	return await discordservice.SendCommandResponse(
 		interaction=interaction, 
 		filename=responseFile, 
 		command='server', 
-		responseInd=0, 
+		responseInd=response, 
 		color=ServerColor, 
-		params=[serv.ServerName, serv.ChannelId, serv.CurrentEvent.EventName if serv.CurrentEvent else ''])
+		params=params)
 
-async def PrintSwapChannelResponse(interaction: Interaction, response: bool):
-	return await discordservice.SendCommandResponse(
-		interaction=interaction, 
-		filename=responseFile, 
-		command='swapchannel', 
-		responseInd=0 if response else 1, 
-		color=ServerColor, 
-		params=[])
-
-async def PrintUnregisterResponse(interaction: Interaction):
+async def PrintUnregisterResponse(interaction: Interaction, response: int, params: list):
 	return await discordservice.SendCommandResponse(
 		interaction=interaction, 
 		filename=responseFile, 
 		command='unregister', 
-		responseInd=0, 
+		responseInd=response, 
 		color=ServerColor, 
-		params=[])
+		params=params)
 
-async def PrintInviteResponse(interaction: Interaction):
+async def PrintInviteResponse(interaction: Interaction, response: int, params: list):
 	return await discordservice.SendCommandResponse(
 		interaction=interaction, 
 		filename=responseFile, 
 		command='invite', 
-		responseInd=0, 
+		responseInd=response, 
 		color=ServerColor, 
-		params=[])
+		params=params)

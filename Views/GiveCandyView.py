@@ -1,6 +1,6 @@
 import discord
 
-from Views.Selectors import AmountSelector, TeamSelector, ItemSelector
+from Views.Selectors import AmountSelector, PokemonSelector, ItemSelector
 from middleware.decorators import defer
 from models.Trainer import Trainer
 from services import commandlockservice, itemservice, pokemonservice, trainerservice
@@ -21,7 +21,7 @@ class GiveCandyView(discord.ui.View):
 			if type(item) is not discord.ui.Button:
 				self.remove_item(item)
 		self.add_item(ItemSelector(self.trainer.Items, itemservice.GetTrainerCandy(self.trainer)))
-		self.add_item(TeamSelector([p for p in self.trainerteam if p.Level < 100], descType=1))
+		self.add_item(PokemonSelector([p for p in self.trainerteam if p.Level < 100], descType=1))
 		self.add_item(AmountSelector())
 
 	async def on_timeout(self):

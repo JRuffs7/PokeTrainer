@@ -13,7 +13,7 @@ from commands.views.DeleteView import DeleteView
 
 from middleware.decorators import command_lock, method_logger, trainer_check
 from services import commandlockservice, gymservice, pokemonservice, trainerservice, itemservice
-from services.utility import discordservice, discordservice_trainer
+from services.utility import discordservice, discordservice_permission, discordservice_trainer
 
 
 class TrainerCommands(commands.Cog, name="TrainerCommands"):
@@ -63,12 +63,15 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
   async def myeggs(self, inter: Interaction,
                    images: app_commands.Choice[int] | None,
                    user: Member | None):
-    if not user:
-      user = inter.user
+    if not user or user.id == inter.user.id:
+      if commandlockservice.IsLocked(inter.guild.id, inter.user.id):
+        return await discordservice_permission.SendError(inter, 'commandlock')
+      commandlockservice.AddLock(inter.guild.id, inter.user.id)
+      
     trainer = trainerservice.GetTrainer(inter.guild_id, user.id if user else inter.user.id)
-    if not trainer.Eggs:
+    if len(trainer.Eggs) == 0:
       return await discordservice_trainer.PrintMyEggsResponse(inter, 0, []) 
-    await EggView(user, trainer, images != None, user.id == inter.user.id).send(inter)
+    await EggView(user if user else inter.user, trainer, images != None, (user.id == inter.user.id) if user else True).send(inter)
 
   @app_commands.command(name="inventory",
                         description="Displays trainer inventory.")

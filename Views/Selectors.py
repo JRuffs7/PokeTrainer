@@ -5,16 +5,15 @@ from models.Item import Item
 from models.Pokemon import Pokemon
 from services import pokemonservice
 
-
-class TeamSelector(discord.ui.Select):
-	def __init__(self, team: list[Pokemon], defaultId: str = None, descType: int = 0):
-		pkmnData = pokemonservice.GetPokemonByIdList([t.Pokemon_Id for t in team])
+class PokemonSelector(discord.ui.Select):
+	def __init__(self, owned: list[Pokemon], defaultId: str = None, descType: int = 0):
+		pkmnData = pokemonservice.GetPokemonByIdList([t.Pokemon_Id for t in owned])
 		options=[discord.SelectOption(
 			label=pokemonservice.GetPokemonDisplayName(t, next(p for p in pkmnData if t.Pokemon_Id == p.Id)),
 			description= pokemonservice.GetOwnedPokemonDescription(t, next(p for p in pkmnData if t.Pokemon_Id == p.Id), descType),
 			value=t.Id,
 			default=(defaultId and t.Id == defaultId)
-		) for t in team]
+		) for t in owned]
 		super().__init__(options=options, placeholder='Select Pokemon')
 	
 	@defer

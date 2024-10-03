@@ -308,6 +308,9 @@ def TradePokemon(trainerOne: Trainer, pokemonOne: Pokemon, trainerTwo: Trainer, 
 def GetTeam(trainer: Trainer):
   return [next(p for p in trainer.OwnedPokemon if p.Id == pokeId) for pokeId in trainer.Team]
 
+def GetDaycare(trainer: Trainer):
+  return [next(p for p in trainer.OwnedPokemon if p.Id == pokeId) for pokeId in trainer.Daycare]
+
 def SetTeamSlot(trainer: Trainer, slotNum: int, pokemonId: str):
   #swapping
   if pokemonId in trainer.Team:

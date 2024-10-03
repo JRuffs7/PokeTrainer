@@ -1,6 +1,6 @@
 from random import choice
 import discord
-from Views.Selectors import TeamSelector, EvolveSelector
+from Views.Selectors import PokemonSelector, EvolveSelector
 from globals import SuccessColor
 from middleware.decorators import defer
 
@@ -19,7 +19,7 @@ class EvolveView(discord.ui.View):
 		self.evolvechoice = None
 		self.randomidlist = None
 		super().__init__(timeout=300)
-		self.ownlist = TeamSelector(evolveMon)
+		self.ownlist = PokemonSelector(evolveMon)
 		self.add_item(self.ownlist)
 
 	async def on_timeout(self):
@@ -39,7 +39,7 @@ class EvolveView(discord.ui.View):
 		self.pokemonchoice = next(p for p in self.evolveMon if p.Id == choice)
 		self.pkmnChoiceData = pokemonservice.GetPokemonById(self.pokemonchoice.Pokemon_Id)
 		self.evolvechoice = None
-		self.ownlist = TeamSelector(self.evolveMon, choice)
+		self.ownlist = PokemonSelector(self.evolveMon, choice)
 		availableList = pokemonservice.GetPokemonByIdList(pokemonservice.AvailableEvolutions(self.pokemonchoice, self.pkmnChoiceData, trainerservice.GetTrainerItemList(self.trainer)))
 		if self.pkmnChoiceData.RandomEvolve and len(availableList) > 1:
 			self.randomidlist = pokemonservice.GetRandomEvolveList(self.pkmnChoiceData, [a.Id for a in availableList])

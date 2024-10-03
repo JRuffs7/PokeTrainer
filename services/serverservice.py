@@ -5,16 +5,22 @@ from models.Server import Server
 from services import eventservice, pokemonservice
 
 
-def RegisterServer(serverId, channelId, serverName):
+def RegisterServer(serverId: int, channelId: int, serverName: str):
   if serverId is None or channelId is None:
     return None
-  serv = Server.from_dict({
+  
+  currServ = GetServer(serverId)
+  if currServ:
+    currServ.ChannelId = channelId
+    currServ.ServerName = serverName
+  else:
+    currServ = Server.from_dict({
       'ServerId': serverId,
       'ServerName': serverName,
       'ChannelId': channelId,
-  })
-  UpsertServer(serv)
-  return serv
+    })
+  UpsertServer(currServ)
+  return currServ
 
 #region Data
 

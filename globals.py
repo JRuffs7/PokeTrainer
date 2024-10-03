@@ -33,6 +33,8 @@ DateFormat = '%m/%d/%y %H:%M:%S'
 ShortDateFormat = '%m/%d/%Y'
 
 botImage = 'https://imgur.com/MIfTed5.png'
+discordLink = 'https://discord.com/invite/W9T4K7fyYu'
+topggLink = 'https://top.gg/bot/1151657435073875988'
 
 AdminList = [
   215624857793069056

@@ -1,11 +1,12 @@
-from discord import Member, app_commands, Interaction
+from discord import Member, User, app_commands, Interaction
 from discord.ext import commands
 from typing import List
 from Views.Battles.WildBattleView import WildBattleView
+from Views.DayCareView import DayCareAddView, DayCareView
 from Views.GiveCandyView import GiveCandyView
 from Views.PokedexView import PokedexView
 from Views.UsePotionView import UsePotionView
-from commands.autofills.autofills import autofill_nonteam, autofill_owned, autofill_pokemon
+from commands.autofills.autofills import autofill_boxpkmn, autofill_nonteam, autofill_owned, autofill_pokemon
 from commands.views.Pagination.DaycareView import DaycareView
 from commands.views.Pagination.PokemonSearchView import PokemonSearchView
 from commands.views.Selection.DaycareAddView import DaycareAddView
@@ -17,7 +18,7 @@ from globals import PokemonColor, botImage
 from middleware.decorators import command_lock, elitefour_check, method_logger, trainer_check
 from services import commandlockservice, gymservice, itemservice, pokemonservice, statservice, trainerservice, typeservice
 from middleware.decorators import method_logger, trainer_check
-from services.utility import discordservice, discordservice_pokemon
+from services.utility import discordservice, discordservice_permission, discordservice_pokemon
 
 
 class PokemonCommands(commands.Cog, name="PokemonCommands"):
@@ -219,33 +220,35 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
 
 
   @app_commands.command(name="daycare",
-                        description="Add to or check on your daycare.")
-  @app_commands.autocomplete(pokemon=autofill_nonteam)
-  @method_logger(False)
+                        description="Add to or check on the daycare.")
+  @app_commands.autocomplete(pokemon=autofill_boxpkmn)
+  @method_logger(True)
   @trainer_check
-  @command_lock
-  async def daycare(self, inter: Interaction, pokemon: int|None):
-    trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
+  async def daycare(self, inter: Interaction, user: Member|None = None, pokemon: int|None = None):
+    if not user or user.id == inter.user.id:
+      if commandlockservice.IsLocked(inter.guild.id, inter.user.id):
+        return await discordservice_permission.SendError(inter, 'commandlock')
+      commandlockservice.AddLock(inter.guild.id, inter.user.id)
 
     #Viewing Daycare
     if not pokemon:
+      trainer = trainerservice.GetTrainer(inter.guild_id, user.id if user else inter.user.id)
       if len(trainer.Daycare) == 0:
-        await discordservice_pokemon.PrintDaycareResponse(inter, 0, [])
+        return await discordservice_pokemon.PrintDaycareResponse(inter, 0 if user else 1, [user.display_name] if user else [])
       else:
-        return await DaycareView(inter, trainer).send()
+        return await DayCareView(user if user else inter.user, trainer, (user.id == inter.user.id) if user else True).send(inter)
+      
+    #Adding To Daycare
     else:
-      #Adding To Daycare
-      #Kalos Reward
-      if len(trainer.Daycare) >= (4 if trainerservice.HasRegionReward(trainer, 6) else 2):
-        await discordservice_pokemon.PrintDaycareResponse(inter, 1, [])
+      trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
+      if len(trainer.Daycare) >= 2:
+        return await discordservice_pokemon.PrintDaycareResponse(inter, 2, [])
       else:
         pokeList = [p for p in trainer.OwnedPokemon if p.Pokemon_Id == pokemon]
         if not pokeList:
           pkmn = pokemonservice.GetPokemonById(pokemon)
-          await discordservice_pokemon.PrintDaycareResponse(inter, 2, [pkmn.Name] if pkmn else ['N/A'])
-        else:
-          return await DaycareAddView(inter, trainer, pokeList).send()
-    commandlockservice.DeleteLock(inter.guild_id, inter.user.id)
+          return await discordservice_pokemon.PrintDaycareResponse(inter, 3, [pkmn.Name] if pkmn else ['N/A'])
+        return await DayCareAddView(trainer, pokeList).send(inter)
 
   #endregion
 

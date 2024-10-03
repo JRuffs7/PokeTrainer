@@ -1,6 +1,6 @@
 import discord
 
-from Views.Selectors import TeamSelector, ItemSelector
+from Views.Selectors import PokemonSelector, ItemSelector
 from middleware.decorators import defer
 from models.Trainer import Trainer
 from services import commandlockservice, itemservice, pokemonservice, trainerservice
@@ -21,7 +21,7 @@ class UsePotionView(discord.ui.View):
 			if type(item) is not discord.ui.Button:
 				self.remove_item(item)
 		self.add_item(ItemSelector(self.trainer.Items, itemservice.GetTrainerPotions(self.trainer)))
-		self.add_item(TeamSelector([p for p in self.trainerteam if p.CurrentHP > 0], descType=2))
+		self.add_item(PokemonSelector([p for p in self.trainerteam if p.CurrentHP > 0], descType=2))
 
 	async def on_timeout(self):
 		commandlockservice.DeleteLock(self.trainer.ServerId, self.trainer.UserId)

@@ -12,7 +12,11 @@
 	"daycare": [
 		{
 			"Title": "Daycare Empty",
-			"Body": "You have no Pokemon currently in your daycare. To add a Pokemon, specify one when running this command."
+			"Body": "{0} has no Pokemon currently in their daycare."
+		},
+		{
+			"Title": "Daycare Empty",
+			"Body": "You have no Pokemon currently in your daycare. To add a Pokemon, specify the 'pokemon' parameter when running this command."
 		},
 		{
 			"Title": "Cannot Add To Daycare",

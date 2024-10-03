@@ -3,7 +3,7 @@ from models.Trainer import Trainer
 from services import missionservice, pokemonservice, gymservice, trainerservice
 from services.utility import discordservice
 from discord import Interaction, Member
-from globals import ShortDateFormat, TrainerColor, region_name
+from globals import ShortDateFormat, TrainerColor, region_name, topggLink, discordLink
 
 responseFile = "files/responsefiles/trainerresponses.json"
 
@@ -112,7 +112,7 @@ async def PrintDaily(interaction: Interaction, success: bool, boosted: bool, fre
 		command='daily', 
 		responseInd=responseID+2 if freeMasterball else responseID, 
 		color=TrainerColor, 
-		params=['20' if boosted else '10', '500' if boosted else '200', missionStr, eggName])
+		params=['20' if boosted else '10', '500' if boosted else '200', missionStr, eggName, topggLink, discordLink])
 
 async def PrintMyEggsResponse(inter: Interaction, response: int, params: list):
 	return await discordservice.SendCommandResponse(

@@ -1,5 +1,4 @@
 import asyncio
-from datetime import datetime
 import logging
 import os
 from random import choice
@@ -8,7 +7,7 @@ import discord
 from discord.ext import commands, tasks
 from commands.views.Events.SpecialBattleEventView import SpecialBattleEventView
 from commands.views.Events.SpecialSpawnEventView import SpecialSpawnEventView
-from globals import HelpColor, eventtimes
+from globals import HelpColor, eventtimes, discordLink, topggLink
 from models.Server import Server
 from models.enums import EventType
 
@@ -41,7 +40,7 @@ async def StartBot():
           updateStr = file.read()
       os.remove('updatefile.txt')
       if updateStr:
-        updateStr += "\n\nCheck out recent updates in more detail by using **/help update**\n\nFeel free to report any issues to the [Discord Server](https://discord.com/invite/W9T4K7fyYu)\n\nDon't forget to upvote at https://top.gg/bot/1151657435073875988"
+        updateStr += f"\n\nCheck out recent updates in more detail by using **/help update**\n\nFeel free to report any issues to the [Discord Server]({discordLink})\n\nDon't forget to [Upvote the Bot]({topggLink})!"
         allServers = serverservice.GetAllServers()
         for server in allServers:
           asyncio.run_coroutine_threadsafe(MessageThread(discordservice.CreateEmbed('New Update', updateStr, HelpColor), server), discordBot.loop)
