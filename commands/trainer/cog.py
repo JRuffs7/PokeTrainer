@@ -1,6 +1,7 @@
 from datetime import datetime
 from discord import Member, app_commands, Interaction
 from discord.ext import commands
+from Views.TrainerView import TrainerView
 from commands.views.Pagination.InventoryView import InventoryView
 from globals import HelpColor, TrainerColor, freemasterball
 from commands.autofills.autofills import autofill_nonteam, autofill_owned, autofill_types
@@ -27,12 +28,10 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
                         description="Displays trainer info.")
   @method_logger(False)
   @trainer_check
-  async def trainer(self,
-                        interaction: Interaction,
-                        member: Member | None = None):
-    targetUser = member if member else interaction.user
-    trainer = trainerservice.GetTrainer(interaction.guild_id, targetUser.id)
-    return await discordservice_trainer.PrintTrainer(interaction, trainer, targetUser)
+  async def trainer(self, inter: Interaction, user: Member|None = None):
+    targetUser = user if user else inter.user
+    trainer = trainerservice.GetTrainer(inter.guild_id, targetUser.id)
+    return await TrainerView(targetUser, trainer).send(inter)
 
   @app_commands.command(name="daily",
                         description="Claim your daily reward.")

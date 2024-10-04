@@ -45,12 +45,12 @@ def GetAllStats():
 def GetStat(id: int):
 	return next(t for t in GetAllStats() if t.Id == id)
 
-def GenerateStat(pokemon: Pokemon, data: PokemonData, stat: StatEnum):
+def GenerateStat(pokemon: Pokemon, data: PokemonData, stat: StatEnum, statChanges: dict[str,int] = {}):
 	if stat == StatEnum.HP:
 		if pokemon.Pokemon_Id == 292: #Shedinja
 			return 1
 		iv = GetIV(pokemon, 'hp')
-		base = GetBaseStat(data, 'hp')
+		base = GetBaseStat(data, 'hp') + (statChanges[str(stat.value)] if statChanges and str(stat.value) in statChanges else 0)
 		ev = 0
 		return math.floor((((2 * base) + iv + math.floor(ev/4)) * pokemon.Level)/100) + pokemon.Level + 10
 	else:

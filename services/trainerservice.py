@@ -46,10 +46,27 @@ def StartTrainer(pokemon: PokemonData, serverId: int, userId: int):
 
 #endregion
 
+#region Completion
+
+def RegionCompleted(trainer: Trainer, region: int):
+  if region not in trainer.EliteFour:
+    return False
+  if [g for g in gymservice.GetBadgesByRegion(region) if g.Id not in trainer.Badges]:
+    return False
+  regionDex = pokemonservice.GetPokemonByRegion(region)
+  if [p for p in regionDex if p.Id not in trainer.Formdex]:
+    return False
+  return True
+
+#endregion
+
 #region Inventory/Items
 
+def CanUseDaily(trainer: Trainer):
+  return (not trainer.LastDaily) or (datetime.strptime(trainer.LastDaily, ShortDateFormat).date() < datetime.now(UTC).date()) or (trainer.UserId in AdminList)
+
 def TryDaily(trainer: Trainer, freeMasterball: bool):
-  if (not trainer.LastDaily or datetime.strptime(trainer.LastDaily, ShortDateFormat).date() < datetime.now(UTC).date()) or trainer.UserId in AdminList:
+  if CanUseDaily(trainer):
     trainer.LastDaily = datetime.now(UTC).strftime(ShortDateFormat)
     trainer.DailyMission = TrainerMission.from_dict({
       'Progress': 0,

@@ -50,7 +50,7 @@ def ShouldSwitchPokemon(battle: CpuBattle, cpuTeam: list[Pokemon]):
 		return None
 	
 	#Pokemon is about to kill the opponent
-	if statservice.GenerateStat(battle.TeamBPkmn, next(po for po in battle.AllPkmnData if po.Id == battle.TeamBPkmn.Pokemon_Id), StatEnum.Speed) > statservice.GenerateStat(battle.TeamAPkmn, next(po for po in battle.AllPkmnData if po.Id == battle.TeamAPkmn.Pokemon_Id), StatEnum.Speed):
+	if statservice.GenerateStat(battle.TeamBPkmn, next(po for po in battle.AllPkmnData if po.Id == battle.TeamBPkmn.Pokemon_Id), StatEnum.Speed, battle.TeamBStats) > statservice.GenerateStat(battle.TeamAPkmn, next(po for po in battle.AllPkmnData if po.Id == battle.TeamAPkmn.Pokemon_Id), StatEnum.Speed, battle.TeamAStats):
 		for m in battle.TeamBPkmn.LearnedMoves:
 			mData = next(mo for mo in battle.AllMoveData if mo.Id == m.MoveId)
 			if m.PP == 0 or not mData.Power:
@@ -89,26 +89,24 @@ def ShouldSwitchPokemon(battle: CpuBattle, cpuTeam: list[Pokemon]):
 	return None
 
 def BestSwapChoice(opponent: Pokemon, options: list[Pokemon], battle: CpuBattle):
-	data = battle.AllPkmnData
-	moveData = battle.AllMoveData
-	oppData = next(p for p in data if p.Id == opponent.Pokemon_Id)
+	oppData = next(p for p in battle.AllPkmnData if p.Id == opponent.Pokemon_Id)
 	selectedPokemon = None
 	selectedValue = 0
 	for p in options:
 		newValue = 0
-		pData = next(po for po in data if po.Id == p.Pokemon_Id)
-		spdA = statservice.GenerateStat(opponent, oppData, StatEnum.Speed)
+		pData = next(po for po in battle.AllPkmnData if po.Id == p.Pokemon_Id)
+		spdA = statservice.GenerateStat(opponent, oppData, StatEnum.Speed, battle.TeamAStats)
 		spdB = statservice.GenerateStat(p, pData, StatEnum.Speed)
 
 		for m in [mo for mo in opponent.LearnedMoves if mo.PP > 0]:
-			mData = next(mo for mo in moveData if mo.Id == m.MoveId)
+			mData = next(mo for mo in battle.AllMoveData if mo.Id == m.MoveId)
 			if mData.Power:
 				simAttack,crit = battleservice.AttackDamage(mData, deepcopy(opponent), deepcopy(p), battle)
 				while crit and mData.CritRate <= 1:
 					simAttack,crit = battleservice.AttackDamage(mData, deepcopy(opponent), deepcopy(p), battle)
 				if simAttack > p.CurrentHP:
 					newValue -= 100
-				elif simAttack > p.CurrentHP/2 and (mData.Priority > max([next(mov for mov in moveData if mov.Id == mo.MoveId).Priority for mo in p.LearnedMoves if m.PP > 0]) or spdA >= spdB):
+				elif simAttack > p.CurrentHP/2 and (mData.Priority > max([next(mov for mov in battle.AllMoveData if mov.Id == mo.MoveId).Priority for mo in p.LearnedMoves if m.PP > 0]) or spdA >= spdB):
 					newValue -= 50
 				else:
 					newValue += (4 - typeservice.AttackEffect(mData.MoveType, pData.Types))
@@ -121,7 +119,7 @@ def BestSwapChoice(opponent: Pokemon, options: list[Pokemon], battle: CpuBattle)
 			newValue += (p.Level - opponent.Level) if p.Level < opponent.Level else (p.Level - opponent.Level)/2
 
 		for m in [mo for mo in p.LearnedMoves if mo.PP > 0]:
-			newValue += typeservice.AttackEffect(next(mo for mo in moveData if mo.Id == m.MoveId).MoveType, oppData.Types)
+			newValue += typeservice.AttackEffect(next(mo for mo in battle.AllMoveData if mo.Id == m.MoveId).MoveType, oppData.Types)
 		
 		newValue += statservice.GenerateStat(p, pData, StatEnum.HP)
 		newValue += statservice.GenerateStat(p, pData, StatEnum.Attack)

@@ -182,7 +182,7 @@ class CpuBattleView(discord.ui.View):
 			self.itemchoice = itemservice.GetPotion(int(choice))
 			available = []
 			for p in self.trainerteam:
-				if self.itemchoice.HealingAmount and p.CurrentHP < statservice.GenerateStat(p, next(po for po in self.battle.AllPkmnData if po.Id == p.Pokemon_Id), StatEnum.HP):
+				if self.itemchoice.HealingAmount and p.CurrentHP < statservice.GenerateStat(p, next(po for po in self.battle.AllPkmnData if po.Id == p.Pokemon_Id), StatEnum.HP, self.battle.TeamAStats):
 					available.append(p)
 				elif p.CurrentAilment in self.itemchoice.AilmentCures:
 					available.append(p)
@@ -416,7 +416,7 @@ class CpuBattleView(discord.ui.View):
 			turn.Action = BattleAction.Paralyzed if attack.CurrentAilment == 1 else BattleAction.Sleep if attack.CurrentAilment == 2 else BattleAction.Frozen if attack.CurrentAilment == 3 else BattleAction.Confused
 			messages.append(statservice.GetAilmentFailMessage(pkmnName, attack.CurrentAilment))
 			if turn.Action == BattleAction.Confused:
-				battleservice.ConfusionDamage(attack, attackData)
+				battleservice.ConfusionDamage(attack, attackData, self.battle.TeamAStats if teamA else self.battle.TeamBStats)
 			return None
 		elif ailmentCheck == True:
 			messages.append(statservice.GetRecoveryMessage(attack, attackData, self.battle.TeamATrapId if teamA else self.battle.TeamBTrapId))
@@ -552,7 +552,7 @@ class CpuBattleView(discord.ui.View):
 		descArray = [
 				[f'{pokemonservice.GetPokemonDisplayName(self.battle.TeamAPkmn, trainerPkData, False, False)}', '|', f'{pokemonservice.GetPokemonDisplayName(self.battle.TeamBPkmn, cpuPkData, False, False)}'],
 				[f'Lvl. {self.battle.TeamAPkmn.Level}', '|', f'Lvl. {self.battle.TeamBPkmn.Level}'],
-				[f'HP: {self.battle.TeamAPkmn.CurrentHP}/{statservice.GenerateStat(self.battle.TeamAPkmn, trainerPkData, StatEnum.HP)}', '|', f'HP: {self.battle.TeamBPkmn.CurrentHP}/{statservice.GenerateStat(self.battle.TeamBPkmn, cpuPkData, StatEnum.HP)}']
+				[f'HP: {self.battle.TeamAPkmn.CurrentHP}/{statservice.GenerateStat(self.battle.TeamAPkmn, trainerPkData, StatEnum.HP, self.battle.TeamAStats)}', '|', f'HP: {self.battle.TeamBPkmn.CurrentHP}/{statservice.GenerateStat(self.battle.TeamBPkmn, cpuPkData, StatEnum.HP, self.battle.TeamBStats)}']
 		]
 		if self.battle.TeamAPkmn.CurrentAilment or self.battle.TeamBPkmn.CurrentAilment:
 			descArray.append([f'{statservice.GetAilment(self.battle.TeamAPkmn.CurrentAilment).Name.upper()}' if self.battle.TeamAPkmn.CurrentAilment else '', '|', f'{statservice.GetAilment(self.battle.TeamBPkmn.CurrentAilment).Name.upper()}' if self.battle.TeamBPkmn.CurrentAilment else ''])

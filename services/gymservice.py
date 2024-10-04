@@ -37,6 +37,14 @@ def GetNextEliteFour(region: int, currentRun: list[int]):
 	notChallenged = [e for e in GetEliteFourByRegion(region) if e.Id not in currentRun]
 	return min(notChallenged, key=lambda x: x.Id)
 
+def GetRegions():
+	regions: list[int] = []
+	for e in GetAllEliteFour():
+		if e.Generation not in regions:
+			regions.append(e.Generation)
+	regions.sort()
+	return regions
+
 #endregion
 
 #region Badges

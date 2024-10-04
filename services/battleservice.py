@@ -14,9 +14,11 @@ from services import pokemonservice, statservice, trainerservice, typeservice
 def FleeAttempt(battle: CpuBattle, attempts: int):
 	trainerData = next(p for p in battle.AllPkmnData if p.Id == battle.TeamAPkmn.Pokemon_Id)
 	cpuData = next(p for p in battle.AllPkmnData if p.Id == battle.TeamBPkmn.Pokemon_Id)
-	if statservice.GenerateStat(battle.TeamAPkmn, trainerData, StatEnum.Speed) >= statservice.GenerateStat(battle.TeamBPkmn, cpuData, StatEnum.Speed):
+	teamASpeed = statservice.GenerateStat(battle.TeamAPkmn, trainerData, StatEnum.Speed, battle.TeamAStats)
+	teamBSpeed = statservice.GenerateStat(battle.TeamBPkmn, cpuData, StatEnum.Speed, battle.TeamBStats)
+	if teamASpeed >= teamBSpeed:
 		return True
-	speedCalc = math.floor((statservice.GenerateStat(battle.TeamAPkmn, trainerData, StatEnum.Speed)*32)/(statservice.GenerateStat(battle.TeamBPkmn, cpuData, StatEnum.Speed)/4))
+	speedCalc = math.floor((teamASpeed*32)/(teamBSpeed/4))
 	totalCalc = (speedCalc+30*attempts)/256
 	return choice(range(256)) < totalCalc
 
@@ -40,10 +42,10 @@ def TeamAAttackFirst(teamAMove: MoveData|None, teamBMove: MoveData|None, battle:
 	elif teamAMove.Priority < teamBMove.Priority:
 		return False
 	else:
-		spdA = statservice.GenerateStat(battle.TeamAPkmn, next(p for p in battle.AllPkmnData if p.Id == battle.TeamAPkmn.Pokemon_Id), StatEnum.Speed) + battle.TeamAStats[str(StatEnum.Speed.value)]
+		spdA = statservice.GenerateStat(battle.TeamAPkmn, next(p for p in battle.AllPkmnData if p.Id == battle.TeamAPkmn.Pokemon_Id), StatEnum.Speed, battle.TeamAStats)
 		if battle.TeamAPkmn.CurrentAilment == 1: #Paralysis
 			spdA = spdA/2
-		spdB = statservice.GenerateStat(battle.TeamBPkmn, next(p for p in battle.AllPkmnData if p.Id == battle.TeamBPkmn.Pokemon_Id), StatEnum.Speed) + battle.TeamBStats[str(StatEnum.Speed.value)]
+		spdB = statservice.GenerateStat(battle.TeamBPkmn, next(p for p in battle.AllPkmnData if p.Id == battle.TeamBPkmn.Pokemon_Id), StatEnum.Speed, battle.TeamBStats)
 		if battle.TeamBPkmn.CurrentAilment == 1: #Paralysis
 			spdB = spdB/2
 
@@ -160,9 +162,9 @@ def HasToCharge(moveId: int, pokemonId: str, battle: CpuBattle, numCharges: int)
 			return True
 	return False
 
-def ConfusionDamage(pokemon: Pokemon, data: PokemonData):
+def ConfusionDamage(pokemon: Pokemon, data: PokemonData, stats: dict[str,int]):
 	dmgA = ((2*pokemon.Level)/5) + 2
-	dmgB = statservice.GenerateStat(pokemon, data, StatEnum.Attack)/statservice.GenerateStat(pokemon, data, StatEnum.Defense)
+	dmgB = statservice.GenerateStat(pokemon, data, StatEnum.Attack, stats)/statservice.GenerateStat(pokemon, data, StatEnum.Defense, stats)
 	baseDmg = ((dmgA*40*dmgB)/50) + 2
 	random = choice(range(85,101))/100
 	damage = min(pokemon.CurrentHP, round(baseDmg*random))
@@ -389,15 +391,15 @@ def AttackDamage(move: MoveData, attacking: Pokemon, defending: Pokemon, battle:
 	critical = Critical(move)
 	dmgA = ((2*attacking.Level)/5) + 2
 	if move.AttackType.lower() == 'physical':
-		attSt = statservice.GenerateStat(attacking, attData, StatEnum.Attack)
-		defSt = statservice.GenerateStat(defending, defData, StatEnum.Defense)
-		attMo = max(attStats[str(StatEnum.Attack.value)], 0) if critical > 1 else attStats[str(StatEnum.Attack.value)]
-		defMo = 0 if move.Id == 533 else min(defStats[str(StatEnum.Defense.value)], 0) if critical > 1 else defStats[str(StatEnum.Attack.value)]
+		attMo = {} if (critical > 1) and (attStats[str(StatEnum.Attack.value)] < 0) else attStats
+		defMo = {} if (move.Id == 533) or ((critical > 1) and (defStats[str(StatEnum.Defense.value)] > 0)) else defStats
+		attSt = statservice.GenerateStat(attacking, attData, StatEnum.Attack, attMo)
+		defSt = statservice.GenerateStat(defending, defData, StatEnum.Defense, defMo)
 	else:
-		attSt = statservice.GenerateStat(attacking, attData, StatEnum.SpecialAttack)
-		defSt = statservice.GenerateStat(defending, defData, StatEnum.SpecialDefense)
-		attMo = max(attStats[str(StatEnum.SpecialAttack.value)], 0) if critical > 1 else attStats[str(StatEnum.SpecialAttack.value)]
-		defMo = min(defStats[str(StatEnum.SpecialDefense.value)], 0) if critical > 1 else defStats[str(StatEnum.SpecialDefense.value)]
+		attMo = {} if (critical > 1) and (attStats[str(StatEnum.Attack.value)] < 0) else attStats
+		defMo = {} if (critical > 1) and (defStats[str(StatEnum.Defense.value)] > 0) else defStats
+		attSt = statservice.GenerateStat(attacking, attData, StatEnum.SpecialAttack, attMo)
+		defSt = statservice.GenerateStat(defending, defData, StatEnum.SpecialDefense, defMo)
 	dmgB = (attSt + attMo)/(defSt + defMo)
 	power = CalcPower(move, battle, attacking, attData, defending, defData)
 	if move.Id == 175:
@@ -427,6 +429,8 @@ def AttackDamage(move: MoveData, attacking: Pokemon, defending: Pokemon, battle:
 
 def CalcPower(move: MoveData, battle: CpuBattle, attack: Pokemon, attackData: PokemonData, defend: Pokemon, defendData: PokemonData):
 	teamA = attack.Id == battle.TeamAPkmn.Id
+	userStats = battle.TeamAStats if teamA else battle.TeamBStats
+	targetStats = battle.TeamBStats if teamA else battle.TeamAStats
 	effect = typeservice.AttackEffect(move.MoveType, defendData.Types)
 	power = move.Power or 0
 	match move.Id:
@@ -458,12 +462,10 @@ def CalcPower(move: MoveData, battle: CpuBattle, attack: Pokemon, attackData: Po
 				defend.CurrentAilment = None
 				return power * 2
 		case 360:
-			targetStats = battle.TeamAStats[str(StatEnum.Speed.value)] if attack.Id == battle.TeamBPkmn.Id else battle.TeamBStats[str(StatEnum.Speed.value)]
-			userStats = battle.TeamBStats[str(StatEnum.Speed.value)] if attack.Id == battle.TeamBPkmn.Id else battle.TeamAStats[str(StatEnum.Speed.value)]
-			targetSpeed = statservice.GenerateStat(defend, defendData, StatEnum.Speed) + targetStats
+			targetSpeed = statservice.GenerateStat(defend, defendData, StatEnum.Speed, targetStats)
 			if defend.CurrentAilment == 1: #Paralysis
 				targetSpeed = targetSpeed/2
-			userSpeed = statservice.GenerateStat(attack, attackData, StatEnum.Speed) + userStats
+			userSpeed = statservice.GenerateStat(attack, attackData, StatEnum.Speed, userStats)
 			if attack.CurrentAilment == 1: #Paralysis
 				userSpeed = userSpeed/2
 			power = ((25*max(targetSpeed,1))/max(userSpeed,1))+1
@@ -480,10 +482,10 @@ def CalcPower(move: MoveData, battle: CpuBattle, attack: Pokemon, attackData: Po
 		case 486:
 			targetStats = battle.TeamAStats[str(StatEnum.Speed.value)] if attack.Id == battle.TeamBPkmn.Id else battle.TeamBStats[str(StatEnum.Speed.value)]
 			userStats = battle.TeamBStats[str(StatEnum.Speed.value)] if attack.Id == battle.TeamBPkmn.Id else battle.TeamAStats[str(StatEnum.Speed.value)]
-			targetSpeed = statservice.GenerateStat(defend, defendData, StatEnum.Speed) + targetStats
+			targetSpeed = statservice.GenerateStat(defend, defendData, StatEnum.Speed, targetStats)
 			if defend.CurrentAilment == 1: #Paralysis
 				targetSpeed = targetSpeed/2
-			userSpeed = statservice.GenerateStat(attack, attackData, StatEnum.Speed) + userStats
+			userSpeed = statservice.GenerateStat(attack, attackData, StatEnum.Speed, userStats)
 			if attack.CurrentAilment == 1: #Paralysis
 				userSpeed = userSpeed/2
 			speedComp = targetSpeed/userSpeed*100

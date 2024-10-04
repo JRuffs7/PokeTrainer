@@ -140,7 +140,12 @@ def UpdateTrainers():
 					badges.append(b+11)
 				else:
 					badges.append(b)
-				
+			
+			daycare: dict[str,str] = {}
+			for d in newTrainer.Daycare:
+				if len(daycare) < 2:
+					daycare[d] = newTrainer.Daycare[d]
+			newTrainer.Daycare = daycare
 
 			if newTrainer.ServerId and newTrainer.UserId:
 				updateList.append(newTrainer)
