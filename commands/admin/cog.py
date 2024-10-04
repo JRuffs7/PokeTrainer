@@ -62,7 +62,7 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 			
 	@commands.command(name="addelitefour")
 	@is_bot_admin
-	async def addbadge(self, ctx: commands.Context, id: int, user: Member|None = None):
+	async def addelitefour(self, ctx: commands.Context, id: int, user: Member|None = None):
 		if not ctx.guild:
 			return
 		trainer = trainerservice.GetTrainer(ctx.guild.id, user.id if user else ctx.author.id)
