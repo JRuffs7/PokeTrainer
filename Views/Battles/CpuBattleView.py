@@ -4,8 +4,7 @@ import discord
 
 from table2ascii import table2ascii as t2a, PresetStyle, Alignment
 
-from Views.Battles.BattleTools import MoveSelector, PokemonSelector
-from Views.Selectors import ItemSelector
+from Views.Selectors import ItemSelector, PokemonSelector, MoveSelector
 from globals import Dexmark, Formmark, PokemonColor
 from middleware.decorators import defer
 from models.Battle import BattleAction, CpuBattle
@@ -122,7 +121,7 @@ class CpuBattleView(discord.ui.View):
 		self.useraction = BattleAction.Swap
 		for item in self.children:
 			self.remove_item(item)
-		self.add_item(PokemonSelector([p for p in self.trainerteam if p.CurrentHP > 0 and p.Id != self.battle.TeamAPkmn.Id], self.battle.AllPkmnData))
+		self.add_item(PokemonSelector([p for p in self.trainerteam if p.CurrentHP > 0 and p.Id != self.battle.TeamAPkmn.Id], descType=3))
 		backBtn = discord.ui.Button(label="Back", style=discord.ButtonStyle.secondary, disabled=False)
 		backBtn.callback = self.back_button
 		self.add_item(backBtn)
@@ -190,7 +189,7 @@ class CpuBattleView(discord.ui.View):
 				await self.message.edit(content=f'No Pokemon available to use this item on. Try again.')
 				await self.item_button(None)
 			else:
-				self.add_item(PokemonSelector(available, self.battle.AllPkmnData))
+				self.add_item(PokemonSelector(available, descType=2))
 				backBtn = discord.ui.Button(label="Back", style=discord.ButtonStyle.secondary, disabled=False)
 				backBtn.callback = self.back_button
 				self.add_item(backBtn)

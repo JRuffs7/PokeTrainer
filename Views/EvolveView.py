@@ -39,7 +39,7 @@ class EvolveView(discord.ui.View):
 		self.pokemonchoice = next(p for p in self.evolveMon if p.Id == choice)
 		self.pkmnChoiceData = pokemonservice.GetPokemonById(self.pokemonchoice.Pokemon_Id)
 		self.evolvechoice = None
-		self.ownlist = PokemonSelector(self.evolveMon, choice)
+		self.ownlist = PokemonSelector(self.evolveMon, defaultId=choice)
 		availableList = pokemonservice.GetPokemonByIdList(pokemonservice.AvailableEvolutions(self.pokemonchoice, self.pkmnChoiceData, trainerservice.GetTrainerItemList(self.trainer)))
 		if self.pkmnChoiceData.RandomEvolve and len(availableList) > 1:
 			self.randomidlist = pokemonservice.GetRandomEvolveList(self.pkmnChoiceData, [a.Id for a in availableList])

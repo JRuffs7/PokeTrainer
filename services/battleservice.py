@@ -400,7 +400,7 @@ def AttackDamage(move: MoveData, attacking: Pokemon, defending: Pokemon, battle:
 		defMo = {} if (critical > 1) and (defStats[str(StatEnum.Defense.value)] > 0) else defStats
 		attSt = statservice.GenerateStat(attacking, attData, StatEnum.SpecialAttack, attMo)
 		defSt = statservice.GenerateStat(defending, defData, StatEnum.SpecialDefense, defMo)
-	dmgB = (attSt + attMo)/(defSt + defMo)
+	dmgB = attSt/defSt
 	power = CalcPower(move, battle, attacking, attData, defending, defData)
 	if move.Id == 175:
 		prcntHPLeft = attacking.CurrentHP / statservice.GenerateStat(attacking, attData, StatEnum.HP)

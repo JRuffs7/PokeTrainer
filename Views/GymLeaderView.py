@@ -32,11 +32,6 @@ class GymLeaderView(discord.ui.View):
 		await self.message.delete()
 		return await super().on_timeout()
 
-	async def send(self, inter: discord.Interaction):
-		await inter.followup.send(view=self, ephemeral=True)
-		self.message = await inter.original_response()
-		await self.update_message()
-
 	async def update_message(self):
 		leaderView = self.currentpage == 1
 		embed = discordservice.CreateEmbed(
@@ -92,3 +87,8 @@ class GymLeaderView(discord.ui.View):
 	def LeaderTeamDesc(self):
 		newline = '\n'
 		return f"{newline.join([pokemonservice.GetPokemonById(x).Name for x in self.leader.Team])}"
+
+	async def send(self, inter: discord.Interaction):
+		await inter.followup.send(view=self)
+		self.message = await inter.original_response()
+		await self.update_message()

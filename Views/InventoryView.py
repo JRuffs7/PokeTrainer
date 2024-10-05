@@ -19,9 +19,9 @@ class InventoryView(discord.ui.View):
 		super().__init__(timeout=300)
 		self.prevBtn = discord.ui.Button(label="<", style=discord.ButtonStyle.primary, disabled=True, custom_id='prev')
 		self.prevBtn.callback = self.page_button
-		self.add_item(self.prevBtn)
 		self.nextBtn = discord.ui.Button(label=">", style=discord.ButtonStyle.primary, disabled=False, custom_id='next')
 		self.nextBtn.callback = self.page_button
+		self.add_item(self.prevBtn)
 		self.add_item(self.nextBtn)
 
 	async def on_timeout(self):

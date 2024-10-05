@@ -10,7 +10,7 @@ def GetAllPokemon():
   return [PokemonData(x) for x in pokemon]
 
 
-def GetPokemonByType(type):
+def GetPokemonByType(type: int):
   pokemon = GetJson(pokemonFile)
   return [PokemonData(x) for x in pokemon if type in x['Types']]
 

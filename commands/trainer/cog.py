@@ -2,12 +2,12 @@ from datetime import datetime
 from discord import Member, app_commands, Interaction
 from discord.ext import commands
 from Views.TrainerView import TrainerView
-from commands.views.Pagination.InventoryView import InventoryView
+from Views.InventoryView import InventoryView
 from globals import HelpColor, TrainerColor, freemasterball, topggLink, discordLink
 from commands.autofills.autofills import autofill_nonteam, autofill_owned, autofill_types
 from Views.EggView import EggView
 from commands.views.Pagination.MyPokemonView import MyPokemonView
-from commands.views.Selection.TeamSelectorView import TeamSelectorView
+from Views.TeamSelectorView import TeamSelectorView
 from commands.views.Selection.ReleaseView import ReleaseView
 from commands.views.Pagination.BadgeView import BadgeView
 from commands.views.DeleteView import DeleteView
@@ -95,22 +95,24 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
   @app_commands.command(name="modifyteam",
                         description="Add a specified Pokemon into a team slot or modify existing team.")
   @app_commands.autocomplete(pokemon=autofill_nonteam)
-  @method_logger(False)
+  @method_logger(True)
   @trainer_check
   @command_lock
-  async def modifyteam(self, inter: Interaction, pokemon: int | None):
+  async def modifyteam(self, inter: Interaction, pokemon: int|None = None):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
     pkmn = pokemonservice.GetPokemonById(pokemon)
     if len(trainer.OwnedPokemon) == 1:
-      await discordservice_trainer.PrintModifyTeam(inter, 0, [])
+      await discordservice_trainer.PrintModifyTeamResponse(inter, 0, [])
     elif len(trainer.Team) == 1 and not pokemon:
-      await discordservice_trainer.PrintModifyTeam(inter, 1, [])
+      await discordservice_trainer.PrintModifyTeamResponse(inter, 1, [])
     elif pokemon and pokemon not in [p.Pokemon_Id for p in trainer.OwnedPokemon]:
-      await discordservice_trainer.PrintModifyTeam(inter, 2, [pkmn.Name] if pkmn else ['N/A'])
+      await discordservice_trainer.PrintModifyTeamResponse(inter, 2, [pkmn.Name] if pkmn else ['N/A'])
     elif pokemon and pokemon not in [p.Pokemon_Id for p in [p for p in trainer.OwnedPokemon if p.Id not in trainer.Team]]:
-      await discordservice_trainer.PrintModifyTeam(inter, 3, [pkmn.Name] if pkmn else ['N/A'])
+      await discordservice_trainer.PrintModifyTeamResponse(inter, 3, [pkmn.Name] if pkmn else ['N/A'])
+    elif pokemon and commandlockservice.IsEliteFourLocked(trainer.ServerId, trainer.UserId):
+      await discordservice_permission.SendError(inter, 'elitefourlock')
     else:
-      return await TeamSelectorView(inter, trainer, pokemon).send()
+      return await TeamSelectorView(inter, trainer, pokemon).send(inter)
     commandlockservice.DeleteLock(inter.guild_id, inter.user.id)
 
   @app_commands.command(name="myteam",

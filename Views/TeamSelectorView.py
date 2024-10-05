@@ -1,7 +1,6 @@
 import discord
 
-from commands.views.Selection.selectors.TeamSelectors import TeamChoice
-from commands.views.Selection.selectors.OwnedSelector import OwnedSelector
+from Views.Selectors import PokemonSelector, TeamSelector
 from middleware.decorators import defer
 from models.Trainer import Trainer
 
@@ -10,25 +9,18 @@ from services import commandlockservice, pokemonservice, trainerservice
 
 class TeamSelectorView(discord.ui.View):
   
-  def __init__(self, interaction: discord.Interaction, trainer: Trainer, idFilter: int | None = None):
-    self.interaction = interaction
-    self.user = interaction.user
+  def __init__(self, trainer: Trainer, pokemonId: int|None = None):
     self.trainer = trainer
-    self.adding = idFilter is not None
+    self.adding = pokemonId is not None
     self.pokemonchoice = None
     self.teamslotchoice = None
-    
     self.currentteam = trainerservice.GetTeam(trainer)
-    self.modifypokemonlist = [
-      x for x in trainer.OwnedPokemon if 
-      x.Id not in trainer.Team and 
-      x.Pokemon_Id == idFilter
-    ] if idFilter else self.currentteam
-    if idFilter:
-      self.modifypokemonlist.sort(key=lambda x: (x.Pokemon_Id, -x.IsShiny))
+    self.modifypokemonlist = [x for x in trainer.OwnedPokemon if x.Id not in trainer.Team and x.Pokemon_Id == pokemonId] if pokemonId else self.currentteam
+    if pokemonId:
+      self.modifypokemonlist.sort(key=lambda x: -x.IsShiny)
     super().__init__(timeout=300)
-    self.ownedselectview = OwnedSelector(self.modifypokemonlist, 1)
-    self.teamslotview = TeamChoice(self.currentteam, idFilter is not None)
+    self.ownedselectview = PokemonSelector(self.modifypokemonlist, descType=3)
+    self.teamslotview = TeamSelector(self.currentteam, pokemonId is not None)
     self.add_item(self.ownedselectview)
     self.add_item(self.teamslotview)
 
@@ -74,6 +66,6 @@ class TeamSelectorView(discord.ui.View):
       await self.message.edit(content=message, embed=None, view=None)
     commandlockservice.DeleteLock(self.trainer.ServerId, self.trainer.UserId)
 
-  async def send(self):
-    await self.interaction.followup.send(view=self, ephemeral=True)
-    self.message = await self.interaction.original_response()
+  async def send(self, inter: discord.Interaction):
+    await inter.followup.send(view=self)
+    self.message = await inter.original_response()

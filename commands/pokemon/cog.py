@@ -1,4 +1,4 @@
-from discord import Member, User, app_commands, Interaction
+from discord import Member, app_commands, Interaction
 from discord.ext import commands
 from typing import List
 from Views.Battles.WildBattleView import WildBattleView
@@ -6,11 +6,9 @@ from Views.DayCareView import DayCareAddView, DayCareView
 from Views.GiveCandyView import GiveCandyView
 from Views.PokedexView import PokedexView
 from Views.UsePotionView import UsePotionView
-from commands.autofills.autofills import autofill_boxpkmn, autofill_nonteam, autofill_owned, autofill_pokemon
-from commands.views.Pagination.DaycareView import DaycareView
-from commands.views.Pagination.PokemonSearchView import PokemonSearchView
-from commands.views.Selection.DaycareAddView import DaycareAddView
-from commands.views.Selection.NicknameView import NicknameView
+from commands.autofills.autofills import autofill_boxpkmn, autofill_owned, autofill_pokemon, autofill_types
+from Views.PokemonSearchView import PokemonSearchView
+from Views.NicknameView import NicknameView
 import discordbot
 
 from Views.EvolveView import EvolveView
@@ -106,51 +104,15 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
 
   #region PokeInfo
 
-  async def filter_autocomplete(self, inter: Interaction, current: str) -> List[app_commands.Choice[str]]:
-    search = inter.namespace['search']
-    choiceList = []
-    if search == 'color':
-      searchList = list(pokemonservice.GetPokemonColors())
-      searchList.sort()
-      for color in searchList:
-        if current.lower() in color.lower():
-          choiceList.append(app_commands.Choice(name=color, value=color))
-          if len(choiceList) == 25:
-            break
-    elif search == 'type':
-      searchList = statservice.GetAllTypes()
-      searchList.sort(key=lambda x: x.Name)
-      for type in searchList:
-        if current.lower() in type.Name.lower():
-            choiceList.append(app_commands.Choice(name=type.Name, value=str(type.Id)))
-            if len(choiceList) == 25:
-              break
-    return choiceList
-
-  @app_commands.command(name="pokelist",
-                        description="Gives a list of Pokemon belonging to a category.")
-  @app_commands.choices(search=[
-      app_commands.Choice(name="Color", value="color"),
-      app_commands.Choice(name="Type", value="type")
-  ])
-  @app_commands.autocomplete(filter=filter_autocomplete)
-  @method_logger(False)
-  async def pokelist(self, inter: Interaction, search: app_commands.Choice[str], filter: str):
-    if search.value == 'color':
-      pokemonList = pokemonservice.GetPokemonByColor(filter)
-      if not pokemonList:
-        return await discordservice_pokemon.PrintPokeInfoResponse(inter, 1, [filter])
-      pokemonList.sort(key=lambda x: x.Name)
-      dexViewer = PokemonSearchView(inter, pokemonList, f"List of {filter} Pokemon")
-      await dexViewer.send()
-    elif search.value == 'type':
-      pokemonList = pokemonservice.GetPokemonByType(filter)
-      if not pokemonList:
-        return await discordservice_pokemon.PrintPokeInfoResponse(inter, 2, [statservice.GetType(int(filter)).Name])
-      dexViewer = PokemonSearchView(inter, pokemonList, f"List of {filter} type Pokemon")
-      await dexViewer.send()
-    else:
-      return await discordservice_pokemon.PrintPokeInfoResponse(inter, 3, [])
+  @app_commands.command(name="searchtypes",
+                        description="Gives a list of Pokemon belonging to a chosen type.")
+  @app_commands.autocomplete(type=autofill_types)
+  @method_logger(True)
+  async def searchtypes(self, inter: Interaction, type: int):
+    pokemonList = pokemonservice.GetPokemonByType(type)
+    if not pokemonList:
+      return await discordservice_pokemon.PrintPokeInfoResponse(inter, 0, [statservice.GetType(type).Name])
+    return await PokemonSearchView(pokemonList).send(inter)
     
   @app_commands.command(name="pokedex",
                         description="Gives a list of full or singular Pokedex completion.")
@@ -179,7 +141,6 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
   @app_commands.autocomplete(pokemon=autofill_owned)
   @method_logger(True)
   @trainer_check
-  @command_lock
   async def nickname(self, inter: Interaction, pokemon: int):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
     pkmnList = [p for p in trainer.OwnedPokemon if p.Pokemon_Id == pokemon]

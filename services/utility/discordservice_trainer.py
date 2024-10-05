@@ -1,6 +1,6 @@
 from services.utility import discordservice
 from discord import Interaction, Member
-from globals import TrainerColor, topggLink, discordLink
+from globals import TrainerColor
 
 responseFile = "files/responsefiles/trainerresponses.json"
 
@@ -13,7 +13,16 @@ async def PrintDailyResponse(inter: Interaction, response: int, params: list):
 		color=TrainerColor, 
 		params=params)
 
-async def PrintModifyTeam(interaction: Interaction, response: int, params: list):
+async def PrintMyEggsResponse(inter: Interaction, response: int, params: list):
+	return await discordservice.SendCommandResponse(
+		interaction=inter, 
+		filename=responseFile, 
+		command='myeggs', 
+		responseInd=response, 
+		color=TrainerColor, 
+		params=params)
+
+async def PrintModifyTeamResponse(interaction: Interaction, response: int, params: list):
 	return await discordservice.SendCommandResponse(
 		interaction=interaction, 
 		filename=responseFile, 
@@ -49,26 +58,6 @@ async def PrintRelease(interaction: Interaction, params: list):
 		color=TrainerColor, 
 		params=params)
 
-async def PrintDaily(interaction: Interaction, success: bool, boosted: bool, freeMasterball: bool, newWeekly: bool, eggName: str|None):
-	responseID = 0 if not success else 1 if not eggName else 2
-	missionStr = f'\nAcquired a new Weekly Mission.' if newWeekly else ''
-	return await discordservice.SendCommandResponse(
-		interaction=interaction, 
-		filename=responseFile, 
-		command='daily', 
-		responseInd=responseID+2 if freeMasterball else responseID, 
-		color=TrainerColor, 
-		params=['20' if boosted else '10', '500' if boosted else '200', missionStr, eggName, topggLink, discordLink])
-
-async def PrintMyEggsResponse(inter: Interaction, response: int, params: list):
-	return await discordservice.SendCommandResponse(
-		interaction=inter, 
-		filename=responseFile, 
-		command='myeggs', 
-		responseInd=response, 
-		color=TrainerColor, 
-		params=params)
-
 async def PrintMyPokemon(interaction: Interaction):
 	return await discordservice.SendCommandResponse(
 		interaction=interaction, 
@@ -77,12 +66,3 @@ async def PrintMyPokemon(interaction: Interaction):
 		responseInd=0, 
 		color=TrainerColor, 
 		params=[])
-
-async def PrintChangeZone(interaction: Interaction, responseId: int, params: list[str]):
-	return await discordservice.SendCommandResponse(
-		interaction=interaction, 
-		filename=responseFile, 
-		command='changezone', 
-		responseInd=responseId, 
-		color=TrainerColor, 
-		params=params)

@@ -104,19 +104,17 @@ def GetPokemonDisplayName(pokemon: Pokemon, pkmn: PokemonData = None, showGender
   shinyEmoji = f"{f'{ShinySign}' if pokemon.IsShiny else ''}" if showShiny else ""
   return f"{name}{genderEmoji}{shinyEmoji}"
 
-def GetOwnedPokemonDescription(pokemon: Pokemon, pkmnData: PokemonData = None, descType: int = 0):
+def GetPokemonDescription(pokemon: Pokemon, pkmnData: PokemonData = None, descType: int = 0):
   data = GetPokemonById(pokemon.Pokemon_Id) if not pkmnData else pkmnData
   match descType:
     case 1: #Experience
       return f"Lvl. {pokemon.Level} | XP: {pokemon.CurrentExp}/{NeededExperience(pokemon, data)}"
     case 2: #Potion
       return f"Lvl. {pokemon.Level} | HP: {pokemon.CurrentHP}/{statservice.GenerateStat(pokemon, data, StatEnum.HP)} | Ailment: {pokemon.CurrentAilment}"
+    case 3: #Battle
+      return f"Lvl {pokemon.Level} | HP: {pokemon.CurrentHP}/{statservice.GenerateStat(pokemon, pkmnData, StatEnum.HP)} | Types: {'/'.join([statservice.GetType(t).Name for t in data.Types])} | Ailment: {statservice.GetAilment(pokemon.CurrentAilment).Name.upper() if pokemon.CurrentAilment else ' - '}"
     case _:
       return f"Lvl. {pokemon.Level} | H:{pokemon.Height} | W:{pokemon.Weight} | Types: {'/'.join([statservice.GetType(t).Name for t in data.Types])}"
-
-def GetBattlePokemonDescription(pokemon: Pokemon, pkmnData: PokemonData = None):
-  pkmn = GetPokemonById(pokemon.Pokemon_Id) if not pkmnData else pkmnData
-  return f"Lvl {pokemon.Level} | HP: {pokemon.CurrentHP}/{statservice.GenerateStat(pokemon, pkmnData, StatEnum.HP)} | Types: {'/'.join([statservice.GetType(t).Name for t in pkmn.Types])} | Ailment: {statservice.GetAilment(pokemon.CurrentAilment).Name.upper() if pokemon.CurrentAilment else ' - '}"
 
 def GetPokemonImage(pokemon: Pokemon, pkmnData: PokemonData = None):
   pkmn = GetPokemonById(pokemon.Pokemon_Id) if not pkmnData else pkmnData
