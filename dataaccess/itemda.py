@@ -23,3 +23,8 @@ def GetAllPotions():
 def GetAllCandies():
   candy = GetJson(itemFile)
   return [Candy(c) for c in candy if 'Experience' in c]
+
+
+def GetAllEvoItems():
+  evo = GetJson(itemFile)
+  return [Item(e) for e in evo if e['EvolutionItem']]

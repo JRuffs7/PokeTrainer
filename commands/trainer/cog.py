@@ -3,7 +3,7 @@ from discord import Member, app_commands, Interaction
 from discord.ext import commands
 from Views.TrainerView import TrainerView
 from commands.views.Pagination.InventoryView import InventoryView
-from globals import HelpColor, TrainerColor, freemasterball
+from globals import HelpColor, TrainerColor, freemasterball, topggLink, discordLink
 from commands.autofills.autofills import autofill_nonteam, autofill_owned, autofill_types
 from Views.EggView import EggView
 from commands.views.Pagination.MyPokemonView import MyPokemonView
@@ -44,13 +44,23 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
     freeMasterball = datetime.today().date() == freemasterball.date()
     dailyResult = trainerservice.TryDaily(trainer, freeMasterball)
     commandlockservice.DeleteLock(inter.guild_id, inter.user.id)
-    return await discordservice_trainer.PrintDaily(
-      inter, 
-      dailyResult >= 0, 
-      trainerservice.HasRegionReward(trainer, 5),
-      freeMasterball,
-      currentWeekly != (trainer.WeeklyMission.DayStarted if trainer.WeeklyMission else None),
-      itemservice.GetEgg(dailyResult).Name if dailyResult > 0 else None)
+    if dailyResult < 0:
+      return await discordservice_trainer.PrintDailyResponse(inter, 0, [topggLink, discordLink])
+      
+    dailyStr = f'Thank you for using PokeTrainer!\nHere is your reward of **{"Great Ball" if trainerservice.HasRegionReward(trainer, 5) else "Poké Ball"} x10** and **$200**.\nAcquired a new Daily Mission.'
+    if currentWeekly != (trainer.WeeklyMission.DayStarted if trainer.WeeklyMission else None):
+      dailyStr += f'\nAcquired a new Weekly Mission.'
+    if dailyResult > 0:
+      dailyStr += f'\nObtained one **{itemservice.GetEgg(dailyResult).Name}**!'
+    if freeMasterball:
+      dailyStr += f'\n\nHere is **1x Masterball** for recent issues as well.'
+    dailyStr += f"\n\nDon't forget to [Upvote the Bot]({topggLink})!\nOr join the [Discord Server]({discordLink})!"
+    return await discordservice.SendEmbed(inter, discordservice.CreateEmbed(
+      'Daily Reward',
+      dailyStr,
+      TrainerColor,
+      thumbnail=inter.user.display_avatar.url
+    ))
 
   @app_commands.command(name="myeggs",
                         description="View your eggs progress.")
@@ -59,9 +69,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
   ])
   @method_logger(False)
   @trainer_check
-  async def myeggs(self, inter: Interaction,
-                   images: app_commands.Choice[int] | None,
-                   user: Member | None):
+  async def myeggs(self, inter: Interaction, images: int|None, user: Member|None):
     if not user or user.id == inter.user.id:
       if commandlockservice.IsLocked(inter.guild.id, inter.user.id):
         return await discordservice_permission.SendError(inter, 'commandlock')
@@ -74,12 +82,11 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
 
   @app_commands.command(name="inventory",
                         description="Displays trainer inventory.")
-  @method_logger(False)
+  @method_logger(True)
   @trainer_check
-  async def inventory(self,
-                    interaction: Interaction):
-    trainer = trainerservice.GetTrainer(interaction.guild_id, interaction.user.id)
-    return await InventoryView(interaction, trainer).send()
+  async def inventory(self, inter: Interaction):
+    trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
+    return await InventoryView(trainer, inter.user.display_avatar.url).send(inter)
 
   #endregion
 

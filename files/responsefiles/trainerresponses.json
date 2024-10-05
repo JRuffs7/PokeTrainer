@@ -27,22 +27,6 @@
 		{
 			"Title": "Already Claimed",
 			"Body": "You have already claimed your reward for the day! Daily rewards reset at midnight UTC.\n\nDon't forget to [Upvote the Bot]({0})!\nOr join the [Discord Server]({1})!"
-		},
-		{
-			"Title": "Daily Reward",
-			"Body": "Thank you for using PokeTrainer. Here is your reward of **Pokeball x{0}** and **${1}**.\nAcquired a new Daily Mission.{2}\n\nDon't forget to [Upvote the Bot]({3})!\nOr join the [Discord Server]({4})!"
-		},
-		{
-			"Title": "Daily Reward",
-			"Body": "Thank you for using PokeTrainer. Here is your reward of **Pokeball x{0}** and **${1}**.\nAcquired a new Daily Mission.{2}\n\nYou also obtained a {3}!\n\nDon't forget to [Upvote the Bot]({4})!\nOr join the [Discord Server]({5})!"
-		},
-		{
-			"Title": "Daily Reward",
-			"Body": "Thank you for using PokeTrainer. Here is your reward of **Pokeball x{0}** and **${1}**.\nAcquired a new Daily Mission.{2}\n\nHere is **1x Masterball** for recent issues as well.\n\nDon't forget to [Upvote the Bot]({3})!\nOr join the [Discord Server]({4})!"
-		},
-		{
-			"Title": "Daily Reward",
-			"Body": "Thank you for using PokeTrainer. Here is your reward of **Pokeball x{0}** and **${1}**.\nAcquired a new Daily Mission.{2}\n\nHere is **1x Masterball** for recent issues as well.\n\nYou also obtained a {3}!\n\nDon't forget to [Upvote the Bot]({4})!\nOr join the [Discord Server]({5})!"
 		}
 	],
 	"modifyteam": [

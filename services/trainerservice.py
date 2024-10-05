@@ -81,12 +81,8 @@ def TryDaily(trainer: Trainer, freeMasterball: bool):
       })
 
     #Unova Reward
-    if HasRegionReward(trainer, 5):
-      ModifyItemList(trainer, '4', 20)
-      trainer.Money += 500
-    else:
-      ModifyItemList(trainer, '4', 10)
-      trainer.Money += 200
+    ModifyItemList(trainer, '3' if HasRegionReward(trainer, 5) else '4', 10)
+    trainer.Money += 200
       
     if freeMasterball:
       ModifyItemList(trainer, '1', 1)

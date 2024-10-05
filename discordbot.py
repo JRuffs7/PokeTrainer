@@ -50,7 +50,7 @@ async def StartBot():
       errorLogger.error(e)
       pass
 
-    event_loop.start()
+    #event_loop.start()
 
 
   @discordBot.event
@@ -69,11 +69,11 @@ async def StartBot():
     return await channel.send(embed=embed)
 
 
-  @tasks.loop(time=eventtimes)
-  async def event_loop():
-    allServers = serverservice.GetAllServers()
-    for server in allServers:
-      asyncio.run_coroutine_threadsafe(EventThread(choice(list(EventType)), server), discordBot.loop)
+  # @tasks.loop(time=eventtimes)
+  # async def event_loop():
+  #   allServers = serverservice.GetAllServers()
+  #   for server in allServers:
+  #     asyncio.run_coroutine_threadsafe(EventThread(choice(list(EventType)), server), discordBot.loop)
 
   async def EventThread(eventType: EventType, server: Server):
     try:

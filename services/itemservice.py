@@ -21,7 +21,7 @@ def GetAllCandies():
 
 
 def GetAllEvoItems():
-  return [i for i in GetAllItems() if i.EvolutionItem]
+  return itemda.GetAllEvoItems()
 
 
 def GetItem(id: int):
