@@ -53,7 +53,7 @@ def ShouldSwitchPokemon(battle: CpuBattle, cpuTeam: list[Pokemon]):
 	if statservice.GenerateStat(battle.TeamBPkmn, next(po for po in battle.AllPkmnData if po.Id == battle.TeamBPkmn.Pokemon_Id), StatEnum.Speed, battle.TeamBStats) > statservice.GenerateStat(battle.TeamAPkmn, next(po for po in battle.AllPkmnData if po.Id == battle.TeamAPkmn.Pokemon_Id), StatEnum.Speed, battle.TeamAStats):
 		for m in battle.TeamBPkmn.LearnedMoves:
 			mData = next(mo for mo in battle.AllMoveData if mo.Id == m.MoveId)
-			if m.PP == 0 or not mData.Power:
+			if m.PP == 0 or (not mData.Power and not mData.UniqueDamage):
 				pass
 			simAttack,crit = battleservice.AttackDamage(mData, deepcopy(battle.TeamBPkmn), deepcopy(battle.TeamAPkmn), battle)
 			while crit and mData.CritRate <= 1:

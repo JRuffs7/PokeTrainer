@@ -3,16 +3,16 @@ from discord import Member, app_commands, Interaction
 from discord.ext import commands
 from Views.TrainerView import TrainerView
 from Views.InventoryView import InventoryView
-from globals import HelpColor, TrainerColor, freemasterball, topggLink, discordLink
-from commands.autofills.autofills import autofill_nonteam, autofill_owned, autofill_types
+from globals import HelpColor, TrainerColor, freemasterball, region_name, topggLink, discordLink
+from commands.autofills.autofills import autofill_boxpkmn, autofill_nonteam, autofill_owned, autofill_regions, autofill_types
 from Views.EggView import EggView
-from commands.views.Pagination.MyPokemonView import MyPokemonView
+from Views.MyPokemonView import MyPokemonView
 from Views.TeamSelectorView import TeamSelectorView
-from commands.views.Selection.ReleaseView import ReleaseView
+from Views.ReleaseView import ReleaseView
 from commands.views.Pagination.BadgeView import BadgeView
 from commands.views.DeleteView import DeleteView
 
-from middleware.decorators import command_lock, method_logger, trainer_check
+from middleware.decorators import command_lock, elitefour_check, method_logger, trainer_check
 from services import commandlockservice, gymservice, pokemonservice, trainerservice, itemservice
 from services.utility import discordservice, discordservice_permission, discordservice_trainer
 
@@ -73,6 +73,8 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
     if not user or user.id == inter.user.id:
       if commandlockservice.IsLocked(inter.guild.id, inter.user.id):
         return await discordservice_permission.SendError(inter, 'commandlock')
+      elif commandlockservice.IsEliteFourLocked(inter.guild.id, inter.user.id):
+        return await discordservice_permission.SendError(inter, 'elitefourlock')
       commandlockservice.AddLock(inter.guild.id, inter.user.id)
       
     trainer = trainerservice.GetTrainer(inter.guild_id, user.id if user else inter.user.id)
@@ -112,59 +114,33 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
     elif pokemon and commandlockservice.IsEliteFourLocked(trainer.ServerId, trainer.UserId):
       await discordservice_permission.SendError(inter, 'elitefourlock')
     else:
-      return await TeamSelectorView(inter, trainer, pokemon).send(inter)
+      return await TeamSelectorView(trainer, pokemon).send(inter)
     commandlockservice.DeleteLock(inter.guild_id, inter.user.id)
 
   @app_commands.command(name="myteam",
                         description="View your current team.")
-  @method_logger(False)
+  @method_logger(True)
   @trainer_check
   async def myteam(self, inter: Interaction):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
-    teamViewer = MyPokemonView(
-      inter,
-      inter.user,
-      trainer, 
-      1, 
-      trainerservice.GetTeam(trainer),
-      f"{inter.user.display_name}'s Battle Team")
-    await teamViewer.send(True) 
+    return await MyPokemonView(trainer, trainerservice.GetTeam(trainer), True, 'My Team', thumbnail=inter.user.display_avatar.url).send(inter)
 
   @app_commands.command(name="badges",description="View your obtained badges")
-  @app_commands.choices(region=[
-      app_commands.Choice(name="Kanto", value=1),
-      app_commands.Choice(name="Johto", value=2),
-      app_commands.Choice(name="Hoenn", value=3),
-      app_commands.Choice(name="Sinnoh", value=4),
-      app_commands.Choice(name="Unova", value=5),
-      app_commands.Choice(name="Kalos", value=6),
-      app_commands.Choice(name="Galar", value=8),
-      app_commands.Choice(name="Paldea", value=9),
-      app_commands.Choice(name="Voltage", value=1000)
-  ])
   @app_commands.choices(images=[
       app_commands.Choice(name="Yes", value=1)
   ])
+  @app_commands.autocomplete(region=autofill_regions)
   @method_logger(False)
   @trainer_check
-  async def badges(self, inter: Interaction, 
-                   region: app_commands.Choice[int] | None, 
-                   images: app_commands.Choice[int] | None,
-                   user: Member | None):
-    trainer = trainerservice.GetTrainer(inter.guild_id, user.id if user else inter.user.id)
+  async def badges(self, inter: Interaction, user: Member|None, images: int|None, region: int|None):
+    targetUser = user if user else inter.user
+    trainer = trainerservice.GetTrainer(inter.guild_id, targetUser.id)
     if len(trainer.Badges) == 0:
-      return await discordservice_trainer.PrintBadges(inter, user if user else inter.user)
-    data = gymservice.GetGymBadges(trainer, region.value if region else 0)
+      return await discordservice_trainer.PrintBadgesResponse(inter, 0, [targetUser.display_name])
+    data = gymservice.GetGymBadges(trainer, region)
     if not data:
-      return await discordservice_trainer.PrintBadges(inter, user if user else inter.user, region.name if region else None)
-    usrBadges, totalBadges = gymservice.GymCompletion(trainer, region.value if region else None)
-    badgeView = BadgeView(
-      inter, 
-      user if user else inter.user,
-      1 if images else 10, 
-      f"{user.display_name if user else inter.user.display_name}'s{f' {region.name}' if region else ''} Badges ({usrBadges}/{totalBadges})",
-      data)
-    await badgeView.send()
+      return await discordservice_trainer.PrintBadgesResponse(inter, 1, [region_name(region)] if region else ['N/A'])
+    return await BadgeView(targetUser, trainer, data, images!=None, region).send(inter)
   
   #endregion
 
@@ -178,11 +154,11 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
       app_commands.Choice(name="Yes", value=1)
   ])
   @app_commands.choices(order=[
-      app_commands.Choice(name="Height", value="height"),
-      app_commands.Choice(name="National Dex", value="dex"),
       app_commands.Choice(name="Name", value="name"),
-      app_commands.Choice(name="Weight", value="weight"),
-      app_commands.Choice(name="Level", value="level")
+      app_commands.Choice(name="Level", value="level"),
+      app_commands.Choice(name="National Dex", value="dex"),
+      app_commands.Choice(name="Height", value="height"),
+      app_commands.Choice(name="Weight", value="weight")
   ])
   @app_commands.choices(shiny=[
       app_commands.Choice(name="Shiny Only", value=1),
@@ -198,58 +174,36 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
   ])
   @method_logger(False)
   @trainer_check
-  async def mypokemon(self, inter: Interaction,
-                    pokemon: int | None,
-                    type: int | None,
-                    images: app_commands.Choice[int] | None,
-                    order: app_commands.Choice[str] | None,
-                    shiny: app_commands.Choice[int] | None,
-                    legendary: app_commands.Choice[int] | None,
-                    gender: app_commands.Choice[int] | None,
-                    user: Member | None):
+  async def mypokemon(self, inter: Interaction, user: Member|None, pokemon: int|None, type: int|None, images: int|None, order: str|None, shiny: int|None, legendary: int|None, gender: int|None):
+    targetUser = user if user else inter.user
     trainer = trainerservice.GetTrainer(inter.guild_id, user.id if user else inter.user.id)
-    data = trainerservice.GetPokedexList(trainer, 
-                                         order.value if order else 'default', 
-                                         shiny.value if shiny else 0, 
-                                         pokemon, type, 
-                                         legendary.value if legendary else None, 
-                                         gender.value if gender else 0)
+    data = trainerservice.GetMyPokemon(trainer, order, shiny, pokemon, type, legendary, gender)
     if not data:
-      return await discordservice_trainer.PrintMyPokemon(inter)
-    sortString = [f'Sort: {order.name}'] if order else []
-    if shiny and shiny.value == 1:
+      return await discordservice_trainer.PrintMyPokemonResponse(inter, 0, [])
+    sortString = [f'Sort: {order}'] if order else []
+    if shiny == 1:
       sortString.append('Shiny')
     if legendary:
       sortString.append('Legendary')
     if gender:
       sortString.append(gender.name)
-    pokemonViewer = MyPokemonView(
-      inter, 
-      user if user else inter.user,
-      trainer,
-      images.value if images else 10, 
-      data,
-      f"{user.display_name if user else inter.user.display_name}'s Pokemon\n{' | '.join(sortString)}",
-      order.value if order else None)
-    await pokemonViewer.send()
+    return await MyPokemonView(trainer, data, images!=None, f"{targetUser.display_name}'s Pokemon\n{' | '.join(sortString)}", order, targetUser.display_avatar.url).send(inter)
       
 
   @app_commands.command(name="release",
                         description="Choose a Pokemon to release.")
-  @app_commands.autocomplete(pokemon=autofill_nonteam)
+  @app_commands.autocomplete(pokemon=autofill_boxpkmn)
   @method_logger(False)
   @trainer_check
+  @elitefour_check
   @command_lock
-  async def release(self, inter: Interaction,
-                    pokemon: int):
+  async def release(self, inter: Interaction, pokemon: int):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
-    result = [x for x in trainer.OwnedPokemon if x.Pokemon_Id == pokemon and x.Id not in trainer.Team]
-    if not result:
-      pkmn = pokemonservice.GetPokemonById(pokemon)
+    if not [x for x in trainer.OwnedPokemon if x.Pokemon_Id == pokemon and x.Id not in trainer.Team and x.Id not in trainer.Daycare]:
       commandlockservice.DeleteLock(inter.guild_id, inter.user.id)
-      return await discordservice_trainer.PrintRelease(inter, [pkmn.Name] if pkmn else ['N/A'])
-
-    return await ReleaseView(inter, result).send()
+      pkmn = pokemonservice.GetPokemonById(pokemon)
+      return await discordservice_trainer.PrintReleaseResponse(inter, 0, [pkmn.Name] if pkmn else ['N/A'])
+    return await ReleaseView(trainer, pokemon).send(inter)
 
   #endregion
 
@@ -257,7 +211,8 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
     
   async def starter_autocomplete(self, inter: Interaction, current: str) -> list[app_commands.Choice[int]]:
     choices = []
-    starters = pokemonservice.GetStarterPokemon()
+    trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
+    starters = [p for p in pokemonservice.GetStarterPokemon() if p.PokedexId not in trainer.Pokedex]
     starters.sort(key=lambda x: x.PokedexId)
     for st in starters:
       if current.lower() in st.Name.lower():

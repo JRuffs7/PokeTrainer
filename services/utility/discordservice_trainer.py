@@ -31,6 +31,33 @@ async def PrintModifyTeamResponse(interaction: Interaction, response: int, param
 		color=TrainerColor, 
 		params=params)
 
+async def PrintMyPokemonResponse(interaction: Interaction, response: int, params: list):
+	return await discordservice.SendCommandResponse(
+		interaction=interaction, 
+		filename=responseFile, 
+		command='mypokemon', 
+		responseInd=response, 
+		color=TrainerColor, 
+		params=params)
+
+async def PrintBadgesResponse(interaction: Interaction, response: int, params: list):
+	return await discordservice.SendCommandResponse(
+		interaction=interaction, 
+		filename=responseFile, 
+		command='badges', 
+		responseInd=response, 
+		color=TrainerColor,
+		params=params)
+
+async def PrintReleaseResponse(interaction: Interaction, response: int, params: list):
+	return await discordservice.SendCommandResponse(
+		interaction=interaction, 
+		filename=responseFile, 
+		command='release', 
+		responseInd=response, 
+		color=TrainerColor, 
+		params=params)
+
 async def PrintStarter(interaction: Interaction, response: int, params: list):
 	await discordservice.SendCommandResponse(
 		interaction=interaction, 
@@ -39,30 +66,3 @@ async def PrintStarter(interaction: Interaction, response: int, params: list):
 		responseInd=response,
 		params=params,
 		color=TrainerColor)
-
-async def PrintBadges(interaction: Interaction, targetUser: Member, region: str = None):
-	return await discordservice.SendCommandResponse(
-		interaction=interaction, 
-		filename=responseFile, 
-		command='badges', 
-		responseInd=0 if not region else 1, 
-		color=TrainerColor,
-		params=[targetUser.display_name] if not region else [region])
-
-async def PrintRelease(interaction: Interaction, params: list):
-	return await discordservice.SendCommandResponse(
-		interaction=interaction, 
-		filename=responseFile, 
-		command='release', 
-		responseInd=0, 
-		color=TrainerColor, 
-		params=params)
-
-async def PrintMyPokemon(interaction: Interaction):
-	return await discordservice.SendCommandResponse(
-		interaction=interaction, 
-		filename=responseFile, 
-		command='mypokemon', 
-		responseInd=0, 
-		color=TrainerColor, 
-		params=[])

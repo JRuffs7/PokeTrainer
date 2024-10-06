@@ -60,8 +60,6 @@ class CpuBattle:
 	TeamBConfusion: int = 0
 	TeamAImmune: bool = False
 	TeamBImmune: bool = False
-	TeamABind: int = 0
-	TeamBBind: int = 0
 	TeamAPhysReduce: int = 0
 	TeamBPhysReduce: int = 0
 	TeamASpecReduce: int = 0

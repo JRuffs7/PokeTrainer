@@ -6,8 +6,9 @@ from models.Pokemon import Move, Pokemon
 from services import moveservice, pokemonservice
 
 class PokemonSelector(discord.ui.Select):
-	def __init__(self, owned: list[Pokemon], defaultId: str = None, descType: int = 0, customId: str = None, defer: bool = True):
+	def __init__(self, owned: list[Pokemon], defaultId: str = None, max: bool = False, descType: int = 0, customId: str = None, defer: bool = True):
 		self.defer = defer
+		self.max = max
 		if len(owned) > 25:
 			owned = owned[0:25]
 		pkmnData = pokemonservice.GetPokemonByIdList([t.Pokemon_Id for t in owned])
@@ -17,12 +18,12 @@ class PokemonSelector(discord.ui.Select):
 			value=t.Id,
 			default=(defaultId and t.Id == defaultId)
 		) for t in owned]
-		super().__init__(options=options, placeholder='Select Pokemon', custom_id=(customId or discord.utils.MISSING))
+		super().__init__(options=options, max_values=(len(owned) if max else 1), placeholder='Select Pokemon', custom_id=(customId or discord.utils.MISSING))
 	
 	async def callback(self, inter: discord.Interaction):
 		if self.defer:
 			await inter.response.defer()
-		await self.view.PokemonSelection(inter, self.values[0])
+		await self.view.PokemonSelection(inter, self.values if self.max else self.values[0])
 
 class EvolveSelector(discord.ui.Select):
 	def __init__(self, data: list):
@@ -69,8 +70,8 @@ class TeamSelector(discord.ui.Select):
 		pkmnData = pokemonservice.GetPokemonByIdList([d.Pokemon_Id for d in data])
 		options = [discord.SelectOption(
 			label='Add To End Slot',
-			description=f'Add selected Pokemon to the end slot on the team.',
-			value=f'{len(data)}'
+			description=f'Add selected Pokemon to the team.',
+			value='-1'
 		)] if adding and len(data) < 6 else []
 
 		options += [discord.SelectOption(

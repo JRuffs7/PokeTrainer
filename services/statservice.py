@@ -155,7 +155,7 @@ def GetAilmentMessage(name: str, ailment: int):
 		case _:
 			return ''
 		
-def GetAilmentFailMessage(name: str, ailment: int):
+def GetAilmentFailMessage(name: str, ailment: int, damage: int|None):
 	match(ailment):
 		case 1:
 			return f"{GetAilmentMessage(name, ailment)} It can't move!"
@@ -164,7 +164,7 @@ def GetAilmentFailMessage(name: str, ailment: int):
 		case 3:
 			return f'{name} is frozen solid!'
 		case 6:
-			return f'{GetAilmentMessage(name, ailment)}\nIt hurt itself in its confusion!'
+			return f'{GetAilmentMessage(name, ailment)}\nIt hurt itself for **{damage} damage** in its confusion!'
 		case _:
 			return ''
 
@@ -186,17 +186,17 @@ def GetAilmentGainedMessage(pokemon: Pokemon, data:PokemonData, trapMove: str):
 		case 1:
 			return f"{pokemonservice.GetPokemonDisplayName(pokemon, data, False, False)} has been paralyzed!"
 		case 2:
-			return f'{pokemonservice.GetPokemonDisplayName(pokemon, data, False, False)} fell asleep!\n'
+			return f'{pokemonservice.GetPokemonDisplayName(pokemon, data, False, False)} fell asleep!'
 		case 3:
-			return f'{pokemonservice.GetPokemonDisplayName(pokemon, data, False, False)} is frozen!\n'
+			return f'{pokemonservice.GetPokemonDisplayName(pokemon, data, False, False)} is frozen!'
 		case 4:
-			return f'{pokemonservice.GetPokemonDisplayName(pokemon, data, False, False)} is burned!\n'
+			return f'{pokemonservice.GetPokemonDisplayName(pokemon, data, False, False)} is burned!'
 		case 5:
-			return f'{pokemonservice.GetPokemonDisplayName(pokemon, data, False, False)} is poisoned!\n'
+			return f'{pokemonservice.GetPokemonDisplayName(pokemon, data, False, False)} is poisoned!'
 		case 6:
-			return f'{pokemonservice.GetPokemonDisplayName(pokemon, data, False, False)} is confused!\n'
+			return f'{pokemonservice.GetPokemonDisplayName(pokemon, data, False, False)} is confused!'
 		case 8:
-			return f'{pokemonservice.GetPokemonDisplayName(pokemon, data, False, False)} is trapped by **{trapMove}**!\n'
+			return f'{pokemonservice.GetPokemonDisplayName(pokemon, data, False, False)} is trapped by **{trapMove}**!'
 		case _:
 			return ''
 

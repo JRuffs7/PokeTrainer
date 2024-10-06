@@ -113,7 +113,7 @@ class TradeView(discord.ui.View):
 			alignments=[Alignment.LEFT,Alignment.LEFT],
 			style=PresetStyle.plain,
 			cell_padding=0)
-		return f"**{pokemonservice.GetPokemonDisplayName(pokemon, data)}**\n```{pkmnData}```"
+		return f"**{pokemonservice.GetPokemonDisplayName(pokemon, data)} ({data.Name})**\n```{pkmnData}```"
 
 	async def send(self, inter: discord.Interaction):
 		await inter.followup.send(view=self)

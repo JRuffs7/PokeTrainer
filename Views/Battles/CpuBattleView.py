@@ -65,10 +65,10 @@ class CpuBattleView(discord.ui.View):
 			self.remove_item(item)
 
 		moveChoice,self.useraction = battleservice.CanChooseAttack(self.battle, True)
-		numAvailablePokemon = [p for p in self.trainerteam if p.CurrentHP > 0 and p.Id != self.battle.TeamAPkmn.Id]
+		numAvailablePokemon = len([p for p in self.trainerteam if p.CurrentHP > 0])
 		attackbtn = discord.ui.Button(label="Attack", style=discord.ButtonStyle.primary)
 		attackbtn.callback = self.attack_button
-		pkmnbtn = discord.ui.Button(label="Pokemon", style=discord.ButtonStyle.secondary, disabled=((not moveChoice) or len(numAvailablePokemon) < 1))
+		pkmnbtn = discord.ui.Button(label="Pokemon", style=discord.ButtonStyle.secondary, disabled=((not moveChoice) or numAvailablePokemon == 1))
 		pkmnbtn.callback = self.pokemon_button
 		itembtn = discord.ui.Button(label="Items", style=discord.ButtonStyle.success, disabled=(not moveChoice))
 		itembtn.callback = self.item_button
@@ -181,9 +181,11 @@ class CpuBattleView(discord.ui.View):
 			self.itemchoice = itemservice.GetPotion(int(choice))
 			available = []
 			for p in self.trainerteam:
-				if self.itemchoice.HealingAmount and p.CurrentHP < statservice.GenerateStat(p, next(po for po in self.battle.AllPkmnData if po.Id == p.Pokemon_Id), StatEnum.HP, self.battle.TeamAStats):
+				if p.Id == self.battle.TeamAPkmn.Id:
+					p = self.battle.TeamAPkmn
+				if (self.itemchoice.HealingAmount or 1000) and p.CurrentHP < statservice.GenerateStat(p, next(po for po in self.battle.AllPkmnData if po.Id == p.Pokemon_Id), StatEnum.HP):
 					available.append(p)
-				elif p.CurrentAilment in self.itemchoice.AilmentCures:
+				if p.CurrentAilment in self.itemchoice.AilmentCures and p not in available:
 					available.append(p)
 			if not available:
 				await self.message.edit(content=f'No Pokemon available to use this item on. Try again.')
@@ -263,7 +265,7 @@ class CpuBattleView(discord.ui.View):
 			data = next(p for p in self.battle.AllPkmnData if p.Id == pkmn.Pokemon_Id)
 			pokemonservice.TryUsePotion(pkmn, data, self.cputurn.ItemUsed)
 			self.battle.Turns.insert(0, self.cputurn)
-			self.usermessage.append(f'You used a **{self.cputurn.ItemUsed.Name.upper()}** on {pokemonservice.GetPokemonDisplayName(pkmn, data, False, False)}!')
+			self.cpumessage.append(f'{self.oppname} used a **{self.cputurn.ItemUsed.Name.upper()}** on {pokemonservice.GetPokemonDisplayName(pkmn, data, False, False)}!')
 		
 		if self.userturn.Action == BattleAction.Loaf:
 			self.battle.Turns.insert(0, self.userturn)
@@ -297,6 +299,7 @@ class CpuBattleView(discord.ui.View):
 		teamBData = next(p for p in self.battle.AllPkmnData if p.Id == self.battle.TeamBPkmn.Pokemon_Id)
 		shouldReturn = False
 		if self.CheckFainting(self.battle.TeamAPkmn, teamAData):
+			battleservice.ResetStats(self.battle, True)
 			self.userailmentmessage.append(f'{pokemonservice.GetPokemonDisplayName(self.battle.TeamAPkmn, teamAData, False, False)} fainted!')
 			if self.victory is None:
 				self.battle.TeamAPkmn = next(p for p in self.trainerteam if p.CurrentHP > 0)
@@ -306,6 +309,7 @@ class CpuBattleView(discord.ui.View):
 				self.userailmentmessage.append(f'You swapped in {pokemonservice.GetPokemonDisplayName(self.battle.TeamAPkmn, teamAData, False, False)}!')
 			shouldReturn = True
 		if self.CheckFainting(self.battle.TeamBPkmn, teamBData):
+			battleservice.ResetStats(self.battle, False)
 			self.cpuailmentmessage.append(f'{pokemonservice.GetPokemonDisplayName(self.battle.TeamBPkmn, teamBData, False, False)} fainted!')
 			if len(self.exppokemon[self.battle.TeamBPkmn.Id]) > 0:
 				self.cpuailmentmessage.append(f'{pokemonservice.GetPokemonDisplayName(self.battle.TeamAPkmn, teamAData, False, False)} gained {self.experience} XP!')
@@ -333,6 +337,7 @@ class CpuBattleView(discord.ui.View):
 				self.userailmentmessage.append(f'{pokemonservice.GetPokemonDisplayName(self.battle.TeamAPkmn, teamAData, False, False)} lost **{ailDmg} to **Leech Seed**.')
 				self.cpuailmentmessage.append(f'{pokemonservice.GetPokemonDisplayName(self.battle.TeamBPkmn, teamBData, False, False)} is healed **{ailDmg} by **Leech Seed**.')
 		if self.CheckFainting(self.battle.TeamAPkmn, teamAData):
+			battleservice.ResetStats(self.battle, True)
 			self.userailmentmessage.append(f'{pokemonservice.GetPokemonDisplayName(self.battle.TeamAPkmn, teamAData, False, False)} fainted!')
 			if self.victory is None:
 				self.battle.TeamAPkmn = next(p for p in self.trainerteam if p.CurrentHP > 0)
@@ -354,6 +359,7 @@ class CpuBattleView(discord.ui.View):
 				self.cpuailmentmessage.append(f'{pokemonservice.GetPokemonDisplayName(self.battle.TeamBPkmn, teamBData, False, False)} lost **{ailDmg}** to **Leech Seed**.')
 				self.userailmentmessage.append(f'{pokemonservice.GetPokemonDisplayName(self.battle.TeamAPkmn, teamAData, False, False)} is healed **{ailDmg} by **Leech Seed**.')
 		if self.CheckFainting(self.battle.TeamBPkmn, teamBData):
+			battleservice.ResetStats(self.battle, False)
 			self.cpuailmentmessage.append(f'{pokemonservice.GetPokemonDisplayName(self.battle.TeamBPkmn, teamBData, False, False)} fainted!')
 			if len(self.exppokemon[self.battle.TeamBPkmn.Id]) > 0:
 				self.cpuailmentmessage.append(f'{pokemonservice.GetPokemonDisplayName(self.battle.TeamAPkmn, teamAData, False, False)} gained {self.experience} XP!')
@@ -378,7 +384,8 @@ class CpuBattleView(discord.ui.View):
 			messages = self.usermessage
 			firstAttack = next((t for t in self.battle.Turns if t.TurnNum == self.battle.CurrentTurn and t.PokemonId == self.battle.TeamBPkmn and t.Move),None) == None
 			self.battle.TeamATrap = max(self.battle.TeamATrap - 1, 0)
-			self.battle.TeamAConfusion = max(self.battle.TeamATrap - 1, 0)
+			self.battle.TeamAConfusion = max(self.battle.TeamAConfusion - 1, 0)
+			self.battle.TeamAConsAttacks = max(self.battle.TeamAConsAttacks - 1, 0)
 			self.battle.TeamASpecReduce = max(self.battle.TeamASpecReduce - 1, 0)
 			self.battle.TeamAPhysReduce = max(self.battle.TeamAPhysReduce - 1, 0)
 		else:
@@ -387,7 +394,8 @@ class CpuBattleView(discord.ui.View):
 			messages = self.cpumessage
 			firstAttack = next((t for t in self.battle.Turns if t.TurnNum == self.battle.CurrentTurn and t.PokemonId == self.battle.TeamAPkmn and t.Move),None) == None
 			self.battle.TeamBTrap = max(self.battle.TeamBTrap - 1, 0)
-			self.battle.TeamBConfusion = max(self.battle.TeamBTrap - 1, 0)
+			self.battle.TeamBConfusion = max(self.battle.TeamBConfusion - 1, 0)
+			self.battle.TeamBConsAttacks = max(self.battle.TeamBConsAttacks - 1, 0)
 			self.battle.TeamBSpecReduce = max(self.battle.TeamBSpecReduce - 1, 0)
 			self.battle.TeamBPhysReduce = max(self.battle.TeamBPhysReduce - 1, 0)
 		attackData = next(p for p in self.battle.AllPkmnData if p.Id == attack.Pokemon_Id)
@@ -413,9 +421,8 @@ class CpuBattleView(discord.ui.View):
 			else:
 				self.battle.TeamBConsAttacks = 0
 			turn.Action = BattleAction.Paralyzed if attack.CurrentAilment == 1 else BattleAction.Sleep if attack.CurrentAilment == 2 else BattleAction.Frozen if attack.CurrentAilment == 3 else BattleAction.Confused
-			messages.append(statservice.GetAilmentFailMessage(pkmnName, attack.CurrentAilment))
-			if turn.Action == BattleAction.Confused:
-				battleservice.ConfusionDamage(attack, attackData, self.battle.TeamAStats if teamA else self.battle.TeamBStats)
+			dmg = battleservice.ConfusionDamage(attack, attackData, self.battle.TeamAStats if teamA else self.battle.TeamBStats) if turn.Action == BattleAction.Confused else None
+			messages.append(statservice.GetAilmentFailMessage(pkmnName, attack.CurrentAilment, dmg))
 			return None
 		elif ailmentCheck == True:
 			messages.append(statservice.GetRecoveryMessage(attack, attackData, self.battle.TeamATrapId if teamA else self.battle.TeamBTrapId))
@@ -453,12 +460,6 @@ class CpuBattleView(discord.ui.View):
 			slfDmg = battleservice.SelfDamage(turn.Move, attack, attackData)
 			if slfDmg > 0:
 				messages.append(f'{pkmnName} took **{slfDmg}** recoil damage!')
-				if attack.CurrentHP == 0:
-					team = self.trainerteam if teamA else self.oppteam
-					if teamA and [t for t in team if t.CurrentHP > 0]:
-						messages.append(f'You swapped in {pokemonservice.GetPokemonDisplayName(self.battle.TeamAPkmn, next(p for p in self.battle.AllPkmnData if p.Id == self.battle.TeamAPkmn.Pokemon_Id), False, False)}!')
-					elif not teamA and [t for t in team if t.CurrentHP > 0]:
-						messages.append(f'{self.oppname} swapped in {pokemonservice.GetPokemonDisplayName(self.battle.TeamBPkmn, next(p for p in self.battle.AllPkmnData if p.Id == self.battle.TeamBPkmn.Pokemon_Id), False, False)}!')
 			return None
 		
 		# ATTACK THEM
@@ -466,12 +467,12 @@ class CpuBattleView(discord.ui.View):
 		isConfused = battleservice.ConsecutiveAttack(turn.Move, self.battle, teamA)
 		numattacks = choice(range(turn.Move.MinAttacks,turn.Move.MaxAttacks+1))
 		damage = 0
-		for _ in range(numattacks):
-			dmg,crit = battleservice.AttackDamage(turn.Move, attack, defend, self.battle)
-			if crit:
-				messages.append('Critical Hit!')
-			damage += dmg
 		if turn.Move.AttackType != 'status':
+			for _ in range(numattacks):
+				dmg,crit = battleservice.AttackDamage(turn.Move, attack, defend, self.battle)
+				if crit:
+					messages.append('Critical Hit!')
+				damage += dmg
 			messages.append(moveservice.GetEffectiveString(turn.Move.MoveType, defendData.Types, damage))
 		if numattacks > 1:
 			messages.append(f'It hit {numattacks} times!')
@@ -486,8 +487,10 @@ class CpuBattleView(discord.ui.View):
 			if attack.CurrentHP == 0:
 				team = self.trainerteam if teamA else self.oppteam
 				if teamA and [t for t in team if t.CurrentHP > 0]:
+					self.battle.TeamAConsAttacks = 0
 					messages.append(f'You swapped in {pokemonservice.GetPokemonDisplayName(self.battle.TeamAPkmn, next(p for p in self.battle.AllPkmnData if p.Id == self.battle.TeamAPkmn.Pokemon_Id), False, False)}!')
 				elif not teamA and [t for t in team if t.CurrentHP > 0]:
+					self.battle.TeamBConsAttacks = 0
 					messages.append(f'{self.oppname} swapped in {pokemonservice.GetPokemonDisplayName(self.battle.TeamBPkmn, next(p for p in self.battle.AllPkmnData if p.Id == self.battle.TeamBPkmn.Pokemon_Id), False, False)}!')
 
 		ailStr = battleservice.ApplyAilment(self.battle, turn.Move, defend, defendData)

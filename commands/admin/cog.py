@@ -95,7 +95,6 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 		rates = [p for p in pokemonservice.GetAllPokemon() if p.EncounterChance and (not spawnrate or p.EncounterChance == (5 if spawnrate > 5 else 1 if spawnrate < 1 else spawnrate))]
 		rates.sort(key=lambda x: (x.EncounterChance, x.Name))
 		substr = math.floor((2000-(4*len(rates)))/len(rates))
-		print(substr)
 		await ctx.reply(content=[r.Name[0:substr] for r in rates], ephemeral=True)
 
 	@app_commands.command(name="testfight",

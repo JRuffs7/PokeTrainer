@@ -49,7 +49,7 @@ def StartTrainer(pokemon: PokemonData, serverId: int, userId: int):
 #region Completion
 
 def RegionCompleted(trainer: Trainer, region: int):
-  if region not in trainer.EliteFour:
+  if region != 1000 and region not in trainer.EliteFour:
     return False
   if [g for g in gymservice.GetBadgesByRegion(region) if g.Id not in trainer.Badges]:
     return False
@@ -217,7 +217,7 @@ def TryHatchEgg(trainer: Trainer, eggId: str):
 
 #region Pokedex
 
-def GetPokedexList(trainer: Trainer, orderString: str, shiny: int|None, pokemonID: int|None, type: int|None, legendary: int|None, gender: int):
+def GetMyPokemon(trainer: Trainer, orderString: str|None, shiny: int|None, pokemonID: int|None, type: int|None, legendary: int|None, gender: int|None):
   pokemonList = [p for p in trainer.OwnedPokemon]
   if pokemonID:
     pokemonList = [p for p in pokemonList if p.Pokemon_Id == pokemonID]
@@ -230,7 +230,7 @@ def GetPokedexList(trainer: Trainer, orderString: str, shiny: int|None, pokemonI
   if type:
     pkmnDataList = [p for p in pkmnDataList if type in p.Types]
   if legendary:
-    pkmnDataList = [p for p in pkmnDataList if ((p.IsLegendary or p.IsMythical or p.IsUltraBeast) if legendary == 1 else not (p.IsLegendary or p.IsMythical or p.IsUltraBeast))]
+    pkmnDataList = [p for p in pkmnDataList if (pokemonservice.IsLegendaryPokemon(p) if legendary == 1 else not pokemonservice.IsLegendaryPokemon(p))]
   pokemonList = [p for p in pokemonList if p.Pokemon_Id in [po.Id for po in pkmnDataList]]
 
   match orderString:
@@ -296,11 +296,8 @@ def Evolve(trainer: Trainer, initialPkmn: Pokemon, initialData: PokemonData, evo
   return newPkmn
 
 def ReleasePokemon(trainer: Trainer, pokemonIds: list[str]):
-  released = next(p for p in trainer.OwnedPokemon if p.Id in pokemonIds)
   trainer.OwnedPokemon = [p for p in trainer.OwnedPokemon if p.Id not in pokemonIds]
   TryAddMissionProgress(trainer, 'Release', [], len(pokemonIds))
-  UpsertTrainer(trainer)
-  return pokemonservice.GetPokemonById(released.Pokemon_Id).Name
 
 def TradePokemon(trainerOne: Trainer, pokemonOne: Pokemon, trainerTwo: Trainer, pokemonTwo: Pokemon):
   trainerOne.OwnedPokemon = [p for p in trainerOne.OwnedPokemon if p.Id != pokemonOne.Id]
@@ -331,13 +328,9 @@ def SetTeamSlot(trainer: Trainer, slotNum: int, pokemonId: str):
     currentPkmn = trainer.Team[slotNum]
     trainer.Team[currentSlot] = currentPkmn
     trainer.Team[slotNum] = pokemonId
-  #adding
-  elif slotNum == len(trainer.Team):
-    trainer.Team.append(pokemonId)
   #replacing
   else:
     trainer.Team[slotNum] = pokemonId
-  UpsertTrainer(trainer)
 
 #endregion
 

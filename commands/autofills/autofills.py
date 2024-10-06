@@ -1,5 +1,6 @@
 from discord import Interaction, app_commands
-from services import pokemonservice, statservice, trainerservice
+from globals import region_name
+from services import gymservice, pokemonservice, statservice, trainerservice
 
 
 async def autofill_pokemon(inter: Interaction, current: str):
@@ -13,7 +14,6 @@ async def autofill_pokemon(inter: Interaction, current: str):
 			break
 	return data
 
-
 async def autofill_types(inter: Interaction, current: str):
 	choiceList = []
 	searchList = statservice.GetAllTypes()
@@ -25,6 +25,16 @@ async def autofill_types(inter: Interaction, current: str):
 					break
 	return choiceList
 
+async def autofill_regions(inter: Interaction, current: str):
+	choiceList = []
+	searchList = gymservice.GetRegions()
+	searchList.sort()
+	for region in searchList:
+		if current.lower() in region_name(region):
+				choiceList.append(app_commands.Choice(name=region_name(region), value=region))
+				if len(choiceList) == 25:
+					break
+	return choiceList
 
 async def autofill_owned(inter: Interaction, current: str):
     data = []
@@ -55,7 +65,7 @@ async def autofill_tradable(inter: Interaction, current: str):
 async def autofill_boxpkmn(inter: Interaction, current: str):
     data = []
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
-    pkmnList = pokemonservice.GetPokemonByIdList([p.Pokemon_Id for p in trainer.OwnedPokemon if p.Id not in trainer.Team and p.Id not in trainer.Daycare and p.Pokemon_Id != 132])
+    pkmnList = pokemonservice.GetPokemonByIdList([p.Pokemon_Id for p in trainer.OwnedPokemon if p.Id not in trainer.Team and p.Id not in trainer.Daycare])
     pkmnList.sort(key=lambda x: x.Name)
     for pkmn in pkmnList:
       if current.lower() in pkmn.Name.lower():

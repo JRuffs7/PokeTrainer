@@ -39,9 +39,9 @@ def GetNextEliteFour(region: int, currentRun: list[int]):
 
 def GetRegions():
 	regions: list[int] = []
-	for e in GetAllEliteFour():
-		if e.Generation not in regions:
-			regions.append(e.Generation)
+	for b in GetAllBadges():
+		if b.Generation not in regions:
+			regions.append(b.Generation)
 	regions.sort()
 	return regions
 
@@ -58,14 +58,14 @@ def GetBadgesByRegion(region: int):
 def GetBadgeById(badgeId: int):
 	return next((b for b in GetAllBadges() if b.Id == badgeId),None)
 
-def GetGymBadges(trainer: Trainer, generation: int):
+def GetGymBadges(trainer: Trainer, generation: int|None):
   badgeList = [ba for ba in [GetBadgeById(b) for b in trainer.Badges] if ba]
   if generation:
     badgeList = [b for b in badgeList if b.Generation == generation]
   badgeList.sort(key=lambda x: x.Id)
   return badgeList
 
-def GymCompletion(trainer: Trainer, generation: int = None):
+def GymCompletion(trainer: Trainer, generation: int|None):
   allBadges = [b.Id for b in GetAllBadges() if (b.Generation == generation if generation else True)]
   obtained = list(filter(allBadges.__contains__, trainer.Badges))
   return (len(obtained), len(allBadges))

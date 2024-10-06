@@ -1,7 +1,7 @@
 from discord import Interaction, Member, app_commands
 from discord.ext import commands
 
-from commands.autofills.autofills import autofill_boxpkmn, autofill_nonteam, autofill_tradable
+from commands.autofills.autofills import autofill_tradable
 from Views.TradeView import TradeView
 from middleware.decorators import command_lock, elitefour_check, method_logger, trainer_check
 from services import commandlockservice, pokemonservice, trainerservice

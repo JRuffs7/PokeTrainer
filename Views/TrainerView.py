@@ -119,7 +119,7 @@ class TrainerView(discord.ui.View):
 					
 			title = f'__**OTHER**__'
 			desc = f'{eggString}\n\n{daycareString}'
-		else:
+		elif self.currentpage < self.totalpages:
 			region = self.currentpage-3
 			badges = [b.Id for b in gymservice.GetBadgesByRegion(region)]
 			numBadges = [b for b in self.trainer.Badges if b in badges]
@@ -132,7 +132,7 @@ class TrainerView(discord.ui.View):
 			cmpltShndx = [p for p in self.trainer.Shinydex if p in idList]
 			cmpltLvdx = list(set(p.Id for p in self.trainer.OwnedPokemon if p.Id in idList))
 
-			completionString = f'**Completion (Excl. Shiny): {floor(((len(cmpltFrmdx)+len(numBadges)+eliteFour)*100)/(len(idList)+len(badges)+1))}%**'
+			completionString = f'**Completion (Excl. Shiny): {round(((len(cmpltPkdx)+len(cmpltFrmdx)+len(numBadges)+eliteFour)*100)/(len(pkdx)+len(idList)+len(badges)+1),2)}%**'
 			badgeString = f'Badges: {len(numBadges)}/{len(badges)}'
 			eliteFourString = f'Champion: {Incomplete if region not in self.trainer.EliteFour else Dexmark}'
 			pokedexString = f'Pokedex: {len(cmpltPkdx)}/{len(pkdx)} ({round((len(cmpltPkdx)*100)/len(pkdx))}%)'
@@ -142,6 +142,17 @@ class TrainerView(discord.ui.View):
 
 			title = f'__**{region_name(region).upper()} REGION**__'
 			desc = f'{completionString}\n\n{badgeString}\n{eliteFourString}\n\n{pokedexString}\n{formdexString}\n{shinydexString}\n{livedexString}'
+		else:
+			region = 1000
+			badges = [b.Id for b in gymservice.GetBadgesByRegion(region)]
+			numBadges = [b for b in self.trainer.Badges if b in badges]
+
+			completionString = f'**Completion: {floor(len(numBadges)*100/len(badges))}%**'
+			badgeString = f'Badges: {len(numBadges)}/{len(badges)}'
+			eliteFourString = f'Champion: {Incomplete if len(numBadges) < len(badges) else Dexmark}'
+
+			title = f'__**{region_name(region).upper()} REGION**__'
+			desc = f'{completionString}\n\n{badgeString}\n{eliteFourString}'
 		return f'{title}\n\n{desc}'
 
 	async def send(self, inter: discord.Interaction):

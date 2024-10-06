@@ -248,7 +248,6 @@ def AilmentDamage(pokemon: Pokemon, data: PokemonData, targetPokemon: Pokemon, t
 		case 18: #Seeding
 			damage = min(pokemon.CurrentHP, max(round(maxHp/8),1))
 			targetPokemon.CurrentHP = min(targetPokemon.CurrentHP + damage, statservice.GenerateStat(targetPokemon, targetData, StatEnum.HP))
-	pokemon.CurrentHP = max(pokemon.CurrentHP - damage, 0)
 	return damage
 
 def ApplyAilment(battle: CpuBattle, moveData: MoveData, target: Pokemon, targetData: PokemonData):
@@ -266,9 +265,9 @@ def ApplyAilment(battle: CpuBattle, moveData: MoveData, target: Pokemon, targetD
 	if moveData.AilmentChance in [0, 100] or choice(range(100)) < moveData.AilmentChance:
 		target.CurrentAilment = moveData.Ailment
 		if moveData.Ailment == 6 and teamA:
-			battle.TeamAConfusion = choice([2,3,4,5])
-		if moveData.Ailment == 6 and not teamA:
 			battle.TeamBConfusion = choice([2,3,4,5])
+		if moveData.Ailment == 6 and not teamA:
+			battle.TeamAConfusion = choice([2,3,4,5])
 		elif moveData.Ailment == 8 and teamA:
 			battle.TeamBTrapId = moveData.Id
 			battle.TeamBTrap = choice([4,5])
@@ -310,8 +309,6 @@ def SpecialDamage(move: MoveData, battle: CpuBattle, teamA: bool):
 	oppData = next(p for p in battle.AllPkmnData if p.Id == opponent.Pokemon_Id)
 	effect = typeservice.AttackEffect(move.MoveType, oppData.Types)
 	match move.Id:
-		case 205|301:
-			return math.pow(2,(5-(battle.TeamAConsAttacks if teamA else battle.TeamBConsAttacks)))
 		case 263:
 			if pokemon.CurrentAilment in [1,4,5]:
 				return 2
@@ -346,15 +343,15 @@ def UniqueDamage(moveData: MoveData, battle: CpuBattle, attacking: Pokemon, defe
 		case 49:
 			return 20
 		case 68|243|368|894:
-			oppMove = next(t for t in battle.Turns if t.PokemonId == defending.Id and t.TurnNum == battle.CurrentTurn)
-			return (oppMove.DamageDone or 1)*(2 if moveData.Id in [68,243] else 1.5)
+			oppMove = next((t for t in battle.Turns if t.PokemonId == defending.Id and t.TurnNum == battle.CurrentTurn),None)
+			return 0 if not oppMove else (oppMove.DamageDone or 1)*(2 if moveData.Id in [68,243] else 1.5)
 		case 69|101:
 			return attacking.Level
 		case 82:
 			return 40
 		case 117:
-			firstMove = next(t for t in battle.Turns if t.PokemonId == attacking.Id and t.TurnNum == battle.CurrentTurn-2)
-			return 2*sum([t.DamageDone for t in battle.Turns if t.DamageDone and t.PokemonId == defending.Id and battle.Turns.index(t) < battle.Turns.index(firstMove)])
+			firstMove = next((t for t in battle.Turns if t.PokemonId == attacking.Id and t.TurnNum == battle.CurrentTurn-2), None)
+			return 0 if not firstMove else 2*sum([t.DamageDone for t in battle.Turns if t.DamageDone and t.PokemonId == defending.Id and battle.Turns.index(t) < battle.Turns.index(firstMove)])
 		case 149:
 			return max(math.floor((attacking.Level*((10*choice(range(100)))+50))/100), 1)
 		case 162|877:
@@ -382,7 +379,7 @@ def AttackDamage(move: MoveData, attacking: Pokemon, defending: Pokemon, battle:
 		defending.CurrentHP = max(defending.CurrentHP - damage, 0)
 		return damage,False
 
-	if not move.Power and move.Id not in [67,360,484,486]:
+	if not move.Power and move.Id not in [67,175,360,484,486, 535]:
 		return 0,False
 	
 	lastTeamAAttack = next((t for t in battle.Turns if t.TeamA and t.Move), None)
@@ -401,15 +398,7 @@ def AttackDamage(move: MoveData, attacking: Pokemon, defending: Pokemon, battle:
 		attSt = statservice.GenerateStat(attacking, attData, StatEnum.SpecialAttack, attMo)
 		defSt = statservice.GenerateStat(defending, defData, StatEnum.SpecialDefense, defMo)
 	dmgB = attSt/defSt
-	power = CalcPower(move, battle, attacking, attData, defending, defData)
-	if move.Id == 175:
-		prcntHPLeft = attacking.CurrentHP / statservice.GenerateStat(attacking, attData, StatEnum.HP)
-		power = 200 if prcntHPLeft < 4.2 else 150 if prcntHPLeft < 10.4 else 100 if prcntHPLeft < 20.8 else 80 if prcntHPLeft < 35.4 else 40 if prcntHPLeft < 68.8 else 20
-	elif move.Id == 535:
-		prcntWeight = (defending.Weight * 100) / attacking.Weight
-		power = 120 if prcntWeight <= 20 else 100 if prcntWeight <= 25 else 80 if prcntWeight <= 33.34 else 60 if prcntWeight <= 50 else 40
-	else:
-		power = (move.Power or 0)*SpecialDamage(move, battle, attacking.Id == battle.TeamAPkmn.Id)
+	power = CalcPower(move, battle, attacking, attData, defending, defData)*SpecialDamage(move, battle, attacking.Id == battle.TeamAPkmn.Id)
 	baseDmg = ((dmgA*power*dmgB)/50) + 2
 	targets = 0.75 if move.Targets > 1 else 1
 	pb = 1

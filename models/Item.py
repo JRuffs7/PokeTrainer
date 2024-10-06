@@ -1,6 +1,7 @@
 from models.Base import Base
 
 class Item(Base):
+  Sprite: str|None
   Description: str
   EvolutionItem: bool
   BuyAmount: int
