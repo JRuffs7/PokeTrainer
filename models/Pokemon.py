@@ -78,7 +78,7 @@ class Pokemon:
   IVs: dict[str, int] = field(default_factory=dict)
   LearnedMoves: list[Move] = field(default_factory=list)
   CurrentAilment: int|None = None
-
+  CaughtBy: int = 4
 
   @classmethod
   def from_dict(cls, dict):

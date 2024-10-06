@@ -655,6 +655,7 @@ def TryCapture(pokeball: Pokeball, trainer: Trainer, battle: CpuBattle, ditto: b
 
 		if len(trainer.Team) >= 6:
 			pokemonservice.HealPokemon(battle.TeamBPkmn, pkmnData)
+		battle.TeamBPkmn.CaughtBy = pokeball.Id
 		trainer.OwnedPokemon.append(battle.TeamBPkmn)
 		trainerservice.TryAddToPokedex(trainer, pkmnData, battle.TeamBPkmn.IsShiny)
 		trainerservice.TryAddMissionProgress(trainer, 'Catch', pkmnData.Types)
