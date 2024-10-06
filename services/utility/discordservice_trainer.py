@@ -58,11 +58,29 @@ async def PrintReleaseResponse(interaction: Interaction, response: int, params: 
 		color=TrainerColor, 
 		params=params)
 
-async def PrintStarter(interaction: Interaction, response: int, params: list):
+async def PrintStarterResponse(interaction: Interaction, response: int, params: list):
 	await discordservice.SendCommandResponse(
 		interaction=interaction, 
 		filename=responseFile, 
 		command='starter', 
 		responseInd=response,
-		params=params,
-		color=TrainerColor)
+		color=TrainerColor,
+		params=params)
+
+async def PrintResetTrainerResponse(interaction: Interaction, response: int, params: list):
+	await discordservice.SendCommandResponse(
+		interaction=interaction, 
+		filename=responseFile, 
+		command='resettrainer', 
+		responseInd=response,
+		color=TrainerColor,
+		params=params)
+
+async def PrintChangeRegionResponse(interaction: Interaction, response: int, params: list):
+	await discordservice.SendCommandResponse(
+		interaction=interaction, 
+		filename=responseFile, 
+		command='resettrainer', 
+		responseInd=response,
+		color=TrainerColor,
+		params=params)

@@ -55,8 +55,8 @@ def GetPokemonByRegion(region: int):
 def GetStarterPokemon():
   return [p for p in pokemonda.GetAllPokemon() if p.IsStarter]
 
-def GetEvolutionLine(pokemonId: int, pokemonData: list[PokemonData] | None):
-  pokemon = pokemonda.GetAllPokemon() if not pokemonData else pokemonData
+def GetEvolutionLine(pokemonId: int):
+  pokemon = pokemonda.GetAllPokemon()
   idArray: list[int] = [pokemonId]
   preEvo = next((p for p in pokemon if pokemonId in [e.EvolveID for e in p.EvolvesInto]), None)
   while preEvo is not None:

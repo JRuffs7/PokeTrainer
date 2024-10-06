@@ -38,7 +38,7 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
   async def spawn(self, inter: Interaction):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
     pokemon,ditto = pokemonservice.SpawnPokemon(trainer.Region,
-      max([b for b in trainer.Badges if b < 1000]) if len(trainer.Badges) > 0 else 0,
+      len([b for b in gymservice.GetBadgesByRegion(trainer.Region) if b.Id in trainer.Badges]),
       #Voltage Reward
       trainerservice.GetShinyOdds(trainer)
     )
@@ -81,7 +81,7 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
       pokemonservice.HealPokemon(p, pokemonservice.GetPokemonById(p.Pokemon_Id))
     trainerservice.UpsertTrainer(trainer)
     commandlockservice.DeleteLock(inter.guild_id, inter.user.id)
-    return await discordservice.SendEmbed(inter, discordservice.CreateEmbed(
+    return await inter.followup.send(embed=discordservice.CreateEmbed(
       'Healed', 
       'All Pokemon in your party have been healed to full HP and cured of any ailments.', 
       PokemonColor,

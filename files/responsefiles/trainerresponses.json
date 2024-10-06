@@ -9,6 +9,16 @@
 			"Body": "No badges obtained for the {0} region. Fight gym leaders using **/gymbattle** to obtain badges."
 		}
 	],
+	"changeregion": [
+		{
+			"Title": "Invalid Region",
+			"Body": "You cannot visit the region selected. Please choose a region provided by the command and try again."
+		},
+		{
+			"Title": "Already Here",
+			"Body": "You are already in the {0} region. Please choose a region provided by the command and try again."
+		}
+	],
 	"changezone": [
 		{
 			"Title": "Zone Already Set",
@@ -65,10 +75,24 @@
 			"Body": "You do not own any **{0}** or this Pokemon is currently in your team/daycare."
 		}
 	],
+	"resettrainer": [
+		{
+			"Title": "Unable to Reset Trainer",
+			"Body": "The Pokemon you chose is either not a Starter Pokemon, or does not exist! Please try again using the paramaters provided."
+		}
+	],
 	"starter": [
 		{
 			"Title": "Unable to Create Trainer",
-			"Body": "Maybe you're already adventuring? Maybe there weren't any of the Pokemon you chose? Nah, must have been something else..."
+			"Body": "The Pokemon you chose is either not a Starter Pokemon, or does not exist! Please try again using the paramaters provided."
+		},
+		{
+			"Title": "Cannot Start This Region",
+			"Body": "You have alreeady started a journey in the region this starting Pokemon is from! Please try again using the paramaters provided."
+		},
+		{
+			"Title": "Cannot Start This Region",
+			"Body": "There are other regions you must complete before starting here! Complete the Gym and Elite Four challenges to unlock new regions."
 		}
 	],
 	"usepotion": [

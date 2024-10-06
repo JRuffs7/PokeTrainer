@@ -104,5 +104,20 @@ class GymCommands(commands.Cog, name="GymCommands"):
       await EliteFourBattleView(trainer, elitefour).start(inter)
 
 
+    @app_commands.command(name="exitelitefour",
+                        description="Exit your current run of the Elite Four.")
+    @method_logger(True)
+    @trainer_check
+    @command_lock
+    async def exitelitefour(self, inter: Interaction):
+      trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
+      commandlockservice.DeleteLock(trainer.ServerId, trainer.UserId)
+      if not commandlockservice.IsEliteFourLocked(trainer.ServerId, trainer.UserId):
+        return await discordservice_gym.PrintExitEliteFourResponse(inter, 0, [])
+      commandlockservice.DeleteEliteFourLock(trainer.ServerId, trainer.UserId)
+      trainer.CurrentEliteFour = []
+      trainerservice.UpsertTrainer(trainer)
+      return await discordservice_gym.PrintExitEliteFourResponse(inter, 1, [])
+
 async def setup(bot: commands.Bot):
   await bot.add_cog(GymCommands(bot))

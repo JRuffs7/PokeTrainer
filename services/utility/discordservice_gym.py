@@ -30,3 +30,12 @@ async def PrintEliteFourResponse(interaction: Interaction, response: int, params
 		responseInd=response, 
 		color=BattleColor, 
 		params=params)
+
+async def PrintExitEliteFourResponse(interaction: Interaction, response: int, params: list):
+	return await discordservice.SendCommandResponse(
+		interaction=interaction, 
+		filename=responseFile, 
+		command='exitelitefour', 
+		responseInd=response, 
+		color=BattleColor, 
+		params=params)

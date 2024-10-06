@@ -1,15 +1,15 @@
 import discord
+from globals import TrainerColor
 from middleware.decorators import defer
 
 from services import commandlockservice, trainerservice
 from models.Trainer import Trainer
+from services.utility import discordservice
 
 
 class DeleteView(discord.ui.View):
   
-	def __init__(self, interaction: discord.Interaction, trainer: Trainer):
-		self.interaction = interaction
-		self.user = interaction.user
+	def __init__(self, trainer: Trainer):
 		self.trainer = trainer
 		super().__init__(timeout=30)
 
@@ -28,10 +28,18 @@ class DeleteView(discord.ui.View):
 	@defer
 	async def submit_button(self, inter: discord.Interaction,
 												button: discord.ui.Button):
-		trainerservice.DeleteTrainer(self.trainer)
 		commandlockservice.DeleteLock(self.trainer.ServerId, self.trainer.UserId)
-		await self.message.edit(content=f"We are sorry to see you go.\nFeel free to start your journey again using the **/starter** command!", embed=None, view=None)
+		commandlockservice.DeleteEliteFourLock(self.trainer.ServerId, self.trainer.UserId)
+		trainerservice.DeleteTrainer(self.trainer)
+		await self.message.edit(embed=discordservice.CreateEmbed(
+			'Deleted Trainer', 
+			'We are sorry to see you go.\nFeel free to start your journey again using the **/starter** command!',
+			TrainerColor), view=None)
+		self.stop()
 
-	async def send(self):
-		await self.interaction.followup.send(content=f"Are you sure you wish to delete all your trainer data?", view=self, ephemeral=True)
-		self.message = await self.interaction.original_response()
+	async def send(self, inter: discord.Interaction):
+		await inter.followup.send(embed=discordservice.CreateEmbed(
+			'Delete Trainer?', 
+			'Are you sure you wish to delete all your trainer data?',
+			TrainerColor), view=self)
+		self.message = await inter.original_response()

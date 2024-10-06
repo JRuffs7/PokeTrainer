@@ -22,7 +22,6 @@ class Trainer:
   Daycare: dict[str, str] = field(default_factory=dict)
   LastDaily: str | None = None
   Region: int = 1
-  RegionsUnlocked: list[int] = field(default_factory=list)
   DailyMission: TrainerMission | None = None
   WeeklyMission: TrainerMission | None = None
 

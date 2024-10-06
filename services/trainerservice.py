@@ -44,6 +44,19 @@ def StartTrainer(pokemon: PokemonData, serverId: int, userId: int):
   UpsertTrainer(trainer)
   return trainer
 
+def ChangeRegion(trainer: Trainer, region: int, pokemon: PokemonData|None):
+  if pokemon:
+    newStarter = pokemonservice.GenerateSpawnPokemon(pokemon, 5, GetShinyOdds(trainer))
+    trainer.OwnedPokemon.append(newStarter)
+    trainer.Team = [newStarter.Id]
+    TryAddToPokedex(trainer, pokemon, newStarter.IsShiny)
+  trainer.Region = region
+  trainer.Money += 500
+  ModifyItemList(trainer, '4', 5)
+  UpsertTrainer(trainer)
+  return trainer
+
+
 #endregion
 
 #region Completion
@@ -57,6 +70,42 @@ def RegionCompleted(trainer: Trainer, region: int):
   if [p for p in regionDex if p.Id not in trainer.Formdex]:
     return False
   return True
+
+def RegionsVisited(trainer: Trainer):
+  badges = gymservice.GetAllBadges()
+  regions = list(set(r.Generation for r in badges if r.Generation < 1000))
+  regions.sort()
+  allStarters = pokemonservice.GetStarterPokemon()
+  visited: list[int] = []
+  for region in regions:
+    starters = [s for s in allStarters if s.Generation == region]
+    if [s for s in starters if s.PokedexId in trainer.Pokedex] and (region not in visited):
+      visited.append(region)
+    if [b for b in badges if b.Generation == region and b.Id in trainer.Badges] and (region not in visited):
+      visited.append(region)
+  return visited
+
+def ResetTrainer(trainer: Trainer, starter: PokemonData, keepShiny: bool):
+  shinyPkmn = [p for p in trainer.OwnedPokemon if p.IsShiny] if keepShiny else []
+  DeleteTrainer(trainer)
+  for s in shinyPkmn:
+    nic = s.Nickname
+    fem = s.IsFemale
+    hei = s.Height
+    wei = s.Weight
+    cau = s.CaughtBy
+    evLine = pokemonservice.GetEvolutionLine(s.Pokemon_Id)
+    s = pokemonservice.GenerateSpawnPokemon(pokemonservice.GetPokemonById(min(evLine)), 1)
+    s.IsShiny = True
+    s.Nickname = nic
+    s.IsFemale = fem
+    s.Height = hei
+    s.Weight = wei
+    s.CaughtBy = cau
+  newTrainer = StartTrainer(starter, trainer.ServerId, trainer.UserId)
+  newTrainer.OwnedPokemon.extend(shinyPkmn)
+  UpsertTrainer(newTrainer)
+  return newTrainer
 
 #endregion
 

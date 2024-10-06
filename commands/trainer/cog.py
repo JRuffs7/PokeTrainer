@@ -1,16 +1,17 @@
 from datetime import datetime
 from discord import Member, app_commands, Interaction
 from discord.ext import commands
+from Views.ResetTrainerView import ResetTrainerView
 from Views.TrainerView import TrainerView
 from Views.InventoryView import InventoryView
-from globals import HelpColor, TrainerColor, freemasterball, region_name, topggLink, discordLink
+from globals import HelpColor, SuccessColor, TrainerColor, freemasterball, region_name, topggLink, discordLink
 from commands.autofills.autofills import autofill_boxpkmn, autofill_nonteam, autofill_owned, autofill_regions, autofill_types
 from Views.EggView import EggView
 from Views.MyPokemonView import MyPokemonView
 from Views.TeamSelectorView import TeamSelectorView
 from Views.ReleaseView import ReleaseView
 from commands.views.Pagination.BadgeView import BadgeView
-from commands.views.DeleteView import DeleteView
+from Views.DeleteView import DeleteView
 
 from middleware.decorators import command_lock, elitefour_check, method_logger, trainer_check
 from services import commandlockservice, gymservice, pokemonservice, trainerservice, itemservice
@@ -55,7 +56,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
     if freeMasterball:
       dailyStr += f'\n\nHere is **1x Masterball** for recent issues as well.'
     dailyStr += f"\n\nDon't forget to [Upvote the Bot]({topggLink})!\nOr join the [Discord Server]({discordLink})!"
-    return await discordservice.SendEmbed(inter, discordservice.CreateEmbed(
+    return await inter.followup.send(embed=discordservice.CreateEmbed(
       'Daily Reward',
       dailyStr,
       TrainerColor,
@@ -209,11 +210,17 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
 
   #region STARTER
     
-  async def starter_autocomplete(self, inter: Interaction, current: str) -> list[app_commands.Choice[int]]:
+  async def starter_autocomplete(self, inter: Interaction, current: str):
     choices = []
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
-    starters = [p for p in pokemonservice.GetStarterPokemon() if p.PokedexId not in trainer.Pokedex]
-    starters.sort(key=lambda x: x.PokedexId)
+    allStarters = pokemonservice.GetStarterPokemon()
+    if not trainer:
+      starters = [p for p in allStarters if p.Generation == 1]
+      starters.sort(key=lambda x: x.PokedexId)
+    else:
+      gen = max(trainerservice.RegionsVisited(trainer)) + 1
+      starters = [p for p in allStarters if p.Generation == gen]
+      starters.sort(key=lambda x: x.PokedexId)
     for st in starters:
       if current.lower() in st.Name.lower():
         choices.append(app_commands.Choice(name=st.Name,value=st.Id))
@@ -223,35 +230,102 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
 
   @app_commands.command(name="starter",
                         description="Choose a Pokemon to start your trainer!")
-  @app_commands.autocomplete(pokemon=starter_autocomplete)
+  @app_commands.autocomplete(starter=starter_autocomplete)
   @method_logger(False)
-  async def starter(self, inter: Interaction, pokemon: int):
-    pkmn = pokemonservice.GetPokemonById(pokemon)
-    if trainerservice.GetTrainer(inter.guild_id, inter.user.id):
-      return await discordservice_trainer.PrintStarter(inter, 0, inter.guild.name)
-    elif not pkmn or not pkmn.IsStarter:
-      return await discordservice_trainer.PrintStarter(inter, 0, inter.guild.name)
-
-    trainer = trainerservice.StartTrainer(pkmn, inter.guild_id, inter.user.id)
+  async def starter(self, inter: Interaction, starter: int):
+    pkmn = next((p for p in pokemonservice.GetStarterPokemon() if p.Id == starter), None)
+    if not pkmn:
+      return await discordservice_trainer.PrintStarterResponse(inter, 0, [])
+    trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
+    if trainer:
+      if commandlockservice.IsLocked(trainer.ServerId, trainer.UserId) or commandlockservice.IsEliteFourLocked(trainer.ServerId, trainer.UserId):
+        return await discordservice_permission.SendError(inter, 'commandlock')
+      nextRegion = max(trainerservice.RegionsVisited(trainer))+1
+      if pkmn.Generation != nextRegion:
+        return await discordservice_trainer.PrintStarterResponse(inter, 1 if pkmn.Generation < nextRegion else 2, [])
+      if (nextRegion-1) not in trainer.EliteFour:
+        return await discordservice_trainer.PrintStarterResponse(inter, 2, [])
+      trainerservice.ChangeRegion(trainer, nextRegion, pkmn)
+      title = f"{inter.user.display_name}'s {region_name(nextRegion)} Journey Begins!"
+      desc = f'Additional Money: $500\nAdditional Pokeballs: 5'
+    else:
+      trainer = trainerservice.StartTrainer(pkmn, inter.guild_id, inter.user.id)
+      title = f"{inter.user.display_name}'s PokeTrainer Journey Begins!"
+      desc = f'Starting Money: ${trainer.Money}\nStarting Pokeballs: 5'
+    starter = next(p for p in trainer.OwnedPokemon if p.Id in trainer.Team)
     embed = discordservice.CreateEmbed(
-        f"{inter.user.display_name}'s Journey Begins!",
-        f"Starter: {pokemonservice.GetPokemonDisplayName(trainer.OwnedPokemon[0], pkmn)}\nStarting Money: ${trainer.Money}\nStarting Pokeballs: 5",
+        title,
+        f'Starter: {pokemonservice.GetPokemonDisplayName(starter, pkmn)}\n{desc}',
         TrainerColor)
-    embed.set_image(url=pokemonservice.GetPokemonImage(trainer.OwnedPokemon[0], pkmn))
-    await discordservice.SendEmbed(inter, embed)
-    embed2 = discordservice.CreateEmbed(
-          f"Welcome to PokeTrainer!",
-          f"You just began your journey in the server {inter.guild.name}. Use commands such as **/spawn** to interact with the bot! More interactions can be found using the **/help** command. Don't forget your **/daily** reward!",
-          HelpColor)
-    await discordservice.SendDMs(inter, [embed2])
+    embed.set_image(url=pokemonservice.GetPokemonImage(starter, pkmn))
+    await inter.followup.send(embed=embed)
+    if pkmn.Generation == 1:
+      embed2 = discordservice.CreateEmbed(
+            f"Welcome to PokeTrainer!",
+            f"You just began your journey in the server {inter.guild.name}. Use commands such as **/spawn** to interact with the bot! More interactions can be found using the **/help** command. Don't forget your **/daily** reward!",
+            HelpColor)
+      await discordservice.SendDMs(inter, [embed2])
+
+  @app_commands.command(name="resettrainer",
+                        description="Reset your trainer to the beginning.")
+  @app_commands.choices(starter=[
+      app_commands.Choice(name="Bulbasaur", value=1),
+      app_commands.Choice(name="Charmander", value=4),
+      app_commands.Choice(name="Squirtle", value=7)
+  ])
+  @method_logger(True)
+  @trainer_check
+  @elitefour_check
+  @command_lock
+  async def resettrainer(self, inter: Interaction, starter: int):
+    pkmn = next((p for p in pokemonservice.GetStarterPokemon() if p.Id == starter), None)
+    if not pkmn:
+      return await discordservice_trainer.PrintResetTrainerResponse(inter, 0, [])
+    return await ResetTrainerView(trainerservice.GetTrainer(inter.guild_id, inter.user.id), pkmn).send(inter)
+
+
+  async def region_autocomplete(self, inter: Interaction, current: str):
+    choices = []
+    trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
+    if trainer:
+      regions = [r for r in trainerservice.RegionsVisited(trainer) if r != trainer.Region]
+      regions.sort()
+      for r in regions:
+        if current.lower() in region_name(r):
+          choices.append(app_commands.Choice(name=region_name(r),value=r))
+        if len(choices) == 25:
+          break
+    return choices
+
+  @app_commands.command(name="changeregion",
+                        description="Change the region you are exploring.")
+  @app_commands.autocomplete(region=region_autocomplete)
+  @method_logger(False)
+  @trainer_check
+  @elitefour_check
+  @command_lock
+  async def changeregion(self, inter: Interaction, region: int):
+    trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
+    commandlockservice.DeleteLock(trainer.ServerId, trainer.UserId)
+    if region not in trainerservice.RegionsVisited(trainer):
+      return await discordservice_trainer.PrintChangeRegionResponse(inter, 0, [])
+    if region == trainer.Region:
+      return await discordservice_trainer.PrintChangeRegionResponse(inter, 1, [region_name(region)])
+    trainerservice.ChangeRegion(trainer, region, None)
+    return await inter.followup.send(embed=discordservice.CreateEmbed(
+      'Region Changed',
+      f'<@{inter.user.id}> is now exploring the **{region_name(region)} Region**!',
+      SuccessColor
+    ))
 
   @app_commands.command(name="delete",
                         description="Delete all your PokeTrainer data :(")
-  @method_logger(False)
+  @method_logger(True)
   @trainer_check
+  @elitefour_check
   @command_lock
   async def delete(self, inter: Interaction):
-    return await DeleteView(inter, trainerservice.GetTrainer(inter.guild_id, inter.user.id)).send()
+    return await DeleteView(trainerservice.GetTrainer(inter.guild_id, inter.user.id)).send(inter)
 
   #endregion
 

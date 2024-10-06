@@ -17,6 +17,16 @@
 			"Body": "You are using Pokemon in your team that exceed this Gym Leaders level cap of: {0}\n\nLook at **/gyminfo** for more details about this gym.\nUse **/modifyteam** to swap out for Pokemon within the level cap."
 		}
 	],
+	"exitelitefour": [
+		{
+			"Title": "Cannot Exit",
+			"Body": "You are not currently in an Elite Four Challenge."
+		},
+		{
+			"Title": "Exit Success",
+			"Body": "You have left the Elite Four Challenge. To start again, use the **/elitefour** command."
+		}
+	],
 	"gymbattle": [
 		{
 			"Title": "No Pokemon Available",
