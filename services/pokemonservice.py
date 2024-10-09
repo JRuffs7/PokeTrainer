@@ -3,6 +3,7 @@ import uuid
 from math import ceil
 from random import choice, uniform
 from models.Item import Candy, Item, Pokeball, Potion
+from models.Move import MoveData
 from models.Stat import StatEnum
 from models.Trainer import Trainer
 from models.enums import SpecialSpawn
@@ -412,5 +413,17 @@ def TryUseCandy(pokemon: Pokemon, data: PokemonData, candy: Candy, amount: int):
         candy.Experience*numToUse)
       num += numToUse
   return num
+
+def GetAvailableLevelMoves(pokemon: Pokemon, data: PokemonData):
+  return [moveservice.GetMoveById(int(m)) for m in data.LevelUpMoves if data.LevelUpMoves[m] <= pokemon.Level and int(m) not in [mo.MoveId for mo in pokemon.LearnedMoves]]
+
+def LearnNewMove(pokemon: Pokemon, newMove: MoveData, oldMove: MoveData|None):
+  if (len(pokemon.LearnedMoves) == 4) and (not oldMove):
+    return False
+  
+  if oldMove:
+    pokemon.LearnedMoves = [m for m in pokemon.LearnedMoves if m.MoveId != oldMove.Id]
+  pokemon.LearnedMoves.append(Move({'MoveId': newMove.Id, 'PP': newMove.BasePP}))
+  return True
 
 #endregion

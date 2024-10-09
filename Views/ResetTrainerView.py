@@ -50,13 +50,14 @@ class ResetTrainerView(discord.ui.View):
 
 	async def no_button(self, inter: discord.Interaction):
 		await inter.response.defer(thinking=True)
-		await self.resettrainer(inter,False)
+		await self.ResetTrainer(inter,False)
 
 	async def yes_button(self, inter: discord.Interaction):
 		await inter.response.defer(thinking=True)
-		await self.resettrainer(inter,True)
+		await self.ResetTrainer(inter,True)
 
-	async def resettrainer(self, inter: discord.Interaction, keepShiny: bool):
+	async def ResetTrainer(self, inter: discord.Interaction, keepShiny: bool):
+		await self.message.delete(delay=0.1)
 		commandlockservice.DeleteLock(self.trainer.ServerId, self.trainer.UserId)
 		self.trainer = trainerservice.ResetTrainer(self.trainer, self.pokemon, keepShiny)
 		starter = next(p for p in self.trainer.OwnedPokemon if p.Id in self.trainer.Team)

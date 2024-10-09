@@ -24,7 +24,6 @@ class MoveData(Base):
 	StatChanges: dict[str,int]
 	StatChance: int|None
 	StatEffectOpponent: bool
-	MachineID: str|None
 	Cost: int|None
 
 	def __init__(self, dict):

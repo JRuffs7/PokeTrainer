@@ -9,6 +9,7 @@ class Trainer:
   ServerId: int = 0
   Money: int = 0
   Items: dict[str, int] = field(default_factory=dict)
+  TMs: dict[str,int] = field(default_factory=dict)
   OwnedPokemon: list[Pokemon] = field(default_factory=list)
   Pokedex: list[int] = field(default_factory=list)
   Shinydex: list[int] = field(default_factory=list)

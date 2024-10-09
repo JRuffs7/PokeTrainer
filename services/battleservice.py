@@ -254,15 +254,14 @@ def ApplyAilment(battle: CpuBattle, moveData: MoveData, target: Pokemon, targetD
 	if not moveData.Ailment or moveData.Ailment == target.CurrentAilment:
 		return None
 	
-	if( (moveData.Ailment == 1 and 13 in targetData.Types) or 
-		  (moveData.Ailment == 3 and 15 in targetData.Types) or 
-			(moveData.Ailment == 4 and 10 in targetData.Types) or
-			(moveData.Ailment == 5 and (4 in targetData.Types or 9 in targetData.Types))
-	  ):
-		return None
-	
 	teamA = target.Id == battle.TeamBPkmn.Id
 	if moveData.AilmentChance in [0, 100] or choice(range(100)) < moveData.AilmentChance:
+		if( (moveData.Ailment == 1 and 13 in targetData.Types) or 
+				(moveData.Ailment == 3 and 15 in targetData.Types) or 
+				(moveData.Ailment == 4 and 10 in targetData.Types) or
+				(moveData.Ailment == 5 and (4 in targetData.Types or 9 in targetData.Types))
+	  ):
+			return f'Opponent cannot be {"paralyzed" if moveData.Ailment == 1 else "frozen" if moveData.Ailment == 3 else "burned" if moveData.Ailment == 4 else "poisoned"}.'
 		target.CurrentAilment = moveData.Ailment
 		if moveData.Ailment == 6 and teamA:
 			battle.TeamBConfusion = choice([2,3,4,5])
@@ -282,16 +281,20 @@ def ApplyAilment(battle: CpuBattle, moveData: MoveData, target: Pokemon, targetD
 #region Attack
 
 def MoveAccuracy(move: MoveData, battle: CpuBattle, teamA: bool):
+	attacking = battle.TeamAPkmn if teamA else battle.TeamBPkmn
+	defending = battle.TeamBPkmn if teamA else battle.TeamAPkmn
+	attackData = next(p for p in battle.AllPkmnData if p.Id == attacking.Pokemon_Id)
+	defendData = next(p for p in battle.AllPkmnData if p.Id == defending.Pokemon_Id)
+	if (move.Id == 92) and (4 in attackData.Types):
+		return True
 	if (teamA and battle.TeamBImmune) or ((not teamA) and battle.TeamAImmune):
 		return False
 	if not move.Accuracy:
 		return True
 	if move.Id in [12,32,90,329]:
-		attacking = battle.TeamAPkmn if teamA else battle.TeamBPkmn
-		defending = battle.TeamBPkmn if teamA else battle.TeamAPkmn
 		if attacking.Level < defending.Level:
 			return False
-		acc = 20 if move.Id == 329 and move.MoveType not in next(p for p in battle.AllPkmnData if p.Id == attacking.Pokemon_Id).Types else 30
+		acc = 20 if move.Id == 329 and move.MoveType not in attacking.Types else 30
 		acc += (attacking.Level - defending.Level)
 		return choice(range(100)) < acc
 

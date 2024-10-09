@@ -6,9 +6,6 @@ from services import statservice
 def GetTMMoves():
 	return moveda.GetTMMoves()
 
-def GetMoveByMachineId(id: str):
-	return next(m for m in moveda.GetTMMoves() if m.MachineID == id)
-
 def GetMoveById(id: int):
 	return next(m for m in moveda.GetAllMoves() if m.Id == id)
 

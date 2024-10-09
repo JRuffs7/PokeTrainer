@@ -9,7 +9,7 @@ from globals import SuperShinyOdds
 from middleware.decorators import is_bot_admin, trainer_check
 from models.Cpu import CpuTrainer
 from models.Server import Server
-from services import commandlockservice, gymservice, pokemonservice, serverservice, trainerservice
+from services import commandlockservice, gymservice, moveservice, pokemonservice, serverservice, trainerservice
 
 class AdminCommands(commands.Cog, name="AdminCommands"):
 
@@ -48,6 +48,16 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 		trainer = trainerservice.GetTrainer(ctx.guild.id, user.id if user else ctx.author.id)
 		if trainer:
 			trainerservice.ModifyItemList(trainer, str(item), amount)
+			trainerservice.UpsertTrainer(trainer)
+			
+	@commands.command(name="addtm")
+	@is_bot_admin
+	async def additem(self, ctx: commands.Context, move: int, amount: int = 1, user: Member|None = None):
+		if not ctx.guild:
+			return
+		trainer = trainerservice.GetTrainer(ctx.guild.id, user.id if user else ctx.author.id)
+		if trainer and moveservice.GetMoveById(move).Cost:
+			trainerservice.ModifyTMList(trainer, str(move), amount)
 			trainerservice.UpsertTrainer(trainer)
 			
 	@commands.command(name="addbadge")

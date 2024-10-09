@@ -53,6 +53,20 @@
 			"Body": "You currently do not own any eggs. To claim an egg, use the **/daily** command that resets every day at midnight UTC."
 		}
 	],
+	"learnmove": [
+		{
+			"Title": "Not Enough Funds",
+			"Body": "It cost $500 to teach a new move without using a TM. Earn money by battling wild Pokemon or trainers."
+		},
+		{
+			"Title": "Invalid Pokemon",
+			"Body": "The Pokemon you are looking for does not exist or is not part of your team. Please use the provided parameters and try again."
+		},
+		{
+			"Title": "No Moves",
+			"Body": "{0} already knows every move it is able to learn! Level up to unlock more moves and try again."
+		}
+	],
 	"pokeinfo": [
 		{
 			"Title": "No Results",
@@ -83,6 +97,16 @@
 		{
 			"Title": "No Potions",
 			"Body": "You do not have any potions available for use! Visit the **/shop** to buy more."
+		}
+	],
+	"usetm": [
+		{
+			"Title": "No TM Found",
+			"Body": "You do not own the TM specified! Use the paramaters provided and try again."
+		},
+		{
+			"Title": "Cannot Use TM",
+			"Body": "You cannot use this TM on any Pokemon in your team. They all either already know the move, or cannot learn it."
 		}
 	],
 	"wishlist": [

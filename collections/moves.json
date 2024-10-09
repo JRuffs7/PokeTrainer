@@ -26,7 +26,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -56,7 +55,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -86,7 +84,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -116,7 +113,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -146,7 +142,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "76492fba-ee80-46ee-a18b-001178e7d5fb",
 		"Cost": 1500
 	},
 	{
@@ -176,7 +171,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "4c15786b-76ae-448d-8360-5c56d3d1477b",
 		"Cost": 1000
 	},
 	{
@@ -206,7 +200,6 @@
 		"StatChanges": {},
 		"StatChance": 10,
 		"StatEffectOpponent": false,
-		"MachineID": "b044f48e-d483-4bd6-9794-e811d6739c3f",
 		"Cost": 1500
 	},
 	{
@@ -236,7 +229,6 @@
 		"StatChanges": {},
 		"StatChance": 10,
 		"StatEffectOpponent": false,
-		"MachineID": "5e94a6bc-1c9d-43ce-b3c0-553d81e4adb9",
 		"Cost": 1500
 	},
 	{
@@ -266,7 +258,6 @@
 		"StatChanges": {},
 		"StatChance": 10,
 		"StatEffectOpponent": false,
-		"MachineID": "644e9a49-3f77-4b13-8a20-42a4088d8bee",
 		"Cost": 1500
 	},
 	{
@@ -296,7 +287,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -326,7 +316,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -356,7 +345,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -386,7 +374,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "cc54d99e-fc33-4a0d-ad1e-5360a4044ad3",
 		"Cost": 2000
 	},
 	{
@@ -418,7 +405,6 @@
 		},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "5ee036a4-75a7-490f-aedf-9a542c30ba34",
 		"Cost": 2000
 	},
 	{
@@ -448,7 +434,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "d1b061e1-41f6-4837-96b7-480711b5f951",
 		"Cost": 1000
 	},
 	{
@@ -478,7 +463,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -508,7 +492,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -538,7 +521,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "a1e7cc89-fb1f-4af5-9b6b-25417684ee4c",
 		"Cost": 2000
 	},
 	{
@@ -568,7 +550,6 @@
 		"StatChanges": {},
 		"StatChance": 100,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -598,7 +579,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -628,7 +608,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -658,7 +637,6 @@
 		"StatChanges": {},
 		"StatChance": 30,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -688,7 +666,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -718,7 +695,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "0beafe24-3090-41b4-a5ed-d285cb12791e",
 		"Cost": 2000
 	},
 	{
@@ -748,7 +724,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -778,7 +753,6 @@
 		"StatChanges": {},
 		"StatChance": 30,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -810,7 +784,6 @@
 		},
 		"StatChance": null,
 		"StatEffectOpponent": true,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -840,7 +813,6 @@
 		"StatChanges": {},
 		"StatChance": 30,
 		"StatEffectOpponent": false,
-		"MachineID": "d76df572-3199-4773-b8c1-fab6a9a06fdb",
 		"Cost": 1500
 	},
 	{
@@ -870,7 +842,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -900,7 +871,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -930,7 +900,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "2a4e1717-e607-4b93-a73a-9e681407f299",
 		"Cost": 4000
 	},
 	{
@@ -960,7 +929,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -990,7 +958,6 @@
 		"StatChanges": {},
 		"StatChance": 30,
 		"StatEffectOpponent": false,
-		"MachineID": "4491f32a-0df8-4935-a665-5317f604f7f7",
 		"Cost": 2000
 	},
 	{
@@ -1020,7 +987,6 @@
 		"StatChanges": {},
 		"StatChance": 100,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -1050,7 +1016,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "cd669004-1980-4b16-b0a8-5d075a88d932",
 		"Cost": 2000
 	},
 	{
@@ -1080,7 +1045,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -1110,7 +1074,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "ea54a605-cc78-4509-951c-a5b602557a91",
 		"Cost": 2500
 	},
 	{
@@ -1142,7 +1105,6 @@
 		},
 		"StatChance": null,
 		"StatEffectOpponent": true,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -1172,7 +1134,6 @@
 		"StatChanges": {},
 		"StatChance": 30,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -1202,7 +1163,6 @@
 		"StatChanges": {},
 		"StatChance": 20,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -1232,7 +1192,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "adb1dbf7-7cad-4008-bf89-797f98fde131",
 		"Cost": 500
 	},
 	{
@@ -1264,7 +1223,6 @@
 		},
 		"StatChance": 100,
 		"StatEffectOpponent": true,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -1294,7 +1252,6 @@
 		"StatChanges": {},
 		"StatChance": 30,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -1326,7 +1283,6 @@
 		},
 		"StatChance": null,
 		"StatEffectOpponent": true,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -1356,7 +1312,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -1386,7 +1341,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -1416,7 +1370,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -1448,7 +1401,6 @@
 		},
 		"StatChance": 10,
 		"StatEffectOpponent": true,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -1478,7 +1430,6 @@
 		"StatChanges": {},
 		"StatChance": 10,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -1508,7 +1459,6 @@
 		"StatChanges": {},
 		"StatChance": 10,
 		"StatEffectOpponent": false,
-		"MachineID": "43f98682-6010-49cc-b9c9-f9da38d9c698",
 		"Cost": 2000
 	},
 	{
@@ -1538,7 +1488,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "b5645852-897d-49e3-a290-a152ba28b9b4",
 		"Cost": 1000
 	},
 	{
@@ -1568,7 +1517,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "83af7b1e-a03e-46c3-85c5-2bce8e33efb2",
 		"Cost": 2000
 	},
 	{
@@ -1598,7 +1546,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "4df47ce2-ff7d-4ece-909d-219818cf0779",
 		"Cost": 2000
 	},
 	{
@@ -1628,7 +1575,6 @@
 		"StatChanges": {},
 		"StatChance": 10,
 		"StatEffectOpponent": false,
-		"MachineID": "d6140dcc-d11e-4e8e-9d89-f9bf2c45fb3f",
 		"Cost": 2000
 	},
 	{
@@ -1658,7 +1604,6 @@
 		"StatChanges": {},
 		"StatChance": 10,
 		"StatEffectOpponent": false,
-		"MachineID": "2f08fdd4-b16b-48f8-b89a-1016f637cb4b",
 		"Cost": 2000
 	},
 	{
@@ -1688,7 +1633,6 @@
 		"StatChanges": {},
 		"StatChance": 10,
 		"StatEffectOpponent": false,
-		"MachineID": "72fba2ef-a1ee-4d68-94d0-53be9f9fbc1d",
 		"Cost": 1500
 	},
 	{
@@ -1720,7 +1664,6 @@
 		},
 		"StatChance": 10,
 		"StatEffectOpponent": true,
-		"MachineID": "7c4c862c-0890-47ed-8baa-e7906d8a359a",
 		"Cost": 1500
 	},
 	{
@@ -1752,7 +1695,6 @@
 		},
 		"StatChance": 10,
 		"StatEffectOpponent": true,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -1782,7 +1724,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "25579173-a64f-4d35-bc86-657d2dc1dc0e",
 		"Cost": 3000
 	},
 	{
@@ -1812,7 +1753,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -1842,7 +1782,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -1872,7 +1811,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "5f128345-0e1c-448d-b58b-8d7e90e1b6b9",
 		"Cost": 1500
 	},
 	{
@@ -1902,7 +1840,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "c2553167-d068-46c4-8ded-bc14c2df55ae",
 		"Cost": 2000
 	},
 	{
@@ -1932,7 +1869,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "3188c317-0721-475d-8cce-db732d3b6438",
 		"Cost": 2000
 	},
 	{
@@ -1962,7 +1898,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "e34326e3-9150-42c1-b484-3aae9468c901",
 		"Cost": 2000
 	},
 	{
@@ -1992,7 +1927,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "dbedb5ea-7c10-4c88-9ed1-e5119e48200e",
 		"Cost": 2000
 	},
 	{
@@ -2022,7 +1956,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -2052,7 +1985,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "37d9a862-109f-4174-b0ee-38feabc87611",
 		"Cost": 1000
 	},
 	{
@@ -2082,7 +2014,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -2115,7 +2046,6 @@
 		},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -2145,7 +2075,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -2175,7 +2104,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "ebbaab51-a8a9-41ce-b577-59f2f5c10a8e",
 		"Cost": 2500
 	},
 	{
@@ -2205,7 +2133,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -2235,7 +2162,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -2265,7 +2191,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -2295,7 +2220,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -2327,7 +2251,6 @@
 		},
 		"StatChance": null,
 		"StatEffectOpponent": true,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -2357,7 +2280,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "ea3e76eb-7e77-4ad1-b80c-f315bd2ca886",
 		"Cost": 2000
 	},
 	{
@@ -2387,7 +2309,6 @@
 		"StatChanges": {},
 		"StatChance": 100,
 		"StatEffectOpponent": false,
-		"MachineID": "b3b7edb2-e374-4cc0-a113-77ff17553da5",
 		"Cost": 1000
 	},
 	{
@@ -2417,7 +2338,6 @@
 		"StatChanges": {},
 		"StatChance": 10,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -2447,7 +2367,6 @@
 		"StatChanges": {},
 		"StatChance": 10,
 		"StatEffectOpponent": false,
-		"MachineID": "2210cff7-6f03-493a-97e6-f933e8ca1c62",
 		"Cost": 2000
 	},
 	{
@@ -2477,7 +2396,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "07072460-76b5-4c76-b271-fae4e3d25f05",
 		"Cost": 1500
 	},
 	{
@@ -2507,7 +2425,6 @@
 		"StatChanges": {},
 		"StatChance": 30,
 		"StatEffectOpponent": false,
-		"MachineID": "4be137ab-2ce8-4351-ad2d-855f1be5a03c",
 		"Cost": 2000
 	},
 	{
@@ -2537,7 +2454,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -2567,7 +2483,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "3606aec2-cf95-4ba9-8723-972877803ee1",
 		"Cost": 2000
 	},
 	{
@@ -2597,7 +2512,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "f8f059da-946a-47ff-9753-6ac28b596d80",
 		"Cost": 4000
 	},
 	{
@@ -2627,7 +2541,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "cdefd83f-d30d-4b6f-b5f2-6f4059515a47",
 		"Cost": 2000
 	},
 	{
@@ -2657,7 +2570,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "c76c7877-6d29-468c-bf37-15ed200ba4d3",
 		"Cost": 1500
 	},
 	{
@@ -2687,7 +2599,6 @@
 		"StatChanges": {},
 		"StatChance": 10,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -2719,7 +2630,6 @@
 		},
 		"StatChance": 10,
 		"StatEffectOpponent": true,
-		"MachineID": "6eee99d3-246d-47dc-84a8-4a6c0954d183",
 		"Cost": 2000
 	},
 	{
@@ -2749,7 +2659,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -2781,7 +2690,6 @@
 		},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -2813,7 +2721,6 @@
 		},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "63b5f598-4cbd-4102-ae23-ce169d2ffeaa",
 		"Cost": 2000
 	},
 	{
@@ -2843,7 +2750,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -2873,7 +2779,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "a6de3215-ebf6-4d05-bd51-11898aca7bd0",
 		"Cost": 500
 	},
 	{
@@ -2903,7 +2808,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "ff9da6e6-1ec5-46b6-9311-7e1e2b7aee0b",
 		"Cost": 2000
 	},
 	{
@@ -2935,7 +2839,6 @@
 		},
 		"StatChance": null,
 		"StatEffectOpponent": true,
-		"MachineID": "0e950948-e010-44ae-a4a5-0f3582d9b724",
 		"Cost": 1500
 	},
 	{
@@ -2967,7 +2870,6 @@
 		},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "3686b6ef-c0dd-4b96-85e2-f42f5d8da485",
 		"Cost": 1500
 	},
 	{
@@ -2997,7 +2899,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -3029,7 +2930,6 @@
 		},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -3061,7 +2961,6 @@
 		},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -3093,7 +2992,6 @@
 		},
 		"StatChance": null,
 		"StatEffectOpponent": true,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -3123,7 +3021,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "782a12d8-20c7-4439-a01e-d63288f710d0",
 		"Cost": 1500
 	},
 	{
@@ -3155,7 +3052,6 @@
 		},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -3187,7 +3083,6 @@
 		},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "de744247-af1d-45bd-b6bf-46a9814245bd",
 		"Cost": 1500
 	},
 	{
@@ -3219,7 +3114,6 @@
 		},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -3249,7 +3143,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "3af71713-9cc7-4887-978b-153e0b5d1b42",
 		"Cost": 1500
 	},
 	{
@@ -3279,7 +3172,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "2d07dc3d-6087-4b4d-bf32-d24665301d1a",
 		"Cost": 1500
 	},
 	{
@@ -3309,7 +3201,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "391bd478-97be-41ff-bbe7-6463bab78246",
 		"Cost": 2000
 	},
 	{
@@ -3339,7 +3230,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "8f7db5b8-ef54-44b0-bc82-bed4002b88a7",
 		"Cost": 4000
 	},
 	{
@@ -3369,7 +3259,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "eabf8f36-12c2-4009-8e28-003f980e4ff5",
 		"Cost": 1500
 	},
 	{
@@ -3399,7 +3288,6 @@
 		"StatChanges": {},
 		"StatChance": 30,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -3429,7 +3317,6 @@
 		"StatChanges": {},
 		"StatChance": 40,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -3459,7 +3346,6 @@
 		"StatChanges": {},
 		"StatChance": 30,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -3489,7 +3375,6 @@
 		"StatChanges": {},
 		"StatChance": 10,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -3519,7 +3404,6 @@
 		"StatChanges": {},
 		"StatChance": 10,
 		"StatEffectOpponent": false,
-		"MachineID": "19522606-8ebd-42ad-9b17-107e1a31e7bc",
 		"Cost": 2000
 	},
 	{
@@ -3549,7 +3433,6 @@
 		"StatChanges": {},
 		"StatChance": 20,
 		"StatEffectOpponent": false,
-		"MachineID": "e9ef1a9b-bb50-4997-a426-e0f30d73810f",
 		"Cost": 2000
 	},
 	{
@@ -3579,7 +3462,6 @@
 		"StatChanges": {},
 		"StatChance": 100,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -3609,7 +3491,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "a277caa7-84cb-483d-b26a-05fe2ad7f2e0",
 		"Cost": 1500
 	},
 	{
@@ -3639,7 +3520,6 @@
 		"StatChanges": {},
 		"StatChance": 100,
 		"StatEffectOpponent": false,
-		"MachineID": "a328a214-c8c5-460c-9481-6b14eb305fad",
 		"Cost": 3000
 	},
 	{
@@ -3669,7 +3549,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -3701,7 +3580,6 @@
 		},
 		"StatChance": 10,
 		"StatEffectOpponent": true,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -3733,7 +3611,6 @@
 		},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "2b82c76b-2d2d-4cfc-b74f-7eb099ee4a07",
 		"Cost": 2000
 	},
 	{
@@ -3765,7 +3642,6 @@
 		},
 		"StatChance": null,
 		"StatEffectOpponent": true,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -3795,7 +3671,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "276e8bf4-ce63-4c83-b14b-ebf7b34c0a7f",
 		"Cost": 1500
 	},
 	{
@@ -3825,7 +3700,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -3855,7 +3729,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -3885,7 +3758,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "b75b603f-6272-400b-b57a-829b33316863",
 		"Cost": 2000
 	},
 	{
@@ -3915,7 +3787,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -3945,7 +3816,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -3975,7 +3845,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "d10110a5-cc83-4abe-93b2-7b4c125de2a9",
 		"Cost": 2000
 	},
 	{
@@ -4005,7 +3874,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -4035,7 +3903,6 @@
 		"StatChanges": {},
 		"StatChance": 30,
 		"StatEffectOpponent": false,
-		"MachineID": "85a488ac-143b-4514-92ca-a1271462228d",
 		"Cost": 3000
 	},
 	{
@@ -4067,7 +3934,6 @@
 		},
 		"StatChance": 10,
 		"StatEffectOpponent": true,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -4097,7 +3963,6 @@
 		"StatChanges": {},
 		"StatChance": 20,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -4127,7 +3992,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -4159,7 +4023,6 @@
 		},
 		"StatChance": null,
 		"StatEffectOpponent": true,
-		"MachineID": "ff3965b7-798c-4fd1-909e-b700a6177b7e",
 		"Cost": 1500
 	},
 	{
@@ -4189,7 +4052,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "98a6f76f-a680-4e93-902d-7e6a8177a448",
 		"Cost": 2000
 	},
 	{
@@ -4219,7 +4081,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -4251,7 +4112,6 @@
 		},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -4281,7 +4141,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -4311,7 +4170,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "91c47d0d-63ff-4544-ae8d-5b2fe240867e",
 		"Cost": 5000
 	},
 	{
@@ -4341,7 +4199,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -4371,7 +4228,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -4401,7 +4257,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "86c907bb-09fa-4ae9-9c68-c6836acbe9da",
 		"Cost": 1500
 	},
 	{
@@ -4431,7 +4286,6 @@
 		"StatChanges": {},
 		"StatChance": 30,
 		"StatEffectOpponent": false,
-		"MachineID": "352e9406-aeec-4f8f-9a60-f195956923f3",
 		"Cost": 1500
 	},
 	{
@@ -4461,7 +4315,6 @@
 		"StatChanges": {},
 		"StatChance": 10,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -4493,7 +4346,6 @@
 		},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -4523,7 +4375,6 @@
 		"StatChanges": {},
 		"StatChance": 20,
 		"StatEffectOpponent": false,
-		"MachineID": "443ae6f6-30f5-45b4-8cb8-f15ee46e9eb7",
 		"Cost": 2000
 	},
 	{
@@ -4553,7 +4404,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "f3f36937-80df-41c7-bdc1-bb6601dde0c5",
 		"Cost": 2000
 	},
 	{
@@ -4583,7 +4433,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -4613,7 +4462,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -4643,7 +4491,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -4673,7 +4520,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "68bfed3f-9be5-4364-9611-74bf9ed29e58",
 		"Cost": 1500
 	},
 	{
@@ -4703,7 +4549,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "82464d43-ea25-4018-a392-2406a9ebe307",
 		"Cost": 1500
 	},
 	{
@@ -4733,7 +4578,6 @@
 		"StatChanges": {},
 		"StatChance": 10,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -4763,7 +4607,6 @@
 		"StatChanges": {},
 		"StatChance": 30,
 		"StatEffectOpponent": false,
-		"MachineID": "1071e483-943d-4b54-89d8-39a94bfde02e",
 		"Cost": 1000
 	},
 	{
@@ -4793,7 +4636,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -4823,7 +4665,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -4855,7 +4696,6 @@
 		},
 		"StatChance": null,
 		"StatEffectOpponent": true,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -4885,7 +4725,6 @@
 		"StatChanges": {},
 		"StatChance": 10,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -4915,7 +4754,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -4947,7 +4785,6 @@
 		},
 		"StatChance": null,
 		"StatEffectOpponent": true,
-		"MachineID": "16e2d556-4c4d-4771-b790-8eddbc4453bb",
 		"Cost": 1500
 	},
 	{
@@ -4977,7 +4814,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -5007,7 +4843,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -5037,7 +4872,6 @@
 		"StatChanges": {},
 		"StatChance": 30,
 		"StatEffectOpponent": false,
-		"MachineID": "a1e99f9c-d5ba-4020-bad1-54bc17d07fbf",
 		"Cost": 2000
 	},
 	{
@@ -5069,7 +4903,6 @@
 		},
 		"StatChance": 100,
 		"StatEffectOpponent": true,
-		"MachineID": "315f6b65-db53-4546-9615-c8953c63762c",
 		"Cost": 500
 	},
 	{
@@ -5101,7 +4934,6 @@
 		},
 		"StatChance": 50,
 		"StatEffectOpponent": true,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -5131,7 +4963,6 @@
 		"StatChanges": {},
 		"StatChance": 100,
 		"StatEffectOpponent": false,
-		"MachineID": "9ee5db76-7099-4857-bdc1-e8d40be81f70",
 		"Cost": 1500
 	},
 	{
@@ -5163,7 +4994,6 @@
 		},
 		"StatChance": 100,
 		"StatEffectOpponent": true,
-		"MachineID": "234dc444-8734-4057-9d6e-8f57eefe804c",
 		"Cost": 1500
 	},
 	{
@@ -5193,7 +5023,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -5223,7 +5052,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "a098026c-bb59-4a34-80be-fac0eb86d2e7",
 		"Cost": 2500
 	},
 	{
@@ -5253,7 +5081,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "e886c8d7-ab22-44a4-bba4-8ba6dce85131",
 		"Cost": 1500
 	},
 	{
@@ -5285,7 +5112,6 @@
 		},
 		"StatChance": null,
 		"StatEffectOpponent": true,
-		"MachineID": "7bcd4e60-5f01-43e7-92cb-a59ea5fb4cff",
 		"Cost": 1500
 	},
 	{
@@ -5315,7 +5141,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "2fdf592f-7651-4fbe-9432-4088b5a92bec",
 		"Cost": 1000
 	},
 	{
@@ -5345,7 +5170,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "b60faa30-3269-4715-b4b7-aa3c7e9c6fc0",
 		"Cost": 1000
 	},
 	{
@@ -5377,7 +5201,6 @@
 		},
 		"StatChance": null,
 		"StatEffectOpponent": true,
-		"MachineID": "4dc73520-41c4-4f98-9bde-834079764978",
 		"Cost": 2000
 	},
 	{
@@ -5407,7 +5230,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -5437,7 +5259,6 @@
 		"StatChanges": {},
 		"StatChance": 30,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -5467,7 +5288,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "af199e14-45bb-4801-9d0b-1c4d8392c956",
 		"Cost": 1000
 	},
 	{
@@ -5499,7 +5319,6 @@
 		},
 		"StatChance": 10,
 		"StatEffectOpponent": false,
-		"MachineID": "a8eca6ad-8b8d-4855-b3b3-35a3c956cfb1",
 		"Cost": 1500
 	},
 	{
@@ -5529,7 +5348,6 @@
 		"StatChanges": {},
 		"StatChance": 50,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -5559,7 +5377,6 @@
 		"StatChanges": {},
 		"StatChance": 100,
 		"StatEffectOpponent": false,
-		"MachineID": "457311d0-c2d3-43dd-9dc8-ef9219fd4ba0",
 		"Cost": 1000
 	},
 	{
@@ -5589,7 +5406,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "c18b3a67-ad6e-4517-a525-036fdf9b5770",
 		"Cost": 2500
 	},
 	{
@@ -5619,7 +5435,6 @@
 		"StatChanges": {},
 		"StatChance": 30,
 		"StatEffectOpponent": false,
-		"MachineID": "549f5c15-6d49-453e-b09f-56f2cec3228c",
 		"Cost": 1500
 	},
 	{
@@ -5649,7 +5464,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -5681,7 +5495,6 @@
 		},
 		"StatChance": 100,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -5713,7 +5526,6 @@
 		},
 		"StatChance": null,
 		"StatEffectOpponent": true,
-		"MachineID": "aabce4b1-cbf4-4899-a328-aa99e479d47c",
 		"Cost": 1500
 	},
 	{
@@ -5745,7 +5557,6 @@
 		},
 		"StatChance": 30,
 		"StatEffectOpponent": true,
-		"MachineID": "bc80d03b-c108-4342-8a8a-17032809853f",
 		"Cost": 1500
 	},
 	{
@@ -5777,7 +5588,6 @@
 		},
 		"StatChance": 10,
 		"StatEffectOpponent": false,
-		"MachineID": "c6a733e2-2d20-46c2-815b-f06fc1ce595b",
 		"Cost": 1000
 	},
 	{
@@ -5807,7 +5617,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -5837,7 +5646,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -5867,7 +5675,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -5897,7 +5704,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -5927,7 +5733,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "a697376c-4a51-4c43-be93-03113f227c3c",
 		"Cost": 1500
 	},
 	{
@@ -5957,7 +5762,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -5987,7 +5791,6 @@
 		"StatChanges": {},
 		"StatChance": 20,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -6019,7 +5822,6 @@
 		},
 		"StatChance": 20,
 		"StatEffectOpponent": true,
-		"MachineID": "fb5dd87e-24fb-42dc-8865-01b8cc7c4ad6",
 		"Cost": 2000
 	},
 	{
@@ -6049,7 +5851,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -6079,7 +5880,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -6115,7 +5915,6 @@
 		},
 		"StatChance": 10,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -6147,7 +5946,6 @@
 		},
 		"StatChance": 20,
 		"StatEffectOpponent": true,
-		"MachineID": "29ef4798-d0a8-402c-9ef9-13860c13f135",
 		"Cost": 2000
 	},
 	{
@@ -6177,7 +5975,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "5f3b3b33-c745-4320-8496-61cac21eb48d",
 		"Cost": 2500
 	},
 	{
@@ -6209,7 +6006,6 @@
 		},
 		"StatChance": 50,
 		"StatEffectOpponent": true,
-		"MachineID": "325e4f3f-96f2-4bd9-b75e-6f189c632a1e",
 		"Cost": 1000
 	},
 	{
@@ -6239,7 +6035,6 @@
 		"StatChanges": {},
 		"StatChance": 100,
 		"StatEffectOpponent": false,
-		"MachineID": "e6db418f-77bc-4389-9b51-deb3915cbbd2",
 		"Cost": 1000
 	},
 	{
@@ -6269,7 +6064,6 @@
 		"StatChanges": {},
 		"StatChance": 100,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -6299,7 +6093,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "057930f3-b163-4652-9bbb-1facdfc9bc46",
 		"Cost": 2000
 	},
 	{
@@ -6332,7 +6125,6 @@
 		},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -6362,7 +6154,6 @@
 		"StatChanges": {},
 		"StatChance": 10,
 		"StatEffectOpponent": false,
-		"MachineID": "e27b1e7b-f602-4b2a-b1be-46ff09663b8a",
 		"Cost": 2000
 	},
 	{
@@ -6394,7 +6185,6 @@
 		},
 		"StatChance": null,
 		"StatEffectOpponent": true,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -6424,7 +6214,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "d7143e2f-9471-4cc7-abab-78c48fc32c9e",
 		"Cost": 1500
 	},
 	{
@@ -6457,7 +6246,6 @@
 		},
 		"StatChance": null,
 		"StatEffectOpponent": true,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -6487,7 +6275,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "8c45fb05-5143-4bdd-af25-1a2ba7f3a38c",
 		"Cost": 1500
 	},
 	{
@@ -6517,7 +6304,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "35cf6753-9f89-4895-b680-ef917c213891",
 		"Cost": 3000
 	},
 	{
@@ -6547,7 +6333,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -6579,7 +6364,6 @@
 		},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "562b04c3-010b-417c-b32c-af7e27f471b2",
 		"Cost": 1500
 	},
 	{
@@ -6612,7 +6396,6 @@
 		},
 		"StatChance": 100,
 		"StatEffectOpponent": false,
-		"MachineID": "3c37eb25-633e-4b91-93b9-60ca30142ab7",
 		"Cost": 2500
 	},
 	{
@@ -6642,7 +6425,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "c6b5fd49-239b-48c5-be9a-4a46f277987a",
 		"Cost": 1500
 	},
 	{
@@ -6672,7 +6454,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "128f5cc8-ca1c-4e1e-be88-e9a99387bda9",
 		"Cost": 1500
 	},
 	{
@@ -6702,7 +6483,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "61f0b921-a46c-4b35-bbdc-5dc4a2a6cef2",
 		"Cost": 1500
 	},
 	{
@@ -6732,7 +6512,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "ff16468e-8bee-40b3-92f7-4ddab0c961e5",
 		"Cost": 2000
 	},
 	{
@@ -6762,7 +6541,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -6792,7 +6570,6 @@
 		"StatChanges": {},
 		"StatChance": 30,
 		"StatEffectOpponent": true,
-		"MachineID": "ebc2ec56-ee8f-46e6-9b88-830f63e77b2e",
 		"Cost": 1500
 	},
 	{
@@ -6822,7 +6599,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "e4e60be0-1998-4fd2-aae6-570026f65ab8",
 		"Cost": 2000
 	},
 	{
@@ -6852,7 +6628,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -6884,7 +6659,6 @@
 		},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -6916,7 +6690,6 @@
 		},
 		"StatChance": 50,
 		"StatEffectOpponent": true,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -6948,7 +6721,6 @@
 		},
 		"StatChance": 50,
 		"StatEffectOpponent": true,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -6980,7 +6752,6 @@
 		},
 		"StatChance": null,
 		"StatEffectOpponent": true,
-		"MachineID": "ed59bd19-95ab-40f8-bd73-023bce7e6e66",
 		"Cost": 1500
 	},
 	{
@@ -7010,7 +6781,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -7040,7 +6810,6 @@
 		"StatChanges": {},
 		"StatChance": 10,
 		"StatEffectOpponent": false,
-		"MachineID": "9a2e391b-676e-4a72-8eea-4c3918d59227",
 		"Cost": 2000
 	},
 	{
@@ -7070,7 +6839,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -7100,7 +6868,6 @@
 		"StatChanges": {},
 		"StatChance": 30,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -7130,7 +6897,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -7160,7 +6926,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "b5b0361a-fd70-4ef6-8b68-7acd9b5f860f",
 		"Cost": 2000
 	},
 	{
@@ -7190,7 +6955,6 @@
 		"StatChanges": {},
 		"StatChance": 50,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -7222,7 +6986,6 @@
 		},
 		"StatChance": 50,
 		"StatEffectOpponent": true,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -7252,7 +7015,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "f5949a5c-3c39-48da-8c21-6a1776728806",
 		"Cost": 3000
 	},
 	{
@@ -7282,7 +7044,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "84164aa5-1931-4cd3-ba09-bbec9af68ecb",
 		"Cost": 3000
 	},
 	{
@@ -7314,7 +7075,6 @@
 		},
 		"StatChance": 20,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -7344,7 +7104,6 @@
 		"StatChanges": {},
 		"StatChance": 30,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -7374,7 +7133,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "6aa35d4b-4e63-45ef-a0ef-9746a863bd97",
 		"Cost": 1000
 	},
 	{
@@ -7406,7 +7164,6 @@
 		},
 		"StatChance": null,
 		"StatEffectOpponent": true,
-		"MachineID": "7c332e19-bba5-40b0-9964-2f71add12e40",
 		"Cost": 1500
 	},
 	{
@@ -7436,7 +7193,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "e2ef0abe-9370-4eb5-b584-9d1953bf673d",
 		"Cost": 1500
 	},
 	{
@@ -7468,7 +7224,6 @@
 		},
 		"StatChance": 100,
 		"StatEffectOpponent": false,
-		"MachineID": "d44c31e6-5446-4193-bbaf-a65efaccff7b",
 		"Cost": 2500
 	},
 	{
@@ -7500,7 +7255,6 @@
 		},
 		"StatChance": 100,
 		"StatEffectOpponent": true,
-		"MachineID": "56772d2a-a3e3-4a0b-ad7a-215aabce98a3",
 		"Cost": 1500
 	},
 	{
@@ -7536,7 +7290,6 @@
 		},
 		"StatChance": 10,
 		"StatEffectOpponent": false,
-		"MachineID": "d34279b9-1b06-4b4f-952f-3a9a76b35bdb",
 		"Cost": 1500
 	},
 	{
@@ -7568,7 +7321,6 @@
 		},
 		"StatChance": null,
 		"StatEffectOpponent": true,
-		"MachineID": "dc32c610-0a9e-4a83-b7b3-920bdf45dc04",
 		"Cost": 1500
 	},
 	{
@@ -7598,7 +7350,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -7631,7 +7382,6 @@
 		},
 		"StatChance": null,
 		"StatEffectOpponent": true,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -7664,7 +7414,6 @@
 		},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "073444a1-73c0-48c3-99c7-cfff944edcfc",
 		"Cost": 2000
 	},
 	{
@@ -7694,7 +7443,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -7724,7 +7472,6 @@
 		"StatChanges": {},
 		"StatChance": 10,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -7754,7 +7501,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -7784,7 +7530,6 @@
 		"StatChanges": {},
 		"StatChance": 10,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -7814,7 +7559,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -7844,7 +7588,6 @@
 		"StatChanges": {},
 		"StatChance": 100,
 		"StatEffectOpponent": false,
-		"MachineID": "6d342091-8374-48da-b4ae-4472ac03fff5",
 		"Cost": 1000
 	},
 	{
@@ -7874,7 +7617,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -7906,7 +7648,6 @@
 		},
 		"StatChance": 30,
 		"StatEffectOpponent": true,
-		"MachineID": "84c429d6-eecc-4a16-87b2-c91affffab6b",
 		"Cost": 2000
 	},
 	{
@@ -7936,7 +7677,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "ea01dd2f-7929-4a9b-a952-b496c69cf53a",
 		"Cost": 500
 	},
 	{
@@ -7966,7 +7706,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "7bf28c1d-e410-417f-a6c0-dab2e9d3e70e",
 		"Cost": 1500
 	},
 	{
@@ -7996,7 +7735,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "5a7b2101-5ca0-4559-b12a-efd678587f3b",
 		"Cost": 500
 	},
 	{
@@ -8028,7 +7766,6 @@
 		},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "9887a443-5e38-4347-8196-754846aac34b",
 		"Cost": 2000
 	},
 	{
@@ -8060,7 +7797,6 @@
 		},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -8090,7 +7826,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "74d59b2f-622f-4a9c-aebc-b95ff29bdcc6",
 		"Cost": 2000
 	},
 	{
@@ -8120,7 +7855,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "878f9e9a-3473-477d-9a01-0c1a290dbaac",
 		"Cost": 3000
 	},
 	{
@@ -8153,7 +7887,6 @@
 		},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "91b5e1dc-3288-48d4-9298-0cac17a71ae0",
 		"Cost": 2000
 	},
 	{
@@ -8183,7 +7916,6 @@
 		"StatChanges": {},
 		"StatChance": 30,
 		"StatEffectOpponent": false,
-		"MachineID": "d99b5a02-24a9-49d3-8ec4-ca5b9adc3e92",
 		"Cost": 1500
 	},
 	{
@@ -8215,7 +7947,6 @@
 		},
 		"StatChance": 100,
 		"StatEffectOpponent": true,
-		"MachineID": "0e8e8451-b407-45ad-a91b-7026373b5ea2",
 		"Cost": 1500
 	},
 	{
@@ -8245,7 +7976,6 @@
 		"StatChanges": {},
 		"StatChance": 10,
 		"StatEffectOpponent": false,
-		"MachineID": "edbed3b7-cb20-4d00-a263-dd9cce456d5b",
 		"Cost": 1000
 	},
 	{
@@ -8275,7 +8005,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -8305,7 +8034,6 @@
 		"StatChanges": {},
 		"StatChance": 10,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -8335,7 +8063,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "854191ca-0971-4b65-a533-816b7729937b",
 		"Cost": 1500
 	},
 	{
@@ -8368,7 +8095,6 @@
 		},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "084304ce-7b0e-4629-b047-887104d4fd2e",
 		"Cost": 2000
 	},
 	{
@@ -8398,7 +8124,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "d1caadf8-f28e-447b-91c5-0bb5a0f09903",
 		"Cost": 2000
 	},
 	{
@@ -8431,7 +8156,6 @@
 		},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "eb76bf14-b27f-41c5-b86f-389f14bac612",
 		"Cost": 2000
 	},
 	{
@@ -8461,7 +8185,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "6132a7be-9258-4239-99d9-25383d08994b",
 		"Cost": 500
 	},
 	{
@@ -8491,7 +8214,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "4650539e-4d17-4ce6-9164-e36a37a25d63",
 		"Cost": 1500
 	},
 	{
@@ -8521,7 +8243,6 @@
 		"StatChanges": {},
 		"StatChance": 20,
 		"StatEffectOpponent": false,
-		"MachineID": "f8d89112-55ec-4957-bc12-cac5c4c91dfb",
 		"Cost": 1500
 	},
 	{
@@ -8551,7 +8272,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -8583,7 +8303,6 @@
 		},
 		"StatChance": 100,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -8613,7 +8332,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "6bcdd8b1-c171-4c82-a7cf-3904320d51d5",
 		"Cost": 1500
 	},
 	{
@@ -8643,7 +8361,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -8675,7 +8392,6 @@
 		},
 		"StatChance": 100,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -8705,7 +8421,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "13e80686-efec-46f4-b13c-b5b8af20e87b",
 		"Cost": 2000
 	},
 	{
@@ -8735,7 +8450,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "71cb2c11-e4d8-45ec-8204-053977f67889",
 		"Cost": 1500
 	},
 	{
@@ -8765,7 +8479,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -8795,7 +8508,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "fea1832f-4652-45ab-a5ba-bce6f9b12516",
 		"Cost": 1500
 	},
 	{
@@ -8825,7 +8537,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -8855,7 +8566,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "70aca78e-a203-4ea5-91fd-1f017d4fc697",
 		"Cost": 1500
 	},
 	{
@@ -8888,7 +8598,6 @@
 		},
 		"StatChance": 100,
 		"StatEffectOpponent": false,
-		"MachineID": "a1c42b75-fd98-4e7e-963f-ec25d2e77966",
 		"Cost": 2500
 	},
 	{
@@ -8918,7 +8627,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "6e495e8b-ce6f-48e5-a718-9989de59433d",
 		"Cost": 1000
 	},
 	{
@@ -8948,7 +8656,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "54203ec1-2a4e-41b3-b346-3b24e196e27f",
 		"Cost": 1500
 	},
 	{
@@ -8978,7 +8685,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -9008,7 +8714,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -9038,7 +8743,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -9068,7 +8772,6 @@
 		"StatChanges": {},
 		"StatChance": 10,
 		"StatEffectOpponent": false,
-		"MachineID": "08a2227a-5eee-4836-8a6c-d36d9ae7c721",
 		"Cost": 2500
 	},
 	{
@@ -9098,7 +8801,6 @@
 		"StatChanges": {},
 		"StatChance": 30,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -9128,7 +8830,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "c965d0b5-c2dd-483a-9d9b-5bb3802dd000",
 		"Cost": 2000
 	},
 	{
@@ -9160,7 +8861,6 @@
 		},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "6abd9fb6-e9f5-490e-a4b2-ceabf373ff9d",
 		"Cost": 2000
 	},
 	{
@@ -9190,7 +8890,6 @@
 		"StatChanges": {},
 		"StatChance": 30,
 		"StatEffectOpponent": false,
-		"MachineID": "7f397477-edba-4ead-84a6-ebba881f5aa8",
 		"Cost": 2000
 	},
 	{
@@ -9220,7 +8919,6 @@
 		"StatChanges": {},
 		"StatChance": 20,
 		"StatEffectOpponent": false,
-		"MachineID": "f5a4eda9-e434-4630-98a4-bff1de51ed8e",
 		"Cost": 2000
 	},
 	{
@@ -9250,7 +8948,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -9280,7 +8977,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -9310,7 +9006,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "6cc4efb9-0c7f-42b3-87ce-e2aa4ca0f0aa",
 		"Cost": 2000
 	},
 	{
@@ -9340,7 +9035,6 @@
 		"StatChanges": {},
 		"StatChance": 30,
 		"StatEffectOpponent": false,
-		"MachineID": "f04c4674-98f4-43d9-a06a-61d464dc2180",
 		"Cost": 1500
 	},
 	{
@@ -9370,7 +9064,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "7289606b-d204-4fb4-9a13-2952be2d7589",
 		"Cost": 2000
 	},
 	{
@@ -9402,7 +9095,6 @@
 		},
 		"StatChance": 10,
 		"StatEffectOpponent": true,
-		"MachineID": "ba4a6323-e5b5-4e71-a2fa-da2ff6fca712",
 		"Cost": 2000
 	},
 	{
@@ -9432,7 +9124,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "eba06654-20bd-4559-a38d-5c31604024b1",
 		"Cost": 2000
 	},
 	{
@@ -9462,7 +9153,6 @@
 		"StatChanges": {},
 		"StatChance": 20,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -9492,7 +9182,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "19a34c9d-382d-44ec-ad92-fb24067f6002",
 		"Cost": 2000
 	},
 	{
@@ -9522,7 +9211,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "a0e2f788-2493-4be1-82e6-3633d7d823e0",
 		"Cost": 1500
 	},
 	{
@@ -9552,7 +9240,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "0bc467ea-6a4e-4ddb-af9a-590f51ecc9b2",
 		"Cost": 1000
 	},
 	{
@@ -9584,7 +9271,6 @@
 		},
 		"StatChance": 10,
 		"StatEffectOpponent": true,
-		"MachineID": "c81d752a-6372-40d8-80da-0524ec425353",
 		"Cost": 2000
 	},
 	{
@@ -9616,7 +9302,6 @@
 		},
 		"StatChance": 10,
 		"StatEffectOpponent": true,
-		"MachineID": "ab20fee4-98e1-4a12-9e47-fd2ae4a7aeb8",
 		"Cost": 2000
 	},
 	{
@@ -9646,7 +9331,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "4e9cf772-4baf-42ff-acb2-6ac2bf2d243e",
 		"Cost": 2500
 	},
 	{
@@ -9678,7 +9362,6 @@
 		},
 		"StatChance": 10,
 		"StatEffectOpponent": true,
-		"MachineID": "534c915f-f618-4c01-9471-ae662c20ba39",
 		"Cost": 2000
 	},
 	{
@@ -9708,7 +9391,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "e5e6198b-589a-4b2c-b790-bd3cbf623dd2",
 		"Cost": 3000
 	},
 	{
@@ -9740,7 +9422,6 @@
 		},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "199a7a43-1539-4d3f-9d3d-2bd7f03c263e",
 		"Cost": 2000
 	},
 	{
@@ -9770,7 +9451,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -9800,7 +9480,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "e2d4e87f-1dee-41c3-ab3f-80eb7ba16d87",
 		"Cost": 1500
 	},
 	{
@@ -9830,7 +9509,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -9860,7 +9538,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "0760ed49-d306-45b8-a13c-8a8f32698024",
 		"Cost": 1500
 	},
 	{
@@ -9890,7 +9567,6 @@
 		"StatChanges": {},
 		"StatChance": 10,
 		"StatEffectOpponent": false,
-		"MachineID": "ccd55dc9-81bf-47e8-800f-0c65eac6af17",
 		"Cost": 1500
 	},
 	{
@@ -9920,7 +9596,6 @@
 		"StatChanges": {},
 		"StatChance": 10,
 		"StatEffectOpponent": false,
-		"MachineID": "50f01eab-c648-4951-95d3-79ddd5438873",
 		"Cost": 1500
 	},
 	{
@@ -9950,7 +9625,6 @@
 		"StatChanges": {},
 		"StatChance": 10,
 		"StatEffectOpponent": false,
-		"MachineID": "02d7f0d2-e500-4e31-89af-bb693b5a0865",
 		"Cost": 1500
 	},
 	{
@@ -9980,7 +9654,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -10012,7 +9685,6 @@
 		},
 		"StatChance": 30,
 		"StatEffectOpponent": true,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -10042,7 +9714,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "65741444-2f48-4aca-972b-a6338319318e",
 		"Cost": 1500
 	},
 	{
@@ -10072,7 +9743,6 @@
 		"StatChanges": {},
 		"StatChance": 20,
 		"StatEffectOpponent": false,
-		"MachineID": "533646e9-b07e-4f27-931a-93701dd94580",
 		"Cost": 1500
 	},
 	{
@@ -10104,7 +9774,6 @@
 		},
 		"StatChance": 30,
 		"StatEffectOpponent": true,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -10136,7 +9805,6 @@
 		},
 		"StatChance": 10,
 		"StatEffectOpponent": true,
-		"MachineID": "0289f871-d77e-4ba5-8eda-82222dcef547",
 		"Cost": 2000
 	},
 	{
@@ -10166,7 +9834,6 @@
 		"StatChanges": {},
 		"StatChance": 20,
 		"StatEffectOpponent": false,
-		"MachineID": "3a7f07f8-01e0-4012-97cf-69b7b4767fad",
 		"Cost": 2000
 	},
 	{
@@ -10198,7 +9865,6 @@
 		},
 		"StatChance": null,
 		"StatEffectOpponent": true,
-		"MachineID": "884f3db6-2d5c-4641-ae35-c1e512eb8481",
 		"Cost": 1500
 	},
 	{
@@ -10230,7 +9896,6 @@
 		},
 		"StatChance": 100,
 		"StatEffectOpponent": false,
-		"MachineID": "0f8e07fd-0355-4b7f-a9d0-adeb75002326",
 		"Cost": 2500
 	},
 	{
@@ -10260,7 +9925,6 @@
 		"StatChanges": {},
 		"StatChance": 30,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -10290,7 +9954,6 @@
 		"StatChanges": {},
 		"StatChance": 30,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -10322,7 +9985,6 @@
 		},
 		"StatChance": 100,
 		"StatEffectOpponent": false,
-		"MachineID": "87240c6b-e8ae-485b-9669-e7991d7f566d",
 		"Cost": 2500
 	},
 	{
@@ -10352,7 +10014,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "da6f46c5-bd97-48b7-8c10-ece43e9af11d",
 		"Cost": 2500
 	},
 	{
@@ -10382,7 +10043,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -10412,7 +10072,6 @@
 		"StatChanges": {},
 		"StatChance": 10,
 		"StatEffectOpponent": false,
-		"MachineID": "7fccf8fb-afc7-4727-856f-867879b55e49",
 		"Cost": 1500
 	},
 	{
@@ -10442,7 +10101,6 @@
 		"StatChanges": {},
 		"StatChance": 30,
 		"StatEffectOpponent": false,
-		"MachineID": "f2c49101-52cb-4fa3-85f7-102729b317dc",
 		"Cost": 2000
 	},
 	{
@@ -10472,7 +10130,6 @@
 		"StatChanges": {},
 		"StatChance": 30,
 		"StatEffectOpponent": false,
-		"MachineID": "c516f1bd-7edf-43bc-9dad-47a61e2f9387",
 		"Cost": 2000
 	},
 	{
@@ -10502,7 +10159,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -10532,7 +10188,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "eace9c8a-7dba-4b28-a00c-5eae269e6ce6",
 		"Cost": 2000
 	},
 	{
@@ -10564,7 +10219,6 @@
 		},
 		"StatChance": null,
 		"StatEffectOpponent": true,
-		"MachineID": "7d464253-c7b6-423a-9e94-f5fcd2b9765a",
 		"Cost": 1500
 	},
 	{
@@ -10594,7 +10248,6 @@
 		"StatChanges": {},
 		"StatChance": 100,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -10624,7 +10277,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -10654,7 +10306,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "ddffd5ad-7261-4c99-9847-574f2d4f19a5",
 		"Cost": 1500
 	},
 	{
@@ -10686,7 +10337,6 @@
 		},
 		"StatChance": 70,
 		"StatEffectOpponent": false,
-		"MachineID": "99e03441-21b2-4b70-bd57-2bcd7172652e",
 		"Cost": 1000
 	},
 	{
@@ -10716,7 +10366,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -10746,7 +10395,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -10776,7 +10424,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -10809,7 +10456,6 @@
 		},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -10839,7 +10485,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -10869,7 +10514,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -10899,7 +10543,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -10929,7 +10572,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -10959,7 +10601,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -10989,7 +10630,6 @@
 		"StatChanges": {},
 		"StatChance": 100,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -11019,7 +10659,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -11051,7 +10690,6 @@
 		},
 		"StatChance": 40,
 		"StatEffectOpponent": true,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -11087,7 +10725,6 @@
 		},
 		"StatChance": 10,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -11117,7 +10754,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -11150,7 +10786,6 @@
 		},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "7e3c02fe-1f8a-42c4-b510-dab75325de67",
 		"Cost": 2000
 	},
 	{
@@ -11180,7 +10815,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "ac44f547-628d-4eb2-99e8-47a9ff2ab7fe",
 		"Cost": 2000
 	},
 	{
@@ -11210,7 +10844,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "1563fa1f-d73c-483a-98d0-8a08a82c6e7e",
 		"Cost": 1500
 	},
 	{
@@ -11242,7 +10875,6 @@
 		},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -11272,7 +10904,6 @@
 		"StatChanges": {},
 		"StatChance": 100,
 		"StatEffectOpponent": false,
-		"MachineID": "1ee1c379-4423-4aa3-8730-10d1ee2d3ebc",
 		"Cost": 1000
 	},
 	{
@@ -11302,7 +10933,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -11332,7 +10962,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -11362,7 +10991,6 @@
 		"StatChanges": {},
 		"StatChance": 10,
 		"StatEffectOpponent": false,
-		"MachineID": "d06478c0-10c7-497b-8955-cbf88c43e0f0",
 		"Cost": 2000
 	},
 	{
@@ -11396,7 +11024,6 @@
 		},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -11426,7 +11053,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "7dae0d25-11ea-4e94-9686-a6df684ec4a3",
 		"Cost": 2000
 	},
 	{
@@ -11456,7 +11082,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -11486,7 +11111,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "554ed6b9-540a-4c4e-b329-c2ce4cff0b78",
 		"Cost": 2000
 	},
 	{
@@ -11518,7 +11142,6 @@
 		},
 		"StatChance": 100,
 		"StatEffectOpponent": false,
-		"MachineID": "a194f858-1584-4a58-b8a9-7e3f0fce95a2",
 		"Cost": 1000
 	},
 	{
@@ -11552,7 +11175,6 @@
 		},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -11584,7 +11206,6 @@
 		},
 		"StatChance": 100,
 		"StatEffectOpponent": true,
-		"MachineID": "6410eaec-8cbc-4b68-99f9-5fae4ed741d1",
 		"Cost": 1500
 	},
 	{
@@ -11616,7 +11237,6 @@
 		},
 		"StatChance": 100,
 		"StatEffectOpponent": true,
-		"MachineID": "19d8b935-d3b6-4d61-87e1-b6c3d487e717",
 		"Cost": 1000
 	},
 	{
@@ -11646,7 +11266,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "e36bb280-a895-4513-a3d8-07959cf4a412",
 		"Cost": 2000
 	},
 	{
@@ -11676,7 +11295,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "a3b7aa5e-52c3-40f4-a450-8869b6a1ae99",
 		"Cost": 1500
 	},
 	{
@@ -11706,7 +11324,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "a279e76f-7b39-487d-af94-0fa63e0df428",
 		"Cost": 1000
 	},
 	{
@@ -11736,7 +11353,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -11766,7 +11382,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -11796,7 +11411,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "b7daba40-4ac8-45fa-8f09-02e0b862d4fd",
 		"Cost": 500
 	},
 	{
@@ -11826,7 +11440,6 @@
 		"StatChanges": {},
 		"StatChance": 30,
 		"StatEffectOpponent": false,
-		"MachineID": "6eec22a5-47d0-4022-aad7-ffbde4cab291",
 		"Cost": 2000
 	},
 	{
@@ -11862,7 +11475,6 @@
 		},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -11892,7 +11504,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -11922,7 +11533,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "a0baef34-f01a-47d6-9663-6aa68ba50180",
 		"Cost": 1500
 	},
 	{
@@ -11952,7 +11562,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "40479b25-ed62-475b-9948-a7d262d559e2",
 		"Cost": 1500
 	},
 	{
@@ -11985,7 +11594,6 @@
 		},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -12015,7 +11623,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -12045,7 +11652,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "f3fd5bca-bfad-419d-8221-1d4f1e59bba6",
 		"Cost": 1500
 	},
 	{
@@ -12075,7 +11681,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "4b7e5486-f380-4779-b147-7eadff3ba5c3",
 		"Cost": 1500
 	},
 	{
@@ -12105,7 +11710,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "a70c0a51-92d4-4249-bc46-7d1ebd4a60c6",
 		"Cost": 1500
 	},
 	{
@@ -12135,7 +11739,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -12165,7 +11768,6 @@
 		"StatChanges": {},
 		"StatChance": 100,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -12195,7 +11797,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "538747ed-e496-419c-bafc-e10f0d0319cd",
 		"Cost": 2000
 	},
 	{
@@ -12225,7 +11826,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "f3e9e776-7dfd-45c5-8d19-97d09d8ac2af",
 		"Cost": 2000
 	},
 	{
@@ -12255,7 +11855,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "9132ee67-6156-497b-96cf-ef1faad05001",
 		"Cost": 2000
 	},
 	{
@@ -12285,7 +11884,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "7b67c3b7-6ce8-4ec9-931b-09d3114e569a",
 		"Cost": 1500
 	},
 	{
@@ -12317,7 +11915,6 @@
 		},
 		"StatChance": 100,
 		"StatEffectOpponent": true,
-		"MachineID": "ec9e3b58-c393-4f95-a3fc-e87f7382297c",
 		"Cost": 1000
 	},
 	{
@@ -12349,7 +11946,6 @@
 		},
 		"StatChance": 100,
 		"StatEffectOpponent": true,
-		"MachineID": "143846a7-23b2-429f-8f95-d986c0959fe8",
 		"Cost": 1500
 	},
 	{
@@ -12379,7 +11975,6 @@
 		"StatChanges": {},
 		"StatChance": 100,
 		"StatEffectOpponent": false,
-		"MachineID": "45fa70df-28bf-48bb-bd9e-8562f3f54342",
 		"Cost": 1500
 	},
 	{
@@ -12409,7 +12004,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "6366da6f-2783-4c6e-9e2e-5cf1a6c2e645",
 		"Cost": 1500
 	},
 	{
@@ -12442,7 +12036,6 @@
 		},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "0afea051-84ec-4205-ab37-a15c2becbff4",
 		"Cost": 2000
 	},
 	{
@@ -12474,7 +12067,6 @@
 		},
 		"StatChance": 100,
 		"StatEffectOpponent": true,
-		"MachineID": "f2fec929-99e0-42dc-89e3-076f8ed81282",
 		"Cost": 1500
 	},
 	{
@@ -12504,7 +12096,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "836434ff-9b1f-42ad-9b78-3e9769a7ce31",
 		"Cost": 2000
 	},
 	{
@@ -12534,7 +12125,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "4c9c9fc6-f182-4793-a1e7-f57ec441262e",
 		"Cost": 2000
 	},
 	{
@@ -12564,7 +12154,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -12594,7 +12183,6 @@
 		"StatChanges": {},
 		"StatChance": 30,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -12624,7 +12212,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -12654,7 +12241,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -12686,7 +12272,6 @@
 		},
 		"StatChance": 50,
 		"StatEffectOpponent": true,
-		"MachineID": "a3241e6b-17fb-4e33-a8da-2f23a0b100bd",
 		"Cost": 1500
 	},
 	{
@@ -12716,7 +12301,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "63e87401-ddc5-4731-88d1-75d7918b366f",
 		"Cost": 2000
 	},
 	{
@@ -12748,7 +12332,6 @@
 		},
 		"StatChance": 50,
 		"StatEffectOpponent": true,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -12778,7 +12361,6 @@
 		"StatChanges": {},
 		"StatChance": 30,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -12810,7 +12392,6 @@
 		},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -12842,7 +12423,6 @@
 		},
 		"StatChance": 40,
 		"StatEffectOpponent": true,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -12872,7 +12452,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -12902,7 +12481,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "3345b6e4-c525-440f-a8fa-d448590a0671",
 		"Cost": 500
 	},
 	{
@@ -12932,7 +12510,6 @@
 		"StatChanges": {},
 		"StatChance": 30,
 		"StatEffectOpponent": false,
-		"MachineID": "a18e4ea2-d18c-4810-8549-6a2a05bf98b0",
 		"Cost": 2000
 	},
 	{
@@ -12962,7 +12539,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -12992,7 +12568,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -13022,7 +12597,6 @@
 		"StatChanges": {},
 		"StatChance": 30,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -13052,7 +12626,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -13082,7 +12655,6 @@
 		"StatChanges": {},
 		"StatChance": 10,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -13112,7 +12684,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -13144,7 +12715,6 @@
 		},
 		"StatChance": 100,
 		"StatEffectOpponent": true,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -13174,7 +12744,6 @@
 		"StatChanges": {},
 		"StatChance": 20,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -13204,7 +12773,6 @@
 		"StatChanges": {},
 		"StatChance": 20,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -13236,7 +12804,6 @@
 		},
 		"StatChance": 50,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -13266,7 +12833,6 @@
 		"StatChanges": {},
 		"StatChance": 30,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -13296,7 +12862,6 @@
 		"StatChanges": {},
 		"StatChance": 30,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -13328,7 +12893,6 @@
 		},
 		"StatChance": 100,
 		"StatEffectOpponent": true,
-		"MachineID": "388475b4-332d-4535-a5c1-437d0181e3ec",
 		"Cost": 1500
 	},
 	{
@@ -13358,7 +12922,6 @@
 		"StatChanges": {},
 		"StatChance": 30,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -13392,7 +12955,6 @@
 		},
 		"StatChance": 100,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -13422,7 +12984,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -13452,7 +13013,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -13482,7 +13042,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -13512,7 +13071,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -13542,7 +13100,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -13572,7 +13129,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "7f92b9aa-20f5-482a-876c-45ddab1a8b3e",
 		"Cost": 2000
 	},
 	{
@@ -13605,7 +13161,6 @@
 		},
 		"StatChance": 100,
 		"StatEffectOpponent": true,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -13635,7 +13190,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -13665,7 +13219,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "424e10e8-4cf8-448e-8b45-efa4b77c3a1f",
 		"Cost": 2000
 	},
 	{
@@ -13695,7 +13248,6 @@
 		"StatChanges": {},
 		"StatChance": 10,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -13725,7 +13277,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "7208ab03-a286-4500-8cec-158623d796ea",
 		"Cost": 1000
 	},
 	{
@@ -13758,7 +13309,6 @@
 		},
 		"StatChance": 100,
 		"StatEffectOpponent": true,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -13788,7 +13338,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "a77c1084-a691-4cd0-b5f4-a5d006758559",
 		"Cost": 1000
 	},
 	{
@@ -13820,7 +13369,6 @@
 		},
 		"StatChance": 10,
 		"StatEffectOpponent": true,
-		"MachineID": "82c20aa4-1dfd-47aa-a4e6-1d237bde40fb",
 		"Cost": 2000
 	},
 	{
@@ -13850,7 +13398,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -13882,7 +13429,6 @@
 		},
 		"StatChance": 30,
 		"StatEffectOpponent": true,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -13912,7 +13458,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -13944,7 +13489,6 @@
 		},
 		"StatChance": 100,
 		"StatEffectOpponent": true,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -13976,7 +13520,6 @@
 		},
 		"StatChance": 100,
 		"StatEffectOpponent": true,
-		"MachineID": "c5076d5e-7402-4e0b-b1be-01908797bdda",
 		"Cost": 1500
 	},
 	{
@@ -14008,7 +13551,6 @@
 		},
 		"StatChance": 50,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -14038,7 +13580,6 @@
 		"StatChanges": {},
 		"StatChance": 30,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -14068,7 +13609,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -14098,7 +13638,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -14130,7 +13669,6 @@
 		},
 		"StatChance": 100,
 		"StatEffectOpponent": true,
-		"MachineID": "811ac480-24ca-4aeb-a678-1318a9bcfb52",
 		"Cost": 1500
 	},
 	{
@@ -14162,7 +13700,6 @@
 		},
 		"StatChance": null,
 		"StatEffectOpponent": true,
-		"MachineID": "717f22e7-754f-4476-80e6-f3f9762b3721",
 		"Cost": 1500
 	},
 	{
@@ -14196,7 +13733,6 @@
 		},
 		"StatChance": 100,
 		"StatEffectOpponent": true,
-		"MachineID": "28bb9274-0505-4a57-bbd3-d450a9eb9479",
 		"Cost": 2000
 	},
 	{
@@ -14230,7 +13766,6 @@
 		},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -14260,7 +13795,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "09b7187a-d18b-4cac-a008-484295eccf76",
 		"Cost": 2000
 	},
 	{
@@ -14292,7 +13826,6 @@
 		},
 		"StatChance": null,
 		"StatEffectOpponent": true,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -14322,7 +13855,6 @@
 		"StatChanges": {},
 		"StatChance": 100,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -14352,7 +13884,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -14382,7 +13913,6 @@
 		"StatChanges": {},
 		"StatChance": 100,
 		"StatEffectOpponent": false,
-		"MachineID": "e42e9095-91f4-4454-a142-aa96d2ffbd7c",
 		"Cost": 500
 	},
 	{
@@ -14414,7 +13944,6 @@
 		},
 		"StatChance": 100,
 		"StatEffectOpponent": false,
-		"MachineID": "5c9113b4-84ea-45fa-87a9-0e06ae7a8910",
 		"Cost": 1000
 	},
 	{
@@ -14444,7 +13973,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -14474,7 +14002,6 @@
 		"StatChanges": {},
 		"StatChance": 100,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -14504,7 +14031,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -14534,7 +14060,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -14564,7 +14089,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -14594,7 +14118,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -14624,7 +14147,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -14657,7 +14179,6 @@
 		},
 		"StatChance": 100,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -14689,7 +14210,6 @@
 		},
 		"StatChance": 100,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -14719,7 +14239,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -14749,7 +14268,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -14779,7 +14297,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -14809,7 +14326,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -14839,7 +14355,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "99b136a4-7996-4c71-bd08-c9c6eca3cbe2",
 		"Cost": 2000
 	},
 	{
@@ -14869,7 +14384,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -14901,7 +14415,6 @@
 		},
 		"StatChance": 100,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -14931,7 +14444,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -14961,7 +14473,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "692ccdb2-48b1-4688-8081-851a218b9c80",
 		"Cost": 2000
 	},
 	{
@@ -14993,7 +14504,6 @@
 		},
 		"StatChance": 100,
 		"StatEffectOpponent": true,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -15023,7 +14533,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "6cb5fcb3-b195-43a5-a0cf-026fd045d55e",
 		"Cost": 2500
 	},
 	{
@@ -15053,7 +14562,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -15085,7 +14593,6 @@
 		},
 		"StatChance": 100,
 		"StatEffectOpponent": true,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -15115,7 +14622,6 @@
 		"StatChanges": {},
 		"StatChance": 100,
 		"StatEffectOpponent": false,
-		"MachineID": "4d6cd1d6-e4c7-4c0c-b482-747109d6cfbe",
 		"Cost": 2000
 	},
 	{
@@ -15145,7 +14651,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "97c5918c-a1aa-4d95-8136-256feda0f48f",
 		"Cost": 2000
 	},
 	{
@@ -15175,7 +14680,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -15207,7 +14711,6 @@
 		},
 		"StatChance": 100,
 		"StatEffectOpponent": true,
-		"MachineID": "01ead231-4dac-44f7-8773-7bb95abfa1ae",
 		"Cost": 2000
 	},
 	{
@@ -15239,7 +14742,6 @@
 		},
 		"StatChance": 100,
 		"StatEffectOpponent": true,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -15269,7 +14771,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -15299,7 +14800,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -15329,7 +14829,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "e1a6e2f3-c1fc-436d-a290-381ada1b2ed2",
 		"Cost": 1500
 	},
 	{
@@ -15359,7 +14858,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -15389,7 +14887,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -15419,7 +14916,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -15451,7 +14947,6 @@
 		},
 		"StatChance": 100,
 		"StatEffectOpponent": true,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -15481,7 +14976,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -15513,7 +15007,6 @@
 		},
 		"StatChance": 100,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -15543,7 +15036,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -15573,7 +15065,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "ba561124-8468-4ad1-a730-1fbc4f3d211e",
 		"Cost": 1500
 	},
 	{
@@ -15603,7 +15094,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "82041295-105d-4a47-a42e-f921d733b000",
 		"Cost": 1500
 	},
 	{
@@ -15633,7 +15123,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -15663,7 +15152,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -15693,7 +15181,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -15723,7 +15210,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -15753,7 +15239,6 @@
 		"StatChanges": {},
 		"StatChance": 100,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -15783,7 +15268,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -15819,7 +15303,6 @@
 		},
 		"StatChance": 100,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -15849,7 +15332,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -15879,7 +15361,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -15911,7 +15392,6 @@
 		},
 		"StatChance": 100,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -15941,7 +15421,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "37ff379c-4b91-4e31-8356-fc0ae7a458d7",
 		"Cost": 2000
 	},
 	{
@@ -15971,7 +15450,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "e4bc7dce-601b-43f3-a485-c3497f7313e5",
 		"Cost": 1500
 	},
 	{
@@ -16003,7 +15481,6 @@
 		},
 		"StatChance": 20,
 		"StatEffectOpponent": true,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -16033,7 +15510,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -16065,7 +15541,6 @@
 		},
 		"StatChance": 20,
 		"StatEffectOpponent": true,
-		"MachineID": "1e63db8c-5f3e-4d9b-9c4e-c1746249e10f",
 		"Cost": 2000
 	},
 	{
@@ -16095,7 +15570,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -16125,7 +15599,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -16155,7 +15628,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -16185,7 +15657,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -16218,7 +15689,6 @@
 		},
 		"StatChance": 100,
 		"StatEffectOpponent": true,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -16248,7 +15718,6 @@
 		"StatChanges": {},
 		"StatChance": 30,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -16278,7 +15747,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -16308,7 +15776,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -16338,7 +15805,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -16368,7 +15834,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -16398,7 +15863,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -16428,7 +15892,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -16458,7 +15921,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -16488,7 +15950,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -16518,7 +15979,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -16548,7 +16008,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -16584,7 +16043,6 @@
 		},
 		"StatChance": 100,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -16616,7 +16074,6 @@
 		},
 		"StatChance": 100,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -16646,7 +16103,6 @@
 		"StatChanges": {},
 		"StatChance": 30,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -16676,7 +16132,6 @@
 		"StatChanges": {},
 		"StatChance": 30,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -16706,7 +16161,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -16736,7 +16190,6 @@
 		"StatChanges": {},
 		"StatChance": 100,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -16766,7 +16219,6 @@
 		"StatChanges": {},
 		"StatChance": 100,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -16796,7 +16248,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -16826,7 +16277,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -16856,7 +16306,6 @@
 		"StatChanges": {},
 		"StatChance": 100,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -16886,7 +16335,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -16916,7 +16364,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -16946,7 +16393,6 @@
 		"StatChanges": {},
 		"StatChance": 30,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -16976,7 +16422,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -17006,7 +16451,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -17036,7 +16480,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -17068,7 +16511,6 @@
 		},
 		"StatChance": 100,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -17104,7 +16546,6 @@
 		},
 		"StatChance": 100,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -17136,7 +16577,6 @@
 		},
 		"StatChance": 100,
 		"StatEffectOpponent": true,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -17166,7 +16606,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -17196,7 +16635,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -17226,7 +16664,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -17256,7 +16693,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -17286,7 +16722,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": true,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -17316,7 +16751,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -17346,7 +16780,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": true,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -17376,7 +16809,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -17406,7 +16838,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": true,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -17436,7 +16867,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -17466,7 +16896,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -17496,7 +16925,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -17526,7 +16954,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -17556,7 +16983,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -17586,7 +17012,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -17616,7 +17041,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -17646,7 +17070,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -17676,7 +17099,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -17706,7 +17128,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": true,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -17736,7 +17157,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -17766,7 +17186,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -17802,7 +17221,6 @@
 		},
 		"StatChance": 100,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -17832,7 +17250,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "db23159f-85a8-4f3f-b0d2-6a2549ea9383",
 		"Cost": 2000
 	},
 	{
@@ -17864,7 +17281,6 @@
 		},
 		"StatChance": 100,
 		"StatEffectOpponent": true,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -17894,7 +17310,6 @@
 		"StatChanges": {},
 		"StatChance": 100,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -17924,7 +17339,6 @@
 		"StatChanges": {},
 		"StatChance": 10,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -17954,7 +17368,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -17984,7 +17397,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -18016,7 +17428,6 @@
 		},
 		"StatChance": 100,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -18048,7 +17459,6 @@
 		},
 		"StatChance": 100,
 		"StatEffectOpponent": true,
-		"MachineID": "72bc733e-4a0e-414d-b8d7-947695a13eb7",
 		"Cost": 1500
 	},
 	{
@@ -18078,7 +17488,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -18108,7 +17517,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -18140,7 +17548,6 @@
 		},
 		"StatChance": 100,
 		"StatEffectOpponent": true,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -18172,7 +17579,6 @@
 		},
 		"StatChance": 100,
 		"StatEffectOpponent": true,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -18204,7 +17610,6 @@
 		},
 		"StatChance": 100,
 		"StatEffectOpponent": true,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -18234,7 +17639,6 @@
 		"StatChanges": {},
 		"StatChance": 20,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -18264,7 +17668,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -18294,7 +17697,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -18324,7 +17726,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -18354,7 +17755,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -18384,7 +17784,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "fecd0691-2fac-46ff-be09-0b1203a64170",
 		"Cost": 3000
 	},
 	{
@@ -18414,7 +17813,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "ad8d940c-04d9-48c4-8882-c6354c837cee",
 		"Cost": 2000
 	},
 	{
@@ -18444,7 +17842,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -18474,7 +17871,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "bbb05c1e-36f6-4875-80b4-7aa2c35a0f5f",
 		"Cost": 500
 	},
 	{
@@ -18504,7 +17900,6 @@
 		"StatChanges": {},
 		"StatChance": 100,
 		"StatEffectOpponent": false,
-		"MachineID": "30fdafe9-a9de-426d-ad89-d46a9bf3f3f1",
 		"Cost": 2500
 	},
 	{
@@ -18534,7 +17929,6 @@
 		"StatChanges": {},
 		"StatChance": 20,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -18564,7 +17958,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "3e43db91-73c0-4cc6-b147-8d9747e4ef8e",
 		"Cost": 2000
 	},
 	{
@@ -18594,7 +17987,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "92ca287a-2c18-4709-bd23-f25130d4e942",
 		"Cost": 1500
 	},
 	{
@@ -18624,7 +18016,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -18654,7 +18045,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -18686,7 +18076,6 @@
 		},
 		"StatChance": 100,
 		"StatEffectOpponent": true,
-		"MachineID": "ddb1d7ec-718f-4229-b70c-218fa9f499c9",
 		"Cost": 1500
 	},
 	{
@@ -18716,7 +18105,6 @@
 		"StatChanges": {},
 		"StatChance": 100,
 		"StatEffectOpponent": false,
-		"MachineID": "26ccf402-3a18-4461-8efe-9c76b6191646",
 		"Cost": 1500
 	},
 	{
@@ -18746,7 +18134,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "a68525eb-2bd0-4a8e-948b-3b47724b4177",
 		"Cost": 1500
 	},
 	{
@@ -18776,7 +18163,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "e55d0747-bfaa-49e0-80d6-cb7b1013ed61",
 		"Cost": 1500
 	},
 	{
@@ -18806,7 +18192,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "375f0724-fc63-4a20-b2dd-7d71afc1be97",
 		"Cost": 500
 	},
 	{
@@ -18836,7 +18221,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "ca90bd6e-eddc-466d-8b2a-f8724123313c",
 		"Cost": 1000
 	},
 	{
@@ -18866,7 +18250,6 @@
 		"StatChanges": {},
 		"StatChance": 30,
 		"StatEffectOpponent": false,
-		"MachineID": "fe346a39-3905-4ec7-b3e0-a290a4a224f9",
 		"Cost": 1500
 	},
 	{
@@ -18896,7 +18279,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -18926,7 +18308,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -18956,7 +18337,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -18986,7 +18366,6 @@
 		"StatChanges": {},
 		"StatChance": 100,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -19016,7 +18395,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -19046,7 +18424,6 @@
 		"StatChanges": {},
 		"StatChance": 10,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -19076,7 +18453,6 @@
 		"StatChanges": {},
 		"StatChance": 20,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -19108,7 +18484,6 @@
 		},
 		"StatChance": 100,
 		"StatEffectOpponent": true,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -19138,7 +18513,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -19168,7 +18542,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -19198,7 +18571,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -19228,7 +18600,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -19258,7 +18629,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -19288,7 +18658,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -19318,7 +18687,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": true,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -19348,7 +18716,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -19378,7 +18745,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -19408,7 +18774,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -19438,7 +18803,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -19468,7 +18832,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -19498,7 +18861,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -19528,7 +18890,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -19558,7 +18919,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -19588,7 +18948,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": true,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -19618,7 +18977,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": true,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -19648,7 +19006,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -19678,7 +19035,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -19708,7 +19064,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": true,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -19738,7 +19093,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -19768,7 +19122,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -19798,7 +19151,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "771358df-4da2-40c0-a05d-0e2bfceb502c",
 		"Cost": 2000
 	},
 	{
@@ -19828,7 +19180,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -19858,7 +19209,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -19888,7 +19238,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": true,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -19918,7 +19267,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -19948,7 +19296,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -19978,7 +19325,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -20008,7 +19354,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -20038,7 +19383,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "99f39d06-a70c-4b86-958a-1b5925da2987",
 		"Cost": 2000
 	},
 	{
@@ -20068,7 +19412,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -20098,7 +19441,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -20128,7 +19470,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -20158,7 +19499,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -20188,7 +19528,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -20218,7 +19557,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -20248,7 +19586,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -20278,7 +19615,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -20308,7 +19644,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -20338,7 +19673,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -20368,7 +19702,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -20398,7 +19731,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -20428,7 +19760,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -20458,7 +19789,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -20488,7 +19818,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -20518,7 +19847,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": true,
-		"MachineID": "6497a361-9958-4fb4-8043-181bd81480b9",
 		"Cost": 1000
 	},
 	{
@@ -20548,7 +19876,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "a13fbeab-4251-4e0b-80a8-8d8fe79f6779",
 		"Cost": 1000
 	},
 	{
@@ -20578,7 +19905,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": true,
-		"MachineID": "0445787c-b4f4-4178-be99-df25fb98d55b",
 		"Cost": 1000
 	},
 	{
@@ -20608,7 +19934,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -20638,7 +19963,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -20668,7 +19992,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -20698,7 +20021,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -20728,7 +20050,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -20758,7 +20079,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -20788,7 +20108,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -20818,7 +20137,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -20848,7 +20166,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -20878,7 +20195,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -20908,7 +20224,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -20938,7 +20253,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -20968,7 +20282,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -20998,7 +20311,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -21028,7 +20340,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -21058,7 +20369,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -21088,7 +20398,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": true,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -21118,7 +20427,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -21148,7 +20456,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -21178,7 +20485,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -21208,7 +20514,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -21238,7 +20543,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -21268,7 +20572,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -21298,7 +20601,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -21328,7 +20630,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "4d92041b-c88b-4cbb-b9fb-bc7abd20bba4",
 		"Cost": 2000
 	},
 	{
@@ -21358,7 +20659,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "2042134b-7482-4d61-b3a4-e338282593a3",
 		"Cost": 1500
 	},
 	{
@@ -21388,7 +20688,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "bb42b113-e693-42ea-872b-9cff7dd516a7",
 		"Cost": 2000
 	},
 	{
@@ -21418,7 +20717,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "4247fafb-fb4e-4f0a-aea1-e82c42823b8a",
 		"Cost": 1500
 	},
 	{
@@ -21448,7 +20746,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": "166836a4-6c8c-4b48-b124-3e6dd3eb19b4",
 		"Cost": 1500
 	},
 	{
@@ -21478,7 +20775,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -21508,7 +20804,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -21538,7 +20833,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -21568,7 +20862,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -21598,7 +20891,6 @@
 		"StatChanges": {},
 		"StatChance": 10,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -21628,7 +20920,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -21658,7 +20949,6 @@
 		"StatChanges": {},
 		"StatChance": 10,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -21688,7 +20978,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -21718,7 +21007,6 @@
 		"StatChanges": {},
 		"StatChance": 10,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -21748,7 +21036,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -21778,7 +21065,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	},
 	{
@@ -21808,7 +21094,6 @@
 		"StatChanges": {},
 		"StatChance": null,
 		"StatEffectOpponent": false,
-		"MachineID": null,
 		"Cost": null
 	}
 ]

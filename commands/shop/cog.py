@@ -64,7 +64,7 @@ class ShopCommands(commands.Cog, name="ShopCommands"):
         return await discordservice_shop.PrintBuyResponse(inter, 0, [])
       amount = min(trainer.Money // it.Cost, amount)
       cost = (it.Cost*amount)
-      trainerservice.ModifyItemList(trainer, it.MachineID, amount)
+      trainerservice.ModifyTMList(trainer, it.Id, amount)
       trainer.Money -= cost
     else:
       it = itemservice.GetItem(int(item[1:]))
@@ -87,7 +87,7 @@ class ShopCommands(commands.Cog, name="ShopCommands"):
       if not [i for i in trainer.Items if trainer.Items[i] > 0]:
         choices.append(app_commands.Choice(name=f'No items to sell!',value='n/a'))
       else:
-        allItems = [i for i in itemservice.GetAllItems() if str(i.Id) in trainer.Items and trainer.Items[str(i.Id)] > 0]+[m for m in moveservice.GetTMMoves() if m.MachineID in trainer.Items and trainer.Items[m.MachineID] > 0]
+        allItems = [i for i in itemservice.GetAllItems() if str(i.Id) in trainer.Items and trainer.Items[str(i.Id)] > 0]+[m for m in moveservice.GetTMMoves() if m.Id in trainer.TMs and trainer.TMs[m.Id] > 0]
         allItems.sort(key=lambda x: x.Name)
         for i in allItems:
           if current.lower() in i.Name.lower():
@@ -113,13 +113,13 @@ class ShopCommands(commands.Cog, name="ShopCommands"):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
     if item.startswith('m'):
       it = moveservice.GetMoveById(int(item[1:]))
-      if it.MachineID not in trainer.Items or trainer.Items[it.MachineID] <= 0:
+      if it.Id not in trainer.TMs or trainer.TMs[it.Id] <= 0:
         commandlockservice.DeleteLock(inter.guild_id, inter.user.id)
         return await discordservice_shop.PrintSellResponse(inter, 0, [])
       name = f'TM-{it.Name}'
-      amount = min(trainer.Items[it.MachineID], amount)
+      amount = min(trainer.TMs[it.Id], amount)
       cost = int((it.Cost/2)*amount)
-      trainerservice.ModifyItemList(trainer, it.MachineID, (0-amount))
+      trainerservice.ModifyTMList(trainer, it.Id, (0-amount))
       trainer.Money += cost
     else:
       it = itemservice.GetItem(int(item[1:]))

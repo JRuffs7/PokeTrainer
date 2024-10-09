@@ -102,3 +102,21 @@ async def PrintUsePotionResponse(interaction: Interaction, response: int, params
 		responseInd=response, 
 		color=PokemonColor, 
 		params=params)
+
+async def PrintLearnMoveResponse(interaction: Interaction, response: int, params: list):
+	return await discordservice.SendCommandResponse(
+		interaction=interaction, 
+		filename=responseFile, 
+		command='learnmove', 
+		responseInd=response, 
+		color=PokemonColor, 
+		params=params)
+
+async def PrintUseTMResponse(interaction: Interaction, response: int, params: list):
+	return await discordservice.SendCommandResponse(
+		interaction=interaction, 
+		filename=responseFile, 
+		command='usetm', 
+		responseInd=response, 
+		color=PokemonColor, 
+		params=params)

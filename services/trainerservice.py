@@ -144,6 +144,10 @@ def TryDaily(trainer: Trainer, freeMasterball: bool):
 def ModifyItemList(trainer: Trainer, itemId: str, amount: int):
   newAmount = max(trainer.Items[itemId] + amount, 0) if itemId in trainer.Items else max(amount, 0)
   trainer.Items.update({ itemId: newAmount })
+  
+def ModifyTMList(trainer: Trainer, moveId: str, amount: int):
+  newAmount = max(trainer.TMs[moveId] + amount, 0) if moveId in trainer.TMs else max(amount, 0)
+  trainer.TMs.update({ moveId: newAmount })
 
 def HasRegionReward(trainer: Trainer, region: int):
   for b in [b.Id for b in gymservice.GetBadgesByRegion(region)]:

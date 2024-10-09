@@ -94,13 +94,15 @@ class TeamSelector(discord.ui.Select):
 
 class MoveSelector(discord.ui.Select):
 	def __init__(self, pkmnMoves: list[Move]):
-			moves = moveservice.GetMovesById([m.MoveId for m in pkmnMoves])
-			options=[discord.SelectOption(
-						label=f'{m.Name}',
-            description= f'PP: {next(move for move in pkmnMoves if move.MoveId == m.Id).PP}/{m.BasePP} | Power: {m.Power or "-"} | Accuracy: {m.Accuracy or "-"} | StatChngs.: {len(m.StatChanges) or "-"}',
-						value=f'{m.Id}'
-					) for m in moves]
-			super().__init__(options=options, max_values=1, min_values=1, placeholder='Choose Attack')
+		if len(pkmnMoves) > 25:
+			pkmnMoves = pkmnMoves[:25]
+		moves = moveservice.GetMovesById([m.MoveId for m in pkmnMoves])
+		options=[discord.SelectOption(
+			label=f'{m.Name}',
+			description= f'PP: {next(move for move in pkmnMoves if move.MoveId == m.Id).PP}/{m.BasePP} | Power: {m.Power or "-"} | Accuracy: {m.Accuracy or "-"} | StatChngs.: {len(m.StatChanges) or "-"}',
+			value=f'{m.Id}'
+		) for m in moves]
+		super().__init__(options=options, max_values=1, min_values=1, placeholder='Choose Move')
 	
 	async def callback(self, inter: discord.Interaction):
 		await inter.response.defer()

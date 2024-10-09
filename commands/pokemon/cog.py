@@ -4,9 +4,11 @@ from typing import List
 from Views.Battles.WildBattleView import WildBattleView
 from Views.DayCareView import DayCareAddView, DayCareView
 from Views.GiveCandyView import GiveCandyView
+from Views.LearnMovesView import LearnMovesView
+from Views.LearnTMView import LearnTMView
 from Views.PokedexView import PokedexView
 from Views.UsePotionView import UsePotionView
-from commands.autofills.autofills import autofill_boxpkmn, autofill_owned, autofill_pokemon, autofill_types
+from commands.autofills.autofills import autofill_boxpkmn, autofill_owned, autofill_pokemon, autofill_team, autofill_tms, autofill_types
 from Views.PokemonSearchView import PokemonSearchView
 from Views.NicknameView import NicknameView
 import discordbot
@@ -14,7 +16,7 @@ import discordbot
 from Views.EvolveView import EvolveView
 from globals import PokemonColor, botImage
 from middleware.decorators import command_lock, elitefour_check, method_logger, trainer_check
-from services import commandlockservice, gymservice, itemservice, pokemonservice, statservice, trainerservice, typeservice
+from services import commandlockservice, gymservice, itemservice, moveservice, pokemonservice, statservice, trainerservice, typeservice
 from middleware.decorators import method_logger, trainer_check
 from services.utility import discordservice, discordservice_permission, discordservice_pokemon
 
@@ -145,6 +147,49 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
     pkmnList = [p for p in trainer.OwnedPokemon if p.Pokemon_Id == pokemon]
     await NicknameView(trainer, pkmnList).send(inter)
+
+
+  @app_commands.command(name="learnmove",
+                        description="Spend $500 to learn a move your Pokemon knows from leveling up.")
+  @app_commands.autocomplete(pokemon=autofill_team)
+  @method_logger(True)
+  @trainer_check
+  @elitefour_check
+  @command_lock
+  async def learnmove(self, inter: Interaction, pokemon: str):
+    trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
+    if trainer.Money < 500:
+      commandlockservice.DeleteLock(trainer.ServerId, trainer.UserId)
+      return await discordservice_pokemon.PrintLearnMoveResponse(inter, 0, [])
+    pkmn = next((p for p in trainer.OwnedPokemon if p.Id == pokemon),None) if pokemon in trainer.Team else None
+    data = pokemonservice.GetPokemonById(pkmn.Pokemon_Id) if pkmn else None
+    if not pkmn or not data:
+      commandlockservice.DeleteLock(trainer.ServerId, trainer.UserId)
+      return await discordservice_pokemon.PrintLearnMoveResponse(inter, 1, [])
+    availableMoves = pokemonservice.GetAvailableLevelMoves(pkmn, data)
+    if not availableMoves:
+      commandlockservice.DeleteLock(trainer.ServerId, trainer.UserId)
+      return await discordservice_pokemon.PrintLearnMoveResponse(inter, 2, [(pkmn.Nickname or data.Name)])
+    await LearnMovesView(trainer, pkmn, data, availableMoves).send(inter)
+
+
+  @app_commands.command(name="usetm",
+                        description="Use a TM and teach a Pokemon a new move.")
+  @app_commands.autocomplete(tm=autofill_tms)
+  @method_logger(True)
+  @trainer_check
+  @command_lock
+  async def usetm(self, inter: Interaction, tm: int):
+    trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
+    if str(tm) not in trainer.TMs or trainer.TMs[str(tm)] <= 0:
+      commandlockservice.DeleteLock(trainer.ServerId, trainer.UserId)
+      return await discordservice_pokemon.PrintUseTMResponse(inter, 0, [])
+    team = trainerservice.GetTeam(trainer)
+    pkmnlist = [po for po in pokemonservice.GetPokemonByIdList([p.Pokemon_Id for p in team if tm not in p.LearnedMoves]) if tm in po.MachineMoves]
+    if not pkmnlist:
+      commandlockservice.DeleteLock(trainer.ServerId, trainer.UserId)
+      return await discordservice_pokemon.PrintUseTMResponse(inter, 1, [])
+    await LearnTMView(trainer, [t for t in team if t.Pokemon_Id in [po.Id for po in pkmnlist]], pkmnlist, tm).send(inter)
 
   #endregion
 
