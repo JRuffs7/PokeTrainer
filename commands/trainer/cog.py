@@ -10,7 +10,7 @@ from Views.EggView import EggView
 from Views.MyPokemonView import MyPokemonView
 from Views.TeamSelectorView import TeamSelectorView
 from Views.ReleaseView import ReleaseView
-from commands.views.Pagination.BadgeView import BadgeView
+from Views.BadgeView import BadgeView
 from Views.DeleteView import DeleteView
 
 from middleware.decorators import command_lock, elitefour_check, method_logger, trainer_check

@@ -56,7 +56,6 @@ def ChangeRegion(trainer: Trainer, region: int, pokemon: PokemonData|None):
   UpsertTrainer(trainer)
   return trainer
 
-
 #endregion
 
 #region Completion
@@ -107,6 +106,9 @@ def ResetTrainer(trainer: Trainer, starter: PokemonData, keepShiny: bool):
   UpsertTrainer(newTrainer)
   return newTrainer
 
+def HasRegionReward(trainer: Trainer, region: int):
+  return (region in trainer.EliteFour) and (len([b for b in gymservice.GetBadgesByRegion(region) if b.Id not in trainer.Badges]) == 0)
+
 #endregion
 
 #region Inventory/Items
@@ -148,17 +150,6 @@ def ModifyItemList(trainer: Trainer, itemId: str, amount: int):
 def ModifyTMList(trainer: Trainer, moveId: str, amount: int):
   newAmount = max(trainer.TMs[moveId] + amount, 0) if moveId in trainer.TMs else max(amount, 0)
   trainer.TMs.update({ moveId: newAmount })
-
-def HasRegionReward(trainer: Trainer, region: int):
-  for b in [b.Id for b in gymservice.GetBadgesByRegion(region)]:
-    found = False
-    for t in trainer.Badges:
-      if t == b:
-        found = True
-        break
-    if not found:
-        return False
-  return True
 
 def TryAddMissionProgress(trainer: Trainer, action: str, types: list[int], addition: int = 1):
   dailyPass = True
@@ -388,32 +379,6 @@ def SetTeamSlot(trainer: Trainer, slotNum: int, pokemonId: str):
 #endregion
 
 #region Spawn
-
-def TryCapture(pokeball: Pokeball, trainer: Trainer, spawn: Pokemon):
-  caught = False
-  pokemon = pokemonservice.GetPokemonById(spawn.Pokemon_Id)
-  ModifyItemList(trainer, str(pokeball.Id), -1)
-
-  #Sinnoh Reward
-  if (HasRegionReward(trainer, 4) and choice(range(1, 101)) < 6) or pokemonservice.CaptureSuccess(pokeball, pokemon, spawn.Level):
-    trainer.OwnedPokemon.append(spawn)
-    TryAddToPokedex(trainer, pokemon, spawn.IsShiny)
-    TryAddMissionProgress(trainer, 'Catch', pokemon.Types)
-    #Paldea Reward
-    if HasRegionReward(trainer, 9):
-      exp = spawn.Level
-      team = GetTeam(trainer)
-      teamData = pokemonservice.GetPokemonByIdList([t.Pokemon_Id for t in team])
-      for p in team:
-        pokemonservice.AddExperience(
-          p, 
-          next(t for t in teamData if t.Id == p.Pokemon_Id), 
-          exp)
-    if len(trainer.Team) < 6:
-      trainer.Team.append(spawn.Id)
-    caught = True
-  UpsertTrainer(trainer)
-  return caught
 
 def GetShinyOdds(trainer: Trainer):
   totalPkmn = pokemonservice.GetAllPokemon()

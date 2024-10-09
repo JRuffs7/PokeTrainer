@@ -1,7 +1,6 @@
 from math import ceil
 import discord
 
-from commands.views.Pagination.BasePaginationView import BasePaginationView
 from globals import PokemonColor
 from middleware.decorators import defer
 from models.Pokemon import PokemonData
@@ -9,7 +8,7 @@ from services import statservice
 from services.utility import discordservice
 
 
-class PokemonSearchView(BasePaginationView):
+class PokemonSearchView(discord.ui.View):
 
   def __init__(self, dataList: list[PokemonData], type: int):
     self.data = dataList

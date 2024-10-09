@@ -1,7 +1,6 @@
 from math import ceil, floor
 import discord
 
-from commands.views.Pagination.BasePaginationView import BasePaginationView
 from table2ascii import table2ascii as t2a, PresetStyle, Alignment, Merge
 
 from globals import TrainerColor
