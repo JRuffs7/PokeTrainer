@@ -5,7 +5,7 @@ from middleware.decorators import defer
 from models.Battle import BattleAction
 from models.Pokemon import Pokemon, PokemonData
 from models.Trainer import Trainer
-from services import commandlockservice, pokemonservice, trainerservice
+from services import commandlockservice, itemservice, pokemonservice, trainerservice
 from services.utility import discordservice
 
 
@@ -41,14 +41,23 @@ class WildBattleView(CpuBattleView):
 		await self.message.delete(delay=0.1)
 		ephemeral = False
 		if self.victory == None and self.userturn.Action == BattleAction.Pokeball:
+			#Sinnoh Reward
+			self.candy = itemservice.TryGetCandy(trainerservice.HasRegionReward(4))
+			if self.candy:
+				candyStr = f'\nFound one **{self.candy.Name}**!'
+				trainerservice.ModifyItemList(self.trainer, str(self.candy.Id), 1)
+				trainerservice.UpsertTrainer(self.trainer)
+			else:
+				candyStr = ''
 			if self.ditto:
 				caughtMsg = f"**{pokemonservice.GetPokemonDisplayName(self.pokemon, self.data)}** revealed it's true form!"
 				self.data = pokemonservice.GetPokemonById(132)
 				self.pokemon = pokemonservice.GenerateSpawnPokemon(self.data, self.pokemon.Level, trainerservice.GetShinyOdds(self.trainer))
-				caughtMsg += f'\n<@{inter.user.id}> used a {self.userturn.ItemUsed.Name} and captured a wild **Ditto (Lvl. {self.pokemon.Level})**!'
+				caughtMsg += f'\n<@{inter.user.id}> used a {self.userturn.ItemUsed.Name} and captured a wild **Ditto (Lvl. {self.pokemon.Level})**!{candyStr}'
 			else:
-				caughtMsg = f'<@{inter.user.id}> used a {self.userturn.ItemUsed.Name} and captured a wild **{pokemonservice.GetPokemonDisplayName(self.pokemon, self.data)} (Lvl. {self.pokemon.Level})**!'
-			expMsg = f'\nYour entire team also gained some XP!' if trainerservice.HasRegionReward(self.trainer, 9) else ''
+				caughtMsg = f'<@{inter.user.id}> used a {self.userturn.ItemUsed.Name} and captured a wild **{pokemonservice.GetPokemonDisplayName(self.pokemon, self.data)} (Lvl. {self.pokemon.Level})**!{candyStr}'
+			#Hoenn Reward
+			expMsg = f'\n\nYour entire team also gained some XP!' if trainerservice.HasRegionReward(self.trainer, 3) else ''
 			embed = discordservice.CreateEmbed(
 				'Caught', 
 				f'{caughtMsg}{expMsg}', 
@@ -87,15 +96,20 @@ class WildBattleView(CpuBattleView):
 					pokemonservice.PokeCenter(self.trainer, team)
 				else:
 					self.trainer.Money += 25
+					#Sinnoh Reward
+					self.candy = itemservice.TryGetCandy(trainerservice.HasRegionReward(4))
+					if self.candy:
+						trainerservice.ModifyItemList(self.trainer, str(self.candy.Id), 1)
 					for expPkmn in self.exppokemon[pokemon.Id]:
 						pkmn = next(p for p in self.trainerteam if p.Id == expPkmn)
 						pkmnData = next(p for p in self.battle.AllPkmnData if p.Id == pkmn.Pokemon_Id)
+						#Alola Reward
 						self.experience = pokemonservice.ExpForPokemon(
 								pokemon, 
 								data, 
 								False,
 								pkmn.Id != self.battle.TeamAPkmn.Id,
-								self.battle.TeamAPkmn.Level)
+								self.battle.TeamAPkmn.Level) * (2 if trainerservice.HasRegionReward(self.trainer, 7) else 1)
 						pokemonservice.AddExperience(
 							pkmn, 
 							pkmnData, 

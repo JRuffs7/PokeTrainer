@@ -1,5 +1,5 @@
 import os
-from random import choice
+from random import choice, sample
 import sys
 from dotenv import load_dotenv
 from pymongo import MongoClient
@@ -7,7 +7,7 @@ from dataaccess import serverda, trainerda
 from models.Server import Server
 from models.Stat import StatEnum
 from models.Trainer import Trainer
-from services import moveservice, pokemonservice, statservice
+from services import moveservice, pokemonservice, statservice, trainerservice
 
 def GetManyDocs(collection, filters, fields):
   try:
@@ -103,6 +103,7 @@ def UpdateTrainers():
 				'GymAttempts': t['GymAttempts'] if 'GymAttempts' in t else [],
 				'Eggs': t['Eggs'] if 'Eggs' in t else [],
 				'Daycare': t['Daycare'] if 'Daycare' in t else {},
+				'LastDaycareEgg': None,
 				'LastDaily': t['LastDaily'] if 'LastDaily' in t else None,
 				'Region': 1,
 				'DailyMission': t['DailyMission'] if 'DailyMission' in t else None,
@@ -127,8 +128,20 @@ def UpdateTrainers():
 					p.CurrentHP = statservice.GenerateStat(p, pData, StatEnum.HP)
 					p.LearnedMoves = []
 					moveservice.GenerateMoves(p, pData)
+					p.CaughtBy = 1 if pokemonservice.IsLegendaryPokemon(pData) else 4
+					p.OriginalTrainer = newTrainer.UserId
 				if p.Pokemon_Id == 132 and p.Id in newTrainer.Team:
 					newTrainer.Team = [t for t in newTrainer.Team if t != p.Id]
+
+			for e in newTrainer.Eggs:
+				ivs = sample(['1','2','3','4','5','6'], 3)
+				pkmn, _ = pokemonservice.SpawnPokemon(1, 0, 0)
+				e.Generation = 1
+				e.OffspringId = pkmn.Pokemon_Id if pkmn else 10
+				e.SpawnsNeeded = pokemonservice.GetPokemonById(pkmn.Pokemon_Id if pkmn else 10).HatchCount
+				e.SpawnCount = min(e.SpawnCount, e.SpawnsNeeded)
+				e.IVs = {ivs[0]: choice(range(32)),ivs[1]: choice(range(32)),ivs[2]: choice(range(32))}
+				e.ShinyOdds = trainerservice.GetShinyOdds(trainer)
 
 			badges: list[int] = []
 			for b in newTrainer.Badges:

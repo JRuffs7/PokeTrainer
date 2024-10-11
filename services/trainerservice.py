@@ -3,13 +3,13 @@ import logging
 from random import choice
 import uuid
 from dataaccess import trainerda
-from globals import AdminList, GreatShinyOdds, ShinyOdds, ShortDateFormat, SuperShinyOdds
+from globals import AdminList, DateFormat, GreatShinyOdds, ShinyOdds, ShortDateFormat, SuperShinyOdds
 from models.Egg import TrainerEgg
 from models.Item import Pokeball
 from models.Mission import TrainerMission
 from models.Trainer import Trainer
 from models.Pokemon import EvolveData, Pokemon, PokemonData
-from services import gymservice, itemservice, missionservice, pokemonservice
+from services import gymservice, itemservice, missionservice, pokemonservice, statservice
 
 captureLog = logging.getLogger('capture')
 
@@ -93,8 +93,7 @@ def ResetTrainer(trainer: Trainer, starter: PokemonData, keepShiny: bool):
     hei = s.Height
     wei = s.Weight
     cau = s.CaughtBy
-    evLine = pokemonservice.GetEvolutionLine(s.Pokemon_Id)
-    s = pokemonservice.GenerateSpawnPokemon(pokemonservice.GetPokemonById(min(evLine)), 1)
+    s = pokemonservice.GenerateSpawnPokemon(pokemonservice.GetInitialStage(s.Pokemon_Id), 1)
     s.IsShiny = True
     s.Nickname = nic
     s.IsFemale = fem
@@ -137,11 +136,9 @@ def TryDaily(trainer: Trainer, freeMasterball: bool):
       
     if freeMasterball:
       ModifyItemList(trainer, '1', 1)
-
-    addEgg = TryAddNewEgg(trainer)
     UpsertTrainer(trainer)
-    return addEgg
-  return -1
+    return True
+  return False
 
 def ModifyItemList(trainer: Trainer, itemId: str, amount: int):
   newAmount = max(trainer.Items[itemId] + amount, 0) if itemId in trainer.Items else max(amount, 0)
@@ -205,53 +202,89 @@ def GetTrainerItemList(trainer: Trainer, itemType: int | None = None):
 
 #region Eggs
 
-def TryAddNewEgg(trainer: Trainer):
+def CheckDaycareForEgg(trainer: Trainer):
+  daycareMon = GetDaycare(trainer)
+  #Only 1 Pokemon
+  if (len(daycareMon) < 2):
+    return None
+  #Eggs full
+  if len(trainer.Eggs) >= (8 if HasRegionReward(trainer, 6) else 5):
+    return None
+  minTime = (720 if HasRegionReward(trainer, 8) else 360)
+  lastEggTime = datetime.strptime(trainer.LastDaycareEgg, DateFormat).replace(tzinfo=UTC) if trainer.LastDaycareEgg else None
+  #Not enough time
   #Galar Reward
-  if(len(trainer.Eggs) < (8 if HasRegionReward(trainer, 8) else 5)):
-    randId = choice(range(100))
-
-    #Johta Reward
-    if HasRegionReward(trainer, 2):
-      newEggId = 1 if randId < 75 else 2 if randId < 95 else 3
-    else:
-      newEggId = 1 if randId < 83 else 2 if randId < 98 else 3
-
-    trainer.Eggs.append(TrainerEgg.from_dict({
-      'Id': uuid.uuid4().hex,
-      'EggId': newEggId,
-      'Generation': trainer.Region
-    }))
-    return newEggId
-  return 0
+  if lastEggTime and int((datetime.now(UTC) - lastEggTime).total_seconds()//60) < minTime:
+    print('Already claimed')
+    return None
+  for p in trainer.Daycare:
+    timeAdded = datetime.strptime(trainer.Daycare[p], DateFormat).replace(tzinfo=UTC)
+    if int((datetime.now(UTC) - timeAdded).total_seconds()//60) < minTime:
+      print('Too early')
+      return None
+  #Null gender
+  if (daycareMon[0].IsFemale == None and daycareMon[0].Pokemon_Id != 132) or (daycareMon[1].IsFemale == None and daycareMon[1].Pokemon_Id != 132):
+    print('Null gender')
+    return None
+  #Same gender
+  if daycareMon[0].IsFemale == daycareMon[1].IsFemale:
+    print('Same gender')
+    return False
+  #Both ditto
+  if daycareMon[0].Pokemon_Id == 132 and daycareMon[1].Pokemon_Id == 132:
+    print('Both ditto')
+    return None
+  data = [pokemonservice.GetPokemonById(p.Pokemon_Id) for p in daycareMon]
+  #Unbreedable
+  if 15 in data[0].EggGroups+data[1].EggGroups:
+    print('No egg group')
+    return None
+  commonEggGroups = [e for e in data[0].EggGroups if e in data[1].EggGroups]
+  #No common group and no ditto
+  if not commonEggGroups and 13 not in data[0].EggGroups+data[1].EggGroups:
+    print('No group match')
+    return None
+  mother = next(p for p in daycareMon if p.IsFemale) if 132 not in [p.Pokemon_Id for p in daycareMon] else next(p for p in daycareMon if p.Pokemon_Id != 132)
+  father = next(p for p in daycareMon if p.Id != mother.Id)
+  ivs = {}
+  while len(ivs) < 3:
+    stat = choice([s.Id for s in statservice.GetAllStats() if s.Id < 7 and str(s.Id) not in ivs])
+    inherit = choice([mother,father])
+    ivs[str(stat)] = inherit.IVs[str(stat)]
+  offspring = pokemonservice.GetInitialStage(mother.Pokemon_Id)
+  species = pokemonservice.GetPokemonByPokedexId(offspring.PokedexId)
+  if len(species) > 1 and next((s for s in species if s.Generation == trainer.Region),None):
+    offspring = next(s for s in species if s.Generation == trainer.Region)
+  newEgg = TrainerEgg.from_dict({
+    'Id': uuid.uuid4().hex,
+    'Generation': offspring.Generation,
+    'OffspringId': offspring.Id,
+    'SpawnsNeeded': offspring.HatchCount,
+    'ShinyOdds': int(GetShinyOdds(trainer)/(2 if mother.OriginalTrainer != father.OriginalTrainer else 1)),
+    'IVs': ivs
+  })
+  trainer.Eggs.append(newEgg)
+  return newEgg
 
 def EggInteraction(trainer: Trainer):
   updated = False
   for egg in trainer.Eggs:
-    if egg.SpawnCount < itemservice.GetEgg(egg.EggId).SpawnsNeeded:
+    if egg.SpawnCount < egg.SpawnsNeeded:
       egg.SpawnCount += 1
       updated = True
   
   if updated:
     UpsertTrainer(trainer)
 
-def CanEggHatch(egg: TrainerEgg):
-  return egg.SpawnCount == itemservice.GetEgg(egg.EggId).SpawnsNeeded
-
-def TryHatchEgg(trainer: Trainer, eggId: str):
-  egg = next(e for e in trainer.Eggs if e.Id == eggId)
-  eggData = itemservice.GetEgg(egg.EggId)
-  if egg.SpawnCount < eggData.SpawnsNeeded:
+def TryHatchEgg(trainer: Trainer, egg: TrainerEgg):
+  if egg.SpawnCount < egg.SpawnsNeeded:
     return None
 
-  trainer.Eggs = [e for e in trainer.Eggs if e.Id != eggId]
-  pkmn = choice(pokemonservice.GetPokemonByRarity(eggData.Hatch))
-  while pkmn.EvolvesInto and pkmn.Rarity == 3:
-    pkmn = choice(pokemonservice.GetPokemonByRarity(eggData.Hatch))
-  newPokemon = pokemonservice.GenerateSpawnPokemon(pkmn, 1, GetShinyOdds(trainer))
-  if not newPokemon.IsShiny:
-    newPokemon.IsShiny = choice(range(0, GetShinyOdds(trainer))) == int(GetShinyOdds(trainer)/2)
+  trainer.Eggs = [e for e in trainer.Eggs if e.Id != egg.Id]
+  pkmn = pokemonservice.GetPokemonById(egg.OffspringId)
+  newPokemon = pokemonservice.GenerateSpawnPokemon(pkmn, 1, egg.ShinyOdds)
   trainer.OwnedPokemon.append(newPokemon)
-  trainer.Money += 50
+  trainer.Money += 100
   TryAddToPokedex(trainer, pkmn, newPokemon.IsShiny)
   if len(trainer.Team) < 6:
     trainer.Team.append(newPokemon.Id)

@@ -1,6 +1,5 @@
 from random import choice
-from dataaccess import eggda, itemda
-from models.Item import Candy, Pokeball, Potion
+from dataaccess import itemda
 from models.Trainer import Trainer
 
 
@@ -41,8 +40,8 @@ def GetCandy(id: int):
 
 
 def TryGetCandy(reward: bool):
-  #Kanto Reward
-  if choice(range(100)) < (40 if reward else 20):
+  #Sinnoh Reward
+  if choice(range(100)) < (30 if reward else 20):
     randCandy = choice(range(100))
     if randCandy < 3:
       return GetCandy(50) #Rare Candy
@@ -61,9 +60,6 @@ def TryGetCandy(reward: bool):
 def GetEvoItem(id: int):
   return next(i for i in GetAllEvoItems() if i.Id == id)
 
-
-def GetEgg(id: int):
-  return next(e for e in eggda.GetAllEggs() if e.Id == id)
 
 def GetTrainerPokeballs(trainer: Trainer):
   return [p for p in GetAllPokeballs() if str(p.Id) in trainer.Items and trainer.Items[str(p.Id)] > 0]

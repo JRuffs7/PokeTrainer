@@ -32,8 +32,10 @@ class PokemonData(Base):
   Color: str
   EvolvesInto: list[EvolveData]
   RandomEvolve: bool
-  FemaleChance: int | None
+  FemaleChance: int|None
   Generation: int
+  EggGroups: list[int]
+  HatchCount: int|None
   PokedexId: int
   IsStarter: bool
   IsBaby: bool
@@ -79,6 +81,7 @@ class Pokemon:
   LearnedMoves: list[Move] = field(default_factory=list)
   CurrentAilment: int|None = None
   CaughtBy: int = 4
+  OriginalTrainer: int = 0
 
   @classmethod
   def from_dict(cls, dict):

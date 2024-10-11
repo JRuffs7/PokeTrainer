@@ -1,13 +1,14 @@
 import asyncio
+from datetime import UTC, datetime
 import logging
 import math
-from random import choice, sample
-from discord import Interaction, Member, TextChannel, app_commands
+from random import choice
+import uuid
+from discord import Member, TextChannel
 from discord.ext import commands
-from Views.Battles.CpuBattleView import CpuBattleView
-from globals import SuperShinyOdds
-from middleware.decorators import is_bot_admin, trainer_check
-from models.Cpu import CpuTrainer
+from globals import DateFormat, SuperShinyOdds
+from middleware.decorators import is_bot_admin
+from models.Egg import TrainerEgg
 from models.Server import Server
 from services import commandlockservice, gymservice, moveservice, pokemonservice, serverservice, trainerservice
 
@@ -92,6 +93,26 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 			trainer.OwnedPokemon.append(newPkmn)
 			trainerservice.UpsertTrainer(trainer)
 
+	@commands.command(name="addegg")
+	@is_bot_admin
+	async def addegg(self, ctx: commands.Context, pokemonId: int):
+		if not ctx.guild:
+			return
+		trainer = trainerservice.GetTrainer(ctx.guild.id, ctx.author.id)
+		pokemon = pokemonservice.GetPokemonById(pokemonId)
+		if trainer and pokemon and len(trainer.Eggs) < 5:
+			trainer.Eggs.append(TrainerEgg.from_dict({
+			'Id': uuid.uuid4().hex,
+			'Generation': pokemon.Generation,
+			'OffspringId': pokemon.Id,
+			'SpawnCount': choice(range(pokemon.HatchCount)) if choice([0,1]) == 1 else pokemon.HatchCount,
+			'SpawnsNeeded': pokemon.HatchCount,
+			'ShinyOdds': int(trainerservice.GetShinyOdds(trainer)/2),
+			'IVs': {'2': 16, '5': 16, '3': 20}
+			}))
+			trainerservice.UpsertTrainer(trainer)
+			print([e.Id for e in trainer.Eggs])
+
 	@commands.command(name="clearlock")
 	@is_bot_admin
 	async def clearlock(self, ctx: commands.Context, user: Member|None = None):
@@ -107,37 +128,49 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 		substr = math.floor((2000-(4*len(rates)))/len(rates))
 		await ctx.reply(content=[r.Name[0:substr] for r in rates], ephemeral=True)
 
-	@app_commands.command(name="testfight",
-                        description="Battle each gym leader from every region.")
-	@trainer_check
-	async def testfight(self, inter: Interaction, wild: bool):
-		trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
-		allPkmn = pokemonservice.GetAllPokemon()
-		trainer.OwnedPokemon.clear()
-		trainer.OwnedPokemon = [pokemonservice.GenerateSpawnPokemon(p, choice(range(1,101))) for p in sample(allPkmn, 6)]
-		trainer.Team = [p.Id for p in trainer.OwnedPokemon]
-		if wild:
-			enemyPkmn = choice(allPkmn)
-			team = [pokemonservice.GenerateSpawnPokemon(enemyPkmn, choice(range(1,101)), 2)]
-			name = pokemonservice.GetPokemonDisplayName(team[0], enemyPkmn)
-		else:
-			team =  [pokemonservice.GenerateSpawnPokemon(p, choice(range(1,101)), 2) for p in sample(allPkmn, 6)]
-			name = 'GymTest'
-		leader = CpuTrainer.from_dict({
-			'Id': 1,
-			'Name': name,
-			'Sprite': '',
-			'Team': team,
-			'Reward': (0,0) if wild else (0,2000),
-			'Generation': 1,
-			'MainType': '' if wild else 'Rock',
-			'BadgeId': 0 if wild else 1
-		})
-		await CpuBattleView(
-			trainer, 
-			leader,
-			wild,
-			choice([1,2]) == 1).send(inter)
+	@commands.command(name="testbreed")
+	@is_bot_admin
+	async def testbreed(self, ctx: commands.Context):
+		if not ctx.guild:
+			return
+		trainer = trainerservice.GetTrainer(ctx.guild.id, ctx.author.id)
+		pkmn1 = pokemonservice.GetPokemonById(984)
+		pkmn2 = pokemonservice.GetPokemonById(32)
+		day1 = '10/09/24 03:44:00'
+		day2 = '01/01/24 12:00:01'
+		opkmn1 = pokemonservice.GenerateSpawnPokemon(pkmn1, 100)
+		opkmn2 = pokemonservice.GenerateSpawnPokemon(pkmn2, 100)
+		trainer.OwnedPokemon.append(opkmn1)
+		trainer.OwnedPokemon.append(opkmn2)
+		trainer.Daycare = {opkmn1.Id: day1, opkmn2.Id: day2}
+		trainer.LastDaycareEgg = '01/01/24 12:00:01'
+		print(f'{pkmn1.Name} + {pkmn2.Name} = {trainerservice.CheckDaycareForEgg(trainer)}')
+		pkmn1 = pokemonservice.GetPokemonById(612)
+		opkmn1 = pokemonservice.GenerateSpawnPokemon(pkmn1, 100)
+		trainer.OwnedPokemon.append(opkmn1)
+		day1 = datetime.now(UTC).strftime(DateFormat)
+		trainer.Daycare = {opkmn1.Id: day1, opkmn2.Id: day2}
+		print(f'{pkmn1.Name} + {pkmn2.Name} = {trainerservice.CheckDaycareForEgg(trainer)}')
+		day1 = '10/09/24 03:44:00'
+		trainer.Daycare = {opkmn1.Id: day1, opkmn2.Id: day2}
+		print(f'{pkmn1.Name} + {pkmn2.Name} = {trainerservice.CheckDaycareForEgg(trainer)}')
+		pkmn1 = pokemonservice.GetPokemonById(724)
+		opkmn1 = pokemonservice.GenerateSpawnPokemon(pkmn1, 100)
+		trainer.OwnedPokemon.append(opkmn1)
+		trainer.Daycare = {opkmn1.Id: day1, opkmn2.Id: day2}
+		print(f'{pkmn1.Name} + {pkmn2.Name} = {trainerservice.CheckDaycareForEgg(trainer)}')
+		pkmn1 = pokemonservice.GetPokemonById(132)
+		opkmn1 = pokemonservice.GenerateSpawnPokemon(pkmn1, 100)
+		trainer.OwnedPokemon.append(opkmn1)
+		trainer.Daycare = {opkmn1.Id: day1, opkmn2.Id: day2}
+		print(f'{pkmn1.Name} + {pkmn2.Name} = {trainerservice.CheckDaycareForEgg(trainer)}')
+		pkmn2 = pokemonservice.GetPokemonById(170)
+		opkmn2 = pokemonservice.GenerateSpawnPokemon(pkmn2, 100)
+		trainer.OwnedPokemon.append(opkmn2)
+		trainer.Daycare = {opkmn1.Id: day1, opkmn2.Id: day2}
+		print(f'{pkmn1.Name} + {pkmn2.Name} = {trainerservice.CheckDaycareForEgg(trainer)}')
+		trainer.LastDaycareEgg = datetime.now(UTC).strftime(DateFormat)
+		print(f'{pkmn1.Name} + {pkmn2.Name} = {trainerservice.CheckDaycareForEgg(trainer)}')
 
 	#endregion
 

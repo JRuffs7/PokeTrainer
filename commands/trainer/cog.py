@@ -45,14 +45,12 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
     freeMasterball = datetime.today().date() == freemasterball.date()
     dailyResult = trainerservice.TryDaily(trainer, freeMasterball)
     commandlockservice.DeleteLock(inter.guild_id, inter.user.id)
-    if dailyResult < 0:
+    if not dailyResult:
       return await discordservice_trainer.PrintDailyResponse(inter, 0, [topggLink, discordLink])
-      
+    #Unova Reward  
     dailyStr = f'Thank you for using PokeTrainer!\nHere is your reward of **{"Great Ball" if trainerservice.HasRegionReward(trainer, 5) else "Poké Ball"} x10** and **$200**.\nAcquired a new Daily Mission.'
     if currentWeekly != (trainer.WeeklyMission.DayStarted if trainer.WeeklyMission else None):
       dailyStr += f'\nAcquired a new Weekly Mission.'
-    if dailyResult > 0:
-      dailyStr += f'\nObtained one **{itemservice.GetEgg(dailyResult).Name}**!'
     if freeMasterball:
       dailyStr += f'\n\nHere is **1x Masterball** for recent issues as well.'
     dailyStr += f"\n\nDon't forget to [Upvote the Bot]({topggLink})!\nOr join the [Discord Server]({discordLink})!"
@@ -80,6 +78,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
       
     trainer = trainerservice.GetTrainer(inter.guild_id, user.id if user else inter.user.id)
     if len(trainer.Eggs) == 0:
+      commandlockservice.DeleteLock(trainer.ServerId, trainer.UserId)
       return await discordservice_trainer.PrintMyEggsResponse(inter, 0, []) 
     await EggView(user if user else inter.user, trainer, images != None, (user.id == inter.user.id) if user else True).send(inter)
 

@@ -1,9 +1,9 @@
 import discord
 
-from globals import Dexmark, TrainerColor
+from globals import Dexmark, TrainerColor, region_name
 from middleware.decorators import defer
 from models.Trainer import Trainer
-from services import commandlockservice, itemservice, pokemonservice, trainerservice
+from services import commandlockservice, pokemonservice, trainerservice
 from services.utility import discordservice
 
 
@@ -13,12 +13,13 @@ class EggView(discord.ui.View):
 		self.user = user
 		self.trainer = trainer
 		self.owneggs = ownEggs
-		self.currentpage = 0
+		self.currentpage = 1
+		self.totalpages = len(trainer.Eggs) if images else 1
 		self.images = images
 		super().__init__(timeout=300)
 		if self.images:
 			if len(trainer.Eggs) > 1:
-				self.prevBtn = discord.ui.Button(label="<", style=discord.ButtonStyle.primary, disabled=True, custom_id='prev')
+				self.prevBtn = discord.ui.Button(label="<", style=discord.ButtonStyle.primary, custom_id='prev')
 				self.prevBtn.callback = self.page_button
 				self.add_item(self.prevBtn)
 			if self.owneggs:
@@ -26,7 +27,7 @@ class EggView(discord.ui.View):
 				htchbtn.callback = self.hatch_button
 				self.add_item(htchbtn)
 			if len(trainer.Eggs) > 1:
-				self.nextBtn = discord.ui.Button(label=">", style=discord.ButtonStyle.primary, disabled=False, custom_id='next')
+				self.nextBtn = discord.ui.Button(label=">", style=discord.ButtonStyle.primary, custom_id='next')
 				self.nextBtn.callback = self.page_button
 				self.add_item(self.nextBtn)
 		elif self.owneggs:
@@ -48,9 +49,9 @@ class EggView(discord.ui.View):
 				f"{self.user.display_name}'s Egg List",
 				self.SingleEmbedDesc() if self.images else self.ListEmbedDesc(),
 				TrainerColor,
-				image=(itemservice.GetEgg(self.trainer.Eggs[self.currentpage-1].EggId).Sprite if self.images else None),
+				image=(self.trainer.Eggs[self.currentpage-1].Sprite if self.images else None),
 				thumbnail=(self.user.display_avatar.url if not self.images else None),
-				footer=(f"{self.currentpage+1}/{len(self.trainer.Eggs)}" if self.images else None))
+				footer=(f"{self.currentpage}/{self.totalpages}" if self.images else None))
 		await self.message.edit(embed=embed, view=self)
 	
 	@defer
@@ -60,11 +61,9 @@ class EggView(discord.ui.View):
 	@defer
 	async def page_button(self, inter: discord.Interaction):
 		if inter.data['custom_id'] == 'prev':
-			self.currentpage -= 1
+			self.currentpage = (self.currentpage - 1) if self.currentpage > 1 else self.totalpages
 		else:
-			self.currentpage += 1
-		self.prevBtn.disabled = self.currentpage == 0
-		self.nextBtn.disabled = self.currentpage == (len(self.trainer.Eggs)-1)
+			self.currentpage = (self.currentpage + 1) if self.currentpage < self.totalpages else 1
 		await self.update_message()
 
 	@defer
@@ -75,18 +74,18 @@ class EggView(discord.ui.View):
 		commandlockservice.DeleteLock(self.trainer.ServerId, self.trainer.UserId)
 		hatchMessage = None
 		if self.images:
-			egg = self.trainer.Eggs[self.currentpage]
-			hatch = trainerservice.TryHatchEgg(self.trainer, egg.Id)
+			egg = self.trainer.Eggs[self.currentpage-1]
+			hatch = trainerservice.TryHatchEgg(self.trainer, egg)
 			if hatch:
-				hatchMessage = f'{itemservice.GetEgg(egg.EggId).Name} hatched into a **{pokemonservice.GetPokemonDisplayName(hatch)}**'
+				hatchMessage = f'Egg ({region_name(egg.Generation)}) hatched into a **{pokemonservice.GetPokemonDisplayName(hatch)}**!\nGained **$100**'
 		else:
 			hatchArr: list[str] = []
 			for i in self.trainer.Eggs:
-				hatch = trainerservice.TryHatchEgg(self.trainer, i.Id)
+				hatch = trainerservice.TryHatchEgg(self.trainer, i)
 				if hatch:
-					hatchArr.append(f'{itemservice.GetEgg(i.EggId).Name} hatched into a **{pokemonservice.GetPokemonDisplayName(hatch)}**')
+					hatchArr.append(f'Egg ({region_name(i.Generation)}) hatched into a **{pokemonservice.GetPokemonDisplayName(hatch)}**')
 			if hatchArr:
-				hatchMessage = '\n'.join(hatchArr)
+				hatchMessage = '\n'.join(hatchArr) + f'\nGained **${100*len(hatchArr)}**'
 		
 		if hatchMessage:
 			self.clear_items()
@@ -97,12 +96,11 @@ class EggView(discord.ui.View):
 			await self.message.edit(content=f'Nothing to hatch! Progress your eggs by using the **/spawn** command!')
 
 	def SingleEmbedDesc(self):
-		egg = self.trainer.Eggs[self.currentpage]
-		eggData = itemservice.GetEgg(egg.EggId)
-		return f'**__{eggData.Name}{f" {Dexmark}" if egg.SpawnCount == eggData.SpawnsNeeded else ""}__**\nGeneration: {egg.Generation}\nProgress (/spawn): {egg.SpawnCount}/{eggData.SpawnsNeeded}'
+		egg = self.trainer.Eggs[self.currentpage-1]
+		return f'**__Egg ({region_name(egg.Generation)})__**{f" {Dexmark}" if egg.SpawnCount == egg.SpawnsNeeded else ""}\nProgress (/spawn): {egg.SpawnCount}/{egg.SpawnsNeeded}'
 
 	def ListEmbedDesc(self):
-		return '\n'.join([f'{itemservice.GetEgg(egg.EggId).Name} ({egg.SpawnCount}/{itemservice.GetEgg(egg.EggId).SpawnsNeeded}){f" {Dexmark}" if egg.SpawnCount == itemservice.GetEgg(egg.EggId).SpawnsNeeded else ""}' for egg in self.trainer.Eggs])
+		return '\n'.join([f'Egg ({region_name(egg.Generation)}) - {egg.SpawnCount}/{egg.SpawnsNeeded}{f" {Dexmark}" if egg.SpawnCount == egg.SpawnsNeeded else ""}' for egg in self.trainer.Eggs])
 
 	async def send(self, inter: discord.Interaction):
 		await inter.followup.send(view=self)

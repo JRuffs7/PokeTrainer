@@ -71,11 +71,11 @@ class LearnMovesView(discord.ui.View):
 
 		await self.message.delete(delay=0.1)
 		commandlockservice.DeleteLock(self.trainer.ServerId, self.trainer.UserId)
-		self.trainer.Money -= 500
+		self.trainer.Money -= (250 if trainerservice.HasRegionReward(self.trainer, 1) else 500)
 		trainerservice.UpsertTrainer(self.trainer)
 		embed = discordservice.CreateEmbed(
 			f"New Move Taught",
-			f'<@{self.trainer.UserId}> spent **$500** to teach **{pokemonservice.GetPokemonDisplayName(self.pokemon, self.data)}** the move **{self.learning.Name}**!{f" It forgot the move **{self.replacing.Name}**." if self.replacing else ""}',
+			f'<@{self.trainer.UserId}> spent **${250 if trainerservice.HasRegionReward(self.trainer, 1) else 500}** to teach **{pokemonservice.GetPokemonDisplayName(self.pokemon, self.data)}** the move **{self.learning.Name}**!{f" It forgot the move **{self.replacing.Name}**." if self.replacing else ""}',
 			SuccessColor)
 		await inter.followup.send(embed=embed)
 

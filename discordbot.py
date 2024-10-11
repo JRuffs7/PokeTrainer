@@ -5,8 +5,6 @@ from random import choice
 
 import discord
 from discord.ext import commands, tasks
-from commands.views.Events.SpecialBattleEventView import SpecialBattleEventView
-from commands.views.Events.SpecialSpawnEventView import SpecialSpawnEventView
 from globals import HelpColor, eventtimes, discordLink, topggLink
 from models.Server import Server
 from models.enums import EventType
@@ -83,14 +81,6 @@ async def StartBot():
       channel = guild.get_channel(server.ChannelId)
       if not channel or not isinstance(channel, discord.TextChannel):
         return
-      
-      match eventType:
-        case EventType.SpecialBattle:
-          sTrainer = serverservice.SpecialBattleEvent(server)
-          await SpecialBattleEventView(server, channel, sTrainer).send()
-        case _:
-          spawnPkmn, wishUsers = serverservice.SpecialSpawnEvent(server)
-          await SpecialSpawnEventView(server, channel, spawnPkmn).send(wishUsers)
     except Exception as e:
       errorLogger.error(f'Server {server.ServerName} Event: {e}')
 

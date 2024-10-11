@@ -21,6 +21,7 @@ class Trainer:
   SpTrainerWins: list[int] = field(default_factory=list)
   Eggs: list[TrainerEgg] = field(default_factory=list)
   Daycare: dict[str, str] = field(default_factory=dict)
+  LastDaycareEgg: str|None = None
   LastDaily: str | None = None
   Region: int = 1
   DailyMission: TrainerMission | None = None

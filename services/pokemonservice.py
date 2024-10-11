@@ -56,14 +56,14 @@ def GetPokemonByRegion(region: int):
 def GetStarterPokemon():
   return [p for p in pokemonda.GetAllPokemon() if p.IsStarter]
 
-def GetEvolutionLine(pokemonId: int):
+def GetInitialStage(pokemonId: int):
   pokemon = pokemonda.GetAllPokemon()
-  idArray: list[int] = [pokemonId]
+  initial = next(p for p in pokemon if p.Id == pokemonId)
   preEvo = next((p for p in pokemon if pokemonId in [e.EvolveID for e in p.EvolvesInto]), None)
   while preEvo is not None:
-    idArray.append(preEvo.Id)
+    initial = preEvo
     preEvo = next((p for p in pokemon if preEvo.Id in [e.EvolveID for e in p.EvolvesInto]), None)
-  return idArray
+  return initial
 
 def IsLegendaryPokemon(pokemon: PokemonData):
   return pokemon.IsLegendary or pokemon.IsMythical or pokemon.IsUltraBeast or pokemon.IsParadox
@@ -154,7 +154,10 @@ def SpawnPokemon(region: int, badgesInRegion: int, shinyOdds: int):
   spawnChance = (
     4 if encounterRng%2 == 0 else 
     3 if encounterRng < 60 else
-    2 if encounterRng < 97 else 1)
+    2 if encounterRng < 97 else 
+    1 if badgesInRegion < 6 else 4
+    )
+
   pokemonList = [p for p in pokemonda.GetPokemonByProperty([1,2] if badgesInRegion < 3 else [1,2,3], 'Rarity') if p.Generation == region and p.EncounterChance == spawnChance]
   while not pokemonList and spawnChance < 4:
     spawnChance += 1
@@ -211,10 +214,10 @@ def GetSpecialSpawn():
   return GenerateSpawnPokemon(pkmn, 5 if pkmn.IsStarter or pkmn.IsFossil else 75 if pkmn.IsLegendary or pkmn.IsMythical else 40)
 
 def GenerateSpawnPokemon(pokemon: PokemonData, level: int, shinyOdds: int = ShinyOdds):
-  isshiny = choice(range(0, shinyOdds)) == int(shinyOdds / 2)
+  isshiny = (choice(range(0, shinyOdds)) == int(shinyOdds / 2)) if shinyOdds > 0 else False
   height = round(uniform((pokemon.Height * 0.9), (pokemon.Height * 1.1)) / 10, 2)
   weight = round(uniform((pokemon.Weight * 0.9), (pokemon.Weight * 1.1)) / 10, 2)
-  isfemale = choice(range(0, 100)) < int(pokemon.FemaleChance / 8 * 100) if pokemon.FemaleChance and pokemon.FemaleChance >= 0 else None
+  isfemale = choice(range(0, 100)) < int(pokemon.FemaleChance / 8 * 100) if pokemon.FemaleChance != None and pokemon.FemaleChance >= 0 else None
   spawn = Pokemon.from_dict({
       'Id': uuid.uuid4().hex,
       'Pokemon_Id': pokemon.Id,

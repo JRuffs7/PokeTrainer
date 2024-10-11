@@ -1,11 +1,11 @@
 from datetime import UTC, datetime
-from math import ceil, floor
+from math import floor
 import discord
 
 from globals import Dexmark, Incomplete, ShortDateFormat, TrainerColor, region_name
 from middleware.decorators import defer
 from models.Trainer import Trainer
-from services import gymservice, itemservice, missionservice, pokemonservice, trainerservice
+from services import gymservice, missionservice, pokemonservice, trainerservice
 from services.utility import discordservice
 
 
@@ -48,18 +48,13 @@ class TrainerView(discord.ui.View):
 	@defer
 	async def page_button(self, inter: discord.Interaction):
 		if inter.data['custom_id'] == 'first':
-			self.currentpage = 1
+			self.currentpage = 1 if self.currentpage > 1 else self.totalpages
 		elif inter.data['custom_id'] == 'previous':
-			self.currentpage -= 1
+			self.currentpage = (self.currentpage - 1) if self.currentpage > 1 else self.totalpages
 		elif inter.data['custom_id'] == 'next':
-			self.currentpage += 1
+			self.currentpage = (self.currentpage + 1) if self.currentpage < self.totalpages else 1
 		elif inter.data['custom_id'] == 'last':
-			self.currentpage = self.totalpages
-
-		self.firstbtn.disabled = self.currentpage == 0
-		self.prevbtn.disabled = self.currentpage == 0
-		self.lastbtn.disabled = self.currentpage == self.totalpages
-		self.nextbtn.disabled = self.currentpage == self.totalpages
+			self.currentpage = self.totalpages if self.currentpage < self.totalpages else 1
 		await self.update_message()
 
 	def EmbedDesc(self):
@@ -85,7 +80,8 @@ class TrainerView(discord.ui.View):
 			pkdx = len(set(p.PokedexId for p in self.totalpkmn))
 			pokedex = f'Pokedex Completion: {len(self.trainer.Pokedex)}/{pkdx} ({round((len(self.trainer.Pokedex)*100)/pkdx)}%)'
 			region = f'Region Completion: {len([r for r in gymservice.GetRegions() if trainerservice.RegionCompleted(self.trainer, r)])}/{len(gymservice.GetRegions())}'
-			eggs = f'Eggs Obtained: {len(self.trainer.Eggs)}/{(8 if trainerservice.HasRegionReward(self.trainer, 8) else 5)}'
+			#Kalos Reward
+			eggs = f'Eggs Obtained: {len(self.trainer.Eggs)}/{(8 if trainerservice.HasRegionReward(self.trainer, 6) else 5)}'
 			daycare = f'Daycare Slots: {len(self.trainer.Daycare)}/2'
 
 			title = '__**BASE INFORMATION**__'
@@ -101,13 +97,13 @@ class TrainerView(discord.ui.View):
 			title = '__**NATIONAL POKEDEX**__'
 			desc = f'{pokedexString}\n{formdexString}\n{shinydexString}\n{livedexString}'
 		elif self.currentpage == 3:
-			eggString = f'Eggs: {len(self.trainer.Eggs)}/{(8 if trainerservice.HasRegionReward(self.trainer, 8) else 5)}'
+			#Kalos Reward
+			eggString = f'Eggs: {len(self.trainer.Eggs)}/{(8 if trainerservice.HasRegionReward(self.trainer, 6) else 5)}'
 			if len(self.trainer.Eggs) == 0:
-				eggString += '\nNo Eggs! Use **/daily** to obtain more.'
+				eggString += '\nNo Eggs! Obtain more through the **/daycare**.'
 			else:
 				for e in self.trainer.Eggs:
-					egg = itemservice.GetEgg(e.EggId)
-					eggString += f'\n{egg.Name} ({e.SpawnCount}/{egg.SpawnsNeeded}){f" {Dexmark}" if e.SpawnCount == egg.SpawnsNeeded else ""}'
+					eggString += f'\nEgg ({region_name(e.Generation)}) - {e.SpawnCount}/{e.SpawnsNeeded}{f" {Dexmark}" if e.SpawnCount == e.SpawnsNeeded else ""}'
 			daycareString = f'Daycare Slots: {len(self.trainer.Daycare)}/2'
 			if len(self.trainer.Daycare) == 0:
 				daycareString += '\nUse **/daycare** to put a Pokemon in the Daycare.'

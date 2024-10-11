@@ -60,7 +60,7 @@
 	"myeggs": [
 		{
 			"Title": "No Eggs Owned",
-			"Body": "You do not own any Eggs. Obtain an egg by using the **/daily** command."
+			"Body": "You do not own any Eggs. Obtain more through the **/daycare**."
 		}
 	],
 	"mypokemon": [

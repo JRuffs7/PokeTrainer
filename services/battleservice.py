@@ -638,8 +638,8 @@ def TryCapture(pokeball: Pokeball, trainer: Trainer, battle: CpuBattle, ditto: b
 		bonusStatus = 2.5 if battle.TeamBPkmn.CurrentAilment in [2,3] else 1.5 if battle.TeamBPkmn.CurrentAilment in [1,4,5] else 1
 		formula = part2*bonusLevel*bonusStatus
 		numShakes = 4
-		#Sinnoh Reward
-		if trainerservice.HasRegionReward(trainer, 4) and choice(range(256)) < round(formula):
+		#Johto Reward
+		if trainerservice.HasRegionReward(trainer, 2) and choice(range(256)) < round(formula):
 			numShakes = 1
 		shake = 0
 		while shake < numShakes:
@@ -659,16 +659,19 @@ def TryCapture(pokeball: Pokeball, trainer: Trainer, battle: CpuBattle, ditto: b
 		if len(trainer.Team) >= 6:
 			pokemonservice.HealPokemon(battle.TeamBPkmn, pkmnData)
 		battle.TeamBPkmn.CaughtBy = pokeball.Id
+		battle.TeamBPkmn.OriginalTrainer = trainer.UserId
 		trainer.OwnedPokemon.append(battle.TeamBPkmn)
 		trainerservice.TryAddToPokedex(trainer, pkmnData, battle.TeamBPkmn.IsShiny)
 		trainerservice.TryAddMissionProgress(trainer, 'Catch', pkmnData.Types)
-		#Paldea Reward
-		if trainerservice.HasRegionReward(trainer, 9):
+		#Hoenn Reward
+		if trainerservice.HasRegionReward(trainer, 3):
 			for p in trainerservice.GetTeam(trainer):
+				#Alola Reward
+				exp = math.floor(pokemonservice.ExpForPokemon(battle.TeamBPkmn, pkmnData, True, False, battle.TeamAPkmn.Level)/4) * (2 if trainerservice.HasRegionReward(trainer, 7) else 1)
 				pokemonservice.AddExperience(
 					p, 
 					next(t for t in battle.AllPkmnData if t.Id == p.Pokemon_Id), 
-					math.floor(pokemonservice.ExpForPokemon(battle.TeamBPkmn, pkmnData, True, False, battle.TeamAPkmn.Level)/4))
+					exp)
 		if len(trainer.Team) < 6 and battle.TeamBPkmn.Pokemon_Id != 132:
 			trainer.Team.append(battle.TeamBPkmn.Id)
 	return capture
@@ -718,134 +721,3 @@ def AddTurn(battle: CpuBattle, teamA: bool, action: BattleAction, move: MoveData
 	}))
 
 #endregion
-
-def WildFight(attack: PokemonData, defend: PokemonData, attackLevel: int, defendLevel: int):
-  healthLost: list[int] = [1,3,5,7,10,13,15]
-  battleResult = typeservice.TypeMatch(attack.Types, defend.Types)
-  doubleAdv = battleResult >= 2
-  doubleDis = battleResult <= -2
-  immune = battleResult == -5
-  attackGroup = pokemonservice.RarityGroup(attack) % 7
-  defendGroup = pokemonservice.RarityGroup(defend)
-  levelAdvantage = 2 if attackLevel > (defendLevel*2) else 1 if attackLevel > (defendLevel*1.5) else 0
-  levelDisadvantage = 2 if defendLevel > (attackLevel*2) else 1 if defendLevel > (attackLevel*1.5) else 0
-  if attackLevel < 10 and defendLevel < 10:
-    levelAdvantage = 1 if attackLevel > (defendLevel + 3) else 0 
-    levelDisadvantage = 1 if defendLevel > (attackLevel + 3) else 0 
-  
-  if attackGroup - defendGroup == 0:
-    returnInd = 6 if immune else 2 if doubleAdv else 4 if doubleDis else 3
-  # 3v2 2v1
-  elif attackGroup - defendGroup == 1:
-    returnInd = 5 if immune else 1 if doubleAdv else 3 if doubleDis else 2
-  # 3v1
-  elif attackGroup - defendGroup == 2:
-    returnInd = 4 if immune else 0 if doubleAdv else 2 if doubleDis else 1
-  # 1v2 2v3
-  elif attackGroup - defendGroup == -1:
-    returnInd = 6 if immune else 3 if doubleAdv else 5 if doubleDis else 4
-  # 1v3
-  else:
-    returnInd = 6 if immune else 4 if doubleAdv else 6 if doubleDis else 5
-  returnInd -= (levelAdvantage - levelDisadvantage) if not immune else 0
-  returnInd = 0 if returnInd < 0 else len(healthLost)-1 if returnInd >= len(healthLost) else returnInd
-  lost = healthLost[returnInd] - battleResult
-  lost = lost - (1 if attack.Rarity == 10 else 0)
-  return lost if lost > 0 else 1
-
-def GymFight(attack: PokemonData, defend: PokemonData, attackLevel: int, gymID: int):
-  battleResult = typeservice.TypeMatch(attack.Types, defend.Types)
-  attackGroup = pokemonservice.RarityGroup(attack)
-  attackGroup = attackGroup % 7 if attackGroup < 10 else attackGroup
-  defendGroup = pokemonservice.RarityGroup(defend)
-  defendGroup = defendGroup % 7 if defendGroup < 10 else defendGroup
-  defendLevel = 100 if gymID >= 1000 else 15 if defendGroup == 1 else 25 if defendGroup == 2 else 35 if defendGroup == 3 else 100
-  doubleAdv = battleResult >= 2 or (battleResult > 0 and attackLevel > defendLevel*1.5 and attackGroup >= defendGroup)
-
-  if pokemonservice.IsLegendaryPokemon(defend) and len(attack.Types) == 1:
-    return battleResult >= 1 and attackGroup >= defendGroup
-
-  return doubleAdv and (attackGroup >= defendGroup or (attackGroup == defendGroup-1 and attackLevel > defendLevel*1.25))
-
-def TeamFight(teamA: list[dict[str, int|PokemonData]], teamB: list[dict[str, int|PokemonData]]):
-	fightResults: list[int] = []
-	teamAInd = teamBInd = 0
-	while teamAInd < len(teamA) and teamBInd < len(teamB):
-		teamAFighter = teamA[teamAInd]
-		teamBFighter = teamB[teamBInd]
-		teamALevel = int(teamAFighter['Level'])
-		teamBLevel = int(teamBFighter['Level'])
-		teamAGroup = pokemonservice.RarityGroup(teamAFighter['Data'])
-		teamAGroup = teamAGroup % 7 if teamAGroup < 10 else teamAGroup
-		teamBGroup = pokemonservice.RarityGroup(teamBFighter['Data'])
-		teamBGroup = teamBGroup % 7 if teamBGroup < 10 else teamBGroup
-		AvBtype = typeservice.TypeMatch(teamAFighter['Data'].Types, teamBFighter['Data'].Types)
-		BvAtype = typeservice.TypeMatch(teamBFighter['Data'].Types, teamAFighter['Data'].Types)
-		aDoubleAdv = (AvBtype >= 2) or (AvBtype == 2 and len(teamAFighter['Data'].Types) == 1)
-		bDoubleAdv = (BvAtype >= 2) or (BvAtype == 2 and len(teamBFighter['Data'].Types) == 1)
-		aDoubleDis = (AvBtype < -2) or (AvBtype == -2 and len(teamAFighter['Data'].Types) == 1)
-		bDoubleDis = (BvAtype < -2) or (BvAtype == -2 and len(teamBFighter['Data'].Types) == 1)
-		AvBrarity = teamAGroup - teamBGroup
-
-		if AvBtype == -5 or BvAtype == -5:
-			aSuccess = 0 if AvBtype == -5 else 1
-			bSuccess = 0 if BvAtype == -5 else 1
-		#1v10
-		elif AvBrarity == -9:
-			aSuccess = 1 if aDoubleDis else 2 if AvBtype <= 0 else 3 if not aDoubleAdv else 4
-			bSuccess = 5 if bDoubleDis else 6 if BvAtype <= 0 else 7 if not bDoubleAdv else 8
-			aSuccess += int(teamALevel/teamBLevel)*2 if teamALevel > (teamBLevel*2.5) else 1 if teamALevel > (teamBLevel*2) else 0
-			bSuccess += int(teamBLevel/teamALevel)*2 if teamBLevel > (teamALevel*1.5) else 1 if teamBLevel > (teamALevel*0.8) else 0
-		#10v1
-		elif AvBrarity == 9:
-			aSuccess = 5 if aDoubleDis else 6 if AvBtype <= 0 else 7 if not aDoubleAdv else 8
-			bSuccess = 1 if bDoubleDis else 2 if BvAtype <= 0 else 3 if not bDoubleAdv else 4
-			aSuccess += int(teamALevel/teamBLevel)*2 if teamALevel > (teamBLevel*1.5) else 1 if teamALevel > (teamBLevel*0.8) else 0
-			bSuccess += int(teamBLevel/teamALevel)*2 if teamBLevel > (teamALevel*2.5) else 1 if teamBLevel > (teamALevel*2) else 0
-		#2v10
-		elif AvBrarity == -8:
-			aSuccess = 1 if aDoubleDis else 2 if AvBtype <= 0 else 3 if not aDoubleAdv else 4
-			bSuccess = 4 if bDoubleDis else 5 if BvAtype <= 0 else 6 if not bDoubleAdv else 7
-			aSuccess += int(teamALevel/teamBLevel)*2 if teamALevel > (teamBLevel*2) else 1 if teamALevel > (teamBLevel*1.5) else 0
-			bSuccess += int(teamBLevel/teamALevel)*2 if teamBLevel > (teamALevel*1.25) else 1 if teamBLevel > (teamALevel*0.7) else 0
-		#10v2
-		elif AvBrarity == 8:
-			aSuccess = 4 if aDoubleDis else 5 if AvBtype <= 0 else 6 if not aDoubleAdv else 7
-			bSuccess = 1 if bDoubleDis else 2 if BvAtype <= 0 else 3 if not bDoubleAdv else 4
-			aSuccess += int(teamALevel/teamBLevel)*2 if teamALevel > (teamBLevel*1.25) else 1 if teamALevel > (teamBLevel*0.7) else 0
-			bSuccess += int(teamBLevel/teamALevel)*2 if teamBLevel > (teamALevel*2) else 1 if teamBLevel > (teamALevel*1.5) else 0
-		#3v10
-		elif AvBrarity == -7:
-			aSuccess = 1 if aDoubleDis else 2 if AvBtype <= 0 else 3 if not aDoubleAdv else 4
-			bSuccess = 2 if bDoubleDis else 3 if BvAtype <= 0 else 4 if not bDoubleAdv else 5
-			aSuccess += int(teamALevel/teamBLevel)*2 if teamALevel > (teamBLevel*1.75) else 1 if teamALevel > (teamBLevel*1.25) else 0
-			bSuccess += int(teamBLevel/teamALevel)*2 if teamBLevel > (teamALevel*1.5) else 1 if teamBLevel > (teamALevel*0.8) else 0
-		#10v3
-		elif AvBrarity == 7:
-			aSuccess = 2 if aDoubleDis else 3 if AvBtype <= 0 else 4 if not aDoubleAdv else 5
-			bSuccess = 1 if bDoubleDis else 2 if BvAtype <= 0 else 3 if not bDoubleAdv else 4
-			aSuccess += int(teamALevel/teamBLevel)*2 if teamALevel > (teamBLevel*1.5) else 1 if teamALevel > (teamBLevel*0.8) else 0
-			bSuccess += int(teamBLevel/teamALevel)*2 if teamBLevel > (teamALevel*1.75) else 1 if teamBLevel > (teamALevel*1.25) else 0
-		else:
-			aSuccess = teamAGroup
-			bSuccess = teamBGroup
-			aSuccess += 1 if aDoubleDis else 2 if AvBtype <= 0 else 3 if not aDoubleAdv else 4
-			bSuccess += 1 if bDoubleDis else 2 if BvAtype <= 0 else 3 if not bDoubleAdv else 4
-			aSuccess += int(teamALevel/teamBLevel)*2 if teamALevel > (teamBLevel*1.5) else 1 if teamALevel > (teamBLevel*1.25) else 0
-			bSuccess += int(teamBLevel/teamALevel)*2 if teamBLevel > (teamALevel*1.5) else 1 if teamBLevel > (teamALevel*1.25) else 0
-
-		if aSuccess != bSuccess:
-			fightResults.append(1 if aSuccess > bSuccess else 2)
-			teamAInd += 1 if aSuccess < bSuccess else 0
-			teamBInd += 1 if aSuccess > bSuccess else 0
-		elif teamALevel != teamBLevel:
-			fightResults.append(1 if teamALevel > teamBLevel else 2)
-			teamAInd += 1 if teamALevel < teamBLevel else 0
-			teamBInd += 1 if teamALevel > teamBLevel else 0
-		elif choice([1,2]) == 1:
-			fightResults.append(1)
-			teamBInd += 1
-		else:
-			fightResults.append(2)
-			teamAInd += 1
-	return fightResults

@@ -1,0 +1,77 @@
+[
+	{
+		"Id": 1,
+		"Name": "Monster",
+		"Url": "https://pokeapi.co/api/v2/egg-group/1/"
+	},
+	{
+		"Id": 2,
+		"Name": "Water 1",
+		"Url": "https://pokeapi.co/api/v2/egg-group/2/"
+	},
+	{
+		"Id": 3,
+		"Name": "Bug",
+		"Url": "https://pokeapi.co/api/v2/egg-group/3/"
+	},
+	{
+		"Id": 4,
+		"Name": "Flying",
+		"Url": "https://pokeapi.co/api/v2/egg-group/4/"
+	},
+	{
+		"Id": 5,
+		"Name": "Field",
+		"Url": "https://pokeapi.co/api/v2/egg-group/5/"
+	},
+	{
+		"Id": 6,
+		"Name": "Fairy",
+		"Url": "https://pokeapi.co/api/v2/egg-group/6/"
+	},
+	{
+		"Id": 7,
+		"Name": "Grass",
+		"Url": "https://pokeapi.co/api/v2/egg-group/7/"
+	},
+	{
+		"Id": 8,
+		"Name": "Human-Like",
+		"Url": "https://pokeapi.co/api/v2/egg-group/8/"
+	},
+	{
+		"Id": 9,
+		"Name": "Water 3",
+		"Url": "https://pokeapi.co/api/v2/egg-group/9/"
+	},
+	{
+		"Id": 10,
+		"Name": "Mineral",
+		"Url": "https://pokeapi.co/api/v2/egg-group/10/"
+	},
+	{
+		"Id": 11,
+		"Name": "Amorphous",
+		"Url": "https://pokeapi.co/api/v2/egg-group/11/"
+	},
+	{
+		"Id": 12,
+		"Name": "Water 2",
+		"Url": "https://pokeapi.co/api/v2/egg-group/12/"
+	},
+	{
+		"Id": 13,
+		"Name": "Ditto",
+		"Url": "https://pokeapi.co/api/v2/egg-group/13/"
+	},
+	{
+		"Id": 14,
+		"Name": "Dragon",
+		"Url": "https://pokeapi.co/api/v2/egg-group/14/"
+	},
+	{
+		"Id": 15,
+		"Name": "Undiscovered",
+		"Url": "https://pokeapi.co/api/v2/egg-group/15/"
+	}
+]
