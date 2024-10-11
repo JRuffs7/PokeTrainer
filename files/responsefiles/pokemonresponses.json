@@ -12,7 +12,7 @@
 	"daycare": [
 		{
 			"Title": "Daycare Empty",
-			"Body": "{0} has no Pokemon currently in their daycare."
+			"Body": "<@{0}> has no Pokemon currently in their daycare."
 		},
 		{
 			"Title": "Daycare Empty",

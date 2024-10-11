@@ -215,34 +215,27 @@ def CheckDaycareForEgg(trainer: Trainer):
   #Not enough time
   #Galar Reward
   if lastEggTime and int((datetime.now(UTC) - lastEggTime).total_seconds()//60) < minTime:
-    print('Already claimed')
     return None
   for p in trainer.Daycare:
     timeAdded = datetime.strptime(trainer.Daycare[p], DateFormat).replace(tzinfo=UTC)
     if int((datetime.now(UTC) - timeAdded).total_seconds()//60) < minTime:
-      print('Too early')
       return None
   #Null gender
   if (daycareMon[0].IsFemale == None and daycareMon[0].Pokemon_Id != 132) or (daycareMon[1].IsFemale == None and daycareMon[1].Pokemon_Id != 132):
-    print('Null gender')
     return None
   #Same gender
   if daycareMon[0].IsFemale == daycareMon[1].IsFemale:
-    print('Same gender')
     return False
   #Both ditto
   if daycareMon[0].Pokemon_Id == 132 and daycareMon[1].Pokemon_Id == 132:
-    print('Both ditto')
     return None
   data = [pokemonservice.GetPokemonById(p.Pokemon_Id) for p in daycareMon]
   #Unbreedable
   if 15 in data[0].EggGroups+data[1].EggGroups:
-    print('No egg group')
     return None
   commonEggGroups = [e for e in data[0].EggGroups if e in data[1].EggGroups]
   #No common group and no ditto
   if not commonEggGroups and 13 not in data[0].EggGroups+data[1].EggGroups:
-    print('No group match')
     return None
   mother = next(p for p in daycareMon if p.IsFemale) if 132 not in [p.Pokemon_Id for p in daycareMon] else next(p for p in daycareMon if p.Pokemon_Id != 132)
   father = next(p for p in daycareMon if p.Id != mother.Id)
@@ -264,6 +257,8 @@ def CheckDaycareForEgg(trainer: Trainer):
     'IVs': ivs
   })
   trainer.Eggs.append(newEgg)
+  trainer.LastDaycareEgg = datetime.now(UTC).strftime(DateFormat)
+  UpsertTrainer(trainer)
   return newEgg
 
 def EggInteraction(trainer: Trainer):

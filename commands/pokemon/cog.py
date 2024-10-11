@@ -239,23 +239,24 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
 
     #Viewing Daycare
     if not pokemon:
-      trainer = trainerservice.GetTrainer(inter.guild_id, user.id if user else inter.user.id)
+      targetuser = user if user else inter.user
+      trainer = trainerservice.GetTrainer(inter.guild_id, targetuser.id)
       if len(trainer.Daycare) == 0:
-        return await discordservice_pokemon.PrintDaycareResponse(inter, 0 if user else 1, [user.display_name] if user else [])
-      else:
-        return await DayCareView(user if user else inter.user, trainer, (user.id == inter.user.id) if user else True).send(inter)
+        commandlockservice.DeleteLock(trainer.ServerId, trainer.UserId)
+        return await discordservice_pokemon.PrintDaycareResponse(inter, 0 if user else 1, [targetuser.id] if user else [])
+      return await DayCareView(user if user else inter.user, trainer, (user.id == inter.user.id) if user else True).send(inter)
       
     #Adding To Daycare
-    else:
-      trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
-      if len(trainer.Daycare) >= 2:
-        return await discordservice_pokemon.PrintDaycareResponse(inter, 2, [])
-      else:
-        pokeList = [p for p in trainer.OwnedPokemon if p.Pokemon_Id == pokemon]
-        if not pokeList:
-          pkmn = pokemonservice.GetPokemonById(pokemon)
-          return await discordservice_pokemon.PrintDaycareResponse(inter, 3, [pkmn.Name] if pkmn else ['N/A'])
-        return await DayCareAddView(trainer, pokeList).send(inter)
+    trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
+    if len(trainer.Daycare) >= 2:
+      commandlockservice.DeleteLock(trainer.ServerId, trainer.UserId)
+      return await discordservice_pokemon.PrintDaycareResponse(inter, 2, [])
+    pokeList = [p for p in trainer.OwnedPokemon if p.Pokemon_Id == pokemon]
+    if not pokeList:
+      commandlockservice.DeleteLock(trainer.ServerId, trainer.UserId)
+      pkmn = pokemonservice.GetPokemonById(pokemon)
+      return await discordservice_pokemon.PrintDaycareResponse(inter, 3, [pkmn.Name] if pkmn else ['N/A'])
+    return await DayCareAddView(trainer, pokeList).send(inter)
 
   #endregion
 

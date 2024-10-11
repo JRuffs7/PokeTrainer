@@ -111,7 +111,6 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 			'IVs': {'2': 16, '5': 16, '3': 20}
 			}))
 			trainerservice.UpsertTrainer(trainer)
-			print([e.Id for e in trainer.Eggs])
 
 	@commands.command(name="clearlock")
 	@is_bot_admin
@@ -127,50 +126,6 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 		rates.sort(key=lambda x: (x.EncounterChance, x.Name))
 		substr = math.floor((2000-(4*len(rates)))/len(rates))
 		await ctx.reply(content=[r.Name[0:substr] for r in rates], ephemeral=True)
-
-	@commands.command(name="testbreed")
-	@is_bot_admin
-	async def testbreed(self, ctx: commands.Context):
-		if not ctx.guild:
-			return
-		trainer = trainerservice.GetTrainer(ctx.guild.id, ctx.author.id)
-		pkmn1 = pokemonservice.GetPokemonById(984)
-		pkmn2 = pokemonservice.GetPokemonById(32)
-		day1 = '10/09/24 03:44:00'
-		day2 = '01/01/24 12:00:01'
-		opkmn1 = pokemonservice.GenerateSpawnPokemon(pkmn1, 100)
-		opkmn2 = pokemonservice.GenerateSpawnPokemon(pkmn2, 100)
-		trainer.OwnedPokemon.append(opkmn1)
-		trainer.OwnedPokemon.append(opkmn2)
-		trainer.Daycare = {opkmn1.Id: day1, opkmn2.Id: day2}
-		trainer.LastDaycareEgg = '01/01/24 12:00:01'
-		print(f'{pkmn1.Name} + {pkmn2.Name} = {trainerservice.CheckDaycareForEgg(trainer)}')
-		pkmn1 = pokemonservice.GetPokemonById(612)
-		opkmn1 = pokemonservice.GenerateSpawnPokemon(pkmn1, 100)
-		trainer.OwnedPokemon.append(opkmn1)
-		day1 = datetime.now(UTC).strftime(DateFormat)
-		trainer.Daycare = {opkmn1.Id: day1, opkmn2.Id: day2}
-		print(f'{pkmn1.Name} + {pkmn2.Name} = {trainerservice.CheckDaycareForEgg(trainer)}')
-		day1 = '10/09/24 03:44:00'
-		trainer.Daycare = {opkmn1.Id: day1, opkmn2.Id: day2}
-		print(f'{pkmn1.Name} + {pkmn2.Name} = {trainerservice.CheckDaycareForEgg(trainer)}')
-		pkmn1 = pokemonservice.GetPokemonById(724)
-		opkmn1 = pokemonservice.GenerateSpawnPokemon(pkmn1, 100)
-		trainer.OwnedPokemon.append(opkmn1)
-		trainer.Daycare = {opkmn1.Id: day1, opkmn2.Id: day2}
-		print(f'{pkmn1.Name} + {pkmn2.Name} = {trainerservice.CheckDaycareForEgg(trainer)}')
-		pkmn1 = pokemonservice.GetPokemonById(132)
-		opkmn1 = pokemonservice.GenerateSpawnPokemon(pkmn1, 100)
-		trainer.OwnedPokemon.append(opkmn1)
-		trainer.Daycare = {opkmn1.Id: day1, opkmn2.Id: day2}
-		print(f'{pkmn1.Name} + {pkmn2.Name} = {trainerservice.CheckDaycareForEgg(trainer)}')
-		pkmn2 = pokemonservice.GetPokemonById(170)
-		opkmn2 = pokemonservice.GenerateSpawnPokemon(pkmn2, 100)
-		trainer.OwnedPokemon.append(opkmn2)
-		trainer.Daycare = {opkmn1.Id: day1, opkmn2.Id: day2}
-		print(f'{pkmn1.Name} + {pkmn2.Name} = {trainerservice.CheckDaycareForEgg(trainer)}')
-		trainer.LastDaycareEgg = datetime.now(UTC).strftime(DateFormat)
-		print(f'{pkmn1.Name} + {pkmn2.Name} = {trainerservice.CheckDaycareForEgg(trainer)}')
 
 	#endregion
 

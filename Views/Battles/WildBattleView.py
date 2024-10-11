@@ -42,7 +42,7 @@ class WildBattleView(CpuBattleView):
 		ephemeral = False
 		if self.victory == None and self.userturn.Action == BattleAction.Pokeball:
 			#Sinnoh Reward
-			self.candy = itemservice.TryGetCandy(trainerservice.HasRegionReward(4))
+			self.candy = itemservice.TryGetCandy(trainerservice.HasRegionReward(self.trainer, 4))
 			if self.candy:
 				candyStr = f'\nFound one **{self.candy.Name}**!'
 				trainerservice.ModifyItemList(self.trainer, str(self.candy.Id), 1)
@@ -76,7 +76,7 @@ class WildBattleView(CpuBattleView):
 		else:
 			embed = discordservice.CreateEmbed(
 				'Defeat', 
-				f'<@{inter.user.id}> was defeated by **{pokemonservice.GetPokemonDisplayName(self.pokemon, self.data)} (Lvl. {self.pokemon.Level})**.\nRan to the PokeCenter and paid $500 to revive your party.', 
+				f'<@{inter.user.id}> was defeated by **{pokemonservice.GetPokemonDisplayName(self.pokemon, self.data)} (Lvl. {self.pokemon.Level})**.\nRan to the PokeCenter and revived your party.', 
 				BattleColor,
 				thumbnail=pokemonservice.GetPokemonImage(self.pokemon, self.data))
 		return await inter.followup.send(embed=embed, view=self, ephemeral=ephemeral)
@@ -97,7 +97,7 @@ class WildBattleView(CpuBattleView):
 				else:
 					self.trainer.Money += 25
 					#Sinnoh Reward
-					self.candy = itemservice.TryGetCandy(trainerservice.HasRegionReward(4))
+					self.candy = itemservice.TryGetCandy(trainerservice.HasRegionReward(self.trainer, 4))
 					if self.candy:
 						trainerservice.ModifyItemList(self.trainer, str(self.candy.Id), 1)
 					for expPkmn in self.exppokemon[pokemon.Id]:

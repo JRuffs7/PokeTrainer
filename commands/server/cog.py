@@ -29,8 +29,7 @@ class ServerCommands(commands.Cog, name="ServerCommands"):
     serv = serverservice.GetServer(inter.guild_id)
     return await discordservice_server.PrintServerResponse(inter, 0, [serv.ServerName, serv.ChannelId, serv.CurrentEvent.EventName if serv.CurrentEvent else ''])
 
-  @app_commands.command(
-      name="unregister",
+  @app_commands.command(name="unregister",
       description="(Admin only) Remove your server from PokeTrainer."
   )
   @method_logger(True)
@@ -42,8 +41,7 @@ class ServerCommands(commands.Cog, name="ServerCommands"):
     return await discordservice_server.PrintUnregisterResponse(inter, 0, [])
 
 
-  @app_commands.command(
-      name="invite",
+  @app_commands.command(name="invite",
       description="Invite this bot to another server!"
   )
   @method_logger(False)

@@ -20,7 +20,10 @@ class DayCareView(discord.ui.View):
 		self.owndaycare = owndaycare
 		self.currentpage = 0
 		super().__init__(timeout=300)
-		if len(trainer.Daycare) > 1:
+		self.AddButtons()
+
+	def AddButtons(self):
+		if len(self.trainer.Daycare) > 1:
 			self.prevBtn = discord.ui.Button(label="<", style=discord.ButtonStyle.primary, disabled=True, custom_id='prev')
 			self.prevBtn.callback = self.page_button
 			self.add_item(self.prevBtn)
@@ -28,7 +31,7 @@ class DayCareView(discord.ui.View):
 			rmvbtn = discord.ui.Button(label="Remove", style=discord.ButtonStyle.danger)
 			rmvbtn.callback = self.remove_button
 			self.add_item(rmvbtn)
-		if len(trainer.Daycare) > 1:
+		if len(self.trainer.Daycare) > 1:
 			self.nextBtn = discord.ui.Button(label=">", style=discord.ButtonStyle.primary, disabled=False, custom_id='next')
 			self.nextBtn.callback = self.page_button
 			self.add_item(self.nextBtn)
@@ -90,10 +93,31 @@ class DayCareView(discord.ui.View):
 		simLevel = pokemonservice.SimulateLevelGain(pkmn, data, minutesSpent)
 		return f'**__{pokemonservice.GetPokemonDisplayName(pkmn, data)}__**\n\nLevel: {pkmn.Level} -> {simLevel}'
 
-	async def send(self, inter: discord.Interaction):
-		await inter.followup.send(view=self)
+	async def NewEgg(self, inter: discord.Interaction):
+		self.clear_items()
+		nxtbtn = discord.ui.Button(label="Next", style=discord.ButtonStyle.gray)
+		nxtbtn.callback = self.next_button
+		self.add_item(nxtbtn)
+		embed = discordservice.CreateEmbed(
+			f"New Egg!",
+			f'Your Pokemon **{" and ".join([pokemonservice.GetPokemonDisplayName(d, next(da for da in self.daycaredata if da.Id == d.Pokemon_Id)) for d in self.daycare])}** had an egg! Check out the progress and information using **/myeggs**.',
+			TrainerColor)
+		await inter.followup.send(embed=embed, view=self)
 		self.message = await inter.original_response()
+
+	@defer
+	async def next_button(self, inter: discord.Interaction):
+		self.clear_items()
+		self.AddButtons()
 		await self.update_message()
+
+	async def send(self, inter: discord.Interaction):
+		if self.owndaycare and trainerservice.CheckDaycareForEgg(self.trainer):
+			await self.NewEgg(inter)
+		else:
+			await inter.followup.send(view=self)
+			self.message = await inter.original_response()
+			await self.update_message()
 
 
 class DayCareAddView(discord.ui.View):
@@ -104,7 +128,13 @@ class DayCareAddView(discord.ui.View):
 		self.pokemonchoice = None if len(pokemonList) > 1 else pokemonList[0].Id
 		super().__init__(timeout=300)
 		if not self.pokemonchoice:
+			cnclbtn = discord.ui.Button(label="Cancel", style=discord.ButtonStyle.red)
+			cnclbtn.callback = self.cancel_button
+			sbmtbtn = discord.ui.Button(label="Submit", style=discord.ButtonStyle.green)
+			sbmtbtn.callback = self.submit_button
 			self.ownlist = PokemonSelector(pokemonList)
+			self.add_item(cnclbtn)
+			self.add_item(sbmtbtn)
 			self.add_item(self.ownlist)
 
 	async def on_timeout(self):
@@ -115,12 +145,10 @@ class DayCareAddView(discord.ui.View):
 	async def PokemonSelection(self, inter: discord.Interaction, choice: str):
 		self.pokemonchoice = choice
 
-	@discord.ui.button(label="Cancel", style=discord.ButtonStyle.red)
 	@defer
 	async def cancel_button(self, inter: discord.Interaction, button: discord.ui.Button):
 		await self.on_timeout()
 
-	@discord.ui.button(label="Submit", style=discord.ButtonStyle.green)
 	@defer
 	async def submit_button(self, inter: discord.Interaction, button: discord.ui.Button):
 		if not self.pokemonchoice:
@@ -130,10 +158,11 @@ class DayCareAddView(discord.ui.View):
 	async def AddToDaycare(self):
 		self.clear_items()
 		pkmn = next(p for p in self.trainer.OwnedPokemon if p.Id == self.pokemonchoice)
+		data = next(p for p in self.daycaredata if p.Id == pkmn.Pokemon_Id)
 		self.trainer.Daycare[pkmn.Id] = datetime.now(UTC).strftime(DateFormat)
 		trainerservice.UpsertTrainer(self.trainer)
 		commandlockservice.DeleteLock(self.trainer.ServerId, self.trainer.UserId)
-		await self.message.edit(content=f'Added **{pokemonservice.GetPokemonDisplayName(pkmn)}** to your daycare.', view=self)
+		await self.message.edit(content=f'Added **{pokemonservice.GetPokemonDisplayName(pkmn, data)}** to your daycare.', view=self)
 		
 	async def send(self, inter: discord.Interaction):
 		if self.pokemonchoice:
