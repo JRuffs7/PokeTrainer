@@ -133,6 +133,7 @@ def UpdateTrainers(dbname: str, cs: str):
 				if p.Pokemon_Id == 132 and p.Id in newTrainer.Team:
 					newTrainer.Team = [t for t in newTrainer.Team if t != p.Id]
 
+			newTrainer.Eggs = newTrainer.Eggs[0:5]
 			for e in newTrainer.Eggs:
 				ivs = sample(['1','2','3','4','5','6'], 3)
 				pkmn, _ = pokemonservice.SpawnPokemon(1, 0, 0)

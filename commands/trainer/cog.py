@@ -172,7 +172,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
       app_commands.Choice(name="Female Only", value=1),
       app_commands.Choice(name="Male Only", value=2)
   ])
-  @method_logger(False)
+  @method_logger(True)
   @trainer_check
   async def mypokemon(self, inter: Interaction, user: Member|None, pokemon: int|None, type: int|None, images: int|None, order: str|None, shiny: int|None, legendary: int|None, gender: int|None):
     targetUser = user if user else inter.user
@@ -193,7 +193,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
   @app_commands.command(name="release",
                         description="Choose a Pokemon to release.")
   @app_commands.autocomplete(pokemon=autofill_boxpkmn)
-  @method_logger(False)
+  @method_logger(True)
   @trainer_check
   @elitefour_check
   @command_lock
