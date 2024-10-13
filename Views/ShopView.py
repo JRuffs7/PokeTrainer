@@ -14,37 +14,70 @@ from services.utility import discordservice
 
 class ShopView(discord.ui.View):
 
-	def __init__(self, trainer: Trainer|None, itemType: str|None):
+	def __init__(self, trainer: Trainer|None):
 		self.trainer = trainer
-		pkbl = [i for i in itemservice.GetAllPokeballs() if i.BuyAmount or i.SellAmount] if not itemType or itemType == 'pokeball' else []
-		pkbl.sort(key=lambda x: x.BuyAmount)
-		ptn = [i for i in itemservice.GetAllPotions() if i.BuyAmount or i.SellAmount] if not itemType or itemType == 'potion' else []
-		ptn.sort(key=lambda x: x.BuyAmount)
-		cnd = [i for i in itemservice.GetAllCandies() if i.BuyAmount or i.SellAmount] if not itemType or itemType == 'candy' else []
-		cnd.sort(key=lambda x: x.BuyAmount)
-		evo = [i for i in itemservice.GetAllEvoItems() if i.BuyAmount or i.SellAmount] if not itemType or itemType == 'evolution' else []
-		evo.sort(key=lambda x: x.Name)
-		tms = [m for m in moveservice.GetTMMoves() if m.Cost] if not itemType or itemType == 'tm' else []
-		tms.sort(key=lambda x: x.Name)
-		self.currentpage = 1
-		self.data = pkbl+ptn+cnd+evo+tms
-		self.totalpages = ceil(len(self.data)/10)
 		super().__init__(timeout=300)
-		self.firstbtn = discord.ui.Button(label="|<", style=discord.ButtonStyle.green, custom_id="first", disabled=True)
-		self.firstbtn.callback = self.page_button
-		self.prevbtn = discord.ui.Button(label="<", style=discord.ButtonStyle.primary, custom_id="previous", disabled=True)
-		self.prevbtn.callback = self.page_button
-		self.nextbtn = discord.ui.Button(label=">", style=discord.ButtonStyle.primary, custom_id="next")
-		self.nextbtn.callback = self.page_button
-		self.lastbtn = discord.ui.Button(label=">|", style=discord.ButtonStyle.green, custom_id="last")
-		self.lastbtn.callback = self.page_button
-		self.add_item(self.firstbtn)
-		self.add_item(self.prevbtn)
-		self.add_item(self.nextbtn)
-		self.add_item(self.lastbtn)
+		self.AddButtons('pokeballs')
+
+	def AddButtons(self, category: str):
+		self.clear_items()
+		if category == 'pokeballs':
+			self.category = 'POKEBALLS'
+			self.data = itemservice.GetAllPokeballs()
+			self.data.sort(key=lambda x: x.BuyAmount)
+			btn1 = discord.ui.Button(label="TMs", style=discord.ButtonStyle.green, custom_id="tms")
+			btn1.callback = self.cat_button
+			btn2 = discord.ui.Button(label="Potions", style=discord.ButtonStyle.green, custom_id="potions")
+			btn2.callback = self.cat_button
+		if category == 'potions':
+			self.category = 'POTIONS'
+			self.data = itemservice.GetAllPotions()
+			self.data.sort(key=lambda x: x.BuyAmount)
+			btn1 = discord.ui.Button(label="Pokeballs", style=discord.ButtonStyle.green, custom_id="pokeballs")
+			btn1.callback = self.cat_button
+			btn2 = discord.ui.Button(label="Evo Items", style=discord.ButtonStyle.green, custom_id="evos")
+			btn2.callback = self.cat_button
+		if category == 'evos':
+			self.category = 'EVOLUTION ITEMS'
+			self.data = itemservice.GetAllEvoItems()
+			self.data.sort(key=lambda x: x.BuyAmount)
+			btn1 = discord.ui.Button(label="Potions", style=discord.ButtonStyle.green, custom_id="potions")
+			btn1.callback = self.cat_button
+			btn2 = discord.ui.Button(label="TMs", style=discord.ButtonStyle.green, custom_id="tms")
+			btn2.callback = self.cat_button
+		if category == 'tms':
+			self.category = 'TECH MACHINES'
+			self.data = moveservice.GetTMMoves()
+			self.data.sort(key=lambda x: x.Id)
+			btn1 = discord.ui.Button(label="Evo Items", style=discord.ButtonStyle.green, custom_id="evos")
+			btn1.callback = self.cat_button
+			btn2 = discord.ui.Button(label="Pokeballs", style=discord.ButtonStyle.green, custom_id="pokeballs")
+			btn2.callback = self.cat_button
+		self.currentpage = 1
+		self.totalpages = ceil(len(self.data)/10)
+		self.prevBtn = discord.ui.Button(label="<", style=discord.ButtonStyle.primary, disabled=(self.currentpage==self.totalpages), custom_id='prev')
+		self.prevBtn.callback = self.page_button
+		self.nextBtn = discord.ui.Button(label=">", style=discord.ButtonStyle.primary, disabled=(self.currentpage==self.totalpages), custom_id='next')
+		self.nextBtn.callback = self.page_button
+		self.add_item(btn1)
+		self.add_item(self.prevBtn)
+		self.add_item(self.nextBtn)
+		self.add_item(btn2)
+
+	@defer
+	async def cat_button(self, inter: discord.Interaction):
+		self.AddButtons(inter.data['custom_id'])
+		await self.update_message()
+
+	@defer
+	async def page_button(self, inter: discord.Interaction):
+		if inter.data['custom_id'] == 'prev':
+			self.currentpage = (self.currentpage - 1) if self.currentpage > 1 else self.totalpages
+		else:
+			self.currentpage = (self.currentpage + 1) if self.currentpage < self.totalpages else 1
+		await self.update_message()
 
 	async def update_message(self):
-		self.update_buttons()
 		embed = discordservice.CreateEmbed(
 				'PokeTrainer Item Shop',
 				self.EmbedDesc(),
@@ -52,24 +85,7 @@ class ShopView(discord.ui.View):
 		embed.set_footer(text=f"{self.currentpage}/{self.totalpages}")
 		await self.message.edit(embed=embed, view=self)
 
-	@defer
-	async def page_button(self, inter: discord.Interaction):
-		if inter.data['custom_id'] == 'first':
-			self.currentpage = 1
-		elif inter.data['custom_id'] == 'previous':
-			self.currentpage -= 1
-		elif inter.data['custom_id'] == 'next':
-			self.currentpage += 1
-		elif inter.data['custom_id'] == 'last':
-			self.currentpage = self.totalpages
-
-		self.firstbtn.disabled = self.currentpage == 0
-		self.prevbtn.disabled = self.currentpage == 0
-		self.lastbtn.disabled = self.currentpage == self.totalpages
-		self.nextbtn.disabled = self.currentpage == self.totalpages
-		await self.update_message()
-
-	def EmbedDesc(self, data: list[Item|MoveData]):
+	def EmbedDesc(self):
 		data = self.data[(10*(self.currentpage-1)):(10*self.currentpage)]
 		shopData = t2a(
 			header=['Item Name', 'Buy', 'Sell'],
@@ -88,4 +104,4 @@ class ShopView(discord.ui.View):
 	async def send(self, inter: discord.Interaction):
 		await inter.followup.send(view=self)
 		self.message = await inter.original_response()
-		await self.update_message(self.data[:self.pageLength])
+		await self.update_message()

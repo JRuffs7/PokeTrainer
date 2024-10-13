@@ -19,9 +19,9 @@ class TrainerView(discord.ui.View):
 		self.allregions = gymservice.GetRegions()
 		self.totalpages = len(self.allregions)+3
 		super().__init__(timeout=300)
-		self.firstbtn = discord.ui.Button(label="|<", style=discord.ButtonStyle.green, custom_id="first", disabled=True)
+		self.firstbtn = discord.ui.Button(label="|<", style=discord.ButtonStyle.green, custom_id="first")
 		self.firstbtn.callback = self.page_button
-		self.prevbtn = discord.ui.Button(label="<", style=discord.ButtonStyle.primary, custom_id="previous", disabled=True)
+		self.prevbtn = discord.ui.Button(label="<", style=discord.ButtonStyle.primary, custom_id="previous")
 		self.prevbtn.callback = self.page_button
 		self.nextbtn = discord.ui.Button(label=">", style=discord.ButtonStyle.primary, custom_id="next")
 		self.nextbtn.callback = self.page_button

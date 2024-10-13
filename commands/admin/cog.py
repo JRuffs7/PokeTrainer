@@ -53,7 +53,7 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 			
 	@commands.command(name="addtm")
 	@is_bot_admin
-	async def additem(self, ctx: commands.Context, move: int, amount: int = 1, user: Member|None = None):
+	async def addtm(self, ctx: commands.Context, move: int, amount: int = 1, user: Member|None = None):
 		if not ctx.guild:
 			return
 		trainer = trainerservice.GetTrainer(ctx.guild.id, user.id if user else ctx.author.id)

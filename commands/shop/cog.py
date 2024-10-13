@@ -14,17 +14,10 @@ class ShopCommands(commands.Cog, name="ShopCommands"):
 
   @app_commands.command(name="viewshop",
                         description="View items available for sale.")
-  @app_commands.choices(items=[
-      app_commands.Choice(name="Pokeballs", value='pokeball'),
-      app_commands.Choice(name="Potions", value='potion'),
-      app_commands.Choice(name="Candy", value='candy'),
-      app_commands.Choice(name="Evolution Items", value='evolution'),
-      app_commands.Choice(name="TMs", value='tm')
-  ])
   @method_logger(True)
-  async def viewshop(self, inter: Interaction, items: str|None):
+  async def viewshop(self, inter: Interaction):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
-    await ShopView(trainer, items).send(inter)
+    await ShopView(trainer).send(inter)
 
   async def buy_autocomplete(self, inter: Interaction, current: str) -> list[app_commands.Choice[int]]:
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
