@@ -24,7 +24,7 @@ logger = logging.getLogger('discord')
 errorLogger = logging.getLogger('error')
 
 
-async def StartBot():
+async def StartBot(key: str):
   
   @discordBot.event
   async def on_ready():
@@ -107,7 +107,7 @@ async def StartBot():
     if os.path.exists(os.path.join("commands", f, "cog.py")):
       await discordBot.load_extension(f"commands.{f}.cog")
 
-  await discordBot.start(token=os.environ['TOKEN'])
+  await discordBot.start(token=key)
 
 
 def GetBot():
