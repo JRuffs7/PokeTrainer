@@ -7,15 +7,17 @@ from dataaccess import serverda, trainerda
 from models.Server import Server
 from models.Stat import StatEnum
 from models.Trainer import Trainer
-from services import moveservice, pokemonservice, statservice, trainerservice
+from services import moveservice, pokemonservice, statservice
+from globals import ShinyOdds
 
 def GetManyDocs(dbname, connStr, collection, filters, fields):
-  try:
-    with MongoClient(connStr) as cluster:
-      coll = cluster[dbname][collection]
-      return list(coll.find(filters, fields))
-  except Exception:
-    return []
+	try:
+		with MongoClient(connStr) as cluster:
+			coll = cluster[dbname][collection]
+			return list(coll.find(filters, fields))
+	except Exception:
+		print('Mongo Error')
+		return []
 
 def UpdateServers(dbname: str, cs: str):
 	updateList: list[Server] = []
@@ -28,9 +30,9 @@ def UpdateServers(dbname: str, cs: str):
 				'CurrentEvent': None
 			})
 			updateList.append(newServer)
-		except Exception:
-			print(f'Server failed to update: {s["ServerId"]}-{s["ServerName"]}')
-			pass
+		except Exception as e:
+			print(f'Server failed to update: {s["ServerId"]}-{s["ServerName"]}\n{e}')
+			return []
 	return updateList
 			
 
@@ -39,6 +41,7 @@ def UpdateTrainers(dbname: str, cs: str):
 	updateList: list[Trainer] = []
 	for t in GetManyDocs(dbname, cs, 'Trainer', {}, {'_id':0}):
 		try:
+			print('NewDict')
 			newTrainer = Trainer.from_dict({
 				'UserId': t['UserId'] if 'UserId' in t else 0,
 				'ServerId': t['ServerId'] if 'ServerId' in t else 0,
@@ -110,6 +113,7 @@ def UpdateTrainers(dbname: str, cs: str):
 				'WeeklyMission': t['WeeklyMission'] if 'WeeklyMission' in t else None
 			})
 			
+			print('Pokemon')
 			for p in newTrainer.OwnedPokemon:
 				if p.Pokemon_Id == 10057:
 					newTrainer.OwnedPokemon.remove(p)
@@ -133,7 +137,8 @@ def UpdateTrainers(dbname: str, cs: str):
 				if p.Pokemon_Id == 132 and p.Id in newTrainer.Team:
 					newTrainer.Team = [t for t in newTrainer.Team if t != p.Id]
 
-			newTrainer.Eggs = newTrainer.Eggs[0:5]
+			print('Eggs')
+			newTrainer.Eggs = newTrainer.Eggs[0:5] if newTrainer.Eggs else []
 			for e in newTrainer.Eggs:
 				ivs = sample(['1','2','3','4','5','6'], 3)
 				pkmn, _ = pokemonservice.SpawnPokemon(1, 0, 0)
@@ -142,8 +147,9 @@ def UpdateTrainers(dbname: str, cs: str):
 				e.SpawnsNeeded = pokemonservice.GetPokemonById(pkmn.Pokemon_Id if pkmn else 10).HatchCount
 				e.SpawnCount = min(e.SpawnCount, e.SpawnsNeeded)
 				e.IVs = {ivs[0]: choice(range(32)),ivs[1]: choice(range(32)),ivs[2]: choice(range(32))}
-				e.ShinyOdds = trainerservice.GetShinyOdds(trainer)
+				e.ShinyOdds = ShinyOdds
 
+			print('Badges')
 			badges: list[int] = []
 			for b in newTrainer.Badges:
 				if 34 <= b < 41:
@@ -155,6 +161,7 @@ def UpdateTrainers(dbname: str, cs: str):
 				else:
 					badges.append(b)
 			
+			print('Daycare')
 			daycare: dict[str,str] = {}
 			for d in newTrainer.Daycare:
 				if len(daycare) < 2:
@@ -163,9 +170,9 @@ def UpdateTrainers(dbname: str, cs: str):
 
 			if newTrainer.ServerId and newTrainer.UserId:
 				updateList.append(newTrainer)
-		except Exception:
-			print(f'Trainer failed to update: {t["UserId"]}-{t["ServerId"]}')
-			pass
+		except Exception as e:
+			print(f'Trainer failed to update: {t["UserId"]}-{t["ServerId"]}\n{e}')
+			return []
 	print(len(updateList))
 	return updateList
 
