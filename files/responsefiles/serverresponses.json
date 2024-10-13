@@ -12,7 +12,7 @@
 		},
 		{
 			"Title": "Server Registered",
-			"Body": "Server Name: {0}\nAnnouncement Channel: <#{1}>\nCurrent Event: {2}"
+			"Body": "Server Name: {0}\nAnnouncement Channel: <#{1}>\nCurrent Event: {2}\n\nNOTE: For PokeTrainer to work properly in your server, it must be given the following permissions:\n- Manage Webhooks\n- Send Messages\n- Send/Create/Manage Threads\n- Embed Links\n- Add Reactions\n- Manage Messages\n- Read Message History"
 		}
 	],
 	"server": [

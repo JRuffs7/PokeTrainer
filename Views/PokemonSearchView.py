@@ -30,7 +30,6 @@ class PokemonSearchView(discord.ui.View):
     self.add_item(self.lastbtn)
 
   async def update_message(self):
-    self.update_buttons()
     embed = discordservice.CreateEmbed(
       f'List of {self.type.Name} Type Pokemon', 
       self.EmbedDesc(), 
@@ -49,19 +48,19 @@ class PokemonSearchView(discord.ui.View):
     elif inter.data['custom_id'] == 'last':
       self.currentpage = self.totalpages
 
-    self.firstbtn.disabled = self.currentpage == 0
-    self.prevbtn.disabled = self.currentpage == 0
+    self.firstbtn.disabled = self.currentpage == 1
+    self.prevbtn.disabled = self.currentpage == 1
     self.lastbtn.disabled = self.currentpage == self.totalpages
     self.nextbtn.disabled = self.currentpage == self.totalpages
     await self.update_message()
 
   def EmbedDesc(self):
-    dataList = self.data[(10*self.currentpage-1):(10*self.currentpage)]
+    dataList = self.data[(10*(self.currentpage-1)):(10*self.currentpage)]
     newline = '\n'
     slash = '/'
-    return f"{newline.join([f'**{x.Name}** ({slash.join([statservice.GetType(t).Name for t in x.Types])})' for x in dataList])}"
+    return newline.join([f'**{x.Name}** ({slash.join([statservice.GetType(t).Name for t in x.Types])})' for x in dataList])
 
   async def send(self, inter: discord.Interaction):
     await inter.followup.send(view=self)
-    self.message = await self.interaction.original_response()
+    self.message = await inter.original_response()
     await self.update_message()

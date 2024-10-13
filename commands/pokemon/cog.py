@@ -114,7 +114,7 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
     pokemonList = pokemonservice.GetPokemonByType(type)
     if not pokemonList:
       return await discordservice_pokemon.PrintPokeInfoResponse(inter, 0, [statservice.GetType(type).Name])
-    return await PokemonSearchView(pokemonList).send(inter)
+    return await PokemonSearchView(pokemonList, type).send(inter)
     
   @app_commands.command(name="pokedex",
                         description="Gives a list of full or singular Pokedex completion.")

@@ -1,9 +1,7 @@
 import logging
-import discordbot
 from globals import ErrorColor, ServerColor
-from models.Server import Server
 from services.utility import discordservice
-from discord import Interaction, TextChannel
+from discord import Interaction
 
 errorLog = logging.getLogger('error')
 
