@@ -9,17 +9,17 @@ from models.Stat import StatEnum
 from models.Trainer import Trainer
 from services import moveservice, pokemonservice, statservice, trainerservice
 
-def GetManyDocs(collection, filters, fields):
+def GetManyDocs(dbname, connStr, collection, filters, fields):
   try:
-    with MongoClient(os.environ.get('MONGO_CONN_STRING')) as cluster:
-      coll = cluster[os.environ.get('MONGO_DB_NAME')][collection]
+    with MongoClient(connStr) as cluster:
+      coll = cluster[dbname][collection]
       return list(coll.find(filters, fields))
   except Exception:
     return []
 
-def UpdateServers():
+def UpdateServers(dbname: str, cs: str):
 	updateList: list[Server] = []
-	for s in GetManyDocs('Server', {}, {'_id':0}):
+	for s in GetManyDocs(dbname, cs, 'Server', {}, {'_id':0}):
 		try:
 			newServer = Server.from_dict({
 				'ServerName': s['ServerName'] if 'ServerName' in s else '',
@@ -34,10 +34,10 @@ def UpdateServers():
 	return updateList
 			
 
-def UpdateTrainers():
+def UpdateTrainers(dbname: str, cs: str):
 	allPkmnData = pokemonservice.GetAllPokemon()
 	updateList: list[Trainer] = []
-	for t in GetManyDocs('Trainer', {}, {'_id':0}):
+	for t in GetManyDocs(dbname, cs, 'Trainer', {}, {'_id':0}):
 		try:
 			newTrainer = Trainer.from_dict({
 				'UserId': t['UserId'] if 'UserId' in t else 0,
@@ -167,11 +167,16 @@ def UpdateTrainers():
 			pass
 	print(len(updateList))
 	return updateList
-		
+
 if len(sys.argv) == 2 and sys.argv[1] == 'prodbuild':
-  load_dotenv('.env')
+	load_dotenv('.env')
+	dbName = 'PokeTrainer'
 else:
-  load_dotenv('.env.local')
+	load_dotenv('.env.local')
+	dbName = 'PokeTrainerTest'
+
+with open("MongoConnStr.txt") as csFile:
+  mongoCS = csFile.read()
 
 try:
 	print('Cache Delete')
@@ -180,13 +185,13 @@ except Exception as e:
 	pass
 print('Trainers:')
 i = 0
-for trainer in UpdateTrainers():
+for trainer in UpdateTrainers(dbName, mongoCS):
 	print(f'{i} Trainer: {trainer.ServerId}-{trainer.UserId}')
 	trainerda.UpsertSingleTrainer(trainer)
 	i += 1
 i = 0
 print('Servers:')
-for server in UpdateServers():
+for server in UpdateServers(dbName, mongoCS):
 	print(f'{i} Server: {server.ServerId}-{server.ServerName}')
 	serverda.UpsertSingleServer(server)
 	i += 1

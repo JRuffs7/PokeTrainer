@@ -8,20 +8,21 @@ Step 1: Get python environment
  - You may need to restart PC to get it fully working, that's just how python and variables are
 
 Step 2: Get pip packages
- - In order ot run and do development you need to install three python packages
+ - In order to run and do development you need to install some python packages
  - Open a terminal in VSCode and run the following
    - pip install -r requirements.txt
  - Once they are successful, everything should be set
 
 Step 3: Running the bot
- - The .env file should have all tokens needed to hook up to the test bot
+ - Create a file under at the top of the file heirarchy called "DiscordBotToken.txt"
+ - Ask Justin for a PokeTrainer-Test key
  - Production variables are not available and will only be held on the device running the pod bot
  - To run and start testing within discord, open a terminal in VSCode and run the following
    - python main.py
- - There will be some logs and eventually one that says "PokeTrainer up and running"
+ - There will be some logs and eventually one that says "PokeTrainer-Test up and running"
 
  NOTES:
    - If someone is already running the bot locally, you may receive an error
      - To avoid this, make sure you communicate within the testing server
-       https://discord.gg/SntWsXcX5
+       https://discord.gg/q5nV2Vevb7
 
