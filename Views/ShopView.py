@@ -1,7 +1,6 @@
 from math import ceil
 import discord
 from table2ascii import Alignment, PresetStyle, table2ascii as t2a
-from Views.BasePageView import BasePageView
 
 from globals import TradeColor
 from middleware.decorators import defer
