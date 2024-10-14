@@ -7,38 +7,24 @@
 	],
 	"register": [
 		{
-			"Title": "Server Registered",
-			"Body": "Server Name: {0}\nEvent/Announcement Channel: <#{1}>\nCurrent Event: {2}"
+			"Title": "Register Error",
+			"Body": "There was an error while registering your server with PokeTrainer. Please try again or contact us in the [Discord]({0})."
 		},
 		{
-			"Title": "Register Error",
-			"Body": "There was an error while registering your server with PokeTrainer. Please try again or contact us."
+			"Title": "Server Registered",
+			"Body": "Server Name: {0}\nAnnouncement Channel: <#{1}>\nCurrent Event: {2}\n\nNOTE: For PokeTrainer to work properly in your server, it must be given the following permissions:\n- Manage Webhooks\n- Send Messages\n- Send/Create/Manage Threads\n- Embed Links\n- Add Reactions\n- Manage Messages\n- Read Message History"
 		}
 	],
 	"server": [
 		{
 			"Title": "Server Details",
 			"Body": "Server Name: {0}\nEvent/Announcement Channel: <#{1}>\nCurrent Event: {2}"
-		},
-		{
-			"Title": "Server Details",
-			"Body": "Server is not registered. Use **/register** command. Use **/help register** for more information."
-		}
-	],
-	"swapchannel": [
-		{
-			"Title": "Channel Changed",
-			"Body": "Any events or public messages from PokeTrainer will now show up in this channel."
-		},
-		{
-			"Title": "Channel Not Changed",
-			"Body": "This is already your registered channel. If you wish to change where events and notifications are sent, run this command in the new channel."
 		}
 	],
 	"unregister": [
 		{
 			"Title": "Server Unregistered",
-			"Body": "Events and announcements will now be stop being sent to your server. To begin again, use the **/register** command.\n\nUsers may still interact with PokeTrainer while it is present in the server."
+			"Body": "Announcements will now be stop being sent to your server. To begin again, use the **/register** command.\n\nUsers may still interact with PokeTrainer while it is present in the server."
 		}
 	]
 }

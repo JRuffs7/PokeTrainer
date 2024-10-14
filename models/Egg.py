@@ -1,20 +1,17 @@
-from dataclasses import dataclass, fields
+from dataclasses import dataclass, field, fields
+from models.Base import Base
+from globals import ShinyOdds
 
-class Egg:
-	Id: int
-	Name: str
-	Hatch: list[int]
-	SpawnsNeeded: int
-	Sprite: str
-
-	def __init__(self, dict):
-		vars(self).update(dict)
-	
 @dataclass
 class TrainerEgg:
 	Id: str = ''
-	EggId: int = 0
+	Sprite: str = 'https://imgur.com/NabZl4k.png'
+	Generation: int = 0
+	OffspringId: int = 0
 	SpawnCount: int = 0
+	SpawnsNeeded: int = 0
+	ShinyOdds: int = ShinyOdds
+	IVs: dict[str,int] = field(default_factory=dict)
 
 	@classmethod
 	def from_dict(cls, dict):

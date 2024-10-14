@@ -1,25 +1,24 @@
 from discord import Member, app_commands, Interaction
 from discord.ext import commands
 from typing import List
-from commands.autofills.autofills import autofill_nonteam, autofill_owned, autofill_pokemon, autofill_pokemon_legendary_spawn, autofill_special
-from commands.views.PokeShopView import PokeShopView
-from commands.views.BattleSimView import BattleSimView
-from commands.views.Pagination.DaycareView import DaycareView
-from commands.views.Pagination.DexView import DexView
-from commands.views.Pagination.PokemonSearchView import PokemonSearchView
-from commands.views.Pagination.WishlistView import WishlistView
-from commands.views.Selection.CandyView import CandyView
-from commands.views.Selection.DaycareAddView import DaycareAddView
-from commands.views.Selection.HatchView import HatchView
-from commands.views.Selection.NicknameView import NicknameView
-from commands.views.SpawnPokemonView import SpawnPokemonView
+from Views.Battles.WildBattleView import WildBattleView
+from Views.DayCareView import DayCareAddView, DayCareView
+from Views.GiveCandyView import GiveCandyView
+from Views.LearnMovesView import LearnMovesView
+from Views.LearnTMView import LearnTMView
+from Views.PokedexView import PokedexView
+from Views.UsePotionView import UsePotionView
+from commands.autofills.autofills import autofill_boxpkmn, autofill_owned, autofill_pokemon, autofill_team, autofill_tms, autofill_types
+from Views.PokemonSearchView import PokemonSearchView
+from Views.NicknameView import NicknameView
 import discordbot
 
-from commands.views.Selection.EvolveView import EvolveView
-from globals import AdminList
-from middleware.decorators import command_lock, method_logger, trainer_check
-from services import commandlockservice, pokemonservice, typeservice, trainerservice, zoneservice
-from services.utility import discordservice_pokemon
+from Views.EvolveView import EvolveView
+from globals import PokemonColor, botImage
+from middleware.decorators import command_lock, elitefour_check, method_logger, trainer_check
+from services import commandlockservice, gymservice, itemservice, moveservice, pokemonservice, statservice, trainerservice, typeservice
+from middleware.decorators import method_logger, trainer_check
+from services.utility import discordservice, discordservice_permission, discordservice_pokemon
 
 
 class PokemonCommands(commands.Cog, name="PokemonCommands"):
@@ -30,160 +29,93 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
     self.bot = bot
     
 
-  #region Spawn
+  #region Pokemon
     
   @app_commands.command(name="spawn",
                         description="Spawn an Pokemon to capture or fight.")
   @method_logger(True)
   @trainer_check
+  @elitefour_check
   @command_lock
   async def spawn(self, inter: Interaction):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
-    if inter.user.id in AdminList or trainerservice.CanCallSpawn(trainer):
-      pokemon = pokemonservice.SpawnPokemon(
-        None if trainer.CurrentZone == 0 else zoneservice.GetZone(trainer.CurrentZone),
-        max([b for b in trainer.Badges if b < 1000]) if len(trainer.Badges) > 0 else 0,
-        #Voltage Reward
-        trainerservice.GetShinyOdds(trainer)
-      )
-      trainerservice.EggInteraction(trainer)
-      await SpawnPokemonView(inter, trainer, pokemon).send()
-    else:
-      commandlockservice.DeleteLock(inter.guild_id, inter.user.id)
-      return await discordservice_pokemon.PrintSpawnResponse(inter, 0, [trainer.LastSpawnTime])
-
-  @app_commands.command(name="hatch",
-                        description="Hatch one or more of your eggs.")
-  @method_logger(True)
-  @trainer_check
-  @command_lock
-  async def hatch(self, inter: Interaction):
-    trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
-    hatchable = [e for e in trainer.Eggs if trainerservice.CanEggHatch(e)]
-    if hatchable:
-      await HatchView(inter, trainer, hatchable).send()
-    else:
-      commandlockservice.DeleteLock(inter.guild_id, inter.user.id)
-      return await discordservice_pokemon.PrintHatchResponse(inter, 0 if trainer.Eggs else 1)
-
-  @app_commands.command(name="wishlist",
-                        description="Add to or view your special spawn wishlist.")
-  @app_commands.autocomplete(pokemon=autofill_special)
-  @method_logger(True)
-  @trainer_check
-  @command_lock
-  async def wishlist(self, inter: Interaction, pokemon: int = None):
-    trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
-
-    #Viewing Wishlist
+    pokemon,ditto = pokemonservice.SpawnPokemon(trainer.Region,
+      len([b for b in gymservice.GetBadgesByRegion(trainer.Region) if b.Id in trainer.Badges]),
+      #Voltage Reward
+      trainerservice.GetShinyOdds(trainer)
+    )
+    trainerservice.EggInteraction(trainer)
     if not pokemon:
-      if len(trainer.Wishlist) == 0:
-        await discordservice_pokemon.PrintWishlistResponse(inter, 1, [])
-      else:
-        return await WishlistView(inter, trainer).send()
-    else:
-    #Adding To Wishlist
-      if len(trainer.Wishlist) >= 5:
-        await discordservice_pokemon.PrintWishlistResponse(inter, 2, [])
-      else:
-        pkmn = pokemonservice.GetPokemonById(pokemon)
-        if not pkmn or not pokemonservice.IsSpecialSpawn(pkmn):
-          await discordservice_pokemon.PrintWishlistResponse(inter, 4, pkmn.Name if pkmn else 'N/A')
-        else:
-          await discordservice_pokemon.PrintWishlistResponse(
-            inter, 
-            0 if trainerservice.TryAddWishlist(trainer, pokemon) else 3,
-            pokemonservice.GetPokemonById(pokemon).Name
-          )
-    commandlockservice.DeleteLock(inter.guild_id, inter.user.id)
+      commandlockservice.DeleteLock(trainer.ServerId, trainer.UserId)
+      await discordservice_pokemon.PrintSpawnResponse(inter, 0, [])
+    await WildBattleView(trainer, pokemon, ditto).send(inter)
 
-  @app_commands.command(name="pokeshop",
-                        description="Buy a specific Pokemon in exchange for Money or Pokeballs.")
-  @app_commands.autocomplete(pokemon=autofill_pokemon_legendary_spawn)
+  @app_commands.command(name="spawnlegendary",
+                        description="Spawn a Legendary Pokemon to capture or fight.")
+  @method_logger(True)
+  @trainer_check
+  @elitefour_check
+  @command_lock
+  async def spawnlegendary(self, inter: Interaction):
+    trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
+    for b in gymservice.GetBadgesByRegion(trainer.Region):
+      if b not in trainer.Badges:
+        commandlockservice.DeleteLock(trainer.ServerId, trainer.UserId)
+        return await discordservice_pokemon.PrintSpawnLegendaryResponse(inter, 0, [])
+    if trainer.Region not in trainer.EliteFour and [p for p in trainer.OwnedPokemon if p.Pokemon_Id in [po.Id for po in pokemonservice.GetLegendaryInRegion(trainer.Region)]]:
+      commandlockservice.DeleteLock(trainer.ServerId, trainer.UserId)
+      return await discordservice_pokemon.PrintSpawnLegendaryResponse(inter, 1, [])
+    pokemon = pokemonservice.SpawnLegendary(trainer.Region, trainerservice.GetShinyOdds(trainer), [p.Pokemon_Id for p in trainer.OwnedPokemon])
+    if not pokemon:
+      commandlockservice.DeleteLock(trainer.ServerId, trainer.UserId)
+      return await discordservice_pokemon.PrintSpawnLegendaryResponse(inter, 2, [])
+    await WildBattleView(trainer, pokemon).send(inter)
+
+  @app_commands.command(name="pokecenter",
+                        description="Heal all HP and Ailments from Pokemon on your team.")
+  @method_logger(False)
+  @trainer_check
+  @elitefour_check
+  @command_lock
+  async def pokecenter(self, inter: Interaction):
+    trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
+    for p in trainerservice.GetTeam(trainer):
+      pokemonservice.HealPokemon(p, pokemonservice.GetPokemonById(p.Pokemon_Id))
+    trainerservice.UpsertTrainer(trainer)
+    commandlockservice.DeleteLock(inter.guild_id, inter.user.id)
+    return await inter.followup.send(embed=discordservice.CreateEmbed(
+      'Healed', 
+      'All Pokemon in your party have been healed to full HP and cured of any ailments.', 
+      PokemonColor,
+      thumbnail=botImage))
+
+  @app_commands.command(name="usepotion",
+                        description="Use a healing item on one of your party Pokemon.")
   @method_logger(True)
   @trainer_check
   @command_lock
-  async def pokeshop(self, inter: Interaction, pokemon: int):
+  async def usepotion(self, inter: Interaction):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
-    if trainer.Money <= 0:
-      await discordservice_pokemon.PrintPokeShopResponse(inter, 0)
-    else:
-      pkmn = pokemonservice.GetPokemonById(pokemon)
-      if not pkmn:
-        await discordservice_pokemon.PrintPokeShopResponse(inter, 1)
-      else:
-        if not pokemonservice.IsLegendaryPokemon(pkmn) or pokemonservice.GetPreviousStages(pkmn):
-          await discordservice_pokemon.PrintPokeShopResponse(inter, 2, pkmn.Name)
-        else:
-          if trainer.Money < pokemonservice.GetShopValue(pkmn):
-            await discordservice_pokemon.PrintPokeShopResponse(inter, 3, pkmn.Name)
-          else:
-            if "4" not in trainer.Pokeballs or trainer.Pokeballs["4"] < 20:
-              await discordservice_pokemon.PrintPokeShopResponse(inter, 4, pkmn.Name)
-            else:
-              spawn = pokemonservice.GenerateSpawnPokemon(pkmn, level=1)
-              spawn.IsShiny = (spawn.IsShiny and trainer.Money >= pokemonservice.GetShopValue(pkmn)*2 and trainer.Pokeballs["4"] >= 30)
-              return await PokeShopView(inter, trainer, spawn).send()
-    commandlockservice.DeleteLock(inter.guild_id, inter.user.id)
+    if not itemservice.GetTrainerPotions(trainer):
+      commandlockservice.DeleteLock(inter.guild_id, inter.user.id)
+      return await discordservice_pokemon.PrintUsePotionResponse(inter, 0, [])
+    return await UsePotionView(trainer).send(inter)
 
   #endregion
 
 
   #region PokeInfo
 
-  async def filter_autocomplete(self, inter: Interaction, current: str) -> List[app_commands.Choice[str]]:
-    search = inter.namespace['search']
-    choiceList = []
-    if search == 'color':
-      searchList = list(pokemonservice.GetPokemonColors())
-      searchList.sort()
-      for color in searchList:
-        if current.lower() in color.lower():
-          choiceList.append(app_commands.Choice(name=color, value=color))
-          if len(choiceList) == 25:
-            break
-    elif search == 'type':
-      searchList = typeservice.GetAllTypes()
-      searchList.sort(key=lambda x: x.Name)
-      for type in searchList:
-        if current.lower() in type.Name.lower():
-            choiceList.append(app_commands.Choice(name=type.Name, value=type.Name))
-            if len(choiceList) == 25:
-              break
-    return choiceList
-
-  @app_commands.command(name="pokeinfo",
-                        description="Gives information for a single, or list, of Pokemon.")
-  @app_commands.choices(search=[
-      app_commands.Choice(name="Color", value="color"),
-      app_commands.Choice(name="Type", value="type")
-  ])
-  @app_commands.autocomplete(filter=filter_autocomplete)
+  @app_commands.command(name="searchtypes",
+                        description="Gives a list of Pokemon belonging to a chosen type.")
+  @app_commands.autocomplete(type=autofill_types)
   @method_logger(True)
-  async def pokeinfo(self, inter: Interaction, search: app_commands.Choice[str], filter: str):
-    if search.value == 'color':
-      await self.PokeInfoColor(inter, filter)
-    elif search.value == 'type':
-      await self.PokeInfoType(inter, filter)
-    else:
-      return await discordservice_pokemon.PrintPokeInfoResponse(inter, 3, [])
+  async def searchtypes(self, inter: Interaction, type: int):
+    pokemonList = pokemonservice.GetPokemonByType(type)
+    if not pokemonList:
+      return await discordservice_pokemon.PrintPokeInfoResponse(inter, 0, [statservice.GetType(type).Name])
+    return await PokemonSearchView(pokemonList, type).send(inter)
     
-  async def PokeInfoColor(self, inter: Interaction, color: str):
-    pokemonList = pokemonservice.GetPokemonByColor(color)
-    if not pokemonList:
-      return await discordservice_pokemon.PrintPokeInfoResponse(inter, 1, [color])
-    pokemonList.sort(key=lambda x: x.Name)
-    dexViewer = PokemonSearchView(inter, pokemonList, f"List of {color} Pokemon")
-    await dexViewer.send()
-
-  async def PokeInfoType(self, inter: Interaction, type: str):
-    pokemonList = pokemonservice.GetPokemonByType(type.lower())
-    if not pokemonList:
-      return await discordservice_pokemon.PrintPokeInfoResponse(inter, 2, [type])
-    dexViewer = PokemonSearchView(inter, pokemonList, f"List of {type} type Pokemon")
-    await dexViewer.send()
-
-
   @app_commands.command(name="pokedex",
                         description="Gives a list of full or singular Pokedex completion.")
   @app_commands.choices(dex=[
@@ -194,160 +126,137 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
   @app_commands.autocomplete(pokemon=autofill_pokemon)
   @method_logger(False)
   @trainer_check
-  async def pokedex(self, inter: Interaction, user: Member|None, dex: int = None, pokemon: int = None):
+  async def pokedex(self, inter: Interaction, user: Member|None = None, dex: int|None = None, pokemon: int|None = None):
     trainer = trainerservice.GetTrainer(inter.guild_id, user.id if user else inter.user.id)
     if not pokemon:
-      dexType = "Pokedex" if not dex else "Form Dex" if dex == 1 else "Shiny Dex"
       data = pokemonservice.GetAllPokemon()
       data.sort(key=lambda x: x.PokedexId)
-      trainerCompletion = f"{len(trainer.Pokedex) if not dex else len(trainer.Formdex) if dex == 1 else len(trainer.Shinydex)}/{len(set(p.PokedexId for p in data)) if not dex else len(data)}"
-      dexViewer = DexView(
-        inter, 
-        user if user else inter.user,
-        trainer,
-        dex,
-        20, 
-        data,
-        f"{user.display_name if user else inter.user.display_name}'s {dexType} ({trainerCompletion})")
+      dexViewer = PokedexView(user if user else inter.user,trainer,dex,False,data)
     else:
-      dexType = "Pokedex" if dex and dex == 0 else "Form Dex"
       data = pokemonservice.GetPokemonById(pokemon)
-      dexViewer = DexView(
-        inter, 
-        user if user else inter.user,
-        trainer,
-        dex if dex and dex <= 1 else 1,
-        1, 
-        [data, data],
-        f"{user.display_name if user else inter.user.display_name}'s {data.Name} {dexType}")
-    await dexViewer.send()
-
-
-  @app_commands.command(name="battlesim",
-                        description="Simulates a wild/gym battle between two Pokemon.")
-  @app_commands.choices(battle=[
-      app_commands.Choice(name="Gym Battle", value=0),
-      app_commands.Choice(name="Wild Battle", value=1)
-  ])
-  @app_commands.autocomplete(attacker=autofill_pokemon)
-  @app_commands.autocomplete(defender=autofill_pokemon)
-  @method_logger(True)
-  async def battlesim(self, inter: Interaction, battle: int, attacker: int, defender: int):
-    attackMon = pokemonservice.GetPokemonById(attacker)
-    defendMon = pokemonservice.GetPokemonById(defender)
-    if not attackMon or not defendMon:
-      return await discordservice_pokemon.PrintBattleSimResponse(inter, 0, [])
-    if not pokemonservice.CanSpawn(defendMon) and battle == 1:
-      return await discordservice_pokemon.PrintBattleSimResponse(inter, 1, [defendMon.Name])
-    await BattleSimView(inter, attackMon, defendMon, battle == 0).send()
-
+      dataList = [data for d in [data.Sprite, data.ShinySprite, data.SpriteFemale, data.ShinySpriteFemale] if d]
+      dexViewer = PokedexView(user if user else inter.user,trainer,dex,True,dataList+[data])
+    await dexViewer.send(inter)
 
   @app_commands.command(name="nickname",
                         description="Nickname one of your Pokemon.")
   @app_commands.autocomplete(pokemon=autofill_owned)
   @method_logger(True)
   @trainer_check
-  @command_lock
   async def nickname(self, inter: Interaction, pokemon: int):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
     pkmnList = [p for p in trainer.OwnedPokemon if p.Pokemon_Id == pokemon]
-    await NicknameView(inter, trainer, pkmnList).send()
+    await NicknameView(trainer, pkmnList).send(inter)
+
+
+  @app_commands.command(name="learnmove",
+                        description="Spend $500 to learn a move your Pokemon knows from leveling up.")
+  @app_commands.autocomplete(pokemon=autofill_team)
+  @method_logger(True)
+  @trainer_check
+  @elitefour_check
+  @command_lock
+  async def learnmove(self, inter: Interaction, pokemon: str):
+    trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
+    if trainer.Money < 500:
+      commandlockservice.DeleteLock(trainer.ServerId, trainer.UserId)
+      return await discordservice_pokemon.PrintLearnMoveResponse(inter, 0, [])
+    pkmn = next((p for p in trainer.OwnedPokemon if p.Id == pokemon),None) if pokemon in trainer.Team else None
+    data = pokemonservice.GetPokemonById(pkmn.Pokemon_Id) if pkmn else None
+    if not pkmn or not data:
+      commandlockservice.DeleteLock(trainer.ServerId, trainer.UserId)
+      return await discordservice_pokemon.PrintLearnMoveResponse(inter, 1, [])
+    availableMoves = pokemonservice.GetAvailableLevelMoves(pkmn, data)
+    if not availableMoves:
+      commandlockservice.DeleteLock(trainer.ServerId, trainer.UserId)
+      return await discordservice_pokemon.PrintLearnMoveResponse(inter, 2, [(pkmn.Nickname or data.Name)])
+    await LearnMovesView(trainer, pkmn, data, availableMoves).send(inter)
+
+
+  @app_commands.command(name="usetm",
+                        description="Use a TM and teach a Pokemon a new move.")
+  @app_commands.autocomplete(tm=autofill_tms)
+  @method_logger(True)
+  @trainer_check
+  @command_lock
+  async def usetm(self, inter: Interaction, tm: int):
+    trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
+    if str(tm) not in trainer.TMs or trainer.TMs[str(tm)] <= 0:
+      commandlockservice.DeleteLock(trainer.ServerId, trainer.UserId)
+      return await discordservice_pokemon.PrintUseTMResponse(inter, 0, [])
+    team = trainerservice.GetTeam(trainer)
+    pkmnlist = [po for po in pokemonservice.GetPokemonByIdList([p.Pokemon_Id for p in team if tm not in p.LearnedMoves]) if tm in po.MachineMoves]
+    if not pkmnlist:
+      commandlockservice.DeleteLock(trainer.ServerId, trainer.UserId)
+      return await discordservice_pokemon.PrintUseTMResponse(inter, 1, [])
+    await LearnTMView(trainer, [t for t in team if t.Pokemon_Id in [po.Id for po in pkmnlist]], pkmnlist, tm).send(inter)
 
   #endregion
 
 
   #region Evolution
 
-  async def autofill_evolve(self, inter: Interaction, current: str):
-    data = []
-    trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
-    evList = pokemonservice.GetPokemonThatCanEvolve(trainer, [p for p in trainer.OwnedPokemon])
-    pkmnList = pokemonservice.GetPokemonByIdList([e.Pokemon_Id for e in evList])
-    pkmnList.sort(key=lambda x: x.Name)
-    for pkmn in pkmnList:
-      if current.lower() in pkmn.Name.lower():
-        data.append(app_commands.Choice(name=pkmn.Name, value=pkmn.Id))
-      if len(data) == 25:
-        break
-    return data
-
   @app_commands.command(name="evolve",
-                        description="Evolve your Pokemon.")
-  @app_commands.autocomplete(pokemon=autofill_evolve)
+                        description="Evolve one of your party Pokemon.")
   @method_logger(True)
   @trainer_check
   @command_lock
-  async def evolve(self, inter: Interaction, pokemon: int | None):
+  async def evolve(self, inter: Interaction):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
-    pokeList = pokemonservice.GetPokemonThatCanEvolve(trainer, [p for p in trainer.OwnedPokemon if (p.Pokemon_Id == pokemon if pokemon else True)])
+    pokeList = pokemonservice.GetPokemonThatCanEvolve(trainer)
     if not pokeList:
-      pkmn = pokemonservice.GetPokemonById(pokemon)
       commandlockservice.DeleteLock(inter.guild_id, inter.user.id)
-      return await discordservice_pokemon.PrintEvolveResponse(inter, 1 if pokemon else 0, pkmn.Name if pkmn else 'N/A')
-    return await EvolveView(inter, trainer, pokeList).send()
-
-
-  async def autofill_candy(self, inter: Interaction, current: str):
-    data = []
-    trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
-    pkmnList = pokemonservice.GetPokemonByIdList([p.Pokemon_Id for p in trainer.OwnedPokemon if p.Level < 100])
-    pkmnList.sort(key=lambda x: x.Name)
-    for pkmn in pkmnList:
-      if current.lower() in pkmn.Name.lower():
-        data.append(app_commands.Choice(name=pkmn.Name, value=pkmn.Id))
-      if len(data) == 25:
-        break
-    return data
-
+      return await discordservice_pokemon.PrintEvolveResponse(inter, 0, [])
+    return await EvolveView(trainer, pokeList).send(inter)
 
   @app_commands.command(name="givecandy",
                         description="Give a candy to a Pokemon.")
-  @app_commands.autocomplete(pokemon=autofill_candy)
   @method_logger(True)
   @trainer_check
   @command_lock
-  async def givecandy(self, inter: Interaction, pokemon: int):
+  async def givecandy(self, inter: Interaction):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
-    pokeList = [p for p in trainer.OwnedPokemon if p.Pokemon_Id == pokemon and p.Level < 100]
-    if not pokeList:
-      await discordservice_pokemon.PrintGiveCandyResponse(inter, 1, pokemonservice.GetPokemonById(pokemon).Name)
-    else:
-      candyList = [c for c in trainer.Candies if trainer.Candies[c] > 0]
-      if not candyList: 
-        await discordservice_pokemon.PrintGiveCandyResponse(inter, 0)
-      else:
-        return await CandyView(inter, trainer, pokeList).send()
-    commandlockservice.DeleteLock(inter.guild_id, inter.user.id)
+    if not itemservice.GetTrainerCandy(trainer):
+      commandlockservice.DeleteLock(inter.guild_id, inter.user.id)
+      return await discordservice_pokemon.PrintGiveCandyResponse(inter, 0, [])
+    if not [p for p in trainerservice.GetTeam(trainer) if p.Level < 100]:
+      commandlockservice.DeleteLock(inter.guild_id, inter.user.id)
+      return await discordservice_pokemon.PrintGiveCandyResponse(inter, 1, [])
+    return await GiveCandyView(trainer).send(inter)
 
 
   @app_commands.command(name="daycare",
-                        description="Add to or check on your daycare.")
-  @app_commands.autocomplete(pokemon=autofill_nonteam)
+                        description="Add to or check on the daycare.")
+  @app_commands.autocomplete(pokemon=autofill_boxpkmn)
   @method_logger(True)
   @trainer_check
-  @command_lock
-  async def daycare(self, inter: Interaction, pokemon: int|None):
-    trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
+  @elitefour_check
+  async def daycare(self, inter: Interaction, user: Member|None = None, pokemon: int|None = None):
+    if not user or user.id == inter.user.id:
+      if commandlockservice.IsLocked(inter.guild.id, inter.user.id):
+        return await discordservice_permission.SendError(inter, 'commandlock')
+      commandlockservice.AddLock(inter.guild.id, inter.user.id)
 
     #Viewing Daycare
     if not pokemon:
+      targetuser = user if user else inter.user
+      trainer = trainerservice.GetTrainer(inter.guild_id, targetuser.id)
       if len(trainer.Daycare) == 0:
-        await discordservice_pokemon.PrintDaycareResponse(inter, 0, [])
-      else:
-        return await DaycareView(inter, trainer).send()
-    else:
-      #Adding To Daycare
-      #Kalos Reward
-      if len(trainer.Daycare) >= (4 if trainerservice.HasRegionReward(trainer, 6) else 2):
-        await discordservice_pokemon.PrintDaycareResponse(inter, 1, [])
-      else:
-        pokeList = [p for p in trainer.OwnedPokemon if p.Pokemon_Id == pokemon]
-        if not pokeList:
-          pkmn = pokemonservice.GetPokemonById(pokemon)
-          await discordservice_pokemon.PrintDaycareResponse(inter, 2, [pkmn.Name] if pkmn else ['N/A'])
-        else:
-          return await DaycareAddView(inter, trainer, pokeList).send()
-    commandlockservice.DeleteLock(inter.guild_id, inter.user.id)
+        commandlockservice.DeleteLock(trainer.ServerId, trainer.UserId)
+        return await discordservice_pokemon.PrintDaycareResponse(inter, 0 if user else 1, [targetuser.id] if user else [])
+      return await DayCareView(user if user else inter.user, trainer, (user.id == inter.user.id) if user else True).send(inter)
+      
+    #Adding To Daycare
+    trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
+    if len(trainer.Daycare) >= 2:
+      commandlockservice.DeleteLock(trainer.ServerId, trainer.UserId)
+      return await discordservice_pokemon.PrintDaycareResponse(inter, 2, [])
+    pokeList = [p for p in trainer.OwnedPokemon if p.Pokemon_Id == pokemon]
+    if not pokeList:
+      commandlockservice.DeleteLock(trainer.ServerId, trainer.UserId)
+      pkmn = pokemonservice.GetPokemonById(pokemon)
+      return await discordservice_pokemon.PrintDaycareResponse(inter, 3, [pkmn.Name] if pkmn else ['N/A'])
+    return await DayCareAddView(trainer, pokeList).send(inter)
 
   #endregion
 

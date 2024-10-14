@@ -1,2 +1,5 @@
-- Fixed an issue with the API Key
-- Next update will be huge!
+This Biggest Update Yet! There are too many changes to list here, so please check out **/help update for more information!
+- Battles have been reworked
+- Pokemon now have realistic stats
+- Experience system reworked
+- Much much more!

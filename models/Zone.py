@@ -1,8 +1,8 @@
-class Zone:
-	Id: int
-	Name: str
-	Types: list[str]
+from models.Base import Base
+
+class Zone(Base):
+	Types: list[int]
 	FightOnly: bool
 
 	def __init__(self, dict):
-		vars(self).update(dict)
+		super(Zone, self).__init__(dict)

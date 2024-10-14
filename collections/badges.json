@@ -199,198 +199,264 @@
 	},
 	{
 		"Id": 34,
+		"Name": "Toxic",
+		"Generation": 5,
+		"Sprite": "https://imgur.com/dqP4aoB.png"
+	},
+	{
+		"Id": 35,
 		"Name": "Basic",
 		"Generation": 5,
 		"Sprite": "https://imgur.com/P2hHiXd.png"
 	},
 	{
-		"Id": 35,
+		"Id": 36,
 		"Name": "Insect",
 		"Generation": 5,
 		"Sprite": "https://imgur.com/qXJFYwR.png"
 	},
 	{
-		"Id": 36,
+		"Id": 37,
 		"Name": "Bolt",
 		"Generation": 5,
 		"Sprite": "https://imgur.com/YSLaf5X.png"
 	},
 	{
-		"Id": 37,
+		"Id": 38,
 		"Name": "Quake",
 		"Generation": 5,
 		"Sprite": "https://imgur.com/iHnUt9Y.png"
 	},
 	{
-		"Id": 38,
+		"Id": 39,
 		"Name": "Jet",
 		"Generation": 5,
 		"Sprite": "https://imgur.com/e9vT8D4.png"
 	},
 	{
-		"Id": 39,
+		"Id": 40,
 		"Name": "Freeze",
 		"Generation": 5,
 		"Sprite": "https://imgur.com/Bl8RXXU.png"
 	},
 	{
-		"Id": 40,
+		"Id": 41,
 		"Name": "Legend",
 		"Generation": 5,
 		"Sprite": "https://imgur.com/Xuzo4aC.png"
 	},
 	{
-		"Id": 41,
+		"Id": 42,
+		"Name": "Wave",
+		"Generation": 5,
+		"Sprite": "https://imgur.com/pApa2G1.png"
+	},
+	{
+		"Id": 43,
 		"Name": "Bug",
 		"Generation": 6,
 		"Sprite": "https://imgur.com/cSwlDdv.png"
 	},
 	{
-		"Id": 42,
+		"Id": 44,
 		"Name": "Cliff",
 		"Generation": 6,
 		"Sprite": "https://imgur.com/IQJ6e6L.png"
 	},
 	{
-		"Id": 43,
+		"Id": 45,
 		"Name": "Rumble",
 		"Generation": 6,
 		"Sprite": "https://imgur.com/ALhwQm1.png"
 	},
 	{
-		"Id": 44,
+		"Id": 46,
 		"Name": "Plant",
 		"Generation": 6,
 		"Sprite": "https://imgur.com/fEfkLvm.png"
 	},
 	{
-		"Id": 45,
+		"Id": 47,
 		"Name": "Voltage",
 		"Generation": 6,
 		"Sprite": "https://imgur.com/nhYfsI2.png"
 	},
 	{
-		"Id": 46,
+		"Id": 48,
 		"Name": "Fairy",
 		"Generation": 6,
 		"Sprite": "https://imgur.com/kp7GYvx.png"
 	},
 	{
-		"Id": 47,
+		"Id": 49,
 		"Name": "Psychic",
 		"Generation": 6,
 		"Sprite": "https://imgur.com/h6ak2wZ.png"
 	},
 	{
-		"Id": 48,
+		"Id": 50,
 		"Name": "Iceberg",
 		"Generation": 6,
 		"Sprite": "https://imgur.com/4xA2EjJ.png"
 	},
 	{
-		"Id": 49,
+		"Id": 51,
+		"Name": "Normalium",
+		"Generation": 7,
+		"Sprite": "https://imgur.com/BZ1GQn5.png"
+	},
+	{
+		"Id": 52,
+		"Name": "Fightinium",
+		"Generation": 7,
+		"Sprite": "https://imgur.com/UXHiuTb.png"
+	},
+	{
+		"Id": 53,
+		"Name": "Waterium",
+		"Generation": 7,
+		"Sprite": "https://imgur.com/tDVGily.png"
+	},
+	{
+		"Id": 54,
+		"Name": "Firium",
+		"Generation": 7,
+		"Sprite": "https://imgur.com/NWMwx9b.png"
+	},
+	{
+		"Id": 55,
+		"Name": "Grassium",
+		"Generation": 7,
+		"Sprite": "https://imgur.com/xDJQtsj.png"
+	},
+	{
+		"Id": 56,
+		"Name": "Rockium",
+		"Generation": 7,
+		"Sprite": "https://imgur.com/R11BMRc.png"
+	},
+	{
+		"Id": 57,
+		"Name": "Electrium",
+		"Generation": 7,
+		"Sprite": "https://imgur.com/tHmGyJR.png"
+	},
+	{
+		"Id": 58,
+		"Name": "Darkinium",
+		"Generation": 7,
+		"Sprite": "https://imgur.com/SB2X3eo.png"
+	},
+	{
+		"Id": 59,
+		"Name": "Fairium",
+		"Generation": 7,
+		"Sprite": "https://imgur.com/CwrM4tJ.png"
+	},
+	{
+		"Id": 60,
 		"Name": "Grass",
 		"Generation": 8,
 		"Sprite": "https://imgur.com/bMDtHEh.png"
 	},
 	{
-		"Id": 50,
+		"Id": 61,
 		"Name": "Water",
 		"Generation": 8,
 		"Sprite": "https://imgur.com/CK0IOmY.png"
 	},
 	{
-		"Id": 51,
+		"Id": 62,
 		"Name": "Fire",
 		"Generation": 8,
 		"Sprite": "https://imgur.com/Ao7Kxdb.png"
 	},
 	{
-		"Id": 52,
+		"Id": 63,
 		"Name": "Fighting",
 		"Generation": 8,
 		"Sprite": "https://imgur.com/Qj8Hlgt.png"
 	},
 	{
-		"Id": 53,
+		"Id": 64,
 		"Name": "Ghost",
 		"Generation": 8,
 		"Sprite": "https://imgur.com/5f6XSP5.png"
 	},
 	{
-		"Id": 54,
+		"Id": 65,
 		"Name": "Fairy",
 		"Generation": 8,
 		"Sprite": "https://imgur.com/ABbNDLh.png"
 	},
 	{
-		"Id": 55,
+		"Id": 66,
 		"Name": "Rock",
 		"Generation": 8,
 		"Sprite": "https://imgur.com/HDeCCsU.png"
 	},
 	{
-		"Id": 56,
+		"Id": 67,
 		"Name": "Ice",
 		"Generation": 8,
 		"Sprite": "https://imgur.com/qM3sF4D.png"
 	},
 	{
-		"Id": 57,
+		"Id": 68,
 		"Name": "Dark",
 		"Generation": 8,
 		"Sprite": "https://imgur.com/Gr8VRHS.png"
 	},
 	{
-		"Id": 58,
+		"Id": 69,
 		"Name": "Dragon",
 		"Generation": 8,
 		"Sprite": "https://imgur.com/5SstbRF.png"
 	},
 	{
-		"Id": 59,
+		"Id": 70,
 		"Name": "Bug",
 		"Generation": 9,
 		"Sprite": "https://imgur.com/45WzzlV.png"
 	},
 	{
-		"Id": 60,
+		"Id": 71,
 		"Name": "Grass",
 		"Generation": 9,
 		"Sprite": "https://imgur.com/coh5agu.png"
 	},
 	{
-		"Id": 61,
+		"Id": 72,
 		"Name": "Electric",
 		"Generation": 9,
 		"Sprite": "https://imgur.com/7ZAeGg6.png"
 	},
 	{
-		"Id": 62,
+		"Id": 73,
 		"Name": "Water",
 		"Generation": 9,
 		"Sprite": "https://imgur.com/TkynMQg.png"
 	},
 	{
-		"Id": 63,
+		"Id": 74,
 		"Name": "Normal",
 		"Generation": 9,
 		"Sprite": "https://imgur.com/WJz0sYV.png"
 	},
 	{
-		"Id": 64,
+		"Id": 75,
 		"Name": "Ghost",
 		"Generation": 9,
 		"Sprite": "https://imgur.com/MUPjc8M.png"
 	},
 	{
-		"Id": 65,
+		"Id": 76,
 		"Name": "Psychic",
 		"Generation": 9,
 		"Sprite": "https://imgur.com/t8m5d2m.png"
 	},
 	{
-		"Id": 66,
+		"Id": 77,
 		"Name": "Ice",
 		"Generation": 9,
 		"Sprite": "https://imgur.com/EIF0Ikg.png"

@@ -1,60 +1,44 @@
 import logging
-import discordbot
 from globals import ErrorColor, ServerColor
-from models.Server import Server
 from services.utility import discordservice
-from discord import Interaction, TextChannel
+from discord import Interaction
 
 errorLog = logging.getLogger('error')
 
 responseFile = "files/responsefiles/serverresponses.json"
 
-async def PrintRegisterResponse(interaction: Interaction, serv: Server | None):
+async def PrintRegisterResponse(interaction: Interaction, response: int, params: list):
 	return await discordservice.SendCommandResponse(
 		interaction=interaction, 
 		filename=responseFile, 
 		command='register', 
-		responseInd=0 if serv else 1, 
-		color=ServerColor if serv else ErrorColor, 
-		params=[serv.ServerName, serv.ChannelId, serv.CurrentEvent.EventName if serv.CurrentEvent else ''],
-		eph=True)
+		responseInd=response, 
+		color=ServerColor if params else ErrorColor, 
+		params=params)
 
-async def PrintServerResponse(interaction: Interaction, serv: Server):
+async def PrintServerResponse(interaction: Interaction, response: int, params: list):
 	return await discordservice.SendCommandResponse(
 		interaction=interaction, 
 		filename=responseFile, 
 		command='server', 
-		responseInd=0, 
+		responseInd=response, 
 		color=ServerColor, 
-		params=[serv.ServerName, serv.ChannelId, serv.CurrentEvent.EventName if serv.CurrentEvent else ''],
-		eph=True)
+		params=params)
 
-async def PrintSwapChannelResponse(interaction: Interaction, response: bool):
-	return await discordservice.SendCommandResponse(
-		interaction=interaction, 
-		filename=responseFile, 
-		command='swapchannel', 
-		responseInd=0 if response else 1, 
-		color=ServerColor, 
-		params=[],
-		eph=True)
-
-async def PrintUnregisterResponse(interaction: Interaction):
+async def PrintUnregisterResponse(interaction: Interaction, response: int, params: list):
 	return await discordservice.SendCommandResponse(
 		interaction=interaction, 
 		filename=responseFile, 
 		command='unregister', 
-		responseInd=0, 
+		responseInd=response, 
 		color=ServerColor, 
-		params=[],
-		eph=True)
+		params=params)
 
-async def PrintInviteResponse(interaction: Interaction):
+async def PrintInviteResponse(interaction: Interaction, response: int, params: list):
 	return await discordservice.SendCommandResponse(
 		interaction=interaction, 
 		filename=responseFile, 
 		command='invite', 
-		responseInd=0, 
+		responseInd=response, 
 		color=ServerColor, 
-		params=[],
-		eph=True)
+		params=params)

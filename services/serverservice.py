@@ -5,30 +5,36 @@ from models.Server import Server
 from services import eventservice, pokemonservice
 
 
-def RegisterServer(serverId, channelId, serverName):
+def RegisterServer(serverId: int, channelId: int, serverName: str):
   if serverId is None or channelId is None:
     return None
-  serv = Server.from_dict({
+  
+  currServ = GetServer(serverId)
+  if currServ:
+    currServ.ChannelId = channelId
+    currServ.ServerName = serverName
+  else:
+    currServ = Server.from_dict({
       'ServerId': serverId,
       'ServerName': serverName,
       'ChannelId': channelId,
-  })
-  UpsertServer(serv)
-  return serv
+    })
+  UpsertServer(currServ)
+  return currServ
 
 #region Data
 
 def GetServer(serverId: int):
-  return serverda.GetServer(serverId)
+  return serverda.GetSingleServer(serverId)
 
 def GetAllServers():
-  return serverda.GetAllServers()
+  return serverda.GetServers()
 
 def UpsertServer(server: Server):
-  return serverda.UpsertServer(server)
+  return serverda.UpsertSingleServer(server)
 
 def DeleteServer(server: Server):
-  return serverda.DeleteServer(server.ServerId)
+  return serverda.DeleteSingleServer(server)
 
 #endregion
 
@@ -41,7 +47,7 @@ def SpecialSpawnEvent(server: Server):
     'EventType': EventType.SpecialSpawn.value,
   })
   UpsertServer(server)
-  return (specialPokemon, trainerda.GetWishlistTrainers(server.ServerId, specialPokemon.Pokemon_Id))
+  return (specialPokemon, [t.UserId for t in trainerda.GetTrainers(server.ServerId) if specialPokemon.Pokemon_Id in t.Wishlist])
 
 def SpecialBattleEvent(server: Server):
   specialTrainer = eventservice.GetRandomSpecialTrainer()
@@ -65,5 +71,5 @@ def SwapChannel(server: Server, channelId):
     return None
   else:
     server.ChannelId = channelId
-    serverda.UpsertServer(server)
+    serverda.UpsertSingleServer(server)
     return server

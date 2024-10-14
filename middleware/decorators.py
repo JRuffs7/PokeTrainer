@@ -2,6 +2,8 @@ import functools
 import logging
 import functools
 
+import discord
+
 from globals import AdminList
 from services import commandlockservice, serverservice, trainerservice
 from services.utility import discordservice_permission
@@ -10,7 +12,7 @@ from services.utility import discordservice_permission
 cmdLog = logging.getLogger('command')
 errLog = logging.getLogger('error')
 
-def method_logger(eph: bool = False):
+def method_logger(eph: bool):
   def inner_decor(function):
     @functools.wraps(function)
     async def wrapper(self, *args, **kwargs):
@@ -89,9 +91,20 @@ def command_lock(function):
     return await function(self, *args, **kwargs)
   return wrapper
 
+def elitefour_check(function):
+  @functools.wraps(function)
+  async def wrapper(self, *args, **kwargs):
+    inter = args[0]
+    if commandlockservice.IsEliteFourLocked(inter.guild_id, inter.user.id):
+      await discordservice_permission.SendError(inter, 'elitefourlock')
+      return
+    return await function(self, *args, **kwargs)
+  return wrapper
+
 
 def defer(f):
   async def wrapper(self,*args):
-    await args[0].response.defer()
+    if args[0] and type(args[0]) is discord.Interaction and not args[0].response.is_done():
+      await args[0].response.defer()
     return await f(self, *args) 
   return wrapper

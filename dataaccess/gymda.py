@@ -1,16 +1,31 @@
 from dataaccess.utility.jsonreader import GetJson
 
-from models.Gym import GymLeader, Badge, SpecialTrainer
+from models.Cpu import CpuTrainer, Badge
 
-leadersFile = "collections/gymleaders.json"
 badgesFile = "collections/badges.json"
-trainersFile = "collections/specialtrainers.json"
+trainersFile = "collections/cputrainers.json"
 
 #region Gym Leaders
 
 def GetAllGymLeaders():
-  gyms = GetJson(leadersFile)
-  return [GymLeader(g) for g in gyms]
+  gyms = GetJson(trainersFile)
+  return [CpuTrainer.from_dict(g) for g in gyms['GymLeaders']]
+
+#endregion
+
+#region Elite Four
+
+def GetAllEliteFour():
+  gyms = GetJson(trainersFile)
+  return [CpuTrainer.from_dict(g) for g in gyms['EliteFour']]
+
+#endregion
+
+#region NPC Trainers
+
+def GetAllNPCTrainers():
+  gyms = GetJson(trainersFile)
+  return [CpuTrainer.from_dict(g) for g in gyms['NPCTrainers']]
 
 #endregion
 
@@ -19,13 +34,5 @@ def GetAllGymLeaders():
 def GetAllBadges():
   badges = GetJson(badgesFile)
   return [Badge(b) for b in badges]
-
-#endregion
-
-#region Special Trainers
-
-def GetAllSpecialTrainers():
-  sTrainers = GetJson(trainersFile)
-  return [SpecialTrainer(st) for st in sTrainers]
 
 #endregion

@@ -9,6 +9,16 @@
 			"Body": "No badges obtained for the {0} region. Fight gym leaders using **/gymbattle** to obtain badges."
 		}
 	],
+	"changeregion": [
+		{
+			"Title": "Invalid Region",
+			"Body": "You cannot visit the region selected. Please choose a region provided by the command and try again."
+		},
+		{
+			"Title": "Already Here",
+			"Body": "You are already in the {0} region. Please choose a region provided by the command and try again."
+		}
+	],
 	"changezone": [
 		{
 			"Title": "Zone Already Set",
@@ -26,23 +36,7 @@
 	"daily": [
 		{
 			"Title": "Already Claimed",
-			"Body": "You have already claimed your reward for the day! Daily rewards reset at midnight UTC.\n\nDon't forget to upvote the bot at\nhttps://top.gg/bot/1151657435073875988"
-		},
-		{
-			"Title": "Daily Reward",
-			"Body": "Thank you for using PokeTrainer. Here is your reward of **Pokeball x{0}** and **${1}**.\nAcquired a new Daily Mission.{2}\n\nDon't forget to upvote the bot at\nhttps://top.gg/bot/1151657435073875988"
-		},
-		{
-			"Title": "Daily Reward",
-			"Body": "Thank you for using PokeTrainer. Here is your reward of **Pokeball x{0}** and **${1}**.\nAcquired a new Daily Mission.{2}\n\nYou also obtained a {3}!\n\nDon't forget to upvote the bot at\nhttps://top.gg/bot/1151657435073875988"
-		},
-		{
-			"Title": "Daily Reward",
-			"Body": "Thank you for using PokeTrainer. Here is your reward of **Pokeball x{0}** and **${1}**.\nAcquired a new Daily Mission.{2}\n\nHere is **1x Masterball** for recent issues as well.\n\nDon't forget to upvote the bot at\nhttps://top.gg/bot/1151657435073875988"
-		},
-		{
-			"Title": "Daily Reward",
-			"Body": "Thank you for using PokeTrainer. Here is your reward of **Pokeball x{0}** and **${1}**.\nAcquired a new Daily Mission.{2}\n\nHere is **1x Masterball** for recent issues as well.\n\nYou also obtained a {3}!\n\nDon't forget to upvote the bot at\nhttps://top.gg/bot/1151657435073875988"
+			"Body": "You have already claimed your reward for the day! Daily rewards reset at midnight UTC.\n\nDon't forget to [Upvote the Bot]({0})!\nOr join the [Discord Server]({1})!"
 		}
 	],
 	"modifyteam": [
@@ -66,7 +60,7 @@
 	"myeggs": [
 		{
 			"Title": "No Eggs Owned",
-			"Body": "You do not own any Eggs. Obtain an egg by using the **/daily** command."
+			"Body": "You do not own any Eggs. Obtain more through the **/daycare**."
 		}
 	],
 	"mypokemon": [
@@ -78,31 +72,45 @@
 	"release": [
 		{
 			"Title": "Invalid Pokemon",
-			"Body": "You do not own any **{0}** or this Pokemon is currently in your team."
+			"Body": "You do not own any **{0}** or this Pokemon is currently in your team/daycare."
+		}
+	],
+	"resettrainer": [
+		{
+			"Title": "Unable to Reset Trainer",
+			"Body": "The Pokemon you chose is either not a Starter Pokemon, or does not exist! Please try again using the paramaters provided."
 		}
 	],
 	"starter": [
 		{
 			"Title": "Unable to Create Trainer",
-			"Body": "Maybe you're already adventuring? Maybe there weren't any of the Pokemon you chose? Nah, must have been something else..."
+			"Body": "The Pokemon you chose is either not a Starter Pokemon, or does not exist! Please try again using the paramaters provided."
+		},
+		{
+			"Title": "Cannot Start This Region",
+			"Body": "You have alreeady started a journey in the region this starting Pokemon is from! Please try again using the paramaters provided."
+		},
+		{
+			"Title": "Cannot Start This Region",
+			"Body": "There are other regions you must complete before starting here! Complete the Gym and Elite Four challenges to unlock new regions."
 		}
 	],
 	"usepotion": [
 		{
-			"Title": "No Healing",
-			"Body": "You do not own any {0}s. Please visit the **/shop** to stock up."
+			"Title": "Invalid Command",
+			"Body": "Please select a potion from the provided list when executing the command."
 		},
 		{
-			"Title": "Health Restored",
-			"Body": "{0} used to restore {1} trainer health."
+			"Title": "No Healing",
+			"Body": "You do not own any {0}s. Please visit the **/shop** to stock up."
 		},
 		{
 			"Title": "Health Full",
 			"Body": "{0} not used because health is already full."
 		},
 		{
-			"Title": "Invalid Command",
-			"Body": "Please select a potion from the provided list when executing the command."
+			"Title": "Health Restored",
+			"Body": "{0} used to restore {1} trainer health."
 		}
 	]
 }

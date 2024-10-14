@@ -1,11 +1,16 @@
 import asyncio
+from datetime import UTC, datetime
 import logging
+import math
+from random import choice
+import uuid
 from discord import Member, TextChannel
 from discord.ext import commands
-from globals import SuperShinyOdds
+from globals import DateFormat, SuperShinyOdds
 from middleware.decorators import is_bot_admin
+from models.Egg import TrainerEgg
 from models.Server import Server
-from services import battleservice, pokemonservice, serverservice, trainerservice
+from services import commandlockservice, gymservice, moveservice, pokemonservice, serverservice, trainerservice
 
 class AdminCommands(commands.Cog, name="AdminCommands"):
 
@@ -19,113 +24,108 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 
 	@commands.command(name="deleteuser")
 	@is_bot_admin
-	async def deleteuser(self, ctx: commands.Context, user: Member = None):
+	async def deleteuser(self, ctx: commands.Context, user: Member|None = None):
 		if not user or not ctx.guild:
 			return
 		trainer = trainerservice.GetTrainer(ctx.guild.id, user.id if user else ctx.author.id)
 		if trainer:
 			trainerservice.DeleteTrainer(trainer)
 		
-
-	@commands.command(name="addhealth")
-	@is_bot_admin
-	async def addhealth(self, ctx: commands.Context, amount: int, user: Member = None):
-		if not ctx.guild:
-			return
-		trainer = trainerservice.GetTrainer(ctx.guild.id, user.id if user else ctx.author.id)
-		if trainer:
-			trainer.Health += amount
-			trainer.Health = 100 if trainer.Health > 100 else 0 if trainer.Health < 0 else trainer.Health
-			trainerservice.UpsertTrainer(trainer)
-
 	@commands.command(name="addmoney")
 	@is_bot_admin
-	async def givemoney(self, ctx: commands.Context, amount: int, user: Member = None):
+	async def givemoney(self, ctx: commands.Context, amount: int, user: Member|None = None):
 		if not ctx.guild:
 			return
 		trainer = trainerservice.GetTrainer(ctx.guild.id, user.id if user else ctx.author.id)
 		if trainer:
-			trainer.Money += amount
-			trainer.Money = 0 if trainer.Money < 0 else trainer.Money
+			trainer.Money = max(trainer.Money + amount, 0)
 			trainerservice.UpsertTrainer(trainer)
 			
-	@commands.command(name="addball")
-	@is_bot_admin
-	async def addball(self, ctx: commands.Context, type: int, amount: int, user: Member = None):
-		if not ctx.guild:
-			return
-		trainer = trainerservice.GetTrainer(ctx.guild.id, user.id if user else ctx.author.id)
-		if trainer:
-			trainerservice.ModifyItemList(trainer.Pokeballs, str(type) if -1 < type < 5 else '1', amount)
-			trainerservice.UpsertTrainer(trainer)
-			
-	@commands.command(name="addpotion")
-	@is_bot_admin
-	async def addpotion(self, ctx: commands.Context, type: int, amount: int, user: Member = None):
-		if not ctx.guild:
-			return
-		trainer = trainerservice.GetTrainer(ctx.guild.id, user.id if user else ctx.author.id)
-		if trainer:
-			trainerservice.ModifyItemList(trainer.Potions, str(type) if -1 < type < 5 else '1', amount)
-			trainerservice.UpsertTrainer(trainer)
-
-	@commands.command(name="addcandy")
-	@is_bot_admin
-	async def addcandy(self, ctx: commands.Context, type: int, amount: int, user: Member = None):
-		if not ctx.guild:
-			return
-		trainer = trainerservice.GetTrainer(ctx.guild.id, user.id if user else ctx.author.id)
-		if trainer:
-			trainerservice.ModifyItemList(trainer.Candies, str(type) if 0 < type < 4 else '1', amount)
-			trainerservice.UpsertTrainer(trainer)
-
 	@commands.command(name="additem")
 	@is_bot_admin
-	async def additem(self, ctx: commands.Context, type: int, amount: int, user: Member = None):
+	async def additem(self, ctx: commands.Context, item: int, amount: int, user: Member|None = None):
 		if not ctx.guild:
 			return
 		trainer = trainerservice.GetTrainer(ctx.guild.id, user.id if user else ctx.author.id)
 		if trainer:
-			trainerservice.ModifyItemList(trainer.EvolutionItems, str(type) if type >= 80 else '84', amount)
+			trainerservice.ModifyItemList(trainer, str(item), amount)
+			trainerservice.UpsertTrainer(trainer)
+			
+	@commands.command(name="addtm")
+	@is_bot_admin
+	async def addtm(self, ctx: commands.Context, move: int, amount: int = 1, user: Member|None = None):
+		if not ctx.guild:
+			return
+		trainer = trainerservice.GetTrainer(ctx.guild.id, user.id if user else ctx.author.id)
+		if trainer and moveservice.GetMoveById(move).Cost:
+			trainerservice.ModifyTMList(trainer, str(move), amount)
 			trainerservice.UpsertTrainer(trainer)
 			
 	@commands.command(name="addbadge")
 	@is_bot_admin
-	async def addbadge(self, ctx: commands.Context, badge: int = None, user: Member = None):
+	async def addbadge(self, ctx: commands.Context, badge: int, user: Member|None = None):
 		if not ctx.guild:
 			return
 		trainer = trainerservice.GetTrainer(ctx.guild.id, user.id if user else ctx.author.id)
-		badge = badge if badge else len(trainer.Badges) + 1
-		if trainer and badge not in trainer.Badges:
+		if trainer and gymservice.GetBadgeById(badge) and badge not in trainer.Badges:
 			trainer.Badges.append(badge)
+			trainerservice.UpsertTrainer(trainer)
+			
+	@commands.command(name="addelitefour")
+	@is_bot_admin
+	async def addelitefour(self, ctx: commands.Context, id: int, user: Member|None = None):
+		if not ctx.guild:
+			return
+		trainer = trainerservice.GetTrainer(ctx.guild.id, user.id if user else ctx.author.id)
+		if trainer and next((e for e in gymservice.GetAllEliteFour() if e.Id == id),None) and id not in trainer.CurrentEliteFour:
+			trainer.CurrentEliteFour.append(id)
 			trainerservice.UpsertTrainer(trainer)
 
 	@commands.command(name="addpokemon")
 	@is_bot_admin
-	async def addpokemon(self, ctx: commands.Context, pokemonId: int, user: Member = None):
+	async def addpokemon(self, ctx: commands.Context, pokemonId: int, level: int, user: Member|None = None):
 		if not ctx.guild:
 			return
 		trainer = trainerservice.GetTrainer(ctx.guild.id, user.id if user else ctx.author.id)
 		pokemon = pokemonservice.GetPokemonById(pokemonId)
 		if trainer and pokemon:
-			newPkmn = pokemonservice.GenerateSpawnPokemon(pokemon, SuperShinyOdds, 1)
-			newPkmn.Level = 1
+			newPkmn = pokemonservice.GenerateSpawnPokemon(pokemon, level, SuperShinyOdds)
 			trainer.OwnedPokemon.append(newPkmn)
 			trainerservice.UpsertTrainer(trainer)
 
-	@commands.command(name="testpokemon")
+	@commands.command(name="addegg")
 	@is_bot_admin
-	async def testpokemon(self, ctx: commands.Context, pokemonId: int):
+	async def addegg(self, ctx: commands.Context, pokemonId: int):
 		if not ctx.guild:
 			return
+		trainer = trainerservice.GetTrainer(ctx.guild.id, ctx.author.id)
 		pokemon = pokemonservice.GetPokemonById(pokemonId)
-		if pokemon:
-			print(f"{pokemon.Name}: {pokemon.PokedexId}")
+		if trainer and pokemon and len(trainer.Eggs) < 5:
+			trainer.Eggs.append(TrainerEgg.from_dict({
+			'Id': uuid.uuid4().hex,
+			'Generation': pokemon.Generation,
+			'OffspringId': pokemon.Id,
+			'SpawnCount': choice(range(pokemon.HatchCount)) if choice([0,1]) == 1 else pokemon.HatchCount,
+			'SpawnsNeeded': pokemon.HatchCount,
+			'ShinyOdds': int(trainerservice.GetShinyOdds(trainer)/2),
+			'IVs': {'2': 16, '5': 16, '3': 20}
+			}))
+			trainerservice.UpsertTrainer(trainer)
 
-	@commands.command(name="testfight")
+	@commands.command(name="clearlock")
 	@is_bot_admin
-	async def testfight(self, ctx: commands.Context, pokemon1: int, level1: int, pokemon2: int, level2: int):
-		await ctx.send(battleservice.TeamFight([{'Level': level1, 'Data': pokemonservice.GetPokemonById(pokemon1)}], [{'Level': level2, 'Data': pokemonservice.GetPokemonById(pokemon2)}]))
+	async def clearlock(self, ctx: commands.Context, user: Member|None = None):
+		if not ctx.guild:
+			return
+		commandlockservice.DeleteLock(ctx.guild.id, user.id if user else ctx.author.id)
+
+	@commands.command(name="testspawnrate")
+	@is_bot_admin
+	async def testspawnrate(self, ctx: commands.Context, spawnrate: int|None = None):
+		rates = [p for p in pokemonservice.GetAllPokemon() if p.EncounterChance and (not spawnrate or p.EncounterChance == (5 if spawnrate > 5 else 1 if spawnrate < 1 else spawnrate))]
+		rates.sort(key=lambda x: (x.EncounterChance, x.Name))
+		substr = math.floor((2000-(4*len(rates)))/len(rates))
+		await ctx.reply(content=[r.Name[0:substr] for r in rates], ephemeral=True)
 
 	#endregion
 
@@ -151,20 +151,6 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 		
 		return await channel.send(message)
 		
-	@commands.command(name="sync")
-	@is_bot_admin
-	async def sync(self, ctx: commands.Context, serverOnly: int | None):
-		try:
-			if serverOnly:
-				self.logger.info(f'Local Sync Command called by {ctx.author.display_name} in server {ctx.guild.name}')
-				await ctx.bot.tree.sync(guild=ctx.guild)
-			else:
-				self.logger.info(f'Global Sync Command called by {ctx.author.display_name} in server {ctx.guild.name}')
-				await ctx.bot.tree.sync()
-			self.logger.info(f'Syncing complete.')
-		except Exception as e:
-			self.logger.critical(f"{e}")
-
 	#endregion
 	
 async def setup(bot: commands.Bot):

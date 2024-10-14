@@ -6,20 +6,25 @@ itemFile = "collections/items.json"
 
 
 def GetAllItems():
-  evolutions = GetJson(itemFile)["Evolution"]
-  return [Item(p) for p in evolutions]
+  items = GetJson(itemFile)
+  return [Pokeball(i) if 'CaptureRate' in i else Potion(i) if 'HealingAmount' in i else Candy(i) if 'Experience' in i else Item(i) for i in items if i['Id']]
 
 
 def GetAllPokeballs():
-  pokeballs = GetJson(itemFile)["Pokeball"]
-  return [Pokeball(p) for p in pokeballs]
+  pokeballs = GetJson(itemFile)
+  return [Pokeball(p) for p in pokeballs if 'CaptureRate' in p]
 
 
 def GetAllPotions():
-  potions = GetJson(itemFile)["Potion"]
-  return [Potion(p) for p in potions]
+  potions = GetJson(itemFile)
+  return [Potion(p) for p in potions if 'HealingAmount' in p]
 
 
 def GetAllCandies():
-  candy = GetJson(itemFile)["Candy"]
-  return [Candy(c) for c in candy]
+  candy = GetJson(itemFile)
+  return [Candy(c) for c in candy if 'Experience' in c]
+
+
+def GetAllEvoItems():
+  evo = GetJson(itemFile)
+  return [Item(e) for e in evo if e['EvolutionItem']]

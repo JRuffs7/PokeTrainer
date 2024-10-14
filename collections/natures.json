@@ -1,0 +1,177 @@
+[
+	{
+		"Id": 1,
+		"Name": "Hardy",
+		"Url": "https://pokeapi.co/api/v2/nature/1/",
+		"StatBoost": 0,
+		"StatDecrease": 0
+	},
+	{
+		"Id": 2,
+		"Name": "Bold",
+		"Url": "https://pokeapi.co/api/v2/nature/2/",
+		"StatBoost": 3,
+		"StatDecrease": 2
+	},
+	{
+		"Id": 3,
+		"Name": "Modest",
+		"Url": "https://pokeapi.co/api/v2/nature/3/",
+		"StatBoost": 4,
+		"StatDecrease": 2
+	},
+	{
+		"Id": 4,
+		"Name": "Calm",
+		"Url": "https://pokeapi.co/api/v2/nature/4/",
+		"StatBoost": 5,
+		"StatDecrease": 2
+	},
+	{
+		"Id": 5,
+		"Name": "Timid",
+		"Url": "https://pokeapi.co/api/v2/nature/5/",
+		"StatBoost": 6,
+		"StatDecrease": 2
+	},
+	{
+		"Id": 6,
+		"Name": "Lonely",
+		"Url": "https://pokeapi.co/api/v2/nature/6/",
+		"StatBoost": 2,
+		"StatDecrease": 3
+	},
+	{
+		"Id": 7,
+		"Name": "Docile",
+		"Url": "https://pokeapi.co/api/v2/nature/7/",
+		"StatBoost": 0,
+		"StatDecrease": 0
+	},
+	{
+		"Id": 8,
+		"Name": "Mild",
+		"Url": "https://pokeapi.co/api/v2/nature/8/",
+		"StatBoost": 4,
+		"StatDecrease": 3
+	},
+	{
+		"Id": 9,
+		"Name": "Gentle",
+		"Url": "https://pokeapi.co/api/v2/nature/9/",
+		"StatBoost": 5,
+		"StatDecrease": 3
+	},
+	{
+		"Id": 10,
+		"Name": "Hasty",
+		"Url": "https://pokeapi.co/api/v2/nature/10/",
+		"StatBoost": 6,
+		"StatDecrease": 3
+	},
+	{
+		"Id": 11,
+		"Name": "Adamant",
+		"Url": "https://pokeapi.co/api/v2/nature/11/",
+		"StatBoost": 2,
+		"StatDecrease": 4
+	},
+	{
+		"Id": 12,
+		"Name": "Impish",
+		"Url": "https://pokeapi.co/api/v2/nature/12/",
+		"StatBoost": 3,
+		"StatDecrease": 4
+	},
+	{
+		"Id": 13,
+		"Name": "Bashful",
+		"Url": "https://pokeapi.co/api/v2/nature/13/",
+		"StatBoost": 0,
+		"StatDecrease": 0
+	},
+	{
+		"Id": 14,
+		"Name": "Careful",
+		"Url": "https://pokeapi.co/api/v2/nature/14/",
+		"StatBoost": 5,
+		"StatDecrease": 4
+	},
+	{
+		"Id": 15,
+		"Name": "Rash",
+		"Url": "https://pokeapi.co/api/v2/nature/15/",
+		"StatBoost": 4,
+		"StatDecrease": 5
+	},
+	{
+		"Id": 16,
+		"Name": "Jolly",
+		"Url": "https://pokeapi.co/api/v2/nature/16/",
+		"StatBoost": 6,
+		"StatDecrease": 4
+	},
+	{
+		"Id": 17,
+		"Name": "Naughty",
+		"Url": "https://pokeapi.co/api/v2/nature/17/",
+		"StatBoost": 2,
+		"StatDecrease": 5
+	},
+	{
+		"Id": 18,
+		"Name": "Lax",
+		"Url": "https://pokeapi.co/api/v2/nature/18/",
+		"StatBoost": 3,
+		"StatDecrease": 5
+	},
+	{
+		"Id": 19,
+		"Name": "Quirky",
+		"Url": "https://pokeapi.co/api/v2/nature/19/",
+		"StatBoost": 0,
+		"StatDecrease": 0
+	},
+	{
+		"Id": 20,
+		"Name": "Naive",
+		"Url": "https://pokeapi.co/api/v2/nature/20/",
+		"StatBoost": 6,
+		"StatDecrease": 5
+	},
+	{
+		"Id": 21,
+		"Name": "Brave",
+		"Url": "https://pokeapi.co/api/v2/nature/21/",
+		"StatBoost": 2,
+		"StatDecrease": 6
+	},
+	{
+		"Id": 22,
+		"Name": "Relaxed",
+		"Url": "https://pokeapi.co/api/v2/nature/22/",
+		"StatBoost": 3,
+		"StatDecrease": 6
+	},
+	{
+		"Id": 23,
+		"Name": "Quiet",
+		"Url": "https://pokeapi.co/api/v2/nature/23/",
+		"StatBoost": 4,
+		"StatDecrease": 6
+	},
+	{
+		"Id": 24,
+		"Name": "Sassy",
+		"Url": "https://pokeapi.co/api/v2/nature/24/",
+		"StatBoost": 5,
+		"StatDecrease": 6
+	},
+	{
+		"Id": 25,
+		"Name": "Serious",
+		"Url": "https://pokeapi.co/api/v2/nature/25/",
+		"StatBoost": 0,
+		"StatDecrease": 0
+	}
+]

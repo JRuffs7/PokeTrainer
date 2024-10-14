@@ -1,0 +1,42 @@
+[
+	{
+		"Id": 1,
+		"Name": "Paralysis",
+		"Url": "https://pokeapi.co/api/v2/move-ailment/1/"
+	},
+	{
+		"Id": 2,
+		"Name": "Sleep",
+		"Url": "https://pokeapi.co/api/v2/move-ailment/2/"
+	},
+	{
+		"Id": 3,
+		"Name": "Freeze",
+		"Url": "https://pokeapi.co/api/v2/move-ailment/3/"
+	},
+	{
+		"Id": 4,
+		"Name": "Burn",
+		"Url": "https://pokeapi.co/api/v2/move-ailment/4/"
+	},
+	{
+		"Id": 5,
+		"Name": "Poison",
+		"Url": "https://pokeapi.co/api/v2/move-ailment/5/"
+	},
+	{
+		"Id": 6,
+		"Name": "Confusion",
+		"Url": "https://pokeapi.co/api/v2/move-ailment/6/"
+	},
+	{
+		"Id": 8,
+		"Name": "Trap",
+		"Url": "https://pokeapi.co/api/v2/move-ailment/8/"
+	},
+	{
+		"Id": 18,
+		"Name": "Leech Seed",
+		"Url": "https://pokeapi.co/api/v2/move-ailment/18/"
+	}
+]

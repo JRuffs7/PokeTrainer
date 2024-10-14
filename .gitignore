@@ -161,3 +161,4 @@ cython_debug/
 #.idea/
 dataaccess/utility/cache.sqlite3
 DiscordBotToken.txt
+MongoConnStr.txt

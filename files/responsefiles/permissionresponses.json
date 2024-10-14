@@ -7,8 +7,14 @@
 	],
 	"commandlock": [
 		{
-			"Title": "Command Lock",
-			"Body": "You are currently in the middle of another interaction. To use this command, please complete or cancel the last task."
+			"Title": "Commands Locked",
+			"Body": "You are currently in an interaction that prevents use of this command. Complete the other command, then try again."
+		}
+	],
+	"elitefourlock": [
+		{
+			"Title": "Elite Four Lock",
+			"Body": "You are currently going through an Elite Four Challenge! This command will be unlocked once you fail or complete the challenge."
 		}
 	],
 	"server": [

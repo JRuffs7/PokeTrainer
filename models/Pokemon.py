@@ -1,4 +1,13 @@
-from dataclasses import dataclass, fields
+from dataclasses import dataclass, field, fields
+from models.Base import Base
+
+
+class Move:
+  MoveId: int
+  PP: int
+
+  def __init__(self, dict):
+    vars(self).update(dict)
 
 
 class EvolveData:
@@ -6,25 +15,27 @@ class EvolveData:
   EvolveLevel: int|None
   GenderNeeded: int|None
   ItemNeeded: int|None
+  MoveNeeded: int|None
 
   def __init__(self, dict):
     vars(self).update(dict)
 
 
-class PokemonData:
+class PokemonData(Base):
   #Form Properties
-  Id: int
   IsMega: bool
   IsBattleOnly: bool
   IsDefault: bool
   #Species Properties
+  GrowthRate: str
   CaptureRate: int
   Color: str
   EvolvesInto: list[EvolveData]
   RandomEvolve: bool
-  FemaleChance: int | None
+  FemaleChance: int|None
   Generation: int
-  Name: str
+  EggGroups: list[int]
+  HatchCount: int|None
   PokedexId: int
   IsStarter: bool
   IsBaby: bool
@@ -34,14 +45,19 @@ class PokemonData:
   IsLegendary: bool
   IsMythical: bool
   #Pokemon Properties
+  BaseDefeatExp: int
+  EncounterChance: int
   Height: int
   Sprite: str
   ShinySprite: str
   SpriteFemale: str
   ShinySpriteFemale: str
-  Types: list[str]
+  Types: list[int]
   Weight: int
   Rarity: int
+  LevelUpMoves: dict[str,int]
+  MachineMoves: list[int]
+  BaseStats: dict[str,int]
 
   def __init__(self, dict):
     vars(self).update(dict)
@@ -59,12 +75,17 @@ class Pokemon:
   IsFemale: bool|None = None
   Level: int = 0
   CurrentExp: int = 0
+  Nature: int = 0
+  CurrentHP: int = 0
+  IVs: dict[str, int] = field(default_factory=dict)
+  LearnedMoves: list[Move] = field(default_factory=list)
+  CurrentAilment: int|None = None
+  CaughtBy: int = 4
+  OriginalTrainer: int = 0
 
   @classmethod
   def from_dict(cls, dict):
     field_names = {field.name for field in fields(cls)}
     returnObj = cls(**{k: v for k, v in dict.items() if k in field_names})
+    returnObj.LearnedMoves = [Move(m) for m in returnObj.LearnedMoves]
     return returnObj
-
-  # def __init__(self, dict):
-  #   vars(self).update(dict)
