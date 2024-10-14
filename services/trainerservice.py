@@ -35,6 +35,7 @@ def StartTrainer(pokemon: PokemonData, serverId: int, userId: int):
     'UserId': userId,
     'ServerId': serverId,
     'Team': [spawn.Id],
+    'Region': pokemon.Generation,
     'Pokedex': [pokemon.PokedexId],
     'Money': 500,
     'Items': { '4': 5 }

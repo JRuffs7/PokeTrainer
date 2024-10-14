@@ -20,10 +20,12 @@ class GymCommands(commands.Cog, name="GymCommands"):
       choices = []
       trainer = trainerservice.GetTrainer(inter.guild.id, inter.user.id)
       if trainer:
-        leaderList = [l for l in gymservice.GetAllGymLeaders() if l.Generation == trainer.Region and l.BadgeId and (l.BadgeId in trainer.Badges or l.BadgeId == (max(trainer.Badges or [0])+1))]
+        currentGenBadges = [t for t in trainer.Badges if t in [b.Id for b in gymservice.GetAllBadges() if b.Generation == trainer.Region]]
+        currentGenGyms = [l for l in gymservice.GetAllGymLeaders() if l.Generation == trainer.Region]
+        leaderList =  [l for l in currentGenGyms if (l.BadgeId in trainer.Badges) or (l.BadgeId == ((max(currentGenBadges) + 1) if currentGenBadges else (min([c.BadgeId for c in currentGenGyms]))))]
         leaderList.sort(key=lambda x: x.BadgeId)
         for ldr in leaderList:
-          name = f'{ldr.Name} (Your Next)' if ldr.BadgeId == (max(trainer.Badges or [0])+1) else ldr.Name
+          name = f'{ldr.Name} (Your Next)' if ldr.BadgeId == ((max(currentGenBadges) + 1) if currentGenBadges else (min([c.BadgeId for c in currentGenGyms]))) else ldr.Name
           if current.lower() in ldr.Name.lower():
             choices.append(app_commands.Choice(name=name, value=ldr.BadgeId))
             if len(choices) == 25:

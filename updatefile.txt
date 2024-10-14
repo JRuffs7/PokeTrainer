@@ -1,5 +1,2 @@
-This Biggest Update Yet! There are too many changes to list here, so please check out **/help update for more information!
-- Battles have been reworked
-- Pokemon now have realistic stats
-- Experience system reworked
-- Much much more!
+- You can now choose a starter from any region at any time. You may still only acquire ONE per region.
+- Fixed an issue where **/pokecenter** was charging $500 per use

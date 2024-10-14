@@ -88,11 +88,7 @@
 		},
 		{
 			"Title": "Cannot Start This Region",
-			"Body": "You have alreeady started a journey in the region this starting Pokemon is from! Please try again using the paramaters provided."
-		},
-		{
-			"Title": "Cannot Start This Region",
-			"Body": "There are other regions you must complete before starting here! Complete the Gym and Elite Four challenges to unlock new regions."
+			"Body": "You have alreeady started a journey in the region! Please try again using the paramaters provided."
 		}
 	],
 	"usepotion": [

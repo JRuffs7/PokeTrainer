@@ -283,8 +283,7 @@ def CaptureSuccess(pokeball: Pokeball, pokemon: PokemonData, level: int):
 
 #region Trainer Pokemon
 
-def PokeCenter(trainer: Trainer, team: list[Pokemon]):
-  trainer.Money = max(trainer.Money - 500, 0)
+def PokeCenter(team: list[Pokemon]):
   for p in team:
     HealPokemon(p, GetPokemonById(p.Pokemon_Id))
 

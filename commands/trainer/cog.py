@@ -214,12 +214,11 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
     allStarters = pokemonservice.GetStarterPokemon()
     if not trainer:
-      starters = [p for p in allStarters if p.Generation == 1]
-      starters.sort(key=lambda x: x.PokedexId)
+      starters = allStarters
     else:
-      gen = max(trainerservice.RegionsVisited(trainer)) + 1
-      starters = [p for p in allStarters if p.Generation == gen]
+      starters = [p for p in allStarters if p.Generation not in trainerservice.RegionsVisited(trainer)]
       starters.sort(key=lambda x: x.PokedexId)
+    starters.sort(key=lambda x: x.PokedexId)
     for st in starters:
       if current.lower() in st.Name.lower():
         choices.append(app_commands.Choice(name=st.Name,value=st.Id))
@@ -239,18 +238,20 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
     if trainer:
       if commandlockservice.IsLocked(trainer.ServerId, trainer.UserId) or commandlockservice.IsEliteFourLocked(trainer.ServerId, trainer.UserId):
         return await discordservice_permission.SendError(inter, 'commandlock')
-      nextRegion = max(trainerservice.RegionsVisited(trainer))+1
-      if pkmn.Generation != nextRegion:
-        return await discordservice_trainer.PrintStarterResponse(inter, 1 if pkmn.Generation < nextRegion else 2, [])
-      if (nextRegion-1) not in trainer.EliteFour:
-        return await discordservice_trainer.PrintStarterResponse(inter, 2, [])
-      trainerservice.ChangeRegion(trainer, nextRegion, pkmn)
-      title = f"{inter.user.display_name}'s {region_name(nextRegion)} Journey Begins!"
+      if pkmn.Generation in trainerservice.RegionsVisited(trainer):
+        return await discordservice_trainer.PrintStarterResponse(inter, 1, [])
+      trainerservice.ChangeRegion(trainer, pkmn.Generation, pkmn)
+      title = f"{inter.user.display_name}'s {region_name(pkmn.Generation)} Journey Begins!"
       desc = f'Additional Money: $500\nAdditional Pokeballs: 5'
     else:
       trainer = trainerservice.StartTrainer(pkmn, inter.guild_id, inter.user.id)
       title = f"{inter.user.display_name}'s PokeTrainer Journey Begins!"
       desc = f'Starting Money: ${trainer.Money}\nStarting Pokeballs: 5'
+      embed2 = discordservice.CreateEmbed(
+            f"Welcome to PokeTrainer!",
+            f"You just began your journey in the server {inter.guild.name}. Use commands such as **/spawn** to interact with the bot! More interactions can be found using the **/help** command. Don't forget your **/daily** reward!",
+            HelpColor)
+      await discordservice.SendDMs(inter, [embed2])
     starter = next(p for p in trainer.OwnedPokemon if p.Id in trainer.Team)
     embed = discordservice.CreateEmbed(
         title,
@@ -258,20 +259,21 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
         TrainerColor)
     embed.set_image(url=pokemonservice.GetPokemonImage(starter, pkmn))
     await inter.followup.send(embed=embed)
-    if pkmn.Generation == 1:
-      embed2 = discordservice.CreateEmbed(
-            f"Welcome to PokeTrainer!",
-            f"You just began your journey in the server {inter.guild.name}. Use commands such as **/spawn** to interact with the bot! More interactions can be found using the **/help** command. Don't forget your **/daily** reward!",
-            HelpColor)
-      await discordservice.SendDMs(inter, [embed2])
+
+  async def reset_autocomplete(self, inter: Interaction, current: str):
+    choices = []
+    allStarters = pokemonservice.GetStarterPokemon()
+    allStarters.sort(key=lambda x: x.PokedexId)
+    for st in allStarters:
+      if current.lower() in st.Name.lower():
+        choices.append(app_commands.Choice(name=st.Name,value=st.Id))
+      if len(choices) == 25:
+        break
+    return choices
 
   @app_commands.command(name="resettrainer",
                         description="Reset your trainer to the beginning.")
-  @app_commands.choices(starter=[
-      app_commands.Choice(name="Bulbasaur", value=1),
-      app_commands.Choice(name="Charmander", value=4),
-      app_commands.Choice(name="Squirtle", value=7)
-  ])
+  @app_commands.autocomplete(starter=reset_autocomplete)
   @method_logger(True)
   @trainer_check
   @elitefour_check
