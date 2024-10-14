@@ -290,6 +290,8 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
     if trainer:
       regions = [r for r in trainerservice.RegionsVisited(trainer) if r != trainer.Region]
+      if len(regions) == len([r for r in gymservice.GetRegions() if r < 1000]):
+        regions.append(1000)
       regions.sort()
       for r in regions:
         if current.lower() in region_name(r):

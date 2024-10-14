@@ -150,18 +150,19 @@ def ExpForPokemon(pokemon: Pokemon, data: PokemonData, isWild: bool, expShare: b
   return round(part4*a*t*e*v*f*p)
 
 def SpawnPokemon(region: int, badgesInRegion: int, shinyOdds: int):
+  badgesInRegion = 10 if region == 100 else badgesInRegion
   encounterRng = choice(range(100))
   spawnChance = (
     4 if encounterRng%2 == 0 else 
     3 if encounterRng < 60 else
     2 if encounterRng < 97 else 
-    1 if badgesInRegion > 6 else 4
+    1 if (badgesInRegion > 6) else 4
     )
 
-  pokemonList = [p for p in pokemonda.GetPokemonByProperty([1,2] if badgesInRegion < 3 else [1,2,3], 'Rarity') if p.Generation == region and p.EncounterChance == spawnChance]
+  pokemonList = [p for p in pokemonda.GetPokemonByProperty([1,2] if badgesInRegion < 3 else [1,2,3], 'Rarity') if ((p.Generation == region) or (region == 1000)) and p.EncounterChance == spawnChance]
   while not pokemonList and spawnChance < 4:
     spawnChance += 1
-    pokemonList = [p for p in pokemonda.GetPokemonByProperty([1,2] if badgesInRegion < 3 else [1,2,3], 'Rarity') if p.Generation == region and p.EncounterChance == spawnChance]
+    pokemonList = [p for p in pokemonda.GetPokemonByProperty([1,2] if badgesInRegion < 3 else [1,2,3], 'Rarity') if ((p.Generation == region) or (region == 1000)) and p.EncounterChance == spawnChance]
   if not pokemonList:
     return None,None
   

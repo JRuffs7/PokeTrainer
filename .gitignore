@@ -162,3 +162,4 @@ cython_debug/
 dataaccess/utility/cache.sqlite3
 DiscordBotToken.txt
 MongoConnStr.txt
+trainer_debug.json
