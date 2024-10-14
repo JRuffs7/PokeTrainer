@@ -155,7 +155,7 @@ def SpawnPokemon(region: int, badgesInRegion: int, shinyOdds: int):
     4 if encounterRng%2 == 0 else 
     3 if encounterRng < 60 else
     2 if encounterRng < 97 else 
-    1 if badgesInRegion < 6 else 4
+    1 if badgesInRegion > 6 else 4
     )
 
   pokemonList = [p for p in pokemonda.GetPokemonByProperty([1,2] if badgesInRegion < 3 else [1,2,3], 'Rarity') if p.Generation == region and p.EncounterChance == spawnChance]

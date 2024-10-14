@@ -1,3 +1,4 @@
 - You can now choose a starter from any region at any time. You may still only acquire ONE per region.
 - Fixed an issue where **/pokecenter** was charging $500 per use
 - Fixed an issue with **/spawnlegendary**
+- Fixed an issue where pseudos could be caught prior to gym six
