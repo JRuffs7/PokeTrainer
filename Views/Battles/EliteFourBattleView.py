@@ -81,7 +81,7 @@ class EliteFourBattleView(CpuBattleView):
 		ephemeral = False
 		if self.victory:
 			rewardStr = f'<@{inter.user.id}> defeated **Elite Four {"Member" if self.leader.Id%5 != 0 else "Champion"} {self.leader.Name}**!\nWon ${int(self.leader.Reward[1]/2)}!'
-			if self.leader.Generation in self.trainer.EliteFour:
+			if self.leader.Id%5 == 0:
 				rewardStr += f'\n\nCongratulations! You are now the Champion of the {region_name(self.leader.Generation)} region!'
 			elif (self.leader.Id + 1)%5 != 0:
 				rewardStr += f'\n\nTo challenge the next Elite Four Member, use the **/elitefour** command again. Reminder, some commands are locked until you leave the challenge.'
@@ -128,7 +128,8 @@ class EliteFourBattleView(CpuBattleView):
 				else:
 					self.trainer.Money += self.leader.Reward[1]
 					if self.leader.Id%5 == 0:
-						self.trainer.EliteFour.append(self.leader.Generation)
+						if self.leader.Generation not in self.trainer.EliteFour:
+							self.trainer.EliteFour.append(self.leader.Generation)
 						self.trainer.CurrentEliteFour = []
 						commandlockservice.DeleteEliteFourLock(self.trainer.ServerId, self.trainer.UserId)
 					else:
