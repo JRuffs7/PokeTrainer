@@ -33,6 +33,7 @@ class GymBattleView(CpuBattleView):
 	@defer
 	async def start_button(self, inter: discord.Interaction):
 		self.clear_items()
+		trainerservice.TryAddMissionProgress(self.trainer, 'Gym', [])
 		self.AddMainButtons()
 		await self.send(None)
 	

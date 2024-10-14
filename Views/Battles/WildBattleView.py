@@ -92,10 +92,12 @@ class WildBattleView(CpuBattleView):
 
 			if not [t for t in team if t.CurrentHP > 0]:
 				self.victory = pokemon.Id == self.battle.TeamBPkmn.Id
+				commandlockservice.DeleteLock(self.trainer.ServerId, self.trainer.UserId)
 				if not self.victory:
 					pokemonservice.PokeCenter(team)
 				else:
 					self.trainer.Money += 25
+					trainerservice.TryAddMissionProgress(self.trainer, 'Fight', data.Types)
 					#Sinnoh Reward
 					self.candy = itemservice.TryGetCandy(trainerservice.HasRegionReward(self.trainer, 4))
 					if self.candy:
@@ -114,7 +116,6 @@ class WildBattleView(CpuBattleView):
 							pkmn, 
 							pkmnData, 
 							self.experience)
-				commandlockservice.DeleteLock(self.trainer.ServerId, self.trainer.UserId)
 				trainerservice.UpsertTrainer(self.trainer)
 
 				if not self.victory:

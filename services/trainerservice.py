@@ -1,19 +1,13 @@
 from datetime import UTC, datetime, timedelta
-import logging
 from random import choice
 import uuid
 from dataaccess import trainerda
 from globals import AdminList, DateFormat, GreatShinyOdds, ShinyOdds, ShortDateFormat, SuperShinyOdds
 from models.Egg import TrainerEgg
-from models.Item import Pokeball
 from models.Mission import TrainerMission
 from models.Trainer import Trainer
 from models.Pokemon import EvolveData, Pokemon, PokemonData
 from services import gymservice, itemservice, missionservice, pokemonservice, statservice
-
-captureLog = logging.getLogger('capture')
-
-commandLocks: list[str] = []
 
 #region Data
 
