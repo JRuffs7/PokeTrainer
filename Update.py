@@ -41,7 +41,6 @@ def UpdateTrainers(dbname: str, cs: str):
 	updateList: list[Trainer] = []
 	for t in GetManyDocs(dbname, cs, 'Trainer', {}, {'_id':0}):
 		try:
-			print('NewDict')
 			newTrainer = Trainer.from_dict({
 				'UserId': t['UserId'] if 'UserId' in t else 0,
 				'ServerId': t['ServerId'] if 'ServerId' in t else 0,
@@ -113,7 +112,6 @@ def UpdateTrainers(dbname: str, cs: str):
 				'WeeklyMission': t['WeeklyMission'] if 'WeeklyMission' in t else None
 			})
 			
-			print('Pokemon')
 			for p in newTrainer.OwnedPokemon:
 				if p.Pokemon_Id == 10057:
 					newTrainer.OwnedPokemon.remove(p)
@@ -137,7 +135,6 @@ def UpdateTrainers(dbname: str, cs: str):
 				if p.Pokemon_Id == 132 and p.Id in newTrainer.Team:
 					newTrainer.Team = [t for t in newTrainer.Team if t != p.Id]
 
-			print('Eggs')
 			newTrainer.Eggs = newTrainer.Eggs[0:5] if newTrainer.Eggs else []
 			for e in newTrainer.Eggs:
 				ivs = sample(['1','2','3','4','5','6'], 3)
@@ -149,7 +146,6 @@ def UpdateTrainers(dbname: str, cs: str):
 				e.IVs = {ivs[0]: choice(range(32)),ivs[1]: choice(range(32)),ivs[2]: choice(range(32))}
 				e.ShinyOdds = ShinyOdds
 
-			print('Badges')
 			badges: list[int] = []
 			for b in newTrainer.Badges:
 				if 34 <= b < 41:
@@ -161,7 +157,6 @@ def UpdateTrainers(dbname: str, cs: str):
 				else:
 					badges.append(b)
 			
-			print('Daycare')
 			daycare: dict[str,str] = {}
 			for d in newTrainer.Daycare:
 				if len(daycare) < 2:
