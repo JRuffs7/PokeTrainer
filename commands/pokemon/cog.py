@@ -59,7 +59,7 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
   async def spawnlegendary(self, inter: Interaction):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
     for b in gymservice.GetBadgesByRegion(trainer.Region):
-      if b not in trainer.Badges:
+      if b.Id not in trainer.Badges:
         commandlockservice.DeleteLock(trainer.ServerId, trainer.UserId)
         return await discordservice_pokemon.PrintSpawnLegendaryResponse(inter, 0, [])
     if trainer.Region not in trainer.EliteFour and [p for p in trainer.OwnedPokemon if p.Pokemon_Id in [po.Id for po in pokemonservice.GetLegendaryInRegion(trainer.Region)]]:
@@ -69,7 +69,7 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
     if not pokemon:
       commandlockservice.DeleteLock(trainer.ServerId, trainer.UserId)
       return await discordservice_pokemon.PrintSpawnLegendaryResponse(inter, 2, [])
-    await WildBattleView(trainer, pokemon).send(inter)
+    await WildBattleView(trainer, pokemon, False).send(inter)
 
   @app_commands.command(name="pokecenter",
                         description="Heal all HP and Ailments from Pokemon on your team.")

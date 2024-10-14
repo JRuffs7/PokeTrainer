@@ -93,7 +93,7 @@ class WildBattleView(CpuBattleView):
 			if not [t for t in team if t.CurrentHP > 0]:
 				self.victory = pokemon.Id == self.battle.TeamBPkmn.Id
 				if not self.victory:
-					pokemonservice.PokeCenter(self.trainer, team)
+					pokemonservice.PokeCenter(team)
 				else:
 					self.trainer.Money += 25
 					#Sinnoh Reward

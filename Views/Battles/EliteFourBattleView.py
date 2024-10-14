@@ -123,7 +123,7 @@ class EliteFourBattleView(CpuBattleView):
 				self.victory = pokemon.Id == self.battle.TeamBPkmn.Id
 				if not self.victory:
 					self.trainer.CurrentEliteFour = []
-					pokemonservice.PokeCenter(self.trainer, team)
+					pokemonservice.PokeCenter(team)
 					commandlockservice.DeleteEliteFourLock(self.trainer.ServerId, self.trainer.UserId)
 				else:
 					self.trainer.Money += self.leader.Reward[1]
