@@ -2,9 +2,9 @@ import asyncio
 import logging
 from random import choice
 import uuid
-from discord import Member, TextChannel
+from discord import File, Member, TextChannel
 from discord.ext import commands
-from globals import SuperShinyOdds, to_dict
+from globals import SuperShinyOdds
 from middleware.decorators import is_bot_admin
 from models.Egg import TrainerEgg
 from models.Server import Server
@@ -117,16 +117,6 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 			return
 		commandlockservice.DeleteLock(ctx.guild.id, user.id if user else ctx.author.id)
 
-	@commands.command(name="gettrainer")
-	@is_bot_admin
-	async def gettrainer(self, ctx: commands.Context, serverId: int, userId: int):
-		if not ctx.guild:
-			return
-		trainer = trainerservice.GetTrainer(serverId, userId)
-		if trainer:
-			with open('trainer_debug.json', 'w+') as f:
-				f.write(str(to_dict(trainer)))
-
 	#endregion
 
 	#region Real Commands
@@ -151,6 +141,23 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 		
 		return await channel.send(message)
 		
+	@commands.command(name="getdata")
+	@is_bot_admin
+	async def getdata(self, ctx: commands.Context):
+		try:
+			file = File('dataaccess/utility/cache.sqlite3', filename='cache.sqlite3')
+			await ctx.send(file=file)
+		except FileNotFoundError:
+			pass
+		
+	@commands.command(name="getlogs")
+	async def getlogs(self, ctx: commands.Context, filename: str):
+		try:
+			file = File(f'logs/{filename}.log', filename=f'{filename}.log')
+			await ctx.send(file=file)
+		except FileNotFoundError:
+			pass
+
 	#endregion
 	
 async def setup(bot: commands.Bot):
