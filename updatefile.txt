@@ -1,2 +1,0 @@
-- Fixed an issue with Healing moves such as Recovery
-- Fixed an issue where ailments like Paralyze were being cured when passing the movement check
