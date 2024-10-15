@@ -426,7 +426,8 @@ class CpuBattleView(discord.ui.View):
 			return None
 		elif ailmentCheck == True:
 			messages.append(statservice.GetRecoveryMessage(attack, attackData, self.battle.TeamATrapId if teamA else self.battle.TeamBTrapId))
-			attack.CurrentAilment = None	
+			if attack.CurrentAilment in [2,3,6,8]:
+				attack.CurrentAilment = None	
 			self.battle.TeamATrapId = None if teamA else self.battle.TeamATrapId	
 			self.battle.TeamBTrapId = None if not teamA else self.battle.TeamBTrapId	
 

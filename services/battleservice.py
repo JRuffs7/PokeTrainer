@@ -564,7 +564,7 @@ def MoveDrain(moveData: MoveData, pokemon: Pokemon, data: PokemonData, damage: i
 	maxHp = statservice.GenerateStat(pokemon, data, StatEnum.HP)
 	heal = 0
 	if moveData.Healing:
-		heal = min(max*(moveData.Healing/100), maxHp - pokemon.CurrentHP)
+		heal = min(maxHp*(moveData.Healing/100), maxHp - pokemon.CurrentHP)
 	if moveData.Drain > 0:
 		heal = min(math.floor(damage*(moveData.Drain/100)), maxHp - pokemon.CurrentHP)
 	if heal:

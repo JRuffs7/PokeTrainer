@@ -1,3 +1,2 @@
-- Fixed an issue where mission progress was not being added
-- Fixed messaging for Elite Four battles
-- Fixed an issue with changin over to the Voltage Region
+- Fixed an issue with Healing moves such as Recovery
+- Fixed an issue where ailments like Paralyze were being cured when passing the movement check
