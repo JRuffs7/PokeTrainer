@@ -1,0 +1,2 @@
+- Level cap for Gym Leaders changed for a little more lenience and growth per gym
+- Fixed an issue with decimal values when using Healing Moves
