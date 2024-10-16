@@ -45,9 +45,9 @@ def ChangeRegion(trainer: Trainer, region: int, pokemon: PokemonData|None):
     trainer.OwnedPokemon.append(newStarter)
     trainer.Team = [newStarter.Id]
     TryAddToPokedex(trainer, pokemon, newStarter.IsShiny)
+    trainer.Money += 500
+    ModifyItemList(trainer, '4', 5)
   trainer.Region = region
-  trainer.Money += 500
-  ModifyItemList(trainer, '4', 5)
   UpsertTrainer(trainer)
   return trainer
 

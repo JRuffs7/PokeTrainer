@@ -1,2 +1,3 @@
 - Level cap for Gym Leaders changed for a little more lenience and growth per gym
 - Fixed an issue with decimal values when using Healing Moves
+- Fixed trainers receiving $500 and 5 Pokeballs when changing regions
