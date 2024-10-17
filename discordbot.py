@@ -1,13 +1,11 @@
 import asyncio
 import logging
 import os
-from random import choice
 
 import discord
-from discord.ext import commands, tasks
-from globals import HelpColor, eventtimes, discordLink, topggLink
+from discord.ext import commands
+from globals import HelpColor, discordLink, topggLink
 from models.Server import Server
-from models.enums import EventType
 
 from services import commandlockservice, serverservice
 from services.utility import discordservice
@@ -21,7 +19,7 @@ logger = logging.getLogger('discord')
 errorLogger = logging.getLogger('error')
 
 
-async def StartBot(key: str):
+async def StartBot():
   
   @discordBot.event
   async def on_ready():
@@ -69,29 +67,11 @@ async def StartBot(key: str):
     
     return await channel.send(embed=embed)
 
-
-  # @tasks.loop(time=eventtimes)
-  # async def event_loop():
-  #   allServers = serverservice.GetAllServers()
-  #   for server in allServers:
-  #     asyncio.run_coroutine_threadsafe(EventThread(choice(list(EventType)), server), discordBot.loop)
-
-  async def EventThread(eventType: EventType, server: Server):
-    try:
-      guild = discordBot.get_guild(server.ServerId)
-      if not guild:
-        return 
-      channel = guild.get_channel(server.ChannelId)
-      if not channel or not isinstance(channel, discord.TextChannel):
-        return
-    except Exception as e:
-      errorLogger.error(f'Server {server.ServerName} Event: {e}')
-
   for f in os.listdir("commands"):
     if os.path.exists(os.path.join("commands", f, "cog.py")):
       await discordBot.load_extension(f"commands.{f}.cog")
 
-  await discordBot.start(token=key)
+  await discordBot.start(token=os.environ['TOKEN'])
 
 
 def GetBot():
