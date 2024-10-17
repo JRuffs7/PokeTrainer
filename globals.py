@@ -31,13 +31,6 @@ AdminList = [
   215624857793069056
 ]
 
-eventtimes = [
-  datetime.strptime('02:00:00', '%H:%M:%S').time(),
-  datetime.strptime('08:00:00', '%H:%M:%S').time(),
-  datetime.strptime('14:00:00', '%H:%M:%S').time(),
-  datetime.strptime('20:00:00', '%H:%M:%S').time()
-]
-
 freemasterball = datetime(2024,10,4)
 
 def to_dict(obj):

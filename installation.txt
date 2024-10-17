@@ -14,9 +14,12 @@ Step 2: Get pip packages
  - Once they are successful, everything should be set
 
 Step 3: Running the bot
- - Create a file under at the top of the file heirarchy called "DiscordBotToken.txt"
- - Ask Justin for a PokeTrainer-Test key
- - Production variables are not available and will only be held on the device running the pod bot
+ - Create a file under at the top of the file heirarchy called ".env"
+ - Give it 3 variables:
+   - BUILD=development
+   - GLOBAL_SYNC=0
+   - TOKEN=[Ask Justin for Token]
+ - Production variables are not available and will only be held on the device running the prod bot
  - To run and start testing within discord, open a terminal in VSCode and run the following
    - python main.py
  - There will be some logs and eventually one that says "PokeTrainer-Test up and running"
