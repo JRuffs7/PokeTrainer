@@ -11,6 +11,9 @@ def AddLock(serverId: int, userId: int):
 def DeleteLock(serverId: int, userId: int):
   return commandlockda.DeleteLock(serverId, userId)
 
+def DeleteAllLocks():
+  return commandlockda.DeleteAllLocks()
+
 
 def IsEliteFourLocked(serverId: int, userId: int):
   return commandlockda.CheckEliteFourLock(serverId, userId)
