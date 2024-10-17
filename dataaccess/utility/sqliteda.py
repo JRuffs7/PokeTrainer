@@ -4,6 +4,14 @@ from sqlitedict import SqliteDict
 errorLog = logging.getLogger('error')
 cacheFile = "dataaccess/utility/cache.sqlite3"
 
+def GetAllKeys(table: str):
+	try:
+		with SqliteDict(cacheFile, tablename=table) as mydict:
+			return list(mydict.keys())
+	except Exception as ex:
+		errorLog.error(f'Sqlite Get Keys Error: {ex}')
+		return []
+
 def KeyExists(table: str, key: str):
 	try:
 		with SqliteDict(cacheFile, tablename=table) as mydict:

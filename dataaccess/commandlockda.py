@@ -23,6 +23,10 @@ def AddLock(serverId: int, userId: int):
 def DeleteLock(serverId: int, userId: int):
 	if sqliteda.KeyExists(cmdCollection, f'{serverId}{userId}'):
 		sqliteda.Remove(cmdCollection, f'{serverId}{userId}')
+
+def DeleteAllLocks():
+	for key in sqliteda.GetAllKeys(cmdCollection):
+		sqliteda.Remove(cmdCollection, key)
 	
 #endregion
 

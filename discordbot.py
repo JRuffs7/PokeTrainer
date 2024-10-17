@@ -9,7 +9,7 @@ from globals import HelpColor, eventtimes, discordLink, topggLink
 from models.Server import Server
 from models.enums import EventType
 
-from services import serverservice
+from services import commandlockservice, serverservice
 from services.utility import discordservice
 
 intents = discord.Intents.all()
@@ -31,6 +31,8 @@ async def StartBot(key: str):
       logger.info(f'Global Sync Command Startup')
       await discordBot.tree.sync()
       logger.info(f'Syncing complete.')
+      
+    commandlockservice.DeleteAllLocks()
 
     try:
       updateStr = ''
@@ -42,6 +44,7 @@ async def StartBot(key: str):
         allServers = serverservice.GetAllServers()
         for server in allServers:
           asyncio.run_coroutine_threadsafe(MessageThread(discordservice.CreateEmbed('New Update', updateStr, HelpColor), server), discordBot.loop)
+
     except FileNotFoundError:
       pass
     except Exception as e:

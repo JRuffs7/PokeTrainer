@@ -126,6 +126,7 @@ class DayCareAddView(discord.ui.View):
 		self.trainer = trainer
 		self.pokemonlist = pokemonList
 		self.pokemonchoice = None if len(pokemonList) > 1 else pokemonList[0].Id
+		self.pokemondata = pokemonservice.GetPokemonById(pokemonList[0].Pokemon_Id)
 		super().__init__(timeout=300)
 		if not self.pokemonchoice:
 			cnclbtn = discord.ui.Button(label="Cancel", style=discord.ButtonStyle.red)
@@ -157,12 +158,11 @@ class DayCareAddView(discord.ui.View):
 	
 	async def AddToDaycare(self):
 		self.clear_items()
+		commandlockservice.DeleteLock(self.trainer.ServerId, self.trainer.UserId)
 		pkmn = next(p for p in self.trainer.OwnedPokemon if p.Id == self.pokemonchoice)
-		data = next(p for p in self.daycaredata if p.Id == pkmn.Pokemon_Id)
 		self.trainer.Daycare[pkmn.Id] = datetime.now(UTC).strftime(DateFormat)
 		trainerservice.UpsertTrainer(self.trainer)
-		commandlockservice.DeleteLock(self.trainer.ServerId, self.trainer.UserId)
-		await self.message.edit(content=f'Added **{pokemonservice.GetPokemonDisplayName(pkmn, data)}** to your daycare.', view=self)
+		await self.message.edit(content=f'Added **{pokemonservice.GetPokemonDisplayName(pkmn, self.pokemondata)}** to your daycare.', view=self)
 		
 	async def send(self, inter: discord.Interaction):
 		if self.pokemonchoice:
