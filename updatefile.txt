@@ -1,0 +1,2 @@
+- Fixed and issue with recharging attacks
+- Fixed an issue with move with consecutive attacks not lasting as long as they should
