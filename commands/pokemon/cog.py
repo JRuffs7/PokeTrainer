@@ -1,6 +1,5 @@
 from discord import Member, app_commands, Interaction
 from discord.ext import commands
-from typing import List
 from Views.Battles.WildBattleView import WildBattleView
 from Views.DayCareView import DayCareAddView, DayCareView
 from Views.GiveCandyView import GiveCandyView
@@ -8,7 +7,7 @@ from Views.LearnMovesView import LearnMovesView
 from Views.LearnTMView import LearnTMView
 from Views.PokedexView import PokedexView
 from Views.UsePotionView import UsePotionView
-from commands.autofills.autofills import autofill_boxpkmn, autofill_owned, autofill_pokemon, autofill_team, autofill_tms, autofill_types
+from commands.autofills.autofills import autofill_nonteam, autofill_owned, autofill_pokemon, autofill_team, autofill_tms, autofill_types
 from Views.PokemonSearchView import PokemonSearchView
 from Views.NicknameView import NicknameView
 import discordbot
@@ -16,7 +15,7 @@ import discordbot
 from Views.EvolveView import EvolveView
 from globals import PokemonColor, botImage
 from middleware.decorators import command_lock, elitefour_check, method_logger, trainer_check
-from services import commandlockservice, gymservice, itemservice, moveservice, pokemonservice, statservice, trainerservice, typeservice
+from services import commandlockservice, gymservice, itemservice, pokemonservice, statservice, trainerservice
 from middleware.decorators import method_logger, trainer_check
 from services.utility import discordservice, discordservice_permission, discordservice_pokemon
 
@@ -227,7 +226,7 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
 
   @app_commands.command(name="daycare",
                         description="Add to or check on the daycare.")
-  @app_commands.autocomplete(pokemon=autofill_boxpkmn)
+  @app_commands.autocomplete(pokemon=autofill_nonteam)
   @method_logger(True)
   @trainer_check
   @elitefour_check

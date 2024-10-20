@@ -433,7 +433,7 @@ class CpuBattleView(discord.ui.View):
 		messages.append(f'{pkmnName} used **{turn.Move.Name}**!')
 		#Check Fails/Charges
 
-		if next(m for m in attack.LearnedMoves if m.MoveId == turn.Move.Id).PP == 0:
+		if (turn.Move.Id != 165) and (next(m for m in attack.LearnedMoves if m.MoveId == turn.Move.Id).PP == 0):
 			messages.append(f'No PP left for {turn.Move.Name}')
 			return None
 
@@ -445,7 +445,11 @@ class CpuBattleView(discord.ui.View):
 				self.battle.TeamBImmune = not teamA
 			return None
 		
-		next(m for m in attack.LearnedMoves if m.MoveId == turn.Move.Id).PP -= 1
+		if turn.Move.Id != 165:
+			next(m for m in attack.LearnedMoves if m.MoveId == turn.Move.Id).PP -= 1
+			if turn.Move and turn.Move.ConsecutiveAttack:
+				if (teamA and self.battle.TeamAConsAttacks > 0) or (not teamA and self.battle.TeamBConsAttacks > 0):
+					next(m for m in attack.LearnedMoves if m.MoveId == turn.Move.Id).PP += 1
 		self.battle.TeamAImmune = False if teamA else self.battle.TeamAImmune
 		self.battle.TeamBImmune = False if not teamA else self.battle.TeamBImmune
 
@@ -459,6 +463,10 @@ class CpuBattleView(discord.ui.View):
 			slfDmg = battleservice.SelfDamage(turn.Move, attack, attackData)
 			if slfDmg > 0:
 				messages.append(f'{pkmnName} took **{slfDmg}** recoil damage!')
+			if teamA:
+				self.battle.TeamAConsAttacks = 0
+			else:
+				self.battle.TeamBConsAttacks = 0
 			return None
 		
 		# ATTACK THEM
@@ -487,10 +495,8 @@ class CpuBattleView(discord.ui.View):
 				team = self.trainerteam if teamA else self.oppteam
 				if teamA and [t for t in team if t.CurrentHP > 0]:
 					self.battle.TeamAConsAttacks = 0
-					messages.append(f'You swapped in {pokemonservice.GetPokemonDisplayName(self.battle.TeamAPkmn, next(p for p in self.battle.AllPkmnData if p.Id == self.battle.TeamAPkmn.Pokemon_Id), False, False)}!')
 				elif not teamA and [t for t in team if t.CurrentHP > 0]:
 					self.battle.TeamBConsAttacks = 0
-					messages.append(f'{self.oppname} swapped in {pokemonservice.GetPokemonDisplayName(self.battle.TeamBPkmn, next(p for p in self.battle.AllPkmnData if p.Id == self.battle.TeamBPkmn.Pokemon_Id), False, False)}!')
 
 		ailStr = battleservice.ApplyAilment(self.battle, turn.Move, defend, defendData)
 		if ailStr:

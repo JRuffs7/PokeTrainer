@@ -36,7 +36,7 @@
 	"daily": [
 		{
 			"Title": "Already Claimed",
-			"Body": "You have already claimed your reward for the day! Daily rewards reset at midnight UTC.\n\nDon't forget to [Upvote the Bot]({0})!\nOr join the [Discord Server]({1})!"
+			"Body": "You have already claimed your reward for the day! Daily rewards reset at midnight UTC.\n\nFeel free to report any issues to the [Discord Server]({0})\nDon't forget to upvote the bot at [Top.gg]({1}) or [DiscordBotList]({2})!"
 		}
 	],
 	"modifyteam": [

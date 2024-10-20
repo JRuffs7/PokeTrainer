@@ -1,7 +1,7 @@
 from discord import Interaction, Member, app_commands
 from discord.ext import commands
 
-from commands.autofills.autofills import autofill_tradable
+from commands.autofills.autofills import autofill_nonteam
 from Views.TradeView import TradeView
 from middleware.decorators import command_lock, elitefour_check, method_logger, trainer_check
 from services import commandlockservice, pokemonservice, trainerservice
@@ -28,9 +28,6 @@ class TradeCommands(commands.Cog, name="TradeCommands"):
 			return data
 		
 		pkmnList = pokemonservice.GetPokemonByIdList([p.Pokemon_Id for p in trainer.OwnedPokemon if p.Id not in trainer.Team and p.Id not in trainer.Daycare])
-		if not trainer:
-			data.append(app_commands.Choice(name='No Pokemon available for trade.',value=-1))
-			return data
 		pkmnList.sort(key=lambda x: x.Name)
 		for pkmn in pkmnList:
 			if current.lower() in pkmn.Name.lower():
@@ -42,7 +39,7 @@ class TradeCommands(commands.Cog, name="TradeCommands"):
 
 	@app_commands.command(name="trade",
 												description="Trade with another user in the server.")
-	@app_commands.autocomplete(give=autofill_tradable,receive=autofill_trade)
+	@app_commands.autocomplete(give=autofill_nonteam,receive=autofill_trade)
 	@method_logger(True)
 	@trainer_check
 	@elitefour_check

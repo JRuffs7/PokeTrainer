@@ -4,8 +4,8 @@ from discord.ext import commands
 from Views.ResetTrainerView import ResetTrainerView
 from Views.TrainerView import TrainerView
 from Views.InventoryView import InventoryView
-from globals import HelpColor, SuccessColor, TrainerColor, freemasterball, region_name, topggLink, discordLink
-from commands.autofills.autofills import autofill_boxpkmn, autofill_nonteam, autofill_owned, autofill_regions, autofill_types
+from globals import HelpColor, SuccessColor, TrainerColor, freemasterball, region_name, topggLink, discordLink, discordbotlistLink
+from commands.autofills.autofills import autofill_nonteam, autofill_owned, autofill_regions, autofill_types
 from Views.EggView import EggView
 from Views.MyPokemonView import MyPokemonView
 from Views.TeamSelectorView import TeamSelectorView
@@ -14,7 +14,7 @@ from Views.BadgeView import BadgeView
 from Views.DeleteView import DeleteView
 
 from middleware.decorators import command_lock, elitefour_check, method_logger, trainer_check
-from services import commandlockservice, gymservice, pokemonservice, trainerservice, itemservice
+from services import commandlockservice, gymservice, pokemonservice, trainerservice
 from services.utility import discordservice, discordservice_permission, discordservice_trainer
 
 
@@ -46,14 +46,14 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
     dailyResult = trainerservice.TryDaily(trainer, freeMasterball)
     commandlockservice.DeleteLock(inter.guild_id, inter.user.id)
     if not dailyResult:
-      return await discordservice_trainer.PrintDailyResponse(inter, 0, [topggLink, discordLink])
+      return await discordservice_trainer.PrintDailyResponse(inter, 0, [discordLink, topggLink, discordbotlistLink])
     #Unova Reward  
     dailyStr = f'Thank you for using PokeTrainer!\nHere is your reward of **{"Great Ball" if trainerservice.HasRegionReward(trainer, 5) else "Poké Ball"} x10** and **$200**.\nAcquired a new Daily Mission.'
     if currentWeekly != (trainer.WeeklyMission.DayStarted if trainer.WeeklyMission else None):
       dailyStr += f'\nAcquired a new Weekly Mission.'
     if freeMasterball:
       dailyStr += f'\n\nHere is **1x Masterball** for recent issues as well.'
-    dailyStr += f"\n\nDon't forget to [Upvote the Bot]({topggLink})!\nOr join the [Discord Server]({discordLink})!"
+    dailyStr += f"\n\nFeel free to report any issues to the [Discord Server]({discordLink})\n\nDon't forget to upvote the bot at [Top.gg]({topggLink}) or [DiscordBotList]({discordbotlistLink})!"
     return await inter.followup.send(embed=discordservice.CreateEmbed(
       'Daily Reward',
       dailyStr,
@@ -192,7 +192,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
 
   @app_commands.command(name="release",
                         description="Choose a Pokemon to release.")
-  @app_commands.autocomplete(pokemon=autofill_boxpkmn)
+  @app_commands.autocomplete(pokemon=autofill_nonteam)
   @method_logger(True)
   @trainer_check
   @elitefour_check

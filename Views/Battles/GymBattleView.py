@@ -43,10 +43,10 @@ class GymBattleView(CpuBattleView):
 		await self.message.delete(delay=0.1)
 		ephemeral = False
 		if self.victory:
-			if self.leader.BadgeId in self.trainer.Badges:
-				rewardStr = f'<@{inter.user.id}> defeated **Gym leader {self.leader.Name}**!\nWon ${int(self.leader.Reward[1]/2)}!'
-			else:
+			if self.first:
 				rewardStr = f'<@{inter.user.id}> defeated **Gym leader {self.leader.Name}** and obtained the {gymservice.GetBadgeById(self.leader.BadgeId).Name} Badge!\nWon ${self.leader.Reward[1]}!'
+			else:
+				rewardStr = f'<@{inter.user.id}> defeated **Gym leader {self.leader.Name}**!\nWon ${int(self.leader.Reward[1]/2)}!'
 		else:
 			rewardStr = f'<@{inter.user.id}> was defeated by **Gym leader {self.leader.Name}**.\nRan to the PokeCenter and revived your party.'
 		
@@ -90,8 +90,10 @@ class GymBattleView(CpuBattleView):
 					pokemonservice.PokeCenter(team)
 				else:
 					if self.leader.BadgeId in self.trainer.Badges:
+						self.first = False
 						rewardMoney = int(self.leader.Reward[1]/2)
 					else:
+						self.first = True
 						rewardMoney = self.leader.Reward[1]
 						self.trainer.Badges.append(self.leader.BadgeId)
 					self.trainer.Money += rewardMoney

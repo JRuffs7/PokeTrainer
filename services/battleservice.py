@@ -88,7 +88,7 @@ def CanChooseAttack(battle: CpuBattle, teamA: bool):
 	return (True,BattleAction.Attack) if not mustLoaf else (True,BattleAction.Loaf)
 
 def SpecialHitCases(move: MoveData, battle: CpuBattle, pokemon: Pokemon, opponent: Pokemon, goingFirst: bool, oppAttack: MoveData|None):	
-	if move.Healing and pokemon.CurrentHP == statservice.GenerateStat(pokemon, next(p for p in battle.AllPkmnData if p.Id == pokemon.Pokemon_Id), StatEnum.HP):
+	if (move.Healing > 0) and (pokemon.CurrentHP == statservice.GenerateStat(pokemon, next(p for p in battle.AllPkmnData if p.Id == pokemon.Pokemon_Id), StatEnum.HP)):
 		return BattleAction.Failed
 	match move.Id:
 		case 13|19|76|91|130|143|248|291|340|467|553|554|566|601|669|800|905:
@@ -562,13 +562,15 @@ def MoveDrain(moveData: MoveData, pokemon: Pokemon, data: PokemonData, damage: i
 	
 	maxHp = statservice.GenerateStat(pokemon, data, StatEnum.HP)
 	heal = 0
-	if moveData.Healing:
+	if moveData.Healing > 0:
 		heal = min(math.floor(maxHp*(moveData.Healing/100)), maxHp - pokemon.CurrentHP)
+	elif moveData.Healing < 0:
+		heal = max(math.floor(maxHp*(moveData.Healing/100)), (0 - pokemon.CurrentHP))
 	if moveData.Drain > 0:
 		heal = min(math.floor(damage*(moveData.Drain/100)), maxHp - pokemon.CurrentHP)
 	if heal:
 		pokemon.CurrentHP += heal
-		return f'{pokemonservice.GetPokemonDisplayName(pokemon, data, False, False)} regained **{heal}** HP!'
+		return f'{pokemonservice.GetPokemonDisplayName(pokemon, data, False, False)} {"regained" if heal > 0 else "lost"} **{abs(heal)}** HP!'
 	
 	recoil = min(abs(math.floor(damage*(moveData.Drain/100))), pokemon.CurrentHP)
 	if recoil:

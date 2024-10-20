@@ -48,37 +48,10 @@ async def autofill_owned(inter: Interaction, current: str):
         break
     return data
 
-
-async def autofill_tradable(inter: Interaction, current: str):
-    data = []
-    trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
-    pkmnList = pokemonservice.GetPokemonByIdList([p.Pokemon_Id for p in trainer.OwnedPokemon if p.Id not in trainer.Team and p.Id not in trainer.Daycare])
-    pkmnList.sort(key=lambda x: x.Name)
-    for pkmn in pkmnList:
-      if current.lower() in pkmn.Name.lower():
-        data.append(app_commands.Choice(name=pkmn.Name, value=pkmn.Id))
-      if len(data) == 25:
-        break
-    return data
-
-
-async def autofill_boxpkmn(inter: Interaction, current: str):
-    data = []
-    trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
-    pkmnList = pokemonservice.GetPokemonByIdList([p.Pokemon_Id for p in trainer.OwnedPokemon if p.Id not in trainer.Team and p.Id not in trainer.Daycare])
-    pkmnList.sort(key=lambda x: x.Name)
-    for pkmn in pkmnList:
-      if current.lower() in pkmn.Name.lower():
-        data.append(app_commands.Choice(name=pkmn.Name, value=pkmn.Id))
-      if len(data) == 25:
-        break
-    return data
-
-
 async def autofill_nonteam(inter: Interaction, current: str):
     data = []
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
-    pkmnList = pokemonservice.GetPokemonByIdList([p.Pokemon_Id for p in trainer.OwnedPokemon if p.Id not in trainer.Team and p.Id not in trainer.Daycare and p.Pokemon_Id != 132])
+    pkmnList = pokemonservice.GetPokemonByIdList([p.Pokemon_Id for p in trainer.OwnedPokemon if p.Id not in trainer.Team and p.Id not in trainer.Daycare])
     pkmnList.sort(key=lambda x: x.Name)
     for pkmn in pkmnList:
       if current.lower() in pkmn.Name.lower():
