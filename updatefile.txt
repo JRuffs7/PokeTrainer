@@ -1,2 +1,3 @@
+- Changed the database in the back end to be more reliable, hopefully fixing an intermittent data issue
 - Fixed and issue with recharging attacks
 - Fixed an issue with move with consecutive attacks not lasting as long as they should

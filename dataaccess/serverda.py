@@ -1,19 +1,32 @@
-from dataaccess.utility import sqliteda
+from dataaccess.utility import mongodb, sqliteda
+from globals import to_dict
 from models.Server import Server
 
 collection: str = 'Server'
 
 def CheckServer(serverId: int):
-  return sqliteda.KeyExists(collection, serverId)
+  return mongodb.NumberOfDocs(collection, {
+    'ServerId': serverId
+  }) == 1
 
 def GetSingleServer(serverId: int) -> Server|None:
-  return sqliteda.Load(collection, serverId)
+  server = mongodb.GetSingleDoc(collection, {'ServerId': serverId})
+  return Server.from_dict(server) if server else None
 
 def UpsertSingleServer(server: Server):
-  sqliteda.Save(collection, server.ServerId, server)
+  mongodb.UpsertSingleDoc(collection, 
+    {'ServerId': server.ServerId},
+    to_dict(server))
+  return True
 
 def DeleteSingleServer(server: Server):
-  sqliteda.Remove(collection, server.ServerId)
+  mongodb.DeleteDocs(collection, 
+    {'ServerId': server.ServerId})
+  return True
 
-def GetServers() -> list[Server]:
-  return [t for t in sqliteda.LoadAll(collection)]
+def GetAllServers() -> list[Server]:
+  serverList: list[Server] = []
+  servs = mongodb.GetManyDocs(collection, {}) or []
+  for s in servs:
+    serverList.append(Server.from_dict(s))
+  return serverList
