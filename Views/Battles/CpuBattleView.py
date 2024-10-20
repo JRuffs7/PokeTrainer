@@ -385,7 +385,6 @@ class CpuBattleView(discord.ui.View):
 			firstAttack = next((t for t in self.battle.Turns if t.TurnNum == self.battle.CurrentTurn and t.PokemonId == self.battle.TeamBPkmn and t.Move),None) == None
 			self.battle.TeamATrap = max(self.battle.TeamATrap - 1, 0)
 			self.battle.TeamAConfusion = max(self.battle.TeamAConfusion - 1, 0)
-			self.battle.TeamAConsAttacks = max(self.battle.TeamAConsAttacks - 1, 0)
 			self.battle.TeamASpecReduce = max(self.battle.TeamASpecReduce - 1, 0)
 			self.battle.TeamAPhysReduce = max(self.battle.TeamAPhysReduce - 1, 0)
 		else:
@@ -395,7 +394,6 @@ class CpuBattleView(discord.ui.View):
 			firstAttack = next((t for t in self.battle.Turns if t.TurnNum == self.battle.CurrentTurn and t.PokemonId == self.battle.TeamAPkmn and t.Move),None) == None
 			self.battle.TeamBTrap = max(self.battle.TeamBTrap - 1, 0)
 			self.battle.TeamBConfusion = max(self.battle.TeamBConfusion - 1, 0)
-			self.battle.TeamBConsAttacks = max(self.battle.TeamBConsAttacks - 1, 0)
 			self.battle.TeamBSpecReduce = max(self.battle.TeamBSpecReduce - 1, 0)
 			self.battle.TeamBPhysReduce = max(self.battle.TeamBPhysReduce - 1, 0)
 		attackData = next(p for p in self.battle.AllPkmnData if p.Id == attack.Pokemon_Id)

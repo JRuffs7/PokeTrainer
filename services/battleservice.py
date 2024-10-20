@@ -79,7 +79,7 @@ def CanChooseAttack(battle: CpuBattle, teamA: bool):
 				return (False, BattleAction.Charge)
 		return (False, BattleAction.Attack) if not mustLoaf else (True, BattleAction.Loaf)
 	
-	if turn.Move and turn.Move.Recharge:
+	if turn.Move and turn.Move.Recharge and turn.Action != BattleAction.Recharge:
 		return (False,BattleAction.Recharge)
 	
 	if (teamA and battle.TeamAConsAttacks > 0) or (not teamA and battle.TeamBConsAttacks > 0):
@@ -175,13 +175,12 @@ def ConsecutiveAttack(moveData: MoveData, battle: CpuBattle, teamA: bool):
 	if not moveData.ConsecutiveAttack:
 		return None
 	
-	if (teamA and battle.TeamAConsAttacks > 0) or (not teamA and battle.TeamAConsAttacks > 0):
-		if teamA:
-			battle.TeamAConsAttacks -= 1
-			return battle.TeamAConsAttacks == 0 and moveData.Id in [37,80,200,833]
-		if not teamA:
-			battle.TeamBConsAttacks -= 1
-			return battle.TeamBConsAttacks == 0 and moveData.Id in []
+	if teamA and battle.TeamAConsAttacks > 0:
+		battle.TeamAConsAttacks -= 1
+		return battle.TeamAConsAttacks == 0 and moveData.Id in [37,80,200,833]
+	if not teamA and battle.TeamBConsAttacks > 0:
+		battle.TeamBConsAttacks -= 1
+		return battle.TeamBConsAttacks == 0 and moveData.Id in [37,80,200,833]
 
 	numAttacks = 0
 	if moveData.Id in [37,80,200,833]:

@@ -5,7 +5,6 @@ from logs.logsetup import override_loglevels
 from webserver import keep_alive
 from dotenv import load_dotenv
 
-#Comment
 async def main():
   await discordbot.StartBot()
 
