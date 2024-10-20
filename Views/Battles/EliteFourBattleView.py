@@ -152,6 +152,7 @@ class EliteFourBattleView(CpuBattleView):
 		if not self.trainer.CurrentEliteFour:
 			msg = f'Starting an Elite Four Challenge will lock certain commands until the challenge is completed. The commands will unlock again once you fail or defeat all members of this Elite Four.\n\nDo you wish to continue?'
 		else:
+			commandlockservice.AddEliteFourLock(self.trainer.ServerId, self.trainer.UserId)
 			msg = f'You are challenging Elite Four {"Member" if self.leader.Id%5 != 0 else "Champion"} {self.leader.Name}!'
 		embed = discordservice.CreateEmbed(
 			'Elite Four Challenge!',

@@ -2,7 +2,7 @@ import logging
 from sqlitedict import SqliteDict
 
 errorLog = logging.getLogger('error')
-cacheFile = "dataaccess/utility/cache.sqlite3"
+cacheFile = "dataaccess/utility/locks.sqlite3"
 
 def GetAllKeys(table: str):
 	try:

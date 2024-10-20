@@ -60,9 +60,8 @@ def server_check(function):
   async def wrapper(self, *args, **kwargs):
     inter = args[0]
     if not inter.response.is_done():
-       await inter.response.defer()
-    serv = serverservice.GetServer(inter.guild_id)
-    if not serv:
+      await inter.response.defer()
+    if not serverservice.CheckServer(inter.guild_id):
       await discordservice_permission.SendError(inter, 'server')
       return
     return await function(self, *args, **kwargs)
@@ -73,7 +72,7 @@ def trainer_check(function):
   async def wrapper(self, *args, **kwargs):
     inter = args[0]
     if not inter.response.is_done():
-       await inter.response.defer()
+      await inter.response.defer()
     userId = next((int(o["value"]) for o in inter.data["options"] if o["type"] == 6), inter.user.id) if "options" in inter.data.keys() else inter.user.id
     if not trainerservice.CheckTrainer(inter.guild_id, userId if userId else inter.user.id):
       await discordservice_permission.SendError(inter, 'trainer')

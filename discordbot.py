@@ -30,19 +30,21 @@ async def StartBot():
       await discordBot.tree.sync()
       logger.info(f'Syncing complete.')
       
-    commandlockservice.DeleteAllLocks()
+    try:
+      os.remove('dataaccess/utility/locks.sqlite3')
+    except Exception:
+      pass
 
     try:
       updateStr = ''
       with open('updatefile.txt', 'r') as file:
-          updateStr = file.read()
+        updateStr = file.read()
       os.remove('updatefile.txt')
       if updateStr:
         updateStr += f"\n\nCheck out recent updates in more detail by using **/help update**\n\nFeel free to report any issues to the [Discord Server]({discordLink})\n\nDon't forget to [Upvote the Bot]({topggLink})!"
         allServers = serverservice.GetAllServers()
         for server in allServers:
           asyncio.run_coroutine_threadsafe(MessageThread(discordservice.CreateEmbed('New Update', updateStr, HelpColor), server), discordBot.loop)
-
     except FileNotFoundError:
       pass
     except Exception as e:

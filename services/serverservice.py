@@ -24,11 +24,14 @@ def RegisterServer(serverId: int, channelId: int, serverName: str):
 
 #region Data
 
+def CheckServer(serverId: int):
+  return serverda.CheckServer(serverId)
+
 def GetServer(serverId: int):
   return serverda.GetSingleServer(serverId)
 
 def GetAllServers():
-  return serverda.GetServers()
+  return serverda.GetAllServers()
 
 def UpsertServer(server: Server):
   return serverda.UpsertSingleServer(server)
@@ -37,39 +40,3 @@ def DeleteServer(server: Server):
   return serverda.DeleteSingleServer(server)
 
 #endregion
-
-#region Events
-
-def SpecialSpawnEvent(server: Server):
-  specialPokemon = pokemonservice.GetSpecialSpawn()
-  server.CurrentEvent = Event.from_dict({
-    'EventName': f'{pokemonservice.GetPokemonDisplayName(specialPokemon, None, False, False)} Spawn Event',
-    'EventType': EventType.SpecialSpawn.value,
-  })
-  UpsertServer(server)
-  return (specialPokemon, [t.UserId for t in trainerda.GetTrainers(server.ServerId) if specialPokemon.Pokemon_Id in t.Wishlist])
-
-def SpecialBattleEvent(server: Server):
-  specialTrainer = eventservice.GetRandomSpecialTrainer()
-  server.CurrentEvent = Event.from_dict({
-    'EventName': f'{specialTrainer.Name} Battle Event',
-    'EventType': EventType.SpecialBattle.value,
-  })
-  UpsertServer(server)
-  return specialTrainer
-
-async def EndEvent(server: Server):
-  if not server.CurrentEvent:
-    return
-  server.CurrentEvent = None
-  UpsertServer(server)
-
-#endregion
-
-def SwapChannel(server: Server, channelId):
-  if server.ChannelId == channelId:
-    return None
-  else:
-    server.ChannelId = channelId
-    serverda.UpsertSingleServer(server)
-    return server
