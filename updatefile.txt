@@ -1,5 +1,0 @@
-- Added more links for upvoting with a new discord invite link!
-- Fixed consecutive attacks like Rollout using PP every turn instead of on first attack only
-- Fixed an issue where defeating a Gym Leader the first time would display the wrong message
-- You can now use Abra/Ditto/Smeargle in your team. However, they will only know the move **Struggle** since their movesets are not implemented yet
-- Fixed an issue with recoil fainting displaying a swap message twice
