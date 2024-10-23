@@ -61,10 +61,10 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
       if b.Id not in trainer.Badges:
         commandlockservice.DeleteLock(trainer.ServerId, trainer.UserId)
         return await discordservice_pokemon.PrintSpawnLegendaryResponse(inter, 0, [])
-    if trainer.Region not in trainer.EliteFour and [p for p in trainer.OwnedPokemon if p.Pokemon_Id in [po.Id for po in pokemonservice.GetLegendaryInRegion(trainer.Region)]]:
+    if trainer.Region not in trainer.EliteFour and [p.PokedexId for p in pokemonservice.GetLegendaryInRegion(trainer.Region) if p in trainer.Pokedex]:
       commandlockservice.DeleteLock(trainer.ServerId, trainer.UserId)
       return await discordservice_pokemon.PrintSpawnLegendaryResponse(inter, 1, [])
-    pokemon = pokemonservice.SpawnLegendary(trainer.Region, trainerservice.GetShinyOdds(trainer), [p.Pokemon_Id for p in trainer.OwnedPokemon])
+    pokemon = pokemonservice.SpawnLegendary(trainer.Region, trainerservice.GetShinyOdds(trainer), trainer.Pokedex)
     if not pokemon:
       commandlockservice.DeleteLock(trainer.ServerId, trainer.UserId)
       return await discordservice_pokemon.PrintSpawnLegendaryResponse(inter, 2, [])

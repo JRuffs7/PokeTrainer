@@ -183,13 +183,13 @@ def SpawnPokemon(region: int, badgesInRegion: int, shinyOdds: int):
     spawn.CurrentHP = statservice.GenerateStat(spawn, evData, StatEnum.HP)
   return (spawn,choice(range(100)) < 1)
 
-def SpawnLegendary(region: int, shinyOdds: int, ownedList: list[int]):
-  pokemonList = [p for p in pokemonda.GetAllPokemon() if p.Generation == region and IsLegendaryPokemon(p) and p.Id not in ownedList]
+def SpawnLegendary(region: int, shinyOdds: int, pokedex: list[int]):
+  pokemonList = [p for p in pokemonda.GetAllPokemon() if p.Generation == region and IsLegendaryPokemon(p) and p.Id not in pokedex]
   if not pokemonList:
     return None
   evolveList = []
   for p in pokemonList:
-    if p.EvolvesInto:
+    if p.EvolvesInto and p.PokedexId != 386:
       evolveList.extend([e.EvolveID for e in p.EvolvesInto])
   pokemon = None
   while not pokemon:
@@ -197,7 +197,7 @@ def SpawnLegendary(region: int, shinyOdds: int, ownedList: list[int]):
     if pokemon.Id in evolveList:
       pokemon = None
 
-  level = 50 if pokemon.IsMythical or pokemon.IsParadox or pokemon.Rarity < 10 else 60 if pokemon.IsUltraBeast else 75
+  level = 50 if (pokemon.IsMythical or pokemon.IsParadox or pokemon.Rarity < 10) else 60 if pokemon.IsUltraBeast else 75
   spawn = GenerateSpawnPokemon(pokemon, level, shinyOdds)
   return spawn
 
