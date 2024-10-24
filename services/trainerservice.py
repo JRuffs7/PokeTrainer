@@ -339,13 +339,15 @@ def TryAddToPokedex(trainer: Trainer, data: PokemonData, shiny: bool):
   if shiny and data.Id not in trainer.Shinydex:
     trainer.Shinydex.append(data.Id)
 
-def Evolve(trainer: Trainer, initialPkmn: Pokemon, initialData: PokemonData, evolveMon: EvolveData):
+def Evolve(trainer: Trainer, initialPkmn: Pokemon, initialData: PokemonData, evolveMon: EvolveData, combine: Pokemon|None):
   newData = pokemonservice.GetPokemonById(evolveMon.EvolveID)
   newPkmn = pokemonservice.EvolvePokemon(initialPkmn, initialData, newData)
   index = trainer.OwnedPokemon.index(initialPkmn)
   trainer.OwnedPokemon[index] = newPkmn
   if evolveMon.ItemNeeded:
     ModifyItemList(trainer, str(evolveMon.ItemNeeded), -1)
+  if evolveMon.PokemonNeeded:
+    trainer.OwnedPokemon.remove(combine)
   TryAddToPokedex(trainer, newData, newPkmn.IsShiny)
   TryAddMissionProgress(trainer, 'Evolve', [])
   if newData.PokedexId == 869 and initialPkmn.IsShiny:

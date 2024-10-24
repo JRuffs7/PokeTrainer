@@ -110,13 +110,17 @@ class PokedexView(discord.ui.View):
 				evolveArr.append([evData.Name])
 				evolveArr.append([''.join(['-' for _ in evData.Name])])
 				if e.EvolveLevel:
-					evolveArr.append([f'Level:  {e.EvolveLevel}'])
+					evolveArr.append([f'Level:   {e.EvolveLevel}'])
 				if e.GenderNeeded:
-					evolveArr.append([f'Gender: {"Female" if e.GenderNeeded == 1 else "Male"}'])
+					evolveArr.append([f'Gender:  {"Female" if e.GenderNeeded == 1 else "Male"}'])
 				if e.ItemNeeded:
-					evolveArr.append([f'Item:   {itemservice.GetItem(e.ItemNeeded).Name}'])
+					evolveArr.append([f'Item:    {itemservice.GetItem(e.ItemNeeded).Name}'])
 				if e.MoveNeeded:
-					evolveArr.append([f'Move:   {moveservice.GetMoveById(e.MoveNeeded).Name}'])
+					evolveArr.append([f'Move:    {moveservice.GetMoveById(e.MoveNeeded).Name}'])
+				if e.PokemonNeeded:
+					evolveArr.append([f'Combine: {pokemonservice.GetPokemonById(e.PokemonNeeded).Name}'])
+				if not e.EvolveLevel and not e.GenderNeeded and not e.ItemNeeded and not e.MoveNeeded and not e.PokemonNeeded:
+					evolveArr.append(['No Requirements'])
 			if not evolveArr:
 				evolveArr.append([f'This Pokemon does not evolve.'])
 			pkmnData = t2a(

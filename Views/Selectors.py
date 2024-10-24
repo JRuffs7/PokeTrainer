@@ -26,13 +26,14 @@ class PokemonSelector(discord.ui.Select):
 		await self.view.PokemonSelection(inter, self.values if self.max else self.values[0])
 
 class EvolveSelector(discord.ui.Select):
-	def __init__(self, data: list):
+	def __init__(self, data: list, default: int = None):
 		if len(data) > 25:
 				data = data[:25]
 		options=[discord.SelectOption(
 			label=f"{d['Pokemon'].Name}",
 			description= f"{d['Description']}",
-			value=f"{d['Pokemon'].Id}"
+			value=f"{d['Pokemon'].Id}",
+			default=(default and d['Pokemon'].Id == default)
 		) for d in data]
 		super().__init__(options=options, placeholder='Evolve Into...')
 	

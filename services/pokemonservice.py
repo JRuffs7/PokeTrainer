@@ -176,7 +176,7 @@ def SpawnPokemon(region: int, badgesInRegion: int, shinyOdds: int):
   range2 = 10 + (5*badgesInRegion)
   level = choice(range(range1, range2))
   spawn = GenerateSpawnPokemon(pokemon, level, shinyOdds)
-  evos = AvailableEvolutions(spawn, pokemon, [])
+  evos = AvailableEvolutions(spawn, pokemon, None, True)
   if evos and spawn.Level >= 20 and choice(range(100)) < 30:
     evData = GetPokemonById(choice(evos))
     spawn = EvolvePokemon(spawn, pokemon, evData)
@@ -313,16 +313,18 @@ def NeededExperience(pokemon: Pokemon, data: PokemonData):
   currLvlExp, nextLvlExp = statservice.ExpCalculator(pokemon, data)
   return nextLvlExp - currLvlExp
 
-def AvailableEvolutions(pokemon: Pokemon, pkmnData: PokemonData, items: list[Item], spawn: bool = False):
+def AvailableEvolutions(pokemon: Pokemon, pkmnData: PokemonData, trainer: Trainer, spawn: bool = False):
   evolveIdList: list[int] = []
   for evData in pkmnData.EvolvesInto:
     if evData.EvolveLevel and pokemon.Level < evData.EvolveLevel:
       continue
     if evData.GenderNeeded and ((evData.GenderNeeded == 1 and not pokemon.IsFemale) or (evData.GenderNeeded == 2 and pokemon.IsFemale)):
       continue
-    if evData.ItemNeeded and not next((i for i in items if i.Id == evData.ItemNeeded), None):
+    if trainer and evData.ItemNeeded and not next((i for i in trainerservice.GetTrainerItemList(trainer) if i.Id == evData.ItemNeeded), None):
       continue
     if not spawn and evData.MoveNeeded and not next((m for m in pokemon.LearnedMoves if m.MoveId == evData.MoveNeeded), None):
+      continue
+    if trainer and evData.PokemonNeeded and evData.PokemonNeeded not in [p.Pokemon_Id for p in trainer.OwnedPokemon]:
       continue
     evolveIdList.append(evData.EvolveID)
   return evolveIdList
@@ -366,7 +368,7 @@ def EvolvePokemon(initial: Pokemon, initialData: PokemonData, evolveData: Pokemo
 def GetPokemonThatCanEvolve(trainer: Trainer):
   trainerTeam = trainerservice.GetTeam(trainer)
   dataList = GetPokemonByIdList([p.Pokemon_Id for p in trainerTeam])
-  return [p for p in trainerTeam if AvailableEvolutions(p, next(pk for pk in dataList if pk.Id == p.Pokemon_Id), trainerservice.GetTrainerItemList(trainer))]
+  return [p for p in trainerTeam if AvailableEvolutions(p, next(pk for pk in dataList if pk.Id == p.Pokemon_Id), trainer)]
 
 def SimulateLevelGain(pokemon: Pokemon, data: PokemonData, exp: int):
   simPokemon = Pokemon.from_dict({'Level': pokemon.Level, 'CurrentExp': pokemon.CurrentExp, 'IVs': pokemon.IVs, 'CurrentHP': pokemon.CurrentHP})

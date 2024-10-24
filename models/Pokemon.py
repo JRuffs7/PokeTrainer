@@ -16,6 +16,7 @@ class EvolveData:
   GenderNeeded: int|None
   ItemNeeded: int|None
   MoveNeeded: int|None
+  PokemonNeeded: int|None
 
   def __init__(self, dict):
     vars(self).update(dict)

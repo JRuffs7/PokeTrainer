@@ -30,7 +30,7 @@
 	"evolve": [
 		{
 			"Title": "Cannot Evolve",
-			"Body": "You have no Pokemon in your party that are able to evolve. Level your Pokemon up by fighting or feeding it candy."
+			"Body": "You have no Pokemon in your party that are able to evolve. Learn how to evolve Pokemon using **/pokedex** on the last page."
 		}
 	],
 	"givecandy": [

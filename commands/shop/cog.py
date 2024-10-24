@@ -70,7 +70,7 @@ class ShopCommands(commands.Cog, name="ShopCommands"):
       trainer.Money -= cost
     trainerservice.UpsertTrainer(trainer)
     commandlockservice.DeleteLock(trainer.ServerId, trainer.UserId)
-    return await discordservice_shop.PrintBuyResponse(inter, 1, [amount, it.Name, cost, trainer.Money])
+    return await discordservice_shop.PrintBuyResponse(inter, 1, [trainer.UserId, amount, it.Name, cost, trainer.Money])
 
 
   async def sell_autocomplete(self, inter: Interaction, current: str) -> list[app_commands.Choice[int]]:
@@ -126,7 +126,7 @@ class ShopCommands(commands.Cog, name="ShopCommands"):
       trainer.Money += cost
     trainerservice.UpsertTrainer(trainer)
     commandlockservice.DeleteLock(trainer.ServerId, trainer.UserId)
-    return await discordservice_shop.PrintSellResponse(inter, 1, [amount, name, cost, trainer.Money])
+    return await discordservice_shop.PrintSellResponse(inter, 1, [trainer.UserId, amount, name, cost, trainer.Money])
 
 async def setup(bot: commands.Bot):
   await bot.add_cog(ShopCommands(bot))

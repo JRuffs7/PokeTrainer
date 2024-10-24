@@ -1,6 +1,6 @@
 [
   {
-    "CaptureRate": 100,
+    "CaptureRate": 100.0,
     "Id": 1,
     "Name": "Master Ball",
     "Url": "https://pokeapi.co/api/v2/item/1/",
@@ -11,7 +11,7 @@
     "SellAmount": 1000
   },
   {
-    "CaptureRate": 2,
+    "CaptureRate": 2.0,
     "Id": 2,
     "Name": "Ultra Ball",
     "Url": "https://pokeapi.co/api/v2/item/2/",
@@ -33,7 +33,7 @@
     "SellAmount": 300
   },
   {
-    "CaptureRate": 1,
+    "CaptureRate": 1.0,
     "Id": 4,
     "Name": "Poké Ball",
     "Url": "https://pokeapi.co/api/v2/item/4/",
@@ -469,6 +469,26 @@
     "Name": "Ice Stone",
     "Url": "https://pokeapi.co/api/v2/item/885/",
     "Sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/ice-stone.png",
+    "Description": "Item used to evolve a Pokemon.",
+    "EvolutionItem": true,
+    "BuyAmount": 3000,
+    "SellAmount": 1500
+  },
+  {
+    "Id": 1161,
+    "Name": "Rusted Sword",
+    "Url": "https://pokeapi.co/api/v2/item/1161/",
+    "Sprite": null,
+    "Description": "Item used to evolve a Pokemon.",
+    "EvolutionItem": true,
+    "BuyAmount": 3000,
+    "SellAmount": 1500
+  },
+  {
+    "Id": 1162,
+    "Name": "Rusted Shield",
+    "Url": "https://pokeapi.co/api/v2/item/1162/",
+    "Sprite": null,
     "Description": "Item used to evolve a Pokemon.",
     "EvolutionItem": true,
     "BuyAmount": 3000,

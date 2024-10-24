@@ -6,7 +6,7 @@
 		},
 		{
 			"Title": "Purchase Complete",
-			"Body": "You purchased **{0} {1}(s)** for ${2}.\nYou now have ${3}."
+			"Body": "<@{0}> purchased **{1} {2}(s)** for ${3}.\nThey now have ${4}."
 		}
 	],
 	"sell": [
@@ -16,7 +16,7 @@
 		},
 		{
 			"Title": "Sale Complete",
-			"Body": "You sold **{0} {1}(s)** for ${2}.\nYou now have ${3}."
+			"Body": "<@{0}> sold **{1} {2}(s)** for ${3}.\nThey now have ${4}."
 		}
 	],
 	"specialshop": [
