@@ -26,6 +26,7 @@ class Trainer:
   Region: int = 1
   DailyMission: TrainerMission | None = None
   WeeklyMission: TrainerMission | None = None
+  LastUpdated: str | None = None
 
   @classmethod
   def from_dict(cls, dict):

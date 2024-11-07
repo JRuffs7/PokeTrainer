@@ -1,6 +1,0 @@
-- Updated spawn rates for **/spawnlegendary**
-- Updated Deoxys **/pokedex** evolve page wording
-- Added moves to some Pokemon learn sets
-- Added base **Zacian** and **Zamazenta** with evolutions into the Sword and Crown
-- Added combination evolution for **Calyrex** and **Spectrier/Glastrier**
-- Modified messages for **/buy** and **/sell**
