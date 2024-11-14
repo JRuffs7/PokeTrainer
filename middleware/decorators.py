@@ -1,6 +1,8 @@
 import functools
 import logging
 import functools
+import os
+import socket
 
 import discord
 
@@ -20,7 +22,7 @@ def method_logger(eph: bool):
         if not args[0].guild:
           return
         await args[0].response.defer(ephemeral=eph)
-        cmdLog.info(f"{args[0].guild.name} - {function.__name__.upper()} command called")
+        cmdLog.info(f"{socket.gethostname()}-{os.getpid()} -- {args[0].guild.name} - {function.__name__.upper()} command called")
         return await function(self, *args, **kwargs)
       except Exception as e:
         errorStr = str(e)
