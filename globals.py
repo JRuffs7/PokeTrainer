@@ -26,7 +26,6 @@ ShortDateFormat = '%m/%d/%Y'
 botImage = 'https://imgur.com/MIfTed5.png'
 discordLink = 'https://discord.gg/W9T4K7fyYu'
 topggLink = 'https://top.gg/bot/1151657435073875988'
-discordbotlistLink = 'https://discordbotlist.com/servers/poketrainer/upvote'
 
 AdminList = [
   215624857793069056

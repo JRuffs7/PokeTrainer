@@ -4,7 +4,7 @@ import os
 
 import discord
 from discord.ext import commands
-from globals import HelpColor, discordLink, topggLink, discordbotlistLink
+from globals import HelpColor, discordLink, topggLink
 from models.Server import Server
 
 from services import serverservice
@@ -41,7 +41,7 @@ async def StartBot():
         updateStr = file.read()
       os.remove('updatefile.txt')
       if updateStr:
-        updateStr += f"\n\nCheck out recent updates in more detail by using **/help update**\n\nFeel free to report any issues to the [Discord Server]({discordLink})\nDon't forget to upvote the bot at [Top.gg]({topggLink}) or [DiscordBotList]({discordbotlistLink})!"
+        updateStr += f"\n\nCheck out recent updates in more detail by using **/help update**\n\nFeel free to report any issues to the [Discord Server]({discordLink})\nDon't forget to upvote the bot at [Top.gg]({topggLink})!"
         allServers = serverservice.GetAllServers()
         for server in allServers:
           asyncio.run_coroutine_threadsafe(MessageThread(discordservice.CreateEmbed('New Update', updateStr, HelpColor), server), discordBot.loop)
