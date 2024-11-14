@@ -223,7 +223,6 @@ class CpuBattleView(discord.ui.View):
 		if self.userturn.Action == BattleAction.Flee:
 			self.battle.Turns.insert(0, self.userturn)
 			if self.fleeattempts == 3 or battleservice.FleeAttempt(self.battle, self.fleeattempts):
-				trainerservice.UpsertTrainer(self.trainer)
 				return await self.next_button(inter)
 			self.usermessage.append(f'{pokemonservice.GetPokemonDisplayName(self.battle.TeamAPkmn, teamAData, False, False)} failed to run away!')
 
@@ -235,7 +234,9 @@ class CpuBattleView(discord.ui.View):
 				await self.message.edit(embeds=self.GetEmbeds(), view=self)
 			self.battle.Turns.insert(0, self.userturn)
 			if battleservice.TryCapture(self.userturn.ItemUsed, self.trainer, self.battle, self.ditto):
-				trainerservice.UpsertTrainer(self.trainer)
+				self.candy = itemservice.TryGetCandy(trainerservice.HasRegionReward(self.trainer, 4))
+				if self.candy:
+					trainerservice.ModifyItemList(self.trainer, str(self.candy.Id), 1)
 				return await self.next_button(inter)
 			self.usermessage.append(f'Tried to capture using a **{self.userturn.ItemUsed.Name}**...it broke free!')
 

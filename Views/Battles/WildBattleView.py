@@ -18,14 +18,13 @@ class WildBattleView(CpuBattleView):
 		super(WildBattleView, self).__init__(trainer, pokemonservice.GetPokemonDisplayName(self.pokemon, self.data), [pokemon], True, ditto)
 
 	async def on_timeout(self):
-		trainerservice.UpsertTrainer(self.trainer)
 		if self.ditto:
 			message = f"**{pokemonservice.GetPokemonDisplayName(self.pokemon, self.data)}** revealed it's true form!"
 			self.data = pokemonservice.GetPokemonById(132)
 			self.pokemon = pokemonservice.GenerateSpawnPokemon(self.data, self.pokemon.Level, trainerservice.GetShinyOdds(self.trainer))
-			message += f'\n**{pokemonservice.GetPokemonDisplayName(self.pokemon, self.data)} (Lvl. {self.pokemon.Level})** ran away!'
+			message += f'\n**{pokemonservice.GetPokemonDisplayName(self.pokemon, self.data)} (Lvl. {self.pokemon.Level})** ran away!\nAll items and HP reset.'
 		else:
-			message = f'**{pokemonservice.GetPokemonDisplayName(self.pokemon, self.data)} (Lvl. {self.pokemon.Level})** ran away!'
+			message = f'**{pokemonservice.GetPokemonDisplayName(self.pokemon, self.data)} (Lvl. {self.pokemon.Level})** ran away!\nAll items and HP reset.'
 		embed = discordservice.CreateEmbed(
 				'Ran Away', 
 				message, 
@@ -36,19 +35,13 @@ class WildBattleView(CpuBattleView):
 	
 	@defer
 	async def next_button(self, inter: discord.Interaction):
+		trainerservice.UpsertTrainer(self.trainer)
 		commandlockservice.DeleteLock(inter.guild.id, inter.user.id)
 		self.clear_items()
 		await self.message.delete(delay=0.1)
 		ephemeral = False
 		if self.victory == None and self.userturn.Action == BattleAction.Pokeball:
-			#Sinnoh Reward
-			self.candy = itemservice.TryGetCandy(trainerservice.HasRegionReward(self.trainer, 4))
-			if self.candy:
-				candyStr = f'\nFound one **{self.candy.Name}**!'
-				trainerservice.ModifyItemList(self.trainer, str(self.candy.Id), 1)
-				trainerservice.UpsertTrainer(self.trainer)
-			else:
-				candyStr = ''
+			candyStr = f'\nFound one **{self.candy.Name}**!' if self.candy else ''
 			if self.ditto:
 				caughtMsg = f"**{pokemonservice.GetPokemonDisplayName(self.pokemon, self.data)}** revealed it's true form!"
 				self.data = pokemonservice.GetPokemonById(132)
@@ -116,7 +109,6 @@ class WildBattleView(CpuBattleView):
 							pkmn, 
 							pkmnData, 
 							self.experience)
-				trainerservice.UpsertTrainer(self.trainer)
 
 				if not self.victory:
 					self.battle.TeamAPkmn.CurrentHP = 0

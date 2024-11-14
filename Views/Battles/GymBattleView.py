@@ -39,6 +39,8 @@ class GymBattleView(CpuBattleView):
 	
 	@defer
 	async def next_button(self, inter: discord.Interaction):
+		trainerservice.UpsertTrainer(self.trainer)
+		commandlockservice.DeleteLock(self.trainer.ServerId, self.trainer.UserId)
 		self.clear_items()
 		await self.message.delete(delay=0.1)
 		ephemeral = False
@@ -97,8 +99,6 @@ class GymBattleView(CpuBattleView):
 						rewardMoney = self.leader.Reward[1]
 						self.trainer.Badges.append(self.leader.BadgeId)
 					self.trainer.Money += rewardMoney
-				commandlockservice.DeleteLock(self.trainer.ServerId, self.trainer.UserId)
-				trainerservice.UpsertTrainer(self.trainer)
 
 				if not self.victory:
 					self.battle.TeamAPkmn.CurrentHP = 0

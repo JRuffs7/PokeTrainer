@@ -1,0 +1,2 @@
+- Updated some documentation
+- Fixed an issue with data reversion for some wild battles

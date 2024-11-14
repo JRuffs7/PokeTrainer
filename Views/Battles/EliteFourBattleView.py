@@ -76,6 +76,8 @@ class EliteFourBattleView(CpuBattleView):
 	
 	@defer
 	async def next_button(self, inter: discord.Interaction):
+		trainerservice.UpsertTrainer(self.trainer)
+		commandlockservice.DeleteLock(self.trainer.ServerId, self.trainer.UserId)
 		self.clear_items()
 		await self.message.delete(delay=0.1)
 		ephemeral = False
@@ -134,8 +136,6 @@ class EliteFourBattleView(CpuBattleView):
 						commandlockservice.DeleteEliteFourLock(self.trainer.ServerId, self.trainer.UserId)
 					else:
 						self.trainer.CurrentEliteFour.append(self.leader.Id)
-				commandlockservice.DeleteLock(self.trainer.ServerId, self.trainer.UserId)
-				trainerservice.UpsertTrainer(self.trainer)
 
 				if not self.victory:
 					self.battle.TeamAPkmn.CurrentHP = 0
