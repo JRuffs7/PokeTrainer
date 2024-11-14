@@ -3,6 +3,7 @@ import os
 from pymongo.mongo_client import MongoClient
 
 errorLog = logging.getLogger('error')
+debugLog = logging.getLogger('debug')
 
 def NumberOfDocs(collection, filters):
   try:
@@ -36,6 +37,7 @@ def UpsertSingleDoc(collection, filters, object):
     with MongoClient(os.environ.get('MONGOCONN')) as client:
       coll = client[os.environ.get('MONGONAME')][collection]
       coll.replace_one(filters, object, upsert=True)
+      debugLog.info(f'UPDATE')
   except Exception as e:
     errorLog.error(f'Mongo Upsert Exception: {e}')
     return None
