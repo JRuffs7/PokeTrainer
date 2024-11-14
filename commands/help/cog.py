@@ -45,13 +45,13 @@ class HelpCommands(commands.Cog, name="HelpCommands"):
       tr = discordservice.CreateEmbed("", helpList[2], HelpColor)
       cm = discordservice.CreateEmbed("", helpList[3], HelpColor)
 
-      await discordservice.SendDMs(inter, [su, sp])
-      await discordservice.SendDMs(inter, [tr, cm])
+      if (not await discordservice.SendDMs(inter, [su, sp])) or (not await discordservice.SendDMs(inter, [tr, cm])):
+        return await discordservice_help.PrintHelpResponse(inter, 1, [helpList[3]])
       return await discordservice_help.PrintHelpResponse(inter, 0)
     else:
       helpComm = helpservice.BuildCommandHelp(command, inter.user.guild_permissions.administrator)
       if not helpComm:
-        return await discordservice_help.PrintHelpResponse(inter, 1, command.lower())
+        return await discordservice_help.PrintHelpResponse(inter, 2, [command.lower()])
       return await discordservice_help.PrintCommandHelp(inter, helpComm)
       
 

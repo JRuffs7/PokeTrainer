@@ -11,9 +11,11 @@ async def SendEmbed(interaction: Interaction, embed: Embed):
 
 async def SendDMs(interaction: Interaction, embedList: list[Embed]):
   try:
-    return await interaction.user.send(embeds=embedList)
+    await interaction.user.send(embeds=embedList)
+    return True
   except Exception as e:
     errorLogger.error(f'DM Error: {e}')
+    return False
 
 
 async def SendCommandResponse(interaction: Interaction, filename: str, command: str, responseInd: int, color, params: list=[]):

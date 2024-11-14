@@ -28,8 +28,8 @@
   "Trainer": [
     {
       "Name": "starter",
-      "ShortString": "Begin your PokeTrainer journey.",
-      "HelpString": "Proper command usage: **/starter *[starter]***\nParameters:\n**starter** - The Pokemon you wish to start with in your next journey.\n\n\nThis command will be used for two purposes: start your journey, or move to the next region. Either way, you will be given three starters to choose from for the region you are exploring. Beginners will start in the *Kanto* region. You will also receive $500 and 5 Pokeballs regardless of if you are new or moving on. Use **/trainer** to view your stats and **/inventory** to view your items such as Pokeballs and Potions. Good luck **/spawn**ing",
+      "ShortString": "Begin your PokeTrainer journey in any region.",
+      "HelpString": "Proper command usage: **/starter *[starter]***\nParameters:\n**starter** - The Pokemon you wish to start with in your next journey.\n\nThis command will be used to select a starter Pokemon from any of the 9 regions. Once you have selected your starter for a region, you can only obtain the others of that same regions by **/trade**, so choose carefully!\n\nThis command will also move you into that region. Use **/changeregion** to move to any other available region you have unlocked.",
       "RequiresAdmin": false
     },
     {
@@ -94,8 +94,8 @@
     },
     {
       "Name": "resettrainer",
-      "ShortString": "Reset your trainer progress.",
-      "HelpString": "Proper command usage: **/resettrainer *starter***\nParameters:\n**starter** - Pokemon you wish to restart with.\n\nThis command will offer to reset your trainer progress and stats. It will clear your badges, inventory, Pokemon box, and region completion. You may choose a Kanto starter to receive as your 'new' starter Pokemon.\n\nIt will give you the option to keep any shiny Pokemon you may have obtained, although they will not count toward your Pokedex progress, will be reset to Level 1, and will revert back to their initial stage (if applicable).",
+      "ShortString": "Reset your trainer progress (maybe for shiny starter hunting).",
+      "HelpString": "Proper command usage: **/resettrainer *starter***\nParameters:\n**starter** - Pokemon you wish to restart with.\n\nThis command will offer to reset your trainer progress and stats. It will clear your badges, inventory, Pokemon box, and any region completion. You may choose any starter to receive as your 'new' starter Pokemon.\n\nIt will give you the option to keep any shiny Pokemon you may have obtained, although they will not count toward your Pokedex progress, will be reset to Level 1, and will revert back to their initial stage (if applicable).",
       "RequiresAdmin": false
     },
     {

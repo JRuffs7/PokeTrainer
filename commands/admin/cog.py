@@ -1,6 +1,8 @@
 import asyncio
 import logging
+import os
 from random import choice
+import socket
 import uuid
 from discord import File, Member, TextChannel
 from discord.ext import commands
@@ -116,6 +118,11 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 		if not ctx.guild:
 			return
 		commandlockservice.DeleteLock(ctx.guild.id, user.id if user else ctx.author.id)
+
+	@commands.command(name="gethost")
+	@is_bot_admin
+	async def gethost(self, ctx: commands.Context):
+		return await ctx.reply(f'{socket.gethostname()} - {os.getpid()}')
 
 	#endregion
 

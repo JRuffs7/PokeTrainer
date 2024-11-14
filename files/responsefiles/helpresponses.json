@@ -5,6 +5,10 @@
 			"Body": "For more information on specific commands, use **/help** and specify a command or action."
 		},
 		{
+			"Title": "Help DM Failed",
+			"Body": "The basic **/help** command is too large to send over a text channel and must be sent through DMs. Either you have DMs blocked, or there was an issue sending the message. To get the full message, make sure your DMs are available to PokeTrainer and try again. For now, here are the commands available:\n\n{0}"
+		},
+		{
 			"Title": "Invalid Command",
 			"Body": "The {0} command either does not exist or is restricted to administrators only. To find commands you may have access to, use **/help** for a full list."
 		}

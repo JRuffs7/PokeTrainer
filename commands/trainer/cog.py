@@ -246,16 +246,11 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
     else:
       trainer = trainerservice.StartTrainer(pkmn, inter.guild_id, inter.user.id)
       title = f"{inter.user.display_name}'s PokeTrainer Journey Begins!"
-      desc = f'Starting Money: ${trainer.Money}\nStarting Pokeballs: 5'
-      embed2 = discordservice.CreateEmbed(
-            f"Welcome to PokeTrainer!",
-            f"You just began your journey in the server {inter.guild.name}. Use commands such as **/spawn** to interact with the bot! More interactions can be found using the **/help** command. Don't forget your **/daily** reward!",
-            HelpColor)
-      await discordservice.SendDMs(inter, [embed2])
+      desc = f"**Starting Money: ${trainer.Money}**\n**Starting Pokeballs: 5**\n\nWelcome to PokeTrainer! Use **/help** to find all the commands you can use! Don't forget your **/daily** reward!"
     starter = next(p for p in trainer.OwnedPokemon if p.Id in trainer.Team)
     embed = discordservice.CreateEmbed(
         title,
-        f'Starter: {pokemonservice.GetPokemonDisplayName(starter, pkmn)}\n{desc}',
+        f'**Starter: {pokemonservice.GetPokemonDisplayName(starter, pkmn)}**\n{desc}',
         TrainerColor)
     embed.set_image(url=pokemonservice.GetPokemonImage(starter, pkmn))
     await inter.followup.send(embed=embed)
