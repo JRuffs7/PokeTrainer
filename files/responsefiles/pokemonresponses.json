@@ -77,6 +77,10 @@
 		{
 			"Title": "Failed To Spawn",
 			"Body": "Something went wrong trying to spawn a Pokemon. This interaction still went towards any egg progress you may have."
+		},
+		{
+			"Title": "Cannot Fight",
+			"Body": "You do not have any Pokemon available to fight! Visit the **/pokecenter** to heal and try again."
 		}
 	],
 	"spawnlegendary": [

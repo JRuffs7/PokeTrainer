@@ -1,20 +1,12 @@
 {
 	"elitefour": [
 		{
-			"Title": "No Pokemon Available",
-			"Body": "Your current team is wiped out! Visit the **/pokecenter** to revive your team, or swap them out with **/modifyteam**."
+			"Title": "Cannot Fight",
+			"Body": "You do not have any Pokemon available to fight! Visit the **/pokecenter** to heal and try again."
 		},
 		{
 			"Title": "Not Enough Badges",
 			"Body": "You have not completed the Gym Challenge for this region yet. Please defeat all Gym Leaders through **/gymbattle** then try again."
-		},
-		{
-			"Title": "Incorrect Region",
-			"Body": "The Gym Leader you specified is in the **{0}** region! Swap to that region using **/changeregion** in order to battle them."
-		},
-		{
-			"Title": "Too High Level",
-			"Body": "You are using Pokemon in your team that exceed this Gym Leaders level cap of: {0}\n\nLook at **/gyminfo** for more details about this gym.\nUse **/modifyteam** to swap out for Pokemon within the level cap."
 		}
 	],
 	"exitelitefour": [
@@ -29,8 +21,8 @@
 	],
 	"gymbattle": [
 		{
-			"Title": "No Pokemon Available",
-			"Body": "Your current team is wiped out! Visit the **/pokecenter** to revive your team, or swap them out with **/modifyteam**."
+			"Title": "Cannot Fight",
+			"Body": "You do not have any Pokemon available to fight! Visit the **/pokecenter** to heal and try again."
 		},
 		{
 			"Title": "Gym Leader Does Not Exist",

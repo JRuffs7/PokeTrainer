@@ -46,7 +46,10 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
     trainerservice.EggInteraction(trainer)
     if not pokemon:
       commandlockservice.DeleteLock(trainer.ServerId, trainer.UserId)
-      await discordservice_pokemon.PrintSpawnResponse(inter, 0, [])
+      return await discordservice_pokemon.PrintSpawnResponse(inter, 0, [])
+    if not [t for t in trainerservice.GetTeam(trainer) if t.CurrentHP > 0]:
+      commandlockservice.DeleteLock(trainer.ServerId, trainer.UserId)
+      return await discordservice_pokemon.PrintSpawnResponse(inter, 1, [])
     await WildBattleView(trainer, pokemon, ditto).send(inter)
 
   @app_commands.command(name="spawnlegendary",

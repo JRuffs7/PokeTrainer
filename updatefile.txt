@@ -1,2 +1,2 @@
-- Updated some documentation
-- Fixed an issue with data reversion for some wild battles
+- Fixed an issue with trainers being able to spawn with no conscious Pokemon on their team
+- Fixed an issue where trainers could not add a Pokemon to the Daycare when choosing between multiple of the same species

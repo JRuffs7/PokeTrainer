@@ -147,11 +147,11 @@ class DayCareAddView(discord.ui.View):
 		self.pokemonchoice = choice
 
 	@defer
-	async def cancel_button(self, inter: discord.Interaction, button: discord.ui.Button):
+	async def cancel_button(self, inter: discord.Interaction):
 		await self.on_timeout()
 
 	@defer
-	async def submit_button(self, inter: discord.Interaction, button: discord.ui.Button):
+	async def submit_button(self, inter: discord.Interaction):
 		if not self.pokemonchoice:
 			return
 		await self.AddToDaycare()

@@ -80,7 +80,7 @@ class EliteFourBattleView(CpuBattleView):
 		commandlockservice.DeleteLock(self.trainer.ServerId, self.trainer.UserId)
 		self.clear_items()
 		await self.message.delete(delay=0.1)
-		ephemeral = False
+		self.stop()
 		if self.victory:
 			rewardStr = f'<@{inter.user.id}> defeated **Elite Four {"Member" if self.leader.Id%5 != 0 else "Champion"} {self.leader.Name}**!\nWon ${int(self.leader.Reward[1]/2)}!'
 			if self.leader.Id%5 == 0:
@@ -92,7 +92,7 @@ class EliteFourBattleView(CpuBattleView):
 			embed = discordservice.CreateEmbed('Victory', rewardStr, BattleColor, thumbnail=self.leader.Sprite)
 		else:
 			embed = discordservice.CreateEmbed('Defeat', f'<@{inter.user.id}> was defeated by **Elite Four {"Member" if self.leader.Id%5 != 0 else "Champion"} {self.leader.Name}**.\nRan to the PokeCenter and revived your party.', BattleColor)
-		return await inter.followup.send(embed=embed, view=self, ephemeral=ephemeral)
+		return await inter.followup.send(embed=embed)
 	
 	def CheckFainting(self, pokemon: Pokemon, data: PokemonData):
 		if pokemon.CurrentHP == 0:

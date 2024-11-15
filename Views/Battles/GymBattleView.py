@@ -43,7 +43,7 @@ class GymBattleView(CpuBattleView):
 		commandlockservice.DeleteLock(self.trainer.ServerId, self.trainer.UserId)
 		self.clear_items()
 		await self.message.delete(delay=0.1)
-		ephemeral = False
+		self.stop()
 		if self.victory:
 			if self.first:
 				rewardStr = f'<@{inter.user.id}> defeated **Gym leader {self.leader.Name}** and obtained the {gymservice.GetBadgeById(self.leader.BadgeId).Name} Badge!\nWon ${self.leader.Reward[1]}!'
@@ -57,7 +57,7 @@ class GymBattleView(CpuBattleView):
 			rewardStr,
 			BattleColor, 
 			thumbnail=gymservice.GetBadgeById(self.leader.BadgeId).Sprite)
-		return await inter.followup.send(embed=embed, view=self, ephemeral=ephemeral)
+		return await inter.followup.send(embed=embed)
 	
 	def CheckFainting(self, pokemon: Pokemon, data: PokemonData):
 		if pokemon.CurrentHP == 0:

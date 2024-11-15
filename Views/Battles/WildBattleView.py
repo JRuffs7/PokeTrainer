@@ -39,7 +39,7 @@ class WildBattleView(CpuBattleView):
 		commandlockservice.DeleteLock(inter.guild.id, inter.user.id)
 		self.clear_items()
 		await self.message.delete(delay=0.1)
-		ephemeral = False
+		self.stop()
 		if self.victory == None and self.userturn.Action == BattleAction.Pokeball:
 			candyStr = f'\nFound one **{self.candy.Name}**!' if self.candy else ''
 			if self.ditto:
@@ -72,7 +72,7 @@ class WildBattleView(CpuBattleView):
 				f'<@{inter.user.id}> was defeated by **{pokemonservice.GetPokemonDisplayName(self.pokemon, self.data)} (Lvl. {self.pokemon.Level})**.\nRan to the PokeCenter and revived your party.', 
 				BattleColor,
 				thumbnail=pokemonservice.GetPokemonImage(self.pokemon, self.data))
-		return await inter.followup.send(embed=embed, view=self, ephemeral=ephemeral)
+		return await inter.followup.send(embed=embed)
 	
 	def CheckFainting(self, pokemon: Pokemon, data: PokemonData):
 		if pokemon.CurrentHP == 0:
