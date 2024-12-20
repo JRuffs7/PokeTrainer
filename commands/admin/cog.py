@@ -165,6 +165,11 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 		except FileNotFoundError:
 			pass
 
+	@commands.command(name="upvote")
+	async def gethost(self, ctx: commands.Context, userId: int):
+		if ctx.guild.id != 1216417415483887778 or not ctx.author.bot:
+			return await ctx.reply('Invalid upvote')
+
 	#endregion
 	
 async def setup(bot: commands.Bot):

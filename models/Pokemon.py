@@ -5,6 +5,7 @@ from models.Base import Base
 class Move:
   MoveId: int
   PP: int
+  MaxPP: int
 
   def __init__(self, dict):
     vars(self).update(dict)

@@ -35,7 +35,6 @@ class WildBattleView(CpuBattleView):
 	
 	@defer
 	async def next_button(self, inter: discord.Interaction):
-		trainerservice.UpsertTrainer(self.trainer)
 		commandlockservice.DeleteLock(inter.guild.id, inter.user.id)
 		self.clear_items()
 		await self.message.delete(delay=0.1)
@@ -67,11 +66,13 @@ class WildBattleView(CpuBattleView):
 			rewardStr = f'<@{inter.user.id}> defeated a wild **{pokemonservice.GetPokemonDisplayName(self.pokemon, self.data)} (Lvl. {self.pokemon.Level})**! Gained **$25**{candyStr}'
 			embed = discordservice.CreateEmbed('Victory', rewardStr, BattleColor, thumbnail=pokemonservice.GetPokemonImage(self.pokemon, self.data))
 		else:
+			pokemonservice.PokeCenter(self.trainerteam)
 			embed = discordservice.CreateEmbed(
 				'Defeat', 
 				f'<@{inter.user.id}> was defeated by **{pokemonservice.GetPokemonDisplayName(self.pokemon, self.data)} (Lvl. {self.pokemon.Level})**.\nRan to the PokeCenter and revived your party.', 
 				BattleColor,
 				thumbnail=pokemonservice.GetPokemonImage(self.pokemon, self.data))
+		trainerservice.UpsertTrainer(self.trainer)
 		return await inter.followup.send(embed=embed)
 	
 	def CheckFainting(self, pokemon: Pokemon, data: PokemonData):
@@ -86,9 +87,7 @@ class WildBattleView(CpuBattleView):
 			if not [t for t in team if t.CurrentHP > 0]:
 				self.victory = pokemon.Id == self.battle.TeamBPkmn.Id
 				commandlockservice.DeleteLock(self.trainer.ServerId, self.trainer.UserId)
-				if not self.victory:
-					pokemonservice.PokeCenter(team)
-				else:
+				if self.victory:
 					self.trainer.Money += 25
 					trainerservice.TryAddMissionProgress(self.trainer, 'Fight', data.Types)
 					#Sinnoh Reward
@@ -109,9 +108,6 @@ class WildBattleView(CpuBattleView):
 							pkmn, 
 							pkmnData, 
 							self.experience)
-
-				if not self.victory:
-					self.battle.TeamAPkmn.CurrentHP = 0
 
 				for item in self.children:
 					self.remove_item(item)

@@ -1,2 +1,3 @@
-- Fixed an issue with trainers being able to spawn with no conscious Pokemon on their team
-- Fixed an issue where trainers could not add a Pokemon to the Daycare when choosing between multiple of the same species
+- You can now search in **/starter** by generation
+- Spawning Legendary Pokemon now also counts towards egg progress
+- Added Ethers and Elixirs

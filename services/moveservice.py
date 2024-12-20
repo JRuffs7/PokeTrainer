@@ -1,7 +1,10 @@
 from dataaccess import moveda
 from models.Move import MoveData
-from models.Pokemon import Pokemon, PokemonData
+from models.Pokemon import Move, Pokemon, PokemonData
 from services import statservice
+
+def GetAllMoves():
+	return moveda.GetAllMoves()
 
 def GetTMMoves():
 	return moveda.GetTMMoves()
@@ -21,7 +24,7 @@ def GenerateMoves(pokemon: Pokemon, data: PokemonData):
 			moves.append(int(move))
 		if len(moves) == 4:
 			break
-	pokemon.LearnedMoves = [MoveData({'MoveId': m.Id, 'PP': m.BasePP}) for m in GetMovesById(moves)]
+	pokemon.LearnedMoves = [Move({'MoveId': m.Id, 'PP': m.BasePP, 'MaxPP': m.BasePP}) for m in GetMovesById(moves)]
 
 def GetEffectiveString(moveType: int, defTypes: list[int], damage: int):
 	typeEff = statservice.TypeDamage(moveType, defTypes)

@@ -303,7 +303,7 @@ def AddExperience(trainerPokemon: Pokemon, pkmnData: PokemonData, exp: int):
         for n in newMoves:
           if len(trainerPokemon.LearnedMoves) < 4:
             newMove = moveservice.GetMoveById(n)
-            trainerPokemon.LearnedMoves.append(Move({'MoveId': newMove.Id, 'PP': newMove.BasePP}))
+            trainerPokemon.LearnedMoves.append(Move({'MoveId': newMove.Id, 'PP': newMove.BasePP, 'MaxPP': newMove.BasePP}))
     expNeeded = NeededExperience(trainerPokemon, pkmnData)
 
   if trainerPokemon.Level == 100:
@@ -385,17 +385,28 @@ def HealPokemon(pokemon: Pokemon, data: PokemonData):
   pokemon.CurrentAilment = None
   pokemon.CurrentHP = statservice.GenerateStat(pokemon, data, StatEnum.HP)
   for m in pokemon.LearnedMoves:
-    m.PP = moveservice.GetMoveById(m.MoveId).BasePP
+    m.PP = m.MaxPP
 
-def TryUsePotion(pokemon: Pokemon, data: PokemonData, potion: Potion):
+def TryUsePotion(pokemon: Pokemon, data: PokemonData, potion: Potion, move: MoveData|None):
   used = False
-  if pokemon.CurrentHP < statservice.GenerateStat(pokemon, data, StatEnum.HP):
-    used = True
-    pokemon.CurrentHP = min(pokemon.CurrentHP + (potion.HealingAmount or 1000), statservice.GenerateStat(pokemon, data, StatEnum.HP))
+  if potion.HealingAmount:
+    if pokemon.CurrentHP < statservice.GenerateStat(pokemon, data, StatEnum.HP):
+      used = True
+      pokemon.CurrentHP = min((pokemon.CurrentHP + potion.HealingAmount), statservice.GenerateStat(pokemon, data, StatEnum.HP))
 
-  if pokemon.CurrentAilment and pokemon.CurrentAilment in potion.AilmentCures:
-    used = True
-    pokemon.CurrentAilment = None
+    if pokemon.CurrentAilment and pokemon.CurrentAilment in potion.AilmentCures:
+      used = True
+      pokemon.CurrentAilment = None
+  elif potion.PPAmount:
+    if potion.PPAll:
+      used = True
+      for m in pokemon.LearnedMoves:
+        m.PP = min(m.PP + potion.PPAmount, m.MaxPP)
+    elif move:
+      pkmnMove = next(m for m in pokemon.LearnedMoves if m.MoveId == move.Id)
+      if pkmnMove.PP < pkmnMove.MaxPP:
+        used = True
+        pkmnMove.PP = min(pkmnMove.PP + potion.PPAmount, pkmnMove.MaxPP)
   return used
 
 def TryUseCandy(pokemon: Pokemon, data: PokemonData, candy: Candy, amount: int):
@@ -428,7 +439,7 @@ def LearnNewMove(pokemon: Pokemon, newMove: MoveData, oldMove: MoveData|None):
   
   if oldMove:
     pokemon.LearnedMoves = [m for m in pokemon.LearnedMoves if m.MoveId != oldMove.Id]
-  pokemon.LearnedMoves.append(Move({'MoveId': newMove.Id, 'PP': newMove.BasePP}))
+  pokemon.LearnedMoves.append(Move({'MoveId': newMove.Id, 'PP': newMove.BasePP, 'MaxPP': newMove.BasePP}))
   return True
 
 #endregion

@@ -76,7 +76,6 @@ class EliteFourBattleView(CpuBattleView):
 	
 	@defer
 	async def next_button(self, inter: discord.Interaction):
-		trainerservice.UpsertTrainer(self.trainer)
 		commandlockservice.DeleteLock(self.trainer.ServerId, self.trainer.UserId)
 		self.clear_items()
 		await self.message.delete(delay=0.1)
@@ -91,7 +90,9 @@ class EliteFourBattleView(CpuBattleView):
 				rewardStr += f'\n\nTo challenge the Elite Four Champion, use the **/elitefour** command again. Reminder, some commands are locked until you leave the challenge.'
 			embed = discordservice.CreateEmbed('Victory', rewardStr, BattleColor, thumbnail=self.leader.Sprite)
 		else:
+			pokemonservice.PokeCenter(self.trainerteam)
 			embed = discordservice.CreateEmbed('Defeat', f'<@{inter.user.id}> was defeated by **Elite Four {"Member" if self.leader.Id%5 != 0 else "Champion"} {self.leader.Name}**.\nRan to the PokeCenter and revived your party.', BattleColor)
+		trainerservice.UpsertTrainer(self.trainer)
 		return await inter.followup.send(embed=embed)
 	
 	def CheckFainting(self, pokemon: Pokemon, data: PokemonData):
@@ -125,7 +126,6 @@ class EliteFourBattleView(CpuBattleView):
 				self.victory = pokemon.Id == self.battle.TeamBPkmn.Id
 				if not self.victory:
 					self.trainer.CurrentEliteFour = []
-					pokemonservice.PokeCenter(team)
 					commandlockservice.DeleteEliteFourLock(self.trainer.ServerId, self.trainer.UserId)
 				else:
 					self.trainer.Money += self.leader.Reward[1]
@@ -136,9 +136,6 @@ class EliteFourBattleView(CpuBattleView):
 						commandlockservice.DeleteEliteFourLock(self.trainer.ServerId, self.trainer.UserId)
 					else:
 						self.trainer.CurrentEliteFour.append(self.leader.Id)
-
-				if not self.victory:
-					self.battle.TeamAPkmn.CurrentHP = 0
 
 				for item in self.children:
 					self.remove_item(item)

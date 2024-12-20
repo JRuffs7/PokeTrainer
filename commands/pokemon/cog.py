@@ -43,13 +43,13 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
       #Voltage Reward
       trainerservice.GetShinyOdds(trainer)
     )
-    trainerservice.EggInteraction(trainer)
     if not pokemon:
       commandlockservice.DeleteLock(trainer.ServerId, trainer.UserId)
       return await discordservice_pokemon.PrintSpawnResponse(inter, 0, [])
     if not [t for t in trainerservice.GetTeam(trainer) if t.CurrentHP > 0]:
       commandlockservice.DeleteLock(trainer.ServerId, trainer.UserId)
       return await discordservice_pokemon.PrintSpawnResponse(inter, 1, [])
+    trainerservice.EggInteraction(trainer)
     await WildBattleView(trainer, pokemon, ditto).send(inter)
 
   @app_commands.command(name="spawnlegendary",
@@ -71,6 +71,7 @@ class PokemonCommands(commands.Cog, name="PokemonCommands"):
     if not pokemon:
       commandlockservice.DeleteLock(trainer.ServerId, trainer.UserId)
       return await discordservice_pokemon.PrintSpawnLegendaryResponse(inter, 2, [])
+    trainerservice.EggInteraction(trainer)
     await WildBattleView(trainer, pokemon, False).send(inter)
 
   @app_commands.command(name="pokecenter",
