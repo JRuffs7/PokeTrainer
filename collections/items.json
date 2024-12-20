@@ -45,6 +45,7 @@
   },
   {
     "HealingAmount": 20,
+    "ReviveAmount": null,
     "AilmentCures": [],
     "PPAmount": null,
     "PPAll": null,
@@ -58,7 +59,8 @@
     "SellAmount": 100
   },
   {
-    "HealingAmount": 0,
+    "HealingAmount": null,
+    "ReviveAmount": null,
     "AilmentCures": [
       5
     ],
@@ -74,7 +76,8 @@
     "SellAmount": 100
   },
   {
-    "HealingAmount": 0,
+    "HealingAmount": null,
+    "ReviveAmount": null,
     "AilmentCures": [
       4
     ],
@@ -90,7 +93,8 @@
     "SellAmount": 100
   },
   {
-    "HealingAmount": 0,
+    "HealingAmount": null,
+    "ReviveAmount": null,
     "AilmentCures": [
       3
     ],
@@ -106,7 +110,8 @@
     "SellAmount": 100
   },
   {
-    "HealingAmount": 0,
+    "HealingAmount": null,
+    "ReviveAmount": null,
     "AilmentCures": [
       2
     ],
@@ -122,7 +127,8 @@
     "SellAmount": 100
   },
   {
-    "HealingAmount": 0,
+    "HealingAmount": null,
+    "ReviveAmount": null,
     "AilmentCures": [
       1
     ],
@@ -138,7 +144,8 @@
     "SellAmount": 100
   },
   {
-    "HealingAmount": null,
+    "HealingAmount": 1000,
+    "ReviveAmount": null,
     "AilmentCures": [
       1,
       2,
@@ -161,7 +168,8 @@
     "SellAmount": 1500
   },
   {
-    "HealingAmount": null,
+    "HealingAmount": 1000,
+    "ReviveAmount": null,
     "AilmentCures": [],
     "PPAmount": null,
     "PPAll": null,
@@ -176,6 +184,7 @@
   },
   {
     "HealingAmount": 200,
+    "ReviveAmount": null,
     "AilmentCures": [],
     "PPAmount": null,
     "PPAll": null,
@@ -190,6 +199,7 @@
   },
   {
     "HealingAmount": 50,
+    "ReviveAmount": null,
     "AilmentCures": [],
     "PPAmount": null,
     "PPAll": null,
@@ -203,7 +213,8 @@
     "SellAmount": 350
   },
   {
-    "HealingAmount": 0,
+    "HealingAmount": null,
+    "ReviveAmount": null,
     "AilmentCures": [
       1,
       2,
@@ -226,7 +237,38 @@
     "SellAmount": 200
   },
   {
-    "HealingAmount": 0,
+    "HealingAmount": null,
+    "ReviveAmount": 50,
+    "AilmentCures": [],
+    "PPAmount": null,
+    "PPAll": null,
+    "Id": 28,
+    "Name": "Revive",
+    "Url": "https://pokeapi.co/api/v2/item/28/",
+    "Sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/revive.png",
+    "Description": "Revives with half HP.",
+    "EvolutionItem": false,
+    "BuyAmount": 2000,
+    "SellAmount": 1000
+  },
+  {
+    "HealingAmount": null,
+    "ReviveAmount": 100,
+    "AilmentCures": [],
+    "PPAmount": null,
+    "PPAll": null,
+    "Id": 29,
+    "Name": "Max Revive",
+    "Url": "https://pokeapi.co/api/v2/item/29/",
+    "Sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/max-revive.png",
+    "Description": "Revives with full HP.",
+    "EvolutionItem": false,
+    "BuyAmount": 4000,
+    "SellAmount": 2000
+  },
+  {
+    "HealingAmount": null,
+    "ReviveAmount": null,
     "AilmentCures": [],
     "PPAmount": 10,
     "PPAll": false,
@@ -240,7 +282,8 @@
     "SellAmount": 600
   },
   {
-    "HealingAmount": 0,
+    "HealingAmount": null,
+    "ReviveAmount": null,
     "AilmentCures": [],
     "PPAmount": 100,
     "PPAll": false,
@@ -254,7 +297,8 @@
     "SellAmount": 1000
   },
   {
-    "HealingAmount": 0,
+    "HealingAmount": null,
+    "ReviveAmount": null,
     "AilmentCures": [],
     "PPAmount": 10,
     "PPAll": true,
@@ -268,7 +312,8 @@
     "SellAmount": 1500
   },
   {
-    "HealingAmount": 0,
+    "HealingAmount": null,
+    "ReviveAmount": null,
     "AilmentCures": [],
     "PPAmount": 100,
     "PPAll": true,

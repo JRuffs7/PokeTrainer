@@ -20,6 +20,7 @@ class Pokeball(Item):
 
 class Potion(Item):
   HealingAmount: int|None
+  ReviveAmount: int|None
   AilmentCures: list[int]
   PPAmount: int|None
   PPAll: bool|None

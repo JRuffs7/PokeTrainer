@@ -1,3 +1,1 @@
-- You can now search in **/starter** by generation
-- Spawning Legendary Pokemon now also counts towards egg progress
-- Added Ethers and Elixirs
+- Added Revives and Max Revives

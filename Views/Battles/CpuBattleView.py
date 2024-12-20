@@ -203,7 +203,9 @@ class CpuBattleView(discord.ui.View):
 				
 				if (self.itemchoice.PPAmount) and [m for m in p.LearnedMoves if m.PP < m.MaxPP]:
 					available.append(p)
-				elif self.itemchoice.HealingAmount and p.CurrentHP < statservice.GenerateStat(p, next(po for po in self.battle.AllPkmnData if po.Id == p.Pokemon_Id), StatEnum.HP):
+				elif self.itemchoice.ReviveAmount and p.CurrentHP == 0:
+					available.append(p)
+				elif self.itemchoice.HealingAmount and (0 < p.CurrentHP < statservice.GenerateStat(p, next(po for po in self.battle.AllPkmnData if po.Id == p.Pokemon_Id), StatEnum.HP)):
 					available.append(p)
 				elif p.CurrentAilment in self.itemchoice.AilmentCures and p not in available:
 					available.append(p)
@@ -281,6 +283,7 @@ class CpuBattleView(discord.ui.View):
 			pkmn = next(p for p in self.trainerteam if p.Id == self.userturn.ItemUsedOnId)
 			data = next(p for p in self.battle.AllPkmnData if p.Id == pkmn.Pokemon_Id)
 			pokemonservice.TryUsePotion(pkmn, data, self.userturn.ItemUsed, self.userturn.Move)
+			trainerservice.ModifyItemList(self.trainer, str(self.itemchoice.Id), -1)
 			self.battle.Turns.insert(0, self.userturn)
 			self.usermessage.append(f'You used a **{self.userturn.ItemUsed.Name.upper()}** on {pokemonservice.GetPokemonDisplayName(pkmn, data, False, False)}!')
 		if self.cputurn.Action == BattleAction.Item:

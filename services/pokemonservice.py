@@ -389,15 +389,15 @@ def HealPokemon(pokemon: Pokemon, data: PokemonData):
 
 def TryUsePotion(pokemon: Pokemon, data: PokemonData, potion: Potion, move: MoveData|None):
   used = False
-  if potion.HealingAmount:
-    if pokemon.CurrentHP < statservice.GenerateStat(pokemon, data, StatEnum.HP):
-      used = True
-      pokemon.CurrentHP = min((pokemon.CurrentHP + potion.HealingAmount), statservice.GenerateStat(pokemon, data, StatEnum.HP))
+  if potion.HealingAmount and pokemon.CurrentHP < statservice.GenerateStat(pokemon, data, StatEnum.HP):
+    used = True
+    pokemon.CurrentHP = min((pokemon.CurrentHP + potion.HealingAmount), statservice.GenerateStat(pokemon, data, StatEnum.HP))
 
-    if pokemon.CurrentAilment and pokemon.CurrentAilment in potion.AilmentCures:
-      used = True
-      pokemon.CurrentAilment = None
-  elif potion.PPAmount:
+  if pokemon.CurrentAilment and pokemon.CurrentAilment in potion.AilmentCures:
+    used = True
+    pokemon.CurrentAilment = None
+
+  if potion.PPAmount and [m for m in pokemon.LearnedMoves if m.PP < m.MaxPP]:
     if potion.PPAll:
       used = True
       for m in pokemon.LearnedMoves:
@@ -407,6 +407,12 @@ def TryUsePotion(pokemon: Pokemon, data: PokemonData, potion: Potion, move: Move
       if pkmnMove.PP < pkmnMove.MaxPP:
         used = True
         pkmnMove.PP = min(pkmnMove.PP + potion.PPAmount, pkmnMove.MaxPP)
+
+  if potion.ReviveAmount and pokemon.CurrentHP == 0:
+    used = True
+    maxHp = statservice.GenerateStat(pokemon, data, StatEnum.HP)
+    pokemon.CurrentHP = round(min(maxHp, maxHp*(potion.ReviveAmount/100)))
+
   return used
 
 def TryUseCandy(pokemon: Pokemon, data: PokemonData, candy: Candy, amount: int):
