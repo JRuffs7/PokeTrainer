@@ -39,7 +39,6 @@ class GymBattleView(CpuBattleView):
 	
 	@defer
 	async def next_button(self, inter: discord.Interaction):
-		trainerservice.UpsertTrainer(self.trainer)
 		commandlockservice.DeleteLock(self.trainer.ServerId, self.trainer.UserId)
 		self.clear_items()
 		await self.message.delete(delay=0.1)
@@ -50,8 +49,10 @@ class GymBattleView(CpuBattleView):
 			else:
 				rewardStr = f'<@{inter.user.id}> defeated **Gym leader {self.leader.Name}**!\nWon ${int(self.leader.Reward[1]/2)}!'
 		else:
+			pokemonservice.PokeCenter(self.trainerteam)
 			rewardStr = f'<@{inter.user.id}> was defeated by **Gym leader {self.leader.Name}**.\nRan to the PokeCenter and revived your party.'
 		
+		trainerservice.UpsertTrainer(self.trainer)
 		embed = discordservice.CreateEmbed(
 			'Victory' if self.victory else 'Defeat', 
 			rewardStr,
@@ -88,9 +89,7 @@ class GymBattleView(CpuBattleView):
 
 			if not [t for t in team if t.CurrentHP > 0]:
 				self.victory = pokemon.Id == self.battle.TeamBPkmn.Id
-				if not self.victory:
-					pokemonservice.PokeCenter(team)
-				else:
+				if self.victory:
 					if self.leader.BadgeId in self.trainer.Badges:
 						self.first = False
 						rewardMoney = int(self.leader.Reward[1]/2)
@@ -99,9 +98,6 @@ class GymBattleView(CpuBattleView):
 						rewardMoney = self.leader.Reward[1]
 						self.trainer.Badges.append(self.leader.BadgeId)
 					self.trainer.Money += rewardMoney
-
-				if not self.victory:
-					self.battle.TeamAPkmn.CurrentHP = 0
 
 				for item in self.children:
 					self.remove_item(item)

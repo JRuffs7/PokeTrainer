@@ -166,15 +166,9 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 			pass
 
 	@commands.command(name="upvote")
-	async def gethost(self, ctx: commands.Context, userId: int, serverId: int):
+	async def gethost(self, ctx: commands.Context, userId: int):
 		if ctx.guild.id != 1216417415483887778 or not ctx.author.bot:
 			return await ctx.reply('Invalid upvote')
-		trainer = trainerservice.GetTrainer(serverId, userId)
-		if not trainer:
-			return await ctx.reply('Invalid upvote')
-		trainerservice.ModifyItemList(trainer, '50', 5)
-		trainerservice.UpsertTrainer(trainer)
-		return await ctx.reply('Rewarded 5 Rare Candy')
 
 	#endregion
 	

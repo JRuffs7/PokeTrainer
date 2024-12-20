@@ -17,6 +17,9 @@ def CheckTrainer(serverId: int, userId: int):
 def GetTrainer(serverId: int, userId: int):
   return trainerda.GetSingleTrainer(serverId, userId)
 
+def GetAllTrainers():
+  return trainerda.GetManyTrainers()
+
 def UpsertTrainer(trainer: Trainer):
   trainer.LastUpdated = datetime.now(UTC).strftime(DateFormat)
   return trainerda.UpsertSingleTrainer(trainer)

@@ -1,9 +1,9 @@
 import discord
 
-from Views.Selectors import PokemonSelector, ItemSelector
+from Views.Selectors import MoveSelector, PokemonSelector, ItemSelector
 from middleware.decorators import defer
 from models.Trainer import Trainer
-from services import commandlockservice, itemservice, pokemonservice, trainerservice
+from services import commandlockservice, itemservice, moveservice, pokemonservice, trainerservice
 
 class UsePotionView(discord.ui.View):
 
@@ -13,6 +13,7 @@ class UsePotionView(discord.ui.View):
 		self.pkmndata = pokemonservice.GetPokemonByIdList([p.Pokemon_Id for p in self.trainerteam])
 		self.pkmnchoice = None
 		self.itemchoice = None
+		self.movechoice = None
 		super().__init__(timeout=300)
 		self.AddSelectors()
 
@@ -20,6 +21,10 @@ class UsePotionView(discord.ui.View):
 		for item in self.children:
 			if type(item) is not discord.ui.Button:
 				self.remove_item(item)
+		self.pkmnchoice = None
+		self.pkmnchoicedata = None
+		self.itemchoice = None
+		self.movechoice = None
 		self.add_item(ItemSelector(self.trainer.Items, itemservice.GetTrainerPotions(self.trainer)))
 		self.add_item(PokemonSelector([p for p in self.trainerteam if p.CurrentHP > 0], descType=2))
 
@@ -35,6 +40,9 @@ class UsePotionView(discord.ui.View):
 	async def ItemSelection(self, inter: discord.Interaction, choice: str):
 		self.itemchoice = itemservice.GetPotion(int(choice))
 
+	async def MoveSelection(self, inter: discord.Interaction, choice: str):
+		self.movechoice = moveservice.GetMoveById(int(choice))
+
 	@discord.ui.button(label="Exit", style=discord.ButtonStyle.red)
 	@defer
 	async def exit_button(self, inter: discord.Interaction, button: discord.ui.Button):
@@ -45,10 +53,21 @@ class UsePotionView(discord.ui.View):
 	async def submit_button(self, inter: discord.Interaction, button: discord.ui.Button):
 		message = None
 		if self.pkmnchoice and self.itemchoice:
-			if pokemonservice.TryUsePotion(self.pkmnchoice, self.pkmnchoicedata, self.itemchoice):
+			if self.itemchoice.PPAmount and not self.itemchoice.PPAll and not self.movechoice:
+				for item in self.children:
+					if type(item) is not discord.ui.Button:
+						self.remove_item(item)
+				self.add_item(MoveSelector(self.pkmnchoice.LearnedMoves))
+				return await self.message.edit(content=message, view=self)
+			
+			if pokemonservice.TryUsePotion(self.pkmnchoice, self.pkmnchoicedata, self.itemchoice, self.movechoice):
 				trainerservice.ModifyItemList(self.trainer, str(self.itemchoice.Id), -1)
 				trainerservice.UpsertTrainer(self.trainer)
 				message = f'Used a **{self.itemchoice.Name}** on {pokemonservice.GetPokemonDisplayName(self.pkmnchoice, self.pkmnchoicedata)}.'
+			elif (self.itemchoice.PPAmount) and (not self.itemchoice.PPAll) and (not self.movechoice):
+				message = f'Must select a move to use a **{self.itemchoice.Name}**.'
+			elif (self.itemchoice.PPAmount) and (not self.itemchoice.PPAll) and (self.movechoice):
+				message = f'This move is already at full PP.'
 			else:
 				message = f'Cannot use **{self.itemchoice.Name}** on {pokemonservice.GetPokemonDisplayName(self.pkmnchoice, self.pkmnchoicedata)}.'
 		self.AddSelectors()

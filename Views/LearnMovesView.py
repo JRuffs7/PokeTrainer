@@ -21,7 +21,7 @@ class LearnMovesView(discord.ui.View):
 		self.learning = None
 		self.replacing = None
 		super().__init__(timeout=300)
-		self.add_item(MoveSelector([Move({'MoveId': m.Id, 'PP': m.BasePP}) for m in available]))
+		self.add_item(MoveSelector([Move({'MoveId': m.Id, 'PP': m.BasePP, 'MaxPP': m.BasePP}) for m in available]))
 		cnclbtn = discord.ui.Button(label="Cancel", style=discord.ButtonStyle.gray)
 		cnclbtn.callback = self.cancel_button
 		self.add_item(cnclbtn)

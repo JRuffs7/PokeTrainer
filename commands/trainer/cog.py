@@ -220,7 +220,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
       starters.sort(key=lambda x: x.PokedexId)
     starters.sort(key=lambda x: x.PokedexId)
     for st in starters:
-      if current.lower() in st.Name.lower():
+      if (current.lower() in st.Name.lower()) or (current.lower() in str(st.Generation)) or (current.lower() in region_name(st.Generation).lower()):
         choices.append(app_commands.Choice(name=st.Name,value=st.Id))
       if len(choices) == 25:
         break

@@ -21,6 +21,8 @@ class Pokeball(Item):
 class Potion(Item):
   HealingAmount: int|None
   AilmentCures: list[int]
+  PPAmount: int|None
+  PPAll: bool|None
 
   def __init__(self, dict):
     super(Potion, self).__init__(dict)
