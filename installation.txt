@@ -14,9 +14,8 @@ Step 2: Get pip packages
  - Once they are successful, everything should be set
 
 Step 3: Running the bot
- - Copy the .env-TEMP to a new .env file. No changes are necessary, unless you choose to do the optional below:
+ - Copy the .env-TEMP to a new .env file. Ask Justin for a bot TOKEN
    - Use a local database instead of the provided cloud database. Just change the MONGOCONN
-   - Use a private test bot instead of the generic PokeTrainer-Test bot. Ask Justin for a new TOKEN
  - Production variables are not available and will only be held on the device running the prod bot
  - To run and start testing within discord, open a terminal in VSCode and run the following
    - python main.py
