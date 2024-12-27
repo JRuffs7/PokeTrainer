@@ -1,1 +1,1 @@
-- Added Revives and Max Revives
+- Fixed an issue capturing Pokemon when going into the box

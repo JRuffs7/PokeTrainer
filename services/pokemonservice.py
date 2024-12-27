@@ -245,7 +245,7 @@ def GenerateSpawnPokemon(pokemon: PokemonData, level: int, shinyOdds: int = Shin
       moves.append(int(move))
     if len(moves) == 4:
       break
-  spawn.LearnedMoves = [Move({'MoveId': m.Id, 'PP': m.BasePP}) for m in moveservice.GetMovesById(moves)]
+  spawn.LearnedMoves = [Move({'MoveId': m.Id, 'PP': m.BasePP, 'MaxPP': m.BasePP}) for m in moveservice.GetMovesById(moves)]
   spawn.CurrentHP = statservice.GenerateStat(spawn, pokemon, StatEnum.HP)
   return spawn
 
