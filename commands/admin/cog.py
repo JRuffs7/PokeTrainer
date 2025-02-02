@@ -78,7 +78,7 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 			return
 		trainer = trainerservice.GetTrainer(ctx.guild.id, user.id if user else ctx.author.id)
 		if trainer and next((e for e in gymservice.GetAllEliteFour() if e.Id == id),None) and id not in trainer.CurrentEliteFour:
-			trainer.CurrentEliteFour.append(id)
+			trainer.EliteFour.append(id)
 			trainerservice.UpsertTrainer(trainer)
 
 	@commands.command(name="addpokemon")
