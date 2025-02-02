@@ -284,9 +284,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
     choices = []
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
     if trainer:
-      regions = [r for r in trainerservice.RegionsVisited(trainer) if r != trainer.Region]
-      if len(regions) >= len([r for r in gymservice.GetRegions() if r < 1000]):
-        regions.append(1000)
+      regions = trainerservice.ChangeRegions(trainer)
       regions.sort()
       for r in regions:
         if current.lower() in region_name(r):
@@ -305,7 +303,7 @@ class TrainerCommands(commands.Cog, name="TrainerCommands"):
   async def changeregion(self, inter: Interaction, region: int):
     trainer = trainerservice.GetTrainer(inter.guild_id, inter.user.id)
     commandlockservice.DeleteLock(trainer.ServerId, trainer.UserId)
-    if region not in trainerservice.RegionsVisited(trainer):
+    if region not in trainerservice.ChangeRegions(trainer):
       return await discordservice_trainer.PrintChangeRegionResponse(inter, 0, [])
     if region == trainer.Region:
       return await discordservice_trainer.PrintChangeRegionResponse(inter, 1, [region_name(region)])

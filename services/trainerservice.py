@@ -81,6 +81,21 @@ def RegionsVisited(trainer: Trainer):
       visited.append(region)
   return visited
 
+def ChangeRegions(trainer: Trainer):
+  allRegions = gymservice.GetRegions()
+  badges = gymservice.GetAllBadges()
+  allStarters = pokemonservice.GetStarterPokemon()
+  available: list[int] = []
+  for region in allRegions:
+    starters = [s for s in allStarters if s.Generation == region]
+    if [s for s in starters if s.PokedexId in trainer.Pokedex] and (region not in available):
+      available.append(region)
+    if [b for b in badges if b.Generation == region and b.Id in trainer.Badges] and (region not in available):
+      available.append(region)
+  if 1000 not in available and len(trainer.EliteFour) == [r for r in allRegions if r < 1000]:
+    available.append(1000)
+  return available
+
 def ResetTrainer(trainer: Trainer, starter: PokemonData, keepShiny: bool):
   shinyPkmn = [p for p in trainer.OwnedPokemon if p.IsShiny] if keepShiny else []
   DeleteTrainer(trainer)
