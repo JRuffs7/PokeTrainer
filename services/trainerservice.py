@@ -94,7 +94,7 @@ def ChangeRegions(trainer: Trainer):
       available.append(region)
   if 1000 not in available and len(trainer.EliteFour) == [r for r in allRegions if r < 1000]:
     available.append(1000)
-  return available
+  return [a for a in available if a != trainer.Region]
 
 def ResetTrainer(trainer: Trainer, starter: PokemonData, keepShiny: bool):
   shinyPkmn = [p for p in trainer.OwnedPokemon if p.IsShiny] if keepShiny else []

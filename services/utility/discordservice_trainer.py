@@ -80,7 +80,7 @@ async def PrintChangeRegionResponse(interaction: Interaction, response: int, par
 	await discordservice.SendCommandResponse(
 		interaction=interaction, 
 		filename=responseFile, 
-		command='resettrainer', 
+		command='changeregion', 
 		responseInd=response,
 		color=TrainerColor,
 		params=params)
