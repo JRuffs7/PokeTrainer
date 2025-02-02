@@ -92,7 +92,7 @@ def ChangeRegions(trainer: Trainer):
       available.append(region)
     if [b for b in badges if b.Generation == region and b.Id in trainer.Badges] and (region not in available):
       available.append(region)
-  if 1000 not in available and len(trainer.EliteFour) == [r for r in allRegions if r < 1000]:
+  if (1000 not in available) and (len(trainer.EliteFour) == [r for r in allRegions if r < 1000]):
     available.append(1000)
   return [a for a in available if a != trainer.Region]
 
