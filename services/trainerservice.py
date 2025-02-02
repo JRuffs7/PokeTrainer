@@ -195,6 +195,12 @@ def GetTrainerItemList(trainer: Trainer, itemType: int | None = None):
     return [itemservice.GetEvoItem(int(i)) for i in trainer.Items if trainer.Items[i] > 0 and i in [str(e.Id) for e in itemservice.GetAllEvoItems()]]
   return [itemservice.GetItem(int(i)) for i in trainer.Items if trainer.Items[i] > 0]
 
+def UpvoteReward(userId: int):
+  trainers = trainerda.GetUserTrainers(userId)
+  for trainer in trainers:
+    ModifyItemList(trainer, '50', 5)
+    UpsertTrainer(trainer)
+
 #endregion
 
 #region Eggs

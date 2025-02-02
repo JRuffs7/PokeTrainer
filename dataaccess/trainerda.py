@@ -21,6 +21,10 @@ def GetManyTrainers():
   trainers = mongodb.GetManyDocs(collection, {}) or []
   return [Trainer.from_dict(tr) for tr in trainers]
 
+def GetUserTrainers(userId: int):
+  trainers = mongodb.GetManyDocs(collection, {'UserId': userId}) or []
+  return [Trainer.from_dict(tr) for tr in trainers]
+
 def UpsertSingleTrainer(trainer: Trainer):
   mongodb.UpsertSingleDoc(collection, {
       'ServerId': trainer.ServerId,
