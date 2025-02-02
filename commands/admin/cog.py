@@ -167,7 +167,7 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 
 	@commands.command(name="upvote")
 	async def gethost(self, ctx: commands.Context, userId: int):
-		if ctx.guild.id != 1216417415483887778 or not ctx.author.bot:
+		if ctx.guild.id == 1216417415483887778 and ctx.author.bot:
 			trainerservice.UpvoteReward(userId)
 
 	#endregion
