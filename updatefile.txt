@@ -1,1 +1,2 @@
-- Fixed an issue capturing Pokemon when going into the box
+- Fixed an issue that locked the Voltage Region after leaving it
+- Changed Legendary spawning to be more consistent with which ID is being used

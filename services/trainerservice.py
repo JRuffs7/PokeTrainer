@@ -71,11 +71,9 @@ def RegionCompleted(trainer: Trainer, region: int):
 
 def RegionsVisited(trainer: Trainer):
   badges = gymservice.GetAllBadges()
-  regions = list(set(r.Generation for r in badges if r.Generation < 1000))
-  regions.sort()
   allStarters = pokemonservice.GetStarterPokemon()
   visited: list[int] = []
-  for region in regions:
+  for region in [g for g in gymservice.GetRegions() if g < 1000]:
     starters = [s for s in allStarters if s.Generation == region]
     if [s for s in starters if s.PokedexId in trainer.Pokedex] and (region not in visited):
       visited.append(region)
