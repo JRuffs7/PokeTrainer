@@ -136,7 +136,7 @@ class CpuBattleView(discord.ui.View):
 	
 	async def PokemonSelection(self, inter: discord.Interaction, choice: str):
 		pkmn = choice if self.useraction == BattleAction.Swap else self.battle.TeamAPkmn.Id
-		if self.itemchoice.PPAmount and not self.itemchoice.PPAll:
+		if self.itemchoice and self.itemchoice.PPAmount and not self.itemchoice.PPAll:
 			for item in self.children:
 				self.remove_item(item)
 			self.itemuse = choice

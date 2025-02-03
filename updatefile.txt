@@ -1,0 +1,2 @@
+- Removed level cap for Voltage region
+- Fixed an issue with some moves causing battle hangs

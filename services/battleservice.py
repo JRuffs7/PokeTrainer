@@ -88,7 +88,7 @@ def CanChooseAttack(battle: CpuBattle, teamA: bool):
 	return (True,BattleAction.Attack) if not mustLoaf else (True,BattleAction.Loaf)
 
 def SpecialHitCases(move: MoveData, battle: CpuBattle, pokemon: Pokemon, opponent: Pokemon, goingFirst: bool, oppAttack: MoveData|None):	
-	if (move.Healing > 0) and (pokemon.CurrentHP == statservice.GenerateStat(pokemon, next(p for p in battle.AllPkmnData if p.Id == pokemon.Pokemon_Id), StatEnum.HP)):
+	if (move.Healing and move.Healing > 0) and (pokemon.CurrentHP == statservice.GenerateStat(pokemon, next(p for p in battle.AllPkmnData if p.Id == pokemon.Pokemon_Id), StatEnum.HP)):
 		return BattleAction.Failed
 	match move.Id:
 		case 13|19|76|91|130|143|248|291|340|467|553|554|566|601|669|800|905:
@@ -293,7 +293,7 @@ def MoveAccuracy(move: MoveData, battle: CpuBattle, teamA: bool):
 	if move.Id in [12,32,90,329]:
 		if attacking.Level < defending.Level:
 			return False
-		acc = 20 if move.Id == 329 and move.MoveType not in attacking.Types else 30
+		acc = 20 if move.Id == 329 and move.MoveType not in attackData.Types else 30
 		acc += (attacking.Level - defending.Level)
 		return choice(range(100)) < acc
 

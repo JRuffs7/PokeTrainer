@@ -54,7 +54,7 @@ class GymCommands(commands.Cog, name="GymCommands"):
       if leader.Generation != trainer.Region:
         commandlockservice.DeleteLock(trainer.ServerId, trainer.UserId)
         return await discordservice_gym.PrintGymBattleResponse(inter, 2, [region_name(leader.Generation)])
-      levelCap = min((len([g for g in gymservice.GetBadgesByRegion(trainer.Region) if g.Id in trainer.Badges]) + 2) * 10, 60)
+      levelCap = 100 if trainer.Region == 1000 else min((len([g for g in gymservice.GetBadgesByRegion(trainer.Region) if g.Id in trainer.Badges]) + 2) * 10, 60)
       if [p for p in trainerteam if p.Level > levelCap]:
         commandlockservice.DeleteLock(trainer.ServerId, trainer.UserId)
         return await discordservice_gym.PrintGymBattleResponse(inter, 3, [levelCap])
