@@ -150,7 +150,7 @@ def ExpForPokemon(pokemon: Pokemon, data: PokemonData, isWild: bool, expShare: b
   return round(part4*a*t*e*v*f*p)
 
 def SpawnPokemon(region: int, badgesInRegion: int, shinyOdds: int):
-  badgesInRegion = 10 if region == 100 else badgesInRegion
+  badgesInRegion = 10 if region == 1000 else badgesInRegion
   encounterRng = choice(range(100))
   spawnChance = (
     4 if encounterRng%2 == 0 else 
