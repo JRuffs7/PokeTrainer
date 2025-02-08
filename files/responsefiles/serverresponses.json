@@ -12,19 +12,19 @@
 		},
 		{
 			"Title": "Server Registered",
-			"Body": "Server Name: {0}\nAnnouncement Channel: <#{1}>\nCurrent Event: {2}\n\nNOTE: For PokeTrainer to work properly in your server, it must be given the following permissions:\n- Manage Webhooks\n- Send Messages\n- Send/Create/Manage Threads\n- Embed Links\n- Add Reactions\n- Manage Messages\n- Read Message History"
+			"Body": "Server Name: {0}\nUpdate Channel: <#{1}>\n\nNOTE: For PokeTrainer to work properly in your server, it must be given the following permissions:\n- Manage Webhooks\n- Send Messages\n- Send/Create/Manage Threads\n- Embed Links\n- Add Reactions\n- Manage Messages\n- Read Message History"
 		}
 	],
 	"server": [
 		{
 			"Title": "Server Details",
-			"Body": "Server Name: {0}\nEvent/Announcement Channel: <#{1}>\nCurrent Event: {2}"
+			"Body": "Server Name: {0}\nUpdate Channel: <#{1}>"
 		}
 	],
 	"unregister": [
 		{
 			"Title": "Server Unregistered",
-			"Body": "Announcements will now be stop being sent to your server. To begin again, use the **/register** command.\n\nUsers may still interact with PokeTrainer while it is present in the server."
+			"Body": "Updates will now be sent to the first channel where PokeTrainer can send messages. If it cannot send messages to any channel, it will leave the server on the next update. To receive updates in a specific channel again, use the **/register** command."
 		}
 	]
 }

@@ -58,15 +58,6 @@ async def PrintBattleSimResponse(interaction: Interaction, response: int, params
 		color=PokemonColor, 
 		params=params)
 
-async def PrintWishlistResponse(interaction: Interaction, response: int, pkmnname: str|None = None):
-	return await discordservice.SendCommandResponse(
-		interaction=interaction, 
-		filename=responseFile, 
-		command='wishlist', 
-		responseInd=response, 
-		color=ErrorColor if response else SuccessColor, 
-		params=[pkmnname])
-
 async def PrintPokeShopResponse(interaction: Interaction, response: int, pkmnname: str|None = None):
 	return await discordservice.SendCommandResponse(
 		interaction=interaction, 

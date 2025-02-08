@@ -1,10 +1,12 @@
+from datetime import UTC, datetime
 import functools
 import logging
 import functools
 
 import discord
 
-from globals import AdminList
+from globals import AdminList, ShortDateFormat
+from models.Server import Server
 from services import commandlockservice, serverservice, trainerservice
 from services.utility import discordservice_permission
 
@@ -19,6 +21,10 @@ def method_logger(eph: bool):
       try:
         if not args[0].guild:
           return
+        server = serverservice.GetServer(args[0].guild.id) or Server.from_dict({'ServerId': args[0].guild.id})
+        server.ServerName = args[0].guild.name
+        server.LastActivity = datetime.now(UTC).strftime(ShortDateFormat)
+        serverservice.UpsertServer(server)
         await args[0].response.defer(ephemeral=eph)
         cmdLog.info(f"{args[0].guild.name} - {function.__name__.upper()} command called")
         return await function(self, *args, **kwargs)

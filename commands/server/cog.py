@@ -17,9 +17,9 @@ class ServerCommands(commands.Cog, name="ServerCommands"):
   @is_admin
   async def register(self, inter: Interaction):
     if not inter.guild_id or not inter.channel_id:
-      return await discordservice_server.PrintRegisterResponse(inter, 0, [])
-    serv = serverservice.RegisterServer(inter.guild_id, inter.channel_id, inter.guild.name)
-    return await discordservice_server.PrintRegisterResponse(inter, 1, [serv.ServerName, serv.ChannelId, serv.CurrentEvent.EventName if serv.CurrentEvent else '', discordLink])
+      return await discordservice_server.PrintRegisterResponse(inter, 0, [discordLink])
+    serv = serverservice.RegisterServer(inter.guild_id, inter.channel_id)
+    return await discordservice_server.PrintRegisterResponse(inter, 1, [serv.ServerName, serv.ChannelId])
 
   @app_commands.command(name="server",
                         description="Display server details.")
@@ -27,7 +27,7 @@ class ServerCommands(commands.Cog, name="ServerCommands"):
   @server_check
   async def server(self, inter: Interaction):
     serv = serverservice.GetServer(inter.guild_id)
-    return await discordservice_server.PrintServerResponse(inter, 0, [serv.ServerName, serv.ChannelId, serv.CurrentEvent.EventName if serv.CurrentEvent else ''])
+    return await discordservice_server.PrintServerResponse(inter, 0, [serv.ServerName, serv.ChannelId])
 
   @app_commands.command(name="unregister",
       description="(Admin only) Remove your server from PokeTrainer."

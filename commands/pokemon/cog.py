@@ -10,7 +10,6 @@ from Views.UsePotionView import UsePotionView
 from commands.autofills.autofills import autofill_nonteam, autofill_owned, autofill_pokemon, autofill_team, autofill_tms, autofill_types
 from Views.PokemonSearchView import PokemonSearchView
 from Views.NicknameView import NicknameView
-import discordbot
 
 from Views.EvolveView import EvolveView
 from globals import PokemonColor, botImage
@@ -22,11 +21,8 @@ from services.utility import discordservice, discordservice_permission, discords
 
 class PokemonCommands(commands.Cog, name="PokemonCommands"):
 
-  discordBot = discordbot.GetBot()
-
   def __init__(self, bot: commands.Bot):
     self.bot = bot
-    
 
   #region Pokemon
     

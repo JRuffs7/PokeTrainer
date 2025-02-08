@@ -2,20 +2,20 @@
   "Server": [
     {
       "Name": "register",
-      "ShortString": "(Admin Only) Registers this server with the PokeTrainer bot.",
-      "HelpString": "Proper command usage: **/register**\n\nWhen this command is run, the current channel will be marked as the notification channel. This means any notifications from PokeTrainer will be sent to this channel. Events will also return and appear in this channel as well. If you wish to change which channel is registered, just run the command again in the desired channel.\n\nNOTE: For PokeTrainer to work properly in your server, it must be given the following permissions:\n- Manage Webhooks\n- Send Messages\n- Send/Create/Manage Threads\n- Embed Links\n- Add Reactions\n- Manage Messages\n- Read Message History",
+      "ShortString": "(Admin Only) Registers the current channel to receive PokeTrainer updates.",
+      "HelpString": "Proper command usage: **/register**\n\nWhen this command is run, the current channel will be used for any new updates. This means any update from PokeTrainer will be sent to this channel only. If you wish to change which channel is registered, just run the command again in the desired channel.\n\nNOTE: For PokeTrainer to work properly in your server, it must be given the following permissions:\n- Manage Webhooks\n- Send Messages\n- Send/Create/Manage Threads\n- Embed Links\n- Add Reactions\n- Manage Messages\n- Read Message History",
       "RequiresAdmin": true
     },
     {
       "Name": "server",
       "ShortString": "(Admin Only) Prints the current server settings.",
-      "HelpString": "Proper command usage: **/server**\n\nThis command will return the details of the server settings for the bot. This includes the server name, registered notification channel, and the current event taking place (if applicable).",
+      "HelpString": "Proper command usage: **/server**\n\nThis command will return the details of the server settings for the bot. This includes the server name, registered update channel, and the last activity.",
       "RequiresAdmin": true
     },
     {
       "Name": "unregister",
-      "ShortString": "(Admin Only) Unregister this server from the PokeTrainer bot events.",
-      "HelpString": "Proper command usage: **/unregister**\n\nThis command will remove your server from being able to receive notifications. If you wish to receive notifications again, look into the **/register** command.\n\nTrainers will still be able to interact with PokeTrainer as long as it is in the server, regardless of registration.",
+      "ShortString": "(Admin Only) Unregister the channel used for PokeTrainer updates.",
+      "HelpString": "Proper command usage: **/unregister**\n\nThis command will remove the specified channel used for receiving updates. If you wish to receive updates in a specific channel again, look into the **/register** command.",
       "RequiresAdmin": true
     },
     {

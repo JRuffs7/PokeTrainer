@@ -1,24 +1,12 @@
-from dataaccess import serverda, trainerda
-from models.Event import Event
-from models.enums import EventType
+from dataaccess import serverda
 from models.Server import Server
-from services import eventservice, pokemonservice
 
 
-def RegisterServer(serverId: int, channelId: int, serverName: str):
+def RegisterServer(serverId: int, channelId: int):
   if serverId is None or channelId is None:
     return None
-  
   currServ = GetServer(serverId)
-  if currServ:
-    currServ.ChannelId = channelId
-    currServ.ServerName = serverName
-  else:
-    currServ = Server.from_dict({
-      'ServerId': serverId,
-      'ServerName': serverName,
-      'ChannelId': channelId,
-    })
+  currServ.ChannelId = channelId
   UpsertServer(currServ)
   return currServ
 

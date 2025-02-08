@@ -2,11 +2,10 @@ import math
 import uuid
 from math import ceil
 from random import choice, uniform
-from models.Item import Candy, Item, Pokeball, Potion
+from models.Item import Candy, Pokeball, Potion
 from models.Move import MoveData
 from models.Stat import StatEnum
 from models.Trainer import Trainer
-from models.enums import SpecialSpawn
 
 from services import moveservice, statservice, trainerservice
 from dataaccess import pokemonda
@@ -203,16 +202,6 @@ def SpawnLegendary(region: int, shinyOdds: int, pokedex: list[int]):
 
 def GetLegendaryInRegion(region: int):
   return [p for p in pokemonda.GetAllPokemon() if p.Generation == region and IsLegendaryPokemon(p)]
-
-def GetSpecialSpawn():
-  spawnType = choice(list(SpecialSpawn))
-  pokemonList = pokemonda.GetPokemonByProperty([True], spawnType.value)
-  pkmn = None
-  while not pkmn:
-    pkmn = choice(pokemonList)
-    if pkmn.IsFossil and not pkmn.EvolvesInto:
-      pkmn = None
-  return GenerateSpawnPokemon(pkmn, 5 if pkmn.IsStarter or pkmn.IsFossil else 75 if pkmn.IsLegendary or pkmn.IsMythical else 40)
 
 def GenerateSpawnPokemon(pokemon: PokemonData, level: int, shinyOdds: int = ShinyOdds):
   isshiny = (choice(range(0, shinyOdds)) == int(shinyOdds / 2)) if shinyOdds > 0 else False
