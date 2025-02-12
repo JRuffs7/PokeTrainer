@@ -167,7 +167,7 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 
 	@commands.command(name="upvote")
 	async def upvote(self, ctx: commands.Context, userId: int):
-		if ctx.guild.id == 1216417415483887778 and (ctx.author.bot or ctx.author.id in AdminList):
+		if ctx.guild.id == 1216417415483887778 and ctx.channel.id == 1307070817989034004:
 			trainerservice.UpvoteReward(userId)
 
 	#endregion
