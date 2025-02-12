@@ -6,7 +6,7 @@ import socket
 import uuid
 from discord import File, Member, TextChannel
 from discord.ext import commands
-from globals import SuperShinyOdds
+from globals import AdminList, SuperShinyOdds
 from middleware.decorators import is_bot_admin
 from models.Egg import TrainerEgg
 from models.Server import Server
@@ -166,8 +166,8 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 			pass
 
 	@commands.command(name="upvote")
-	async def gethost(self, ctx: commands.Context, userId: int):
-		if ctx.guild.id == 1216417415483887778 and ctx.author.bot:
+	async def upvote(self, ctx: commands.Context, userId: int):
+		if ctx.guild.id == 1216417415483887778 and (ctx.author.bot or ctx.author.id in AdminList):
 			trainerservice.UpvoteReward(userId)
 
 	#endregion

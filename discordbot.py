@@ -58,7 +58,6 @@ async def StartBot():
 
   @tasks.loop(time=cleansetimes)
   async def cleanse_servers():
-    print('looper')
     for guild in discordBot.guilds:
       server = serverservice.GetServer(guild.id)
       if not server:
@@ -81,7 +80,6 @@ async def StartBot():
     server = serverservice.GetServer(guild.id) or Server.from_dict({'ServerName': guild.name, 'ServerId': guild.id})
     if datetime.today().date() == initTracking.date():
       server.LastActivity = datetime.now(UTC).strftime(ShortDateFormat)
-    serverservice.UpsertServer(server)
 
     channel = guild.get_channel(server.ChannelId)
     if not channel:
@@ -89,7 +87,11 @@ async def StartBot():
       channel = next((c for c in guild.text_channels if c.permissions_for(member).send_messages),None)
     if not channel or not isinstance(channel, discord.TextChannel):
       await guild.leave()
+      serverservice.DeleteServer(server)
       return
+    else:
+      server.ChannelId = channel.id
+    serverservice.UpsertServer(server)
     return await channel.send(embed=embed)
 
   for f in os.listdir("commands"):
