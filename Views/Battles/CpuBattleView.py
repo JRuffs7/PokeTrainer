@@ -24,10 +24,10 @@ class CpuBattleView(discord.ui.View):
 		self.oppteam = opponentTeam
 		self.ditto = ditto
 		self.fleeattempts = 0
-		self.usermessage: list[str] = []
-		self.cpumessage: list[str] = []
-		self.userailmentmessage: list[str] = []
-		self.cpuailmentmessage: list[str] = []
+		self.usermessage = []
+		self.cpumessage = []
+		self.userailmentmessage = []
+		self.cpuailmentmessage = []
 		self.exppokemon: dict[str,list[str]] = {}
 		self.victory = None
 		self.candy = None
@@ -61,10 +61,11 @@ class CpuBattleView(discord.ui.View):
 		return await super().on_timeout()
 	
 	def AddMainButtons(self):
+		self.userturn = None
 		for item in self.children:
 			self.remove_item(item)
 
-		moveChoice,self.useraction = battleservice.CanChooseAttack(self.battle, True)
+		moveChoice,_ = battleservice.CanChooseAttack(self.battle, True)
 		numAvailablePokemon = len([p for p in self.trainerteam if p.CurrentHP > 0])
 		attackbtn = discord.ui.Button(label="Attack", style=discord.ButtonStyle.primary)
 		attackbtn.callback = self.attack_button
@@ -91,8 +92,9 @@ class CpuBattleView(discord.ui.View):
 		for item in self.children:
 			self.remove_item(item)
 
-		canChoose,self.useraction = battleservice.CanChooseAttack(self.battle, True)
-		if canChoose and self.useraction != BattleAction.Loaf:
+		self.userturn = battleservice.CreateTurn(self.battle.CurrentTurn,True,self.battle.TeamAPkmn.Id,BattleAction.Attack)
+		canChoose,self.userturn.Action = battleservice.CanChooseAttack(self.battle, True)
+		if canChoose and self.userturn.Action != BattleAction.Loaf:
 			if [m for m in self.battle.TeamAPkmn.LearnedMoves if m.PP > 0]:
 				self.add_item(MoveSelector([m for m in self.battle.TeamAPkmn.LearnedMoves if m.PP > 0]))
 				backBtn = discord.ui.Button(label="Back", style=discord.ButtonStyle.secondary, disabled=False)
@@ -105,18 +107,10 @@ class CpuBattleView(discord.ui.View):
 			lastTurn = battleservice.GetTurn(self.battle, True, 1, self.battle.TeamAPkmn.Id)
 			await self.MoveSelection(inter, str(lastTurn.Move.Id) if lastTurn.Move else '165')
 		else:
-			self.userturn = battleservice.CreateTurn(self.battle.CurrentTurn, True, self.battle.TeamAPkmn.Id, self.useraction)
 			await self.TakeTurn(inter)
 
 	async def MoveSelection(self, inter: discord.Interaction, choice: str): 
-		self.userturn = battleservice.CreateTurn(
-			self.battle.CurrentTurn, 
-			True, 
-			self.battle.TeamAPkmn.Id, 
-			self.useraction, 
-			moveservice.GetMoveById(int(choice)),
-			self.itemchoice if self.useraction == BattleAction.Item else None,
-			self.itemuse if self.useraction == BattleAction.Item else None)
+		self.userturn.Move = moveservice.GetMoveById(int(choice))
 		await self.TakeTurn(inter)
 
 	#endregion
@@ -125,9 +119,10 @@ class CpuBattleView(discord.ui.View):
 
 	@defer
 	async def pokemon_button(self, inter: discord.Interaction):
-		self.useraction = BattleAction.Swap
 		for item in self.children:
 			self.remove_item(item)
+			
+		self.userturn = battleservice.CreateTurn(self.battle.CurrentTurn,True,self.battle.TeamAPkmn.Id,BattleAction.Swap)
 		self.add_item(PokemonSelector([p for p in self.trainerteam if p.CurrentHP > 0 and p.Id != self.battle.TeamAPkmn.Id], descType=3))
 		backBtn = discord.ui.Button(label="Back", style=discord.ButtonStyle.secondary, disabled=False)
 		backBtn.callback = self.back_button
@@ -135,20 +130,20 @@ class CpuBattleView(discord.ui.View):
 		await self.message.edit(view=self)
 	
 	async def PokemonSelection(self, inter: discord.Interaction, choice: str):
-		pkmn = choice if self.useraction == BattleAction.Swap else self.battle.TeamAPkmn.Id
-		if self.itemchoice and self.itemchoice.PPAmount and not self.itemchoice.PPAll:
-			for item in self.children:
-				self.remove_item(item)
-			self.itemuse = choice
-			self.add_item(MoveSelector(next(p for p in self.trainerteam if p.Id == choice).LearnedMoves))
-			backBtn = discord.ui.Button(label="Back", style=discord.ButtonStyle.secondary, disabled=False)
-			backBtn.callback = self.back_button
-			self.add_item(backBtn)
-			await self.message.edit(view=self)
+		self.userturn.PokemonId = choice if self.userturn.Action == BattleAction.Swap else self.battle.TeamAPkmn.Id
+		if self.userturn.ItemUsed:
+			self.userturn.ItemUsedOnId = choice
+			if self.userturn.ItemUsed.PPAmount and not self.userturn.ItemUsed.PPAll:
+				for item in self.children:
+					self.remove_item(item)
+				self.add_item(MoveSelector(next(p for p in self.trainerteam if p.Id == choice).LearnedMoves))
+				backBtn = discord.ui.Button(label="Back", style=discord.ButtonStyle.secondary, disabled=False)
+				backBtn.callback = self.back_button
+				self.add_item(backBtn)
+				await self.message.edit(view=self)
+			else:
+				await self.TakeTurn(inter)
 		else:
-			self.userturn = battleservice.CreateTurn(self.battle.CurrentTurn, True, pkmn, self.useraction, 
-				item=self.itemchoice if self.useraction == BattleAction.Item else None,
-				itemUse=choice if self.useraction == BattleAction.Item else None)
 			await self.TakeTurn(inter)
 
 	#endregion
@@ -174,10 +169,10 @@ class CpuBattleView(discord.ui.View):
 	@defer
 	async def item_cat_button(self, inter: discord.Interaction):
 		if inter.data['custom_id'] == 'pokeball':
-			self.useraction = BattleAction.Pokeball
+			self.userturn = battleservice.CreateTurn(self.battle.CurrentTurn, True, self.battle.TeamAPkmn.Id, BattleAction.Pokeball)
 			itemList = itemservice.GetTrainerPokeballs(self.trainer)
 		else:
-			self.useraction = BattleAction.Item
+			self.userturn = battleservice.CreateTurn(self.battle.CurrentTurn, True, self.battle.TeamAPkmn.Id, BattleAction.Item)
 			itemList = itemservice.GetTrainerPotions(self.trainer)
 		for item in self.children:
 			self.remove_item(item)
@@ -190,24 +185,23 @@ class CpuBattleView(discord.ui.View):
 	async def ItemSelection(self, inter: discord.Interaction, choice: str):
 		for item in self.children:
 			self.remove_item(item)
-		if self.useraction == BattleAction.Pokeball:
-			self.userturn = battleservice.CreateTurn(self.battle.CurrentTurn, True, self.battle.TeamAPkmn.Id, self.useraction, 
-				item=itemservice.GetPokeball(int(choice)))
+		if self.userturn.Action == BattleAction.Pokeball:
+			self.userturn.ItemUsed = itemservice.GetPokeball(int(choice))
 			await self.TakeTurn(inter)
-		elif self.useraction == BattleAction.Item:
-			self.itemchoice = itemservice.GetPotion(int(choice))
+		elif self.userturn.Action == BattleAction.Item:
+			self.userturn.ItemUsed = itemservice.GetPotion(int(choice))
 			available = []
 			for p in self.trainerteam:
 				if p.Id == self.battle.TeamAPkmn.Id:
 					p = self.battle.TeamAPkmn
 				
-				if (self.itemchoice.PPAmount) and [m for m in p.LearnedMoves if m.PP < m.MaxPP]:
+				if (self.userturn.ItemUsed.PPAmount) and [m for m in p.LearnedMoves if m.PP < m.MaxPP]:
 					available.append(p)
-				elif self.itemchoice.ReviveAmount and p.CurrentHP == 0:
+				elif self.userturn.ItemUsed.ReviveAmount and p.CurrentHP == 0:
 					available.append(p)
-				elif self.itemchoice.HealingAmount and (0 < p.CurrentHP < statservice.GenerateStat(p, next(po for po in self.battle.AllPkmnData if po.Id == p.Pokemon_Id), StatEnum.HP)):
+				elif self.userturn.ItemUsed.HealingAmount and (0 < p.CurrentHP < statservice.GenerateStat(p, next(po for po in self.battle.AllPkmnData if po.Id == p.Pokemon_Id), StatEnum.HP)):
 					available.append(p)
-				elif p.CurrentAilment in self.itemchoice.AilmentCures and p not in available:
+				elif p.CurrentAilment in self.userturn.ItemUsed.AilmentCures and p not in available:
 					available.append(p)
 			if not available:
 				await self.message.edit(content=f'No Pokemon available to use this item on. Try again.')
@@ -283,7 +277,7 @@ class CpuBattleView(discord.ui.View):
 			pkmn = next(p for p in self.trainerteam if p.Id == self.userturn.ItemUsedOnId)
 			data = next(p for p in self.battle.AllPkmnData if p.Id == pkmn.Pokemon_Id)
 			pokemonservice.TryUsePotion(pkmn, data, self.userturn.ItemUsed, self.userturn.Move)
-			trainerservice.ModifyItemList(self.trainer, str(self.itemchoice.Id), -1)
+			trainerservice.ModifyItemList(self.trainer, str(self.userturn.ItemUsed.Id), -1)
 			self.battle.Turns.insert(0, self.userturn)
 			self.usermessage.append(f'You used a **{self.userturn.ItemUsed.Name.upper()}** on {pokemonservice.GetPokemonDisplayName(pkmn, data, False, False)}!')
 		if self.cputurn.Action == BattleAction.Item:
@@ -302,7 +296,7 @@ class CpuBattleView(discord.ui.View):
 
 
 		if battleservice.TeamAAttackFirst(self.userturn.Move, self.cputurn.Move, self.battle):
-			if self.useraction != BattleAction.Item and self.userturn.Move:
+			if self.userturn.Action != BattleAction.Item and self.userturn.Move:
 				self.userturn.DamageDone = await self.Attack(self.battle.TeamAPkmn, self.battle.TeamBPkmn, True)
 				self.battle.Turns.insert(0, self.userturn)
 			if self.cputurn.Action != BattleAction.Item and self.cputurn.Move and self.battle.TeamAPkmn.CurrentHP > 0 and self.battle.TeamBPkmn.CurrentHP > 0:
@@ -312,7 +306,7 @@ class CpuBattleView(discord.ui.View):
 			if self.cputurn.Action != BattleAction.Item and self.cputurn.Move:
 				self.cputurn.DamageDone = await self.Attack(self.battle.TeamBPkmn, self.battle.TeamAPkmn, False)
 				self.battle.Turns.insert(0, self.cputurn)
-			if self.useraction != BattleAction.Item and self.userturn.Move and self.battle.TeamAPkmn.CurrentHP > 0 and self.battle.TeamBPkmn.CurrentHP > 0:
+			if self.userturn.Action != BattleAction.Item and self.userturn.Move and self.battle.TeamAPkmn.CurrentHP > 0 and self.battle.TeamBPkmn.CurrentHP > 0:
 				self.userturn.DamageDone = await self.Attack(self.battle.TeamAPkmn, self.battle.TeamBPkmn, True)
 				self.battle.Turns.insert(0, self.userturn)
 		self.battle.CurrentTurn += 1

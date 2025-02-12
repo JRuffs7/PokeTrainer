@@ -1,14 +1,2 @@
-Due to discord limitations, **PokeTrainer can only be active in 100 total servers**.
-Thanks to everyone, we have reached that limit. However, PokeTrainer is now unable to join other servers.
-
-Starting with this update, activity for each server will be tracked. If a server is inactive for **30 days**, PokeTrainer will remove itself to open up space for others who wish to use it.
-If PokeTrainer is removed from your server it:
-- WILL NOT REMOVE YOUR DATA
-- Can be added back at any point as long as there is an open spot
-- If added back later, all your data will be as it was
-If your server is currently not using the PokeTrainer bot, you may remove PokeTrainer to open up space for other servers, or it may leave itself after the 30 days of inactivity.
-
-Other Updates:
-- New Update messages will now appear even if your server is not registered
-- If you wish for these messages to appear in a specific location, have an admin **/register** PokeTrainer where you wish to receive updates
-- The commands **/register** and **/unregister** now only dictate where updates are sent
+- Fixed an issue with swapping Pokemon during battle
+- Correct a Voltage gym members Pokemon team
