@@ -1,2 +1,2 @@
 - Fixed an issue with swapping Pokemon during battle
-- Correct a Voltage gym members Pokemon team
+- Corrected a Voltage gym members Pokemon team
