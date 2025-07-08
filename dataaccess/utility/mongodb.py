@@ -53,4 +53,4 @@ def DeleteDocs(collection, filters):
   
 
 def GetMongoConnString():
-  return f'mongodb+srv://{os.environ.get('MONGOUSER')}:{urllib.parse.quote(os.environ.get('MONGOPASSWORD'))}@poketrainertest.qedhrz0.mongodb.net/'
+  return os.environ.get('MONGOCONN').replace('USERNAME', os.environ.get('MONGOUSER')).replace('PASSWORD', urllib.parse.quote(os.environ.get('MONGOPASSWORD')))
