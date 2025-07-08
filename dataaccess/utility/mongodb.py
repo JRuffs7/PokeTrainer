@@ -53,4 +53,8 @@ def DeleteDocs(collection, filters):
   
 
 def GetMongoConnString():
-  return os.environ.get('MONGOCONN').replace('USERNAME', os.environ.get('MONGOUSER')).replace('PASSWORD', urllib.parse.quote(os.environ.get('MONGOPASSWORD')))
+  connString = os.environ.get('MONGOCONN')
+  if 'USERNAME' in connString:
+    return connString.replace('USERNAME', os.environ.get('MONGOUSER')).replace('PASSWORD', urllib.parse.quote(os.environ.get('MONGOPASSWORD')))
+  else:
+    return connString
