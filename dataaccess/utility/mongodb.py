@@ -1,5 +1,6 @@
 import logging
 import os
+import urllib
 from pymongo.mongo_client import MongoClient
 
 errorLog = logging.getLogger('error')
@@ -7,7 +8,7 @@ debugLog = logging.getLogger('debug')
 
 def NumberOfDocs(collection, filters):
   try:
-    with MongoClient(os.environ.get('MONGOCONN')) as client:
+    with MongoClient(GetMongoConnString()) as client:
       coll = client[os.environ.get('MONGONAME')][collection]
       return coll.count_documents(filters)
   except Exception as e:
@@ -16,7 +17,7 @@ def NumberOfDocs(collection, filters):
 
 def GetSingleDoc(collection, filters):
   try:
-    with MongoClient(os.environ.get('MONGOCONN')) as client:
+    with MongoClient(GetMongoConnString()) as client:
       coll = client[os.environ.get('MONGONAME')][collection]
       return coll.find_one(filters, {'_id': False})
   except Exception as e:
@@ -25,7 +26,7 @@ def GetSingleDoc(collection, filters):
   
 def GetManyDocs(collection, filters):
   try:
-    with MongoClient(os.environ.get('MONGOCONN')) as client:
+    with MongoClient(GetMongoConnString()) as client:
       coll = client[os.environ.get('MONGONAME')][collection]
       return list(coll.find(filters, {'_id': False}))
   except Exception as e:
@@ -34,7 +35,7 @@ def GetManyDocs(collection, filters):
   
 def UpsertSingleDoc(collection, filters, object):
   try:
-    with MongoClient(os.environ.get('MONGOCONN')) as client:
+    with MongoClient(GetMongoConnString()) as client:
       coll = client[os.environ.get('MONGONAME')][collection]
       coll.replace_one(filters, object, upsert=True)
   except Exception as e:
@@ -43,9 +44,13 @@ def UpsertSingleDoc(collection, filters, object):
   
 def DeleteDocs(collection, filters):
   try:
-    with MongoClient(os.environ.get('MONGOCONN')) as client:
+    with MongoClient(GetMongoConnString()) as client:
       coll = client[os.environ.get('MONGONAME')][collection]
       coll.delete_one(filters)
   except Exception as e:
     errorLog.error(f'Mongo Delete Exception: {e}')
     return None
+  
+
+def GetMongoConnString():
+  return f'mongodb+srv://{os.environ.get('MONGOUSER')}:{urllib.parse.quote(os.environ.get('MONGOPASSWORD'))}@poketrainertest.qedhrz0.mongodb.net/'
