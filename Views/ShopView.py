@@ -98,7 +98,7 @@ class ShopView(discord.ui.View):
 			alignments=[Alignment.LEFT,Alignment.LEFT,Alignment.LEFT],
 			style=PresetStyle.minimalist,
 			cell_padding=0)
-		return f'Trainer Money: ${self.trainer.Money}\n\nUse **/buy** and **/sell** to trade items.\n```{shopData}```'
+		return f'Trainer Money: **${self.trainer.Money if self.trainer else "0"}**\n\nUse **/buy** and **/sell** to trade items.\n```{shopData}```'
 
 	async def send(self, inter: discord.Interaction):
 		await inter.followup.send(view=self)

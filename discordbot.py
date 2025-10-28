@@ -4,7 +4,7 @@ import logging
 import os
 import discord
 from discord.ext import commands, tasks
-from globals import HelpColor, ShortDateFormat, discordLink, topggLink, initTracking, cleansetimes
+from globals import HelpColor, ShortDateFormat, discordLink, topggLink, cleansetimes
 from models.Server import Server
 
 from services import serverservice
@@ -65,7 +65,7 @@ async def StartBot():
       if not server.LastActivity:
         server.LastActivity = datetime.now(UTC).strftime(ShortDateFormat)
       serverservice.UpsertServer(server)
-      
+
       lastActivity = datetime.strptime(server.LastActivity, ShortDateFormat)
 
       if (lastActivity + timedelta(days=30)) < datetime.now():
@@ -80,9 +80,6 @@ async def StartBot():
     if not guild:
       return 
     server = serverservice.GetServer(guild.id) or Server.from_dict({'ServerName': guild.name, 'ServerId': guild.id})
-    if datetime.today().date() == initTracking.date():
-      server.LastActivity = datetime.now(UTC).strftime(ShortDateFormat)
-
     channel = guild.get_channel(server.ChannelId)
     if not channel:
       member = guild.get_member(discordBot.user.id)

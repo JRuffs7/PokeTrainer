@@ -36,7 +36,6 @@ cleansetimes = [
 ]
 
 freemasterball = datetime(2024,10,4)
-initTracking = datetime(2025,2,8)
 
 def to_dict(obj):
   return json.loads(json.dumps(obj, default=lambda o: o.__dict__))
