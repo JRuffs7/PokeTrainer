@@ -16,6 +16,7 @@ discordBot = commands.Bot(command_prefix='~',
                           help_command=None,
                           intents=intents)
 logger = logging.getLogger('discord')
+eventLogger = logging.getLogger('event')
 errorLogger = logging.getLogger('error')
 
 
@@ -69,7 +70,7 @@ async def StartBot():
       lastActivity = datetime.strptime(server.LastActivity, ShortDateFormat)
 
       if (lastActivity + timedelta(days=30)) < datetime.now():
-
+        eventLogger.info(f'Left Server: {server.ServerName} ({server.ServerId}) - {datetime.now(UTC).strftime(ShortDateFormat)}')
         await MessageThread(discordservice.CreateEmbed(
           'Sorry To Leave',
           'Due to prolonged inactivity on this server, PokeTrainer has decided to remove itself in order to create free space for other servers to invite it. Your data WILL NOT be deleted, and you are free to add PokeTrainer back whenever you wish! Thank you for playing and we hope to see you again.',
