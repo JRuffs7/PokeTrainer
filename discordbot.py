@@ -62,7 +62,9 @@ async def StartBot():
       server = serverservice.GetServer(guild.id)
       if not server:
         server = Server({'Servername': guild.name,'ServerId': guild.id,'LastActivity': datetime.now(UTC).strftime(ShortDateFormat)})
-        serverservice.UpsertServer(server)
+      if not server.LastActivity:
+        server.LastActivity = datetime.now(UTC).strftime(ShortDateFormat)
+      serverservice.UpsertServer(server)
       
       lastActivity = datetime.strptime(server.LastActivity, ShortDateFormat)
 
