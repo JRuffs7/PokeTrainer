@@ -1,21 +1,24 @@
 import asyncio
+from datetime import UTC, datetime, timedelta
 import logging
 import os
 from random import choice
 import socket
 import uuid
-from discord import File, Member, TextChannel
+from discord import Embed, File, Guild, Member, TextChannel
 from discord.ext import commands
-from globals import AdminList, SuperShinyOdds
+from globals import HelpColor, ShortDateFormat, SuperShinyOdds
 from middleware.decorators import is_bot_admin
 from models.Egg import TrainerEgg
 from models.Server import Server
-from services import commandlockservice, gymservice, moveservice, pokemonservice, serverservice, trainerservice
+from services import adminservice, commandlockservice, gymservice, moveservice, pokemonservice, serverservice, trainerservice
+from services.utility import discordservice
 
 class AdminCommands(commands.Cog, name="AdminCommands"):
 
-	logger = logging.getLogger('command')
-	err = logging.getLogger('error')
+	logger = logging.getLogger('discord')
+	eventLogger = logging.getLogger('event')
+	errorLogger = logging.getLogger('error')
 
 	def __init__(self, bot: commands.Bot):
 		self.bot = bot
@@ -169,6 +172,21 @@ class AdminCommands(commands.Cog, name="AdminCommands"):
 	async def upvote(self, ctx: commands.Context, userId: int):
 		if ctx.guild.id == 1216417415483887778 and ctx.channel.id == 1307070817989034004:
 			trainerservice.UpvoteReward(userId)
+
+	@commands.command(name="cleanse")
+	async def cleanse(self, ctx: commands.Context, serverId: int | None):
+		if serverId:
+			g = self.bot.get_guild(serverId)
+			if g:
+				member = guild.get_member(self.bot.user.id)
+				if member:
+					await adminservice.cleanse_helper(guild, member)
+		else:
+			for guild in self.bot.guilds:
+				if guild:
+					member = guild.get_member(self.bot.user.id)
+					if member:
+						await adminservice.cleanse_helper(guild, member)
 
 	#endregion
 	

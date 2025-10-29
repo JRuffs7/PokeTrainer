@@ -1,11 +1,14 @@
+from discord import Guild
 from dataaccess import serverda
 from models.Server import Server
 
 
-def RegisterServer(serverId: int, channelId: int):
-  if serverId is None or channelId is None:
+def RegisterServer(guild: Guild, channelId: int):
+  if (not guild) or (not channelId):
     return None
-  currServ = GetServer(serverId)
+  currServ = GetServer(guild.id)
+  if not currServ:
+    return None
   currServ.ChannelId = channelId
   UpsertServer(currServ)
   return currServ

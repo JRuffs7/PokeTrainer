@@ -31,6 +31,8 @@ AdminList = [
   215624857793069056
 ]
 
+AdminServer = 1216417415483887778
+
 cleansetimes = [
   datetime.strptime('00:00:00', '%H:%M:%S').time()
 ]

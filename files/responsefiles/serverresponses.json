@@ -2,13 +2,17 @@
 	"invite": [
 		{
 			"Title": "Invite Server",
-			"Body": "Use this link below to add PokeTrainer to another discord server!\n\n[Invite PokeTrainer](https://discord.com/oauth2/authorize?client_id=1151657435073875988&permissions=395674216512&scope=bot)"
+			"Body": "Use this link below to add PokeTrainer to another discord server!\n\n[Invite PokeTrainer](https://discord.com/oauth2/authorize?client_id=1151657435073875988&permissions=8&integration_type=0&scope=bot)"
 		}
 	],
 	"register": [
 		{
 			"Title": "Register Error",
 			"Body": "There was an error while registering your server with PokeTrainer. Please try again or contact us in the [Discord]({0})."
+		},
+		{
+			"Title": "Register Error",
+			"Body": "You must register PokeTrainer within a valid server and Text Channel. Please try again or contact us in the [Discord]({0})."
 		},
 		{
 			"Title": "Server Registered",

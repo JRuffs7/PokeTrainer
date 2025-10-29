@@ -21,7 +21,7 @@ def method_logger(eph: bool):
       try:
         if not args[0].guild:
           return
-        server = serverservice.GetServer(args[0].guild.id) or Server.from_dict({'ServerId': args[0].guild.id})
+        server = serverservice.GetServer(args[0].guild.id) or Server(ServerId=args[0].guild.id)
         server.ServerName = args[0].guild.name
         server.LastActivity = datetime.now(UTC).strftime(ShortDateFormat)
         serverservice.UpsertServer(server)

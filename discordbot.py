@@ -7,7 +7,7 @@ from discord.ext import commands, tasks
 from globals import HelpColor, ShortDateFormat, discordLink, topggLink, cleansetimes
 from models.Server import Server
 
-from services import serverservice
+from services import adminservice, serverservice
 from services.utility import discordservice
 
 intents = discord.Intents.all()
@@ -60,38 +60,24 @@ async def StartBot():
   @tasks.loop(time=cleansetimes)
   async def cleanse_servers():
     for guild in discordBot.guilds:
-      server = serverservice.GetServer(guild.id)
-      if not server:
-        server = Server({'Servername': guild.name,'ServerId': guild.id,'LastActivity': datetime.now(UTC).strftime(ShortDateFormat)})
-      if not server.LastActivity:
-        server.LastActivity = datetime.now(UTC).strftime(ShortDateFormat)
-      serverservice.UpsertServer(server)
-
-      lastActivity = datetime.strptime(server.LastActivity, ShortDateFormat)
-
-      if (lastActivity + timedelta(days=30)) < datetime.now():
-        eventLogger.info(f'Left Server: {server.ServerName} ({server.ServerId}) - {datetime.now(UTC).strftime(ShortDateFormat)}')
-        await MessageThread(discordservice.CreateEmbed(
-          'Sorry To Leave',
-          'Due to prolonged inactivity on this server, PokeTrainer has decided to remove itself in order to create free space for other servers to invite it. Your data WILL NOT be deleted, and you are free to add PokeTrainer back whenever you wish! Thank you for playing and we hope to see you again.',
-          HelpColor), guild)
-        await guild.leave()
+      if guild:
+        member = guild.get_member(discordBot.user.id)
+        if member:
+          await adminservice.cleanse_helper(guild, member)
 
   async def MessageThread(embed: discord.Embed, guild: discord.Guild):
     if not guild:
       return 
-    server = serverservice.GetServer(guild.id) or Server.from_dict({'ServerName': guild.name, 'ServerId': guild.id})
+    server = serverservice.GetServer(guild.id) or Server(ServerName=guild.name, ServerId=guild.id)
     channel = guild.get_channel(server.ChannelId)
     if not channel:
       member = guild.get_member(discordBot.user.id)
       channel = next((c for c in guild.text_channels if c.permissions_for(member).send_messages),None)
     if not channel or not isinstance(channel, discord.TextChannel):
-      await guild.leave()
-      serverservice.DeleteServer(server)
       return
     else:
       server.ChannelId = channel.id
-    serverservice.UpsertServer(server)
+      serverservice.UpsertServer(server)
     return await channel.send(embed=embed)
 
   for f in os.listdir("commands"):

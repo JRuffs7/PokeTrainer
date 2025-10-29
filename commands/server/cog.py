@@ -18,8 +18,10 @@ class ServerCommands(commands.Cog, name="ServerCommands"):
   async def register(self, inter: Interaction):
     if not inter.guild_id or not inter.channel_id:
       return await discordservice_server.PrintRegisterResponse(inter, 0, [discordLink])
-    serv = serverservice.RegisterServer(inter.guild_id, inter.channel_id)
-    return await discordservice_server.PrintRegisterResponse(inter, 1, [serv.ServerName, serv.ChannelId])
+    serv = serverservice.RegisterServer(inter.guild, inter.channel_id)
+    if not serv:
+      return await discordservice_server.PrintRegisterResponse(inter, 1, [serv.ServerName, serv.ChannelId])
+    return await discordservice_server.PrintRegisterResponse(inter, 2, [serv.ServerName, serv.ChannelId])
 
   @app_commands.command(name="server",
                         description="Display server details.")
