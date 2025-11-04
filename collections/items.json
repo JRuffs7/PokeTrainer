@@ -723,6 +723,21 @@
     "SellAmount": 19000
   },
   {
+    "HealingAmount": null,
+    "ReviveAmount": 100,
+    "AilmentCures": [],
+    "PPAmount": null,
+    "PPAll": null,
+    "Id": 1630,
+    "Name": "Max Honey",
+    "Url": "https://pokeapi.co/api/v2/item/1630/",
+    "Sprite": null,
+    "Description": "",
+    "EvolutionItem": false,
+    "BuyAmount": 4000,
+    "SellAmount": 2000
+  },
+  {
     "Id": 1633,
     "Name": "Galarica Cuff",
     "Url": "https://pokeapi.co/api/v2/item/1633/",
